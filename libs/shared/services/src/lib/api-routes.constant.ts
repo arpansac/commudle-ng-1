@@ -124,6 +124,7 @@ export const API_ROUTES = {
     CREATE: 'api/v2/community_groups',
     UPDATE: 'api/v2/community_groups',
     SHOW: 'api/v2/community_groups/show',
+    CHECK_SLUG: 'api/v2/community_groups/check_slug',
     COMMUNITIES: 'api/v2/community_groups/communities',
     MANAGING_COMMUNITY_GROUPS: 'api/v2/community_groups/get_managing_community_groups',
     EVENTS: 'api/v2/community_groups/events',
@@ -1168,6 +1169,7 @@ export const API_ROUTES = {
     SHOW: 'api/v2/user_subscriptions/show', //GET
     CREATE: 'api/v2/user_subscriptions', //POST
     STATS: 'api/v2/user_subscriptions/stats', //GET
+    PAYMENT_HISTORY: 'api/v2/user_subscriptions/payment_history', //GET
   },
 
   HACKATHON_TEAM_ROUND_SUBMISSIONS: {

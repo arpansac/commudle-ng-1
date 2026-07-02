@@ -2,9 +2,18 @@
   @apply com-flex com-flex-col com-gap-4;
 
   .pp-header {
+    .pp-badges {
+      @apply com-flex com-flex-wrap com-items-center com-gap-2 com-mb-3;
+    }
+
     .pp-plan-badge {
       @apply com-inline-flex com-items-center com-px-2.5 com-py-0.5 com-rounded-full;
-      @apply com-text-xs com-font-semibold com-bg-primary-100 com-text-primary-700 com-mb-3;
+      @apply com-text-xs com-font-semibold com-bg-primary-100 com-text-primary-700;
+    }
+
+    .pp-trial-badge {
+      @apply com-inline-flex com-items-center com-px-2.5 com-py-0.5 com-rounded-full;
+      @apply com-text-xs com-font-semibold com-bg-green-50 com-text-green-700;
     }
 
     .pp-product-name {

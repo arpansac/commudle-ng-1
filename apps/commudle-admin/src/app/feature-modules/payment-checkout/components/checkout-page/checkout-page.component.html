@@ -1,10 +1,65 @@
-<div class="base-layout">
+<div class="base-layout checkout-page">
   <div class="container">
+    <!-- Checkout Banner -->
+    <div class="checkout-banner" *ngIf="purchaseOrder">
+      <div class="banner-main">
+        <span class="banner-badge">
+          <fa-icon [icon]="icons.faLock"></fa-icon>
+          Secure checkout
+        </span>
+        <h1 class="banner-title">{{ paymentPaid ? 'Order confirmed' : 'Complete your purchase' }}</h1>
+        <p class="banner-subtitle">
+          {{
+            paymentPaid
+              ? 'Your payment was processed successfully. A confirmation is on its way to your inbox.'
+              : (currentUser?.name ? 'Hey ' + (currentUser.name | titlecase) + ', review' : 'Review') +
+                ' your order and pay securely to get started right away.'
+          }}
+        </p>
+      </div>
+
+      <div class="banner-features">
+        <div class="feature">
+          <span class="feature-icon">
+            <fa-icon [icon]="icons.faShieldHalved"></fa-icon>
+          </span>
+          <div class="feature-text">
+            <span class="feature-title">256-bit encrypted</span>
+            <span class="feature-desc">Your details stay safe</span>
+          </div>
+        </div>
+
+        <div class="feature">
+          <span class="feature-icon">
+            <fa-icon [icon]="icons.faBolt"></fa-icon>
+          </span>
+          <div class="feature-text">
+            <span class="feature-title">Instant access</span>
+            <span class="feature-desc">Activated right after payment</span>
+          </div>
+        </div>
+
+        <div class="feature">
+          <span class="feature-icon">
+            <fa-icon [icon]="icons.faReceipt"></fa-icon>
+          </span>
+          <div class="feature-text">
+            <span class="feature-title">Invoice included</span>
+            <span class="feature-desc">GST-ready receipt by email</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="two-column-layout medium">
       <!-- Left Column - Order Details -->
       <div class="main-column">
         <!-- Campaign Details -->
-        <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.WALLET">
+        <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.WALLET" class="order-details-card">
+          <nb-card-header class="card-title">
+            <span class="card-title-icon"><fa-icon [icon]="icons.faBagShopping"></fa-icon></span>
+            <span>What you're buying</span>
+          </nb-card-header>
           <nb-card-body>
             <commudle-campaign-details [campaignId]="purchaseOrder.notes.campaign.id"></commudle-campaign-details>
             <commudle-wallet-details [campaignId]="purchaseOrder.notes.campaign.id"></commudle-wallet-details>
@@ -12,7 +67,11 @@
         </nb-card>
 
         <!-- Product Price Details -->
-        <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE">
+        <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE" class="order-details-card">
+          <nb-card-header class="card-title">
+            <span class="card-title-icon"><fa-icon [icon]="icons.faBagShopping"></fa-icon></span>
+            <span>What you're buying</span>
+          </nb-card-header>
           <nb-card-body>
             <commudle-product-price-details
               [productPriceId]="purchaseOrder.orderable_id"
@@ -20,231 +79,323 @@
             ></commudle-product-price-details>
           </nb-card-body>
         </nb-card>
-      </div>
 
-      <!-- Right Column - Payment Summary -->
-      <div class="right-column">
         <!-- Company Details Card -->
         <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE" class="company-details-card">
-          <nb-card-header>
-            <span> Company Details </span>
+          <nb-card-header class="card-title">
+            <span class="card-title-icon"><fa-icon [icon]="icons.faBuilding"></fa-icon></span>
+            <span>Billing details</span>
           </nb-card-header>
           <nb-card-body>
-            <form
-              [formGroup]="contactInfoForm"
-              class="company-form-container"
+            <div
+              class="billing-form-container"
               *ngIf="purchaseOrder.status !== EPurchaseOrderStatus.PAID"
+              [formGroup]="contactInfoForm"
             >
-              <commudle-alert
-                [info]="true"
-                message="In case of a business, please add company details, else add personal details if you are purchasing as an individual"
-              ></commudle-alert>
-              <!-- Company Name -->
-              <div>
-                <label for="companyName">Company Name <span class="required"> *</span></label>
-                <input
-                  nbInput
-                  fullWidth
-                  id="companyName"
-                  formControlName="companyName"
-                  placeholder="Enter company name"
-                />
+              <!-- Personal billing summary (default) -->
+              <div class="personal-billing" *ngIf="!isBusinessBilling">
+                <div class="avatar">{{ currentUser?.name || 'U' | slice : 0 : 1 | uppercase }}</div>
+                <div class="personal-details">
+                  <div class="name">{{ currentUser?.name | titlecase }}</div>
+                  <span class="email">{{ currentUser?.email }}</span>
+                  <span class="phone" *ngIf="currentUser?.phone">{{ currentUser.phone }}</span>
+                </div>
+                <fa-icon class="verified" [icon]="icons.faCircleCheck"></fa-icon>
+              </div>
+
+              <!-- Business toggle -->
+              <div class="business-toggle-box">
+                <nb-checkbox formControlName="isBusiness" class="business-toggle">
+                  Purchasing for a business?
+                </nb-checkbox>
+                <span class="toggle-sub">Add company details to receive a GST invoice</span>
+              </div>
+
+              <!-- Business details -->
+              <div class="business-fields" *ngIf="isBusinessBilling">
                 <commudle-alert
-                  [error]="contactInfoForm.get('companyName')?.invalid && contactInfoForm.get('companyName')?.touched"
-                  errorMessage="Company name is required"
-                >
-                </commudle-alert>
-              </div>
+                  [info]="true"
+                  message="Add your company details so we can generate a proper invoice for your business"
+                ></commudle-alert>
 
-              <!-- Company Address -->
-              <div>
-                <label for="companyAddress">Company Address <span class="required"> *</span></label>
-                <textarea
-                  nbInput
-                  fullWidth
-                  id="companyAddress"
-                  formControlName="companyAddress"
-                  placeholder="Enter company address"
-                  rows="3"
-                ></textarea>
-                <commudle-alert
-                  [error]="
-                    contactInfoForm.get('companyAddress')?.invalid && contactInfoForm.get('companyAddress')?.touched
-                  "
-                  errorMessage="Company address is required"
-                >
-                </commudle-alert>
-              </div>
+                <!-- Country -->
+                <div class="form-field">
+                  <label for="country">Country <span class="required">*</span></label>
+                  <div class="native-select">
+                    <select id="country" formControlName="country">
+                      <option value="" disabled>Select country</option>
+                      <option *ngFor="let country of countries" [value]="country.code">{{ country.name }}</option>
+                    </select>
+                  </div>
+                  <commudle-alert
+                    [error]="!!(contactInfoForm.get('country')?.invalid && contactInfoForm.get('country')?.touched)"
+                    errorMessage="Country is required"
+                  >
+                  </commudle-alert>
+                </div>
 
-              <!-- Pin Code -->
-              <div>
-                <label for="pinCode">Pin Code <span class="required"> *</span></label>
-                <input nbInput fullWidth id="pinCode" formControlName="pinCode" placeholder="Enter pin code" />
+                <!-- Company Name -->
+                <div class="form-field">
+                  <label for="companyName">Company Name <span class="required">*</span></label>
+                  <input
+                    nbInput
+                    fullWidth
+                    id="companyName"
+                    formControlName="companyName"
+                    placeholder="Enter company name"
+                  />
+                  <commudle-alert
+                    [error]="
+                      !!(contactInfoForm.get('companyName')?.invalid && contactInfoForm.get('companyName')?.touched)
+                    "
+                    errorMessage="Company name is required"
+                  >
+                  </commudle-alert>
+                </div>
 
-                <commudle-alert
-                  [error]="contactInfoForm.get('pinCode')?.invalid && contactInfoForm.get('pinCode')?.touched"
-                  errorMessage="Pin code is required"
-                >
-                </commudle-alert>
-              </div>
+                <!-- Company Address -->
+                <div class="form-field">
+                  <label for="companyAddress">Company Address <span class="required">*</span></label>
+                  <textarea
+                    nbInput
+                    fullWidth
+                    id="companyAddress"
+                    formControlName="companyAddress"
+                    placeholder="Enter company address"
+                    rows="3"
+                  ></textarea>
+                  <commudle-alert
+                    [error]="
+                      !!(
+                        contactInfoForm.get('companyAddress')?.invalid && contactInfoForm.get('companyAddress')?.touched
+                      )
+                    "
+                    errorMessage="Company address is required"
+                  >
+                  </commudle-alert>
+                </div>
 
-              <!-- GST Number -->
-              <div>
-                <label for="gst">GST Number</label>
-                <input nbInput fullWidth id="gst" formControlName="gst" placeholder="Enter GST number if applicable" />
+                <!-- Pin Code -->
+                <div class="form-field">
+                  <label for="pinCode">Pin Code <span class="required">*</span></label>
+                  <input nbInput fullWidth id="pinCode" formControlName="pinCode" placeholder="Enter pin code" />
+                  <commudle-alert
+                    [error]="!!(contactInfoForm.get('pinCode')?.invalid && contactInfoForm.get('pinCode')?.touched)"
+                    errorMessage="Pin code is required"
+                  >
+                  </commudle-alert>
+                </div>
+
+                <!-- GST Number (India only) -->
+                <div class="form-field" *ngIf="isIndiaSelected">
+                  <label for="gst">GST Number <span class="optional">(optional)</span></label>
+                  <input
+                    nbInput
+                    fullWidth
+                    id="gst"
+                    formControlName="gst"
+                    placeholder="Enter GST number if applicable"
+                  />
+                  <commudle-alert
+                    [info]="true"
+                    message="Add your GST number and we'll share a GST invoice with you"
+                  ></commudle-alert>
+                </div>
               </div>
-              <commudle-alert [info]="true" message="This will help us share a GST Invoice with you"></commudle-alert>
-            </form>
+            </div>
+
             <div *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID" class="company-details">
-              <div class="company-name">
-                <span class="heading">Company Name</span>
-                <span class="value">
-                  {{ purchaseOrder.contact_info.address?.company_name | titlecase }}
-                </span>
+              <div class="detail-row" *ngIf="purchaseOrder.contact_info.address?.company_name">
+                <span class="heading">Billed to</span>
+                <span class="value">{{ purchaseOrder.contact_info.address?.company_name | titlecase }}</span>
               </div>
-              <div class="address">
+              <div class="detail-row" *ngIf="purchaseOrder.contact_info.address?.address">
                 <span class="heading">Address</span>
-                <span class="value">
-                  {{ purchaseOrder.contact_info.address?.address }}
-                </span>
+                <span class="value">{{ purchaseOrder.contact_info.address?.address }}</span>
               </div>
-
-              <div class="pin-code">
+              <div class="detail-row" *ngIf="purchaseOrder.contact_info.address?.pin_code">
                 <span class="heading">Pin Code</span>
-                <span class="value">
-                  {{ purchaseOrder.contact_info.address?.pin_code }}
-                </span>
+                <span class="value">{{ purchaseOrder.contact_info.address?.pin_code }}</span>
               </div>
-              <div class="tax-info" *ngIf="purchaseOrder.contact_info.tax_info?.gst">
+              <div class="detail-row" *ngIf="purchaseOrder.contact_info.tax_info?.gst">
                 <span class="heading">GST Number</span>
-                <span class="value">
-                  {{ purchaseOrder.contact_info.tax_info?.gst }}
-                </span>
+                <span class="value">{{ purchaseOrder.contact_info.tax_info?.gst }}</span>
               </div>
             </div>
           </nb-card-body>
         </nb-card>
+      </div>
 
-        <!-- Payment Summary Card -->
+      <!-- Right Column - Payment Summary -->
+      <div class="right-column">
         <div class="payment-details-section" *ngIf="purchaseOrder">
-          <nb-card>
-            <nb-card-header>Payment Summary</nb-card-header>
+          <nb-card class="summary-card">
+            <nb-card-header class="card-title summary-header">
+              <span class="card-title-icon"><fa-icon [icon]="icons.faReceipt"></fa-icon></span>
+              <span>Order summary</span>
+            </nb-card-header>
             <nb-card-body>
               <!-- Payment Success Message -->
               <div *ngIf="paymentPaid" class="paid-message-container">
                 <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
                 <p class="message">Payment Successful!</p>
+                <p class="sub-message">A confirmation has been sent to your email.</p>
               </div>
 
-              <!-- Price -->
-              <div class="payment-details">
-                <span class="heading">Price per community</span>
-                <span class="value">
-                  {{ purchaseOrder.price / 100 | currency : purchaseOrder.currency }}
-                  <span class="billing-cycle-note" *ngIf="productPrice?.billing_cycle === 'yearly'">/mo</span>
-                </span>
-              </div>
-
-              <!-- Annual billing callout -->
-              <div class="annual-billing-callout" *ngIf="productPrice?.billing_cycle === 'yearly'">
-                <nb-icon icon="info-outline"></nb-icon>
-                <span>
-                  Annual plan, billed as
-                  <strong>{{ (purchaseOrder.price / 100) * 12 * quantity | currency : purchaseOrder.currency }}</strong>
-                  for 12 months
-                </span>
-              </div>
-
-              <!-- Quantity Selector -->
-              <div class="payment-details" *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE">
-                <span class="heading">Quantity</span>
-                <div class="value com-flex com-items-center" *ngIf="purchaseOrder.status !== EPurchaseOrderStatus.PAID">
-                  <button
-                    nbButton
-                    ghost
-                    size="small"
-                    status="basic"
-                    (click)="decreaseQuantity()"
-                    [disabled]="quantity <= minQuantity"
-                  >
-                    <fa-icon [icon]="icons.faMinus"></fa-icon>
-                  </button>
-                  <span class="com-mx-4 com-font-medium">{{ quantity }}</span>
-                  <button nbButton ghost size="small" status="basic" (click)="increaseQuantity()">
-                    <fa-icon [icon]="icons.faPlus"></fa-icon>
-                  </button>
-                </div>
-                <span class="value" *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID">
-                  {{ purchaseOrder.quantity }}
-                </span>
-              </div>
-
-              <div class="payment-details discount-code" *ngIf="discountCodeApplied">
-                <span class="heading">Discount Code</span>
-                <span class="value">
-                  <span *ngIf="purchaseOrder.discount_code || finalDiscountAmount">
-                    {{ finalDiscountAmount / 100 | currency : purchaseOrder.currency }}
+              <div class="summary-body">
+                <!-- Price -->
+                <div class="summary-row">
+                  <span class="heading">Price per community</span>
+                  <span class="value">
+                    {{ purchaseOrder.price / 100 | currency : purchaseOrder.currency }}
+                    <span class="billing-cycle-note" *ngIf="productPrice?.billing_cycle === 'yearly'">/mo</span>
                   </span>
-                </span>
+                </div>
+
+                <!-- Annual billing callout -->
+                <div class="annual-billing-callout" *ngIf="productPrice?.billing_cycle === 'yearly'">
+                  <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
+                  <span>
+                    Annual plan, billed as
+                    <strong>{{
+                      (purchaseOrder.price / 100) * 12 * quantity | currency : purchaseOrder.currency
+                    }}</strong>
+                    for 12 months
+                  </span>
+                </div>
+
+                <!-- Quantity Selector -->
+                <div class="summary-row" *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE">
+                  <span class="heading">Quantity</span>
+                  <div class="quantity-control" *ngIf="purchaseOrder.status !== EPurchaseOrderStatus.PAID">
+                    <button
+                      nbButton
+                      ghost
+                      size="small"
+                      status="basic"
+                      (click)="decreaseQuantity()"
+                      [disabled]="quantity <= minQuantity"
+                    >
+                      <fa-icon [icon]="icons.faMinus"></fa-icon>
+                    </button>
+                    <span class="quantity-value">{{ quantity }}</span>
+                    <button nbButton ghost size="small" status="basic" (click)="increaseQuantity()">
+                      <fa-icon [icon]="icons.faPlus"></fa-icon>
+                    </button>
+                  </div>
+                  <span class="value" *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID">
+                    {{ purchaseOrder.quantity }}
+                  </span>
+                </div>
+
+                <!-- Subtotal -->
+                <div class="summary-row" *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE">
+                  <span class="heading">Subtotal</span>
+                  <span class="value">{{ subtotal | currency : purchaseOrder.currency }}</span>
+                </div>
+
+                <!-- Applied Discount -->
+                <div class="summary-row discount-applied" *ngIf="discountCodeApplied && discountValue">
+                  <span class="heading">
+                    <fa-icon [icon]="icons.faTag"></fa-icon>
+                    Discount
+                  </span>
+                  <span class="value">-{{ discountValue | currency : purchaseOrder.currency }}</span>
+                </div>
               </div>
 
-              <div class="payment-details" *ngIf="!paymentPaid">
-                <span class="heading">Discount Code</span>
-                <div class="value com-flex com-items-center">
+              <!-- Promo Code -->
+              <div class="promo-code" *ngIf="!paymentPaid">
+                <label class="promo-label">
+                  <fa-icon [icon]="icons.faTag"></fa-icon>
+                  Have a discount code?
+                </label>
+                <div class="promo-input-row">
                   <input
                     nbInput
                     fullWidth
                     [(ngModel)]="discountCode"
                     (input)="onDiscountCodeInput($event)"
-                    placeholder="Enter discount code"
+                    placeholder="Enter code"
                     [disabled]="discountCodeApplied"
                   />
                   <button
                     *ngIf="!discountCodeApplied"
                     nbButton
-                    size="small"
                     status="primary"
-                    class="com-ml-2"
                     (click)="applyDiscountCode()"
                     [disabled]="!discountCode || discountCodeApplied"
                   >
                     Apply
                   </button>
-                  <button
-                    *ngIf="discountCodeApplied"
-                    nbButton
-                    size="small"
-                    status="danger"
-                    outline
-                    class="com-ml-2"
-                    (click)="removePromoCode(true)"
-                  >
+                  <button *ngIf="discountCodeApplied" nbButton status="danger" outline (click)="removePromoCode(true)">
                     Remove
                   </button>
                 </div>
+                <p class="promo-success" *ngIf="discountCodeApplied">
+                  <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
+                  Code applied successfully
+                </p>
               </div>
 
-              <!-- total -->
-              <div class="payment-details">
-                <span class="heading">Total</span>
-                <span class="value com-font-bold">
-                  {{ totalPrice | currency : purchaseOrder.currency }}
+              <!-- Free trial option -->
+              <div class="trial-option" *ngIf="hasTrial && !paymentPaid">
+                <nb-checkbox [(ngModel)]="withTrial" class="trial-checkbox">
+                  <span class="trial-title">Start with a {{ trialDays }}-day free trial</span>
+                </nb-checkbox>
+                <p class="trial-note">
+                  <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
+                  <span>
+                    Pay nothing today. You'll be charged
+                    <strong>{{ totalPrice | currency : purchaseOrder.currency }}</strong>
+                    automatically after {{ trialDays }} days. Cancel anytime before then.
+                  </span>
+                </p>
+              </div>
+
+              <!-- Total -->
+              <div class="summary-total">
+                <span class="heading">{{ hasTrial && withTrial ? 'Due today' : 'Total payable' }}</span>
+                <span class="value">
+                  {{ (hasTrial && withTrial ? 0 : totalPrice) | currency : purchaseOrder.currency }}
                 </span>
               </div>
+              <p class="trial-billing-note" *ngIf="hasTrial && withTrial">
+                Then {{ totalPrice | currency : purchaseOrder.currency }} after your {{ trialDays }}-day trial
+              </p>
 
+              <!-- Recipient -->
               <div class="recipient">
-                <div class="heading">Recipient</div>
+                <span class="recipient-label">Billed to</span>
                 <div class="recipient-details">
                   <div class="name">{{ purchaseOrder.user?.name | titlecase }}</div>
                   <span class="email">{{ purchaseOrder.user?.email }}</span>
-                  <br *ngIf="purchaseOrder.user?.phone" />
                   <span class="phone" *ngIf="purchaseOrder.user?.phone">{{ purchaseOrder.user.phone }}</span>
+                </div>
+              </div>
+
+              <!-- Pay Button -->
+              <div class="pay-button-wrapper" *ngIf="!paymentPaid">
+                <button nbButton status="primary" fullWidth size="large" (click)="Pay()" [disabled]="isLoadingPayment">
+                  <fa-icon [icon]="icons.faLock"></fa-icon>
+                  <ng-container *ngIf="hasTrial && withTrial">Start {{ trialDays }}-day free trial</ng-container>
+                  <ng-container *ngIf="!(hasTrial && withTrial)">
+                    Pay {{ totalPrice | currency : purchaseOrder.currency }}
+                  </ng-container>
+                </button>
+                <div class="trust-footer">
+                  <span class="trust-footer-item">
+                    <fa-icon [icon]="icons.faShieldHalved"></fa-icon>
+                    Encrypted &amp; secure
+                  </span>
+                  <span class="dot"></span>
+                  <span class="trust-footer-item">Powered by Razorpay</span>
                 </div>
               </div>
             </nb-card-body>
           </nb-card>
 
-          <!-- Support Information -->
+          <!-- Support & Refund Information -->
           <div class="info-container">
             <commudle-alert [info]="true">
               <div infoContent>
@@ -254,17 +405,11 @@
             </commudle-alert>
           </div>
 
-          <!-- Refund Policy -->
           <div class="info-container">
             <commudle-alert
               [info]="true"
-              message="For any refund related queries please reach out to the event organizers, Commudle is not responsible for any refund or disputes between the ticket purchasing party and the ticket seller."
+              message="For any refund related queries please reach out to the event organizers. Commudle is not responsible for any refund or disputes between the ticket purchasing party and the ticket seller."
             ></commudle-alert>
-          </div>
-
-          <!-- Pay Button -->
-          <div class="com-px-2" *ngIf="!paymentPaid">
-            <button nbButton status="primary" fullWidth (click)="Pay()" [disabled]="isLoadingPayment">Pay Now</button>
           </div>
         </div>
       </div>

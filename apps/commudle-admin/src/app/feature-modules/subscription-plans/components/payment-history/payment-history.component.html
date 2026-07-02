@@ -1,23 +1,95 @@
-<div class="payment-history-empty">
-  <div class="empty-icon-wrapper">
-    <nb-icon icon="clock-outline"></nb-icon>
-  </div>
-  <div class="empty-content">
-    <h3 class="empty-title">Payment History</h3>
-    <p class="empty-desc">Your billing records and invoices will appear here once payments are processed.</p>
-  </div>
-  <div class="empty-features">
-    <div class="empty-feature">
-      <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-      <span>Invoices &amp; receipts</span>
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+<ng-container *ngIf="!isLoading">
+  <!-- Empty state -->
+  <div class="ph-empty" *ngIf="orders.length === 0">
+    <div class="ph-empty-icon">
+      <nb-icon icon="credit-card-outline"></nb-icon>
     </div>
-    <div class="empty-feature">
-      <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-      <span>Billing dates</span>
-    </div>
-    <div class="empty-feature">
-      <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-      <span>Transaction IDs</span>
+    <h3 class="ph-empty-title">No payments yet</h3>
+    <p class="ph-empty-desc">Your billing records will appear here after your first payment.</p>
+  </div>
+
+  <!-- Table -->
+  <div class="ph-table-wrap" *ngIf="orders.length > 0">
+    <table class="ph-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Communities</th>
+          <th>Duration</th>
+          <th>Tax</th>
+          <th>Total Paid</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders" [class.row-unpaid]="order.status !== 'paid'">
+          <!-- Date -->
+          <td>
+            <p class="td-primary">{{ order.created_at | date : 'd MMM yyyy' }}</p>
+            <p class="td-secondary">{{ order.created_at | date : 'h:mm a' }}</p>
+          </td>
+
+          <!-- Description -->
+          <td>
+            <p class="td-primary">
+              {{ order.notes?.subscription_months > 1 ? 'Annual' : 'Monthly' }} Subscription Plan
+            </p>
+            <p class="td-secondary">Order #{{ order.uuid | slice : 0 : 8 | uppercase }}</p>
+          </td>
+
+          <!-- Communities -->
+          <td>
+            <span class="td-badge">
+              {{ order.quantity }} {{ order.quantity === 1 ? 'community' : 'communities' }}
+            </span>
+          </td>
+
+          <!-- Duration -->
+          <td>
+            <p class="td-primary">
+              {{ order.notes?.subscription_months || 1 }}
+              {{ (order.notes?.subscription_months || 1) === 1 ? 'month' : 'months' }}
+            </p>
+          </td>
+
+          <!-- Tax -->
+          <td>
+            <p class="td-primary" *ngIf="order.tax_amount > 0">
+              {{ order.tax_amount / 100 | currency : order.currency : 'symbol' : '1.0-2' }}
+            </p>
+            <p class="td-secondary" *ngIf="order.tax_name && order.tax_amount > 0">{{ order.tax_name }}</p>
+            <span class="td-secondary" *ngIf="!order.tax_amount || order.tax_amount === 0">—</span>
+          </td>
+
+          <!-- Total -->
+          <td>
+            <p class="td-total">{{ order.amount_to_be_paid / 100 | currency : order.currency : 'symbol' : '1.0-2' }}</p>
+            <p class="td-secondary">{{ order.currency }}</p>
+          </td>
+
+          <!-- Status -->
+          <td>
+            <span class="ph-status" [ngClass]="getStatusClass(order.status)">
+              <span class="ph-dot"></span>
+              {{ order.status | titlecase }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="ph-pagination" *ngIf="total > count">
+      <app-pagination
+        [current]="page"
+        [count]="count"
+        [total]="total"
+        (goTo)="goToPage($event)"
+        (next)="goToPage($event)"
+        (previous)="goToPage($event)"
+      ></app-pagination>
     </div>
   </div>
-</div>
+</ng-container>

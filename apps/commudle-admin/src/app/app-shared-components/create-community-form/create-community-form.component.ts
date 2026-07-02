@@ -10,6 +10,7 @@ import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communi
 import { ToastrService } from '@commudle/shared-services';
 import { Router } from '@angular/router';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
+import { ICommunity } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-create-community-form',
@@ -43,38 +44,22 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
   bannerPreview: string | null = null;
   bannerFile: File | null = null;
 
-  readonly allowedImageTypes = ['image/png', 'image/jpg', 'image/jpeg'];
-  readonly maxImageSize = 5 * 1024 * 1024;
-
   readonly tinyMCE = {
-    min_height: 300,
+    min_height: 200,
     menubar: false,
     convert_urls: false,
     placeholder: 'Tell people what your community is about...',
     content_style:
-      "@import url('https://fonts.googleapis.com/css?family=Inter'); body { font-family: 'Inter'; font-size: 16px !important; }",
-    plugins: [
-      'advlist',
-      'autolink',
-      'lists',
-      'link',
-      'charmap',
-      'preview',
-      'anchor',
-      'visualblocks',
-      'code',
-      'insertdatetime',
-      'table',
-      'help',
-      'wordcount',
-      'autoresize',
-    ],
-    toolbar: 'bold italic | link | alignleft aligncenter alignright | bullist numlist | removeformat',
+      "@import url('https://fonts.googleapis.com/css?family=Inter'); body { font-family: 'Inter'; font-size: 14px !important; }",
+    plugins: ['autolink', 'lists', 'link', 'autoresize'],
+    toolbar: 'bold italic | link | bullist numlist | removeformat',
     default_link_target: '_blank',
     branding: false,
     license_key: 'gpl',
   };
 
+  private readonly allowedImageTypes = ['image/png', 'image/jpg', 'image/jpeg'];
+  private readonly maxImageSize = 5 * 1024 * 1024;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -106,8 +91,13 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((name: string) => {
         if (!this.isSlugEdited) {
-          this.communityForm.get('slug').setValue(this.toSlug(name), { emitEvent: false });
-          this.slugCheckState = 'idle';
+          const slug = this.toSlug(name);
+          this.communityForm.get('slug').setValue(slug, { emitEvent: false });
+          if (slug && this.communityForm.get('slug').valid) {
+            this.checkSlugAvailability(slug);
+          } else {
+            this.slugCheckState = 'idle';
+          }
         }
       });
 
@@ -134,16 +124,24 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
 
   onLogoSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
-    if (!file || !this.isValidImage(file)) return;
+    if (!file) return;
+    if (!this.isValidImage(file)) {
+      this.toastrService.warningDialog('Invalid image. Use PNG/JPG under 5MB.');
+      return;
+    }
     this.logoFile = file;
-    this.readImagePreview(file, (r) => (this.logoPreview = r));
+    this.readPreview(file, (r) => (this.logoPreview = r));
   }
 
   onBannerSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
-    if (!file || !this.isValidImage(file)) return;
+    if (!file) return;
+    if (!this.isValidImage(file)) {
+      this.toastrService.warningDialog('Invalid image. Use PNG/JPG under 5MB.');
+      return;
+    }
     this.bannerFile = file;
-    this.readImagePreview(file, (r) => (this.bannerPreview = r));
+    this.readPreview(file, (r) => (this.bannerPreview = r));
   }
 
   removeLogo(): void {
@@ -175,16 +173,14 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
     if (this.bannerFile) formData.append('community[banner_image]', this.bannerFile);
 
     this.communitiesService.createWithSubscription(formData, this.subscriptionId).subscribe({
-      next: (community: any) => {
+      next: (community: ICommunity) => {
         this.isSubmitting = false;
         this.toastrService.successDialog('Community created successfully!');
         this.dialogRef.close(community);
         this.router.navigate(['/communities', community.slug]);
       },
-      error: (err: any) => {
+      error: () => {
         this.isSubmitting = false;
-        const msg = err?.error?.message || 'Failed to create community. Please try again.';
-        this.toastrService.errorDialog(msg);
       },
     });
   }
@@ -197,7 +193,7 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
     return this.allowedImageTypes.includes(file.type) && file.size <= this.maxImageSize;
   }
 
-  private readImagePreview(file: File, cb: (r: string) => void): void {
+  private readPreview(file: File, cb: (r: string) => void): void {
     const reader = new FileReader();
     reader.onload = () => cb(reader.result as string);
     reader.readAsDataURL(file);

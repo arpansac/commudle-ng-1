@@ -170,7 +170,11 @@
 
           <!-- Community chips grid -->
           <div class="resource-grid" *ngIf="sub.kommunities?.length > 0">
-            <app-community-badge [community]="c" *ngFor="let c of sub.kommunities"></app-community-badge>
+            <app-community-badge
+              [community]="c"
+              routeBase="/admin/communities"
+              *ngFor="let c of sub.kommunities"
+            ></app-community-badge>
           </div>
 
           <p class="resource-empty-hint" *ngIf="!sub.kommunities?.length">
@@ -210,6 +214,7 @@
             <app-community-group-badge
               *ngFor="let cg of sub.community_groups"
               [communityGroup]="cg"
+              routeBase="/admin/orgs"
             ></app-community-group-badge>
           </div>
 

@@ -20,10 +20,23 @@ export class CommunityGroupsService {
   public userManagedCommunityGroups$: Observable<ICommunityGroup[]> = this.userManagedCommunityGroups.asObservable();
   constructor(private http: HttpClient, private apiRoutesService: ApiRoutesService) {}
 
-  create(communityGroupData): Observable<ICommunityGroup> {
+  checkSlug(slug: string): Observable<{ available: boolean }> {
+    const params = new HttpParams().set('slug', slug);
+    return this.http.get<{ available: boolean }>(
+      this.apiRoutesService.getRoute(API_ROUTES.COMMUNITY_GROUPS.CHECK_SLUG),
+      { params },
+    );
+  }
+
+  create(communityGroupData, subscriptionId?: number): Observable<ICommunityGroup> {
+    let params: HttpParams;
+    if (subscriptionId) {
+      params = new HttpParams().set('user_subscription_id', subscriptionId);
+    }
     return this.http.post<ICommunityGroup>(
       this.apiRoutesService.getRoute(API_ROUTES.COMMUNITY_GROUPS.CREATE),
       communityGroupData,
+      { params },
     );
   }
 

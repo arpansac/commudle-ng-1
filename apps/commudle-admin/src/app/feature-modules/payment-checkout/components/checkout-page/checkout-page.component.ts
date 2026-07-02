@@ -3,10 +3,18 @@ import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, TemplateRef, ViewChi
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  faBagShopping,
+  faBolt,
+  faBuilding,
   faCircleCheck,
+  faCircleInfo,
+  faLock,
   faMinus,
   faPlus,
+  faReceipt,
   faRotateRight,
+  faShieldHalved,
+  faTag,
   faTriangleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
 import { environment } from '@commudle/shared-environments';
@@ -30,6 +38,7 @@ import {
   RazorpayService,
   SeoService,
   ToastrService,
+  countries_details,
 } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { Subject, finalize, takeUntil } from 'rxjs';
@@ -63,6 +72,10 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   minQuantity = 1;
   subscriptionMonths = 1;
 
+  withTrial = false;
+
+  readonly countries = countries_details;
+
   discountCode = '';
   discountCodeApplied = false;
   discountAmount = 0;
@@ -75,6 +88,14 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     faCircleCheck,
     faPlus,
     faMinus,
+    faLock,
+    faShieldHalved,
+    faTag,
+    faReceipt,
+    faBolt,
+    faBagShopping,
+    faBuilding,
+    faCircleInfo,
   };
 
   readonly EPurchaseOrderStatus = EPurchaseOrderStatus;
@@ -104,10 +125,12 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   private initCheckoutForm(): FormGroup {
     return this.fb.group({
-      companyName: ['', Validators.required],
+      isBusiness: [false],
+      country: [''],
+      companyName: [''],
       gst: [''],
-      companyAddress: ['', Validators.required],
-      pinCode: ['', Validators.required],
+      companyAddress: [''],
+      pinCode: [''],
     });
   }
 
@@ -115,6 +138,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     this.seoService.noIndex(true);
     this.openLoadingDialog();
     this.fetchCurrentUser();
+    this.setupBillingTypeListener();
     this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       const purchaseOrderUuid = params['purchase_order_uuid'];
       if (purchaseOrderUuid) {
@@ -172,12 +196,23 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   private prefillContactForm(contactInfo: IContactInfo): void {
     if (!contactInfo) return;
 
+    // Treat an order with a saved address / pin / GST as a business billing
+    const hasBusinessInfo = !!(
+      contactInfo.address?.address ||
+      contactInfo.address?.pin_code ||
+      contactInfo.tax_info?.gst
+    );
+
     this.contactInfoForm.patchValue({
+      isBusiness: hasBusinessInfo,
+      country: contactInfo.country_code || this.getUserCountryCode(),
       companyName: contactInfo.address?.company_name || '',
       gst: contactInfo.tax_info?.gst || '',
       companyAddress: contactInfo.address?.address || '',
       pinCode: contactInfo.address?.pin_code || '',
     });
+
+    this.updateBillingValidators(hasBusinessInfo);
   }
 
   private handleOrderStatus(lastSegment: string): void {
@@ -197,7 +232,92 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   private fetchCurrentUser(): void {
-    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((user) => (this.currentUser = user));
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
+      this.currentUser = user;
+      // Default the billing country to the user's current country if not already set
+      if (user && !this.contactInfoForm.get('country')?.value) {
+        this.contactInfoForm.patchValue({ country: this.getUserCountryCode() }, { emitEvent: false });
+      }
+    });
+  }
+
+  private setupBillingTypeListener(): void {
+    // Apply the correct validators for the default (personal) billing type
+    this.updateBillingValidators(false);
+
+    this.contactInfoForm
+      .get('isBusiness')
+      ?.valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((isBusiness: boolean) => {
+        if (isBusiness && !this.contactInfoForm.get('country')?.value) {
+          this.contactInfoForm.patchValue({ country: this.getUserCountryCode() }, { emitEvent: false });
+        }
+        this.updateBillingValidators(isBusiness);
+      });
+  }
+
+  private updateBillingValidators(isBusiness: boolean): void {
+    const businessFields = ['companyName', 'companyAddress', 'pinCode', 'country'];
+    businessFields.forEach((field) => {
+      const control = this.contactInfoForm.get(field);
+      if (isBusiness) {
+        control?.setValidators(Validators.required);
+      } else {
+        control?.clearValidators();
+      }
+      control?.updateValueAndValidity({ emitEvent: false });
+    });
+  }
+
+  private getUserCountryCode(): string {
+    const phoneCode = this.currentUser?.phone_country_code;
+    if (phoneCode) {
+      const match = this.countries.find((country) => String(country.phone) === String(phoneCode));
+      if (match) {
+        return match.code;
+      }
+    }
+    return 'IN';
+  }
+
+  get isBusinessBilling(): boolean {
+    return !!this.contactInfoForm.get('isBusiness')?.value;
+  }
+
+  get isIndiaSelected(): boolean {
+    return this.contactInfoForm.get('country')?.value === 'IN';
+  }
+
+  private buildContactInfoPayload(): {
+    country_code: string;
+    tax_info: { gst: string };
+    address: { address: string; company_name: string; pin_code: string };
+  } {
+    if (this.isBusinessBilling) {
+      const country = this.contactInfoForm.get('country')?.value || this.getUserCountryCode();
+      return {
+        country_code: country,
+        tax_info: {
+          gst: country === 'IN' ? this.contactInfoForm.get('gst')?.value || '' : '',
+        },
+        address: {
+          address: this.contactInfoForm.get('companyAddress')?.value || '',
+          company_name: this.contactInfoForm.get('companyName')?.value || '',
+          pin_code: this.contactInfoForm.get('pinCode')?.value || '',
+        },
+      };
+    }
+
+    // Personal billing uses the current user's details
+    return {
+      country_code: this.getUserCountryCode(),
+      tax_info: { gst: '' },
+      address: {
+        address: '',
+        company_name: this.currentUser?.name || '',
+        pin_code: '',
+      },
+    };
   }
 
   Pay(): void {
@@ -252,16 +372,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   private createOrUpdateContactInfo(): void {
     if (!this.purchaseOrder?.uuid) return;
 
-    const contactInfo = {
-      tax_info: {
-        gst: this.contactInfoForm.get('gst')?.value || '',
-      },
-      address: {
-        address: this.contactInfoForm.get('companyAddress')?.value || '',
-        company_name: this.contactInfoForm.get('companyName')?.value || '',
-        pin_code: this.contactInfoForm.get('pinCode')?.value || '',
-      },
-    };
+    const contactInfo = this.buildContactInfoPayload();
 
     this.purchaseOrderService
       .createContactInfo(this.purchaseOrder.uuid, contactInfo)
@@ -298,7 +409,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     // Use Razorpay Subscription flow for subscription plans
     if (this.productPrice?.is_subscription_plan) {
       this.razorpayService
-        .createRzpSubscription(purchaseOrderId)
+        .createRzpSubscription(purchaseOrderId, this.hasTrial && this.withTrial)
         .pipe(
           takeUntil(this.destroy$),
           finalize(() => {
@@ -370,7 +481,11 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           )
           .subscribe({
             next: () => {
-              this.toastrService.successDialog('Subscription activated successfully!');
+              this.toastrService.successDialog(
+                this.hasTrial && this.withTrial
+                  ? `Your ${this.trialDays}-day free trial has started!`
+                  : 'Subscription activated successfully!',
+              );
               this.paymentPaid = true;
               this.router.navigate(['/subscriptions']);
             },
@@ -743,5 +858,22 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   private gtmDataLayerPushEvent(eventName: string, eventData: Record<string, string | number> = {}): void {
     this.gtm.dataLayerPushEvent(eventName, eventData);
+  }
+
+  get subtotal(): number {
+    if (!this.purchaseOrder?.price) return 0;
+    return (this.purchaseOrder.price / 100) * this.quantity * this.subscriptionMonths;
+  }
+
+  get discountValue(): number {
+    return this.discountCodeApplied ? this.finalDiscountAmount / 100 : 0;
+  }
+
+  get hasTrial(): boolean {
+    return !!this.productPrice?.trial_enabled && (this.productPrice?.trial_period_days || 0) > 0;
+  }
+
+  get trialDays(): number {
+    return this.productPrice?.trial_period_days || 0;
   }
 }
