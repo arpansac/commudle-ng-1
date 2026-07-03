@@ -1,1 +1,36 @@
 @import '../create-community-form/create-community-form.component.scss';
+
+.cf-success {
+  @apply com-flex com-flex-col com-items-center com-text-center com-gap-3 com-py-8 com-px-6;
+
+  .cf-success-icon {
+    @apply com-flex com-items-center com-justify-center com-w-16 com-h-16 com-rounded-full com-bg-green-50;
+
+    nb-icon {
+      @apply com-text-4xl com-text-Caribbean-Green;
+    }
+  }
+
+  .cf-success-title {
+    @apply com-text-xl com-font-bold com-text-Yankees-Blue com-m-0;
+  }
+
+  .cf-success-subtitle {
+    @apply com-text-sm com-text-gray-500 com-m-0 com-max-w-md;
+  }
+
+  .cf-success-actions {
+    @apply com-flex com-flex-col com-w-full com-gap-2 com-mt-3;
+    @apply sm:com-flex-row sm:com-justify-center;
+
+    button {
+      nb-icon {
+        @apply com-mr-1;
+      }
+    }
+  }
+
+  .cf-success-secondary {
+    @apply com-flex com-items-center com-justify-center com-gap-2 com-mt-2;
+  }
+}

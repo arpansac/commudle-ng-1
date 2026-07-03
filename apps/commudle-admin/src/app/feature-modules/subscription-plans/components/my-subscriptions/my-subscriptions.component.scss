@@ -1,6 +1,97 @@
 .my-subscriptions-page {
   @apply com-min-h-screen com-bg-white;
 
+  .welcome-hero {
+    @apply com-relative com-overflow-hidden com-pt-6 com-mb-2 com-p-6 com-rounded-2xl;
+    @apply com-flex com-items-center com-justify-between com-gap-6;
+    @apply sm:com-p-8;
+    background: linear-gradient(135deg, #4b3f9e, #1b1464);
+    animation: heroFadeUp 0.6s ease-out both;
+
+    &.hero-morning {
+      background: linear-gradient(135deg, #fdb813, #f68b1f);
+
+      .hero-blob {
+        background-color: #ffd985;
+      }
+    }
+    &.hero-afternoon {
+      background: linear-gradient(135deg, #4a90d9, #2c5f9e);
+
+      .hero-blob {
+        background-color: #8fc1ee;
+      }
+    }
+    &.hero-evening {
+      background: linear-gradient(135deg, #4b3f9e, #1b1464);
+
+      .hero-blob {
+        background-color: #7d72d1;
+      }
+    }
+    &.hero-night {
+      background: linear-gradient(135deg, #1a1a2e, #0d0d1a);
+
+      .hero-blob {
+        background-color: #363652;
+      }
+    }
+
+    .hero-blob {
+      @apply com-absolute com-rounded-full com-pointer-events-none;
+      filter: blur(2px);
+
+      &.hero-blob-1 {
+        width: 16rem;
+        height: 16rem;
+        top: -6rem;
+        right: -4rem;
+        animation: blobFloat 9s ease-in-out infinite;
+      }
+
+      &.hero-blob-2 {
+        width: 10rem;
+        height: 10rem;
+        bottom: -5rem;
+        right: 8rem;
+        animation: blobFloat 11s ease-in-out infinite reverse;
+      }
+
+      &.hero-blob-3 {
+        width: 6rem;
+        height: 6rem;
+        top: 1.5rem;
+        right: 30%;
+        animation: blobFloat 13s ease-in-out infinite;
+      }
+    }
+
+    .hero-content {
+      @apply com-relative com-flex com-flex-col com-gap-2;
+      z-index: 1;
+
+      .hero-eyebrow {
+        @apply com-self-start com-text-sm com-font-semibold com-text-tWhite com-text-opacity-90;
+        animation: heroFadeUp 0.6s ease-out 0.05s both;
+      }
+
+      .hero-title {
+        @apply com-text-2xl com-font-bold com-text-tWhite com-m-0;
+        @apply sm:com-text-3xl;
+        animation: heroFadeUp 0.6s ease-out 0.12s both;
+
+        .hero-name {
+          @apply com-font-extrabold com-text-tWhite;
+        }
+      }
+
+      .hero-subtitle {
+        @apply com-text-sm com-text-tWhite com-text-opacity-90 com-m-0;
+        animation: heroFadeUp 0.6s ease-out 0.18s both;
+      }
+    }
+  }
+
   .dashboard-layout {
     @apply com-flex com-flex-col com-gap-6 com-py-8;
 
@@ -9,7 +100,7 @@
     }
   }
 
-  // ── Sidebar ───────────────────────────────────────────
+  /* ── Sidebar ── */
   .dashboard-sidebar {
     @apply com-flex com-flex-col com-gap-6 com-w-full;
 
@@ -68,8 +159,36 @@
     }
   }
 
-  // ── Main content ──────────────────────────────────────
+  /* ── Main content ── */
   .dashboard-main {
     @apply com-flex-1 com-min-w-0;
+  }
+}
+
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blobFloat {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-1.5rem, 1rem) scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .my-subscriptions-page .welcome-hero,
+  .my-subscriptions-page .welcome-hero * {
+    animation: none !important;
   }
 }

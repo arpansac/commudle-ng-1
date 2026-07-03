@@ -8,7 +8,7 @@
 
 /* Checkout banner */
 .checkout-banner {
-  @apply com-mb-6 com-mx-2 com-p-5 com-rounded-2xl com-bg-white;
+  @apply com-mb-2 com-mx-2 com-p-5 com-rounded-2xl com-bg-white;
   @apply com-border com-border-solid com-border-Bright-Gray com-shadow-sm;
   @apply sm:com-p-6;
 
@@ -18,10 +18,10 @@
 
     .banner-badge {
       @apply com-inline-flex com-items-center com-gap-2 com-self-start com-px-3 com-py-1 com-rounded-full;
-      @apply com-bg-primary-100 com-text-primary-700 com-text-xs com-font-semibold;
+      @apply com-bg-green-50 com-text-green-700 com-text-xs com-font-semibold;
 
       fa-icon {
-        @apply com-text-primary-600;
+        @apply com-text-Caribbean-Green;
       }
     }
 
@@ -43,8 +43,19 @@
       @apply com-flex com-items-center com-gap-3 com-p-3 com-rounded-xl com-bg-gray-50;
 
       .feature-icon {
-        @apply com-flex com-items-center com-justify-center com-flex-shrink-0 com-w-10 com-h-10 com-rounded-lg;
-        @apply com-bg-primary-100 com-text-primary-600 com-text-base;
+        @apply com-flex com-items-center com-justify-center com-flex-shrink-0 com-w-10 com-h-10 com-rounded-lg com-text-base;
+      }
+
+      &:nth-child(1) .feature-icon {
+        @apply com-bg-purple-100 com-text-purple-600;
+      }
+
+      &:nth-child(2) .feature-icon {
+        @apply com-bg-yellow-100 com-text-yellow-600;
+      }
+
+      &:nth-child(3) .feature-icon {
+        @apply com-bg-green-100 com-text-green-600;
       }
 
       .feature-text {
@@ -68,7 +79,7 @@
 
   .card-title-icon {
     @apply com-flex com-items-center com-justify-center com-w-8 com-h-8 com-rounded-lg;
-    @apply com-bg-primary-100 com-text-primary-600 com-text-sm;
+    @apply com-bg-gray-100 com-text-gray-600 com-text-sm;
   }
 }
 
@@ -87,12 +98,7 @@
 
     .personal-billing {
       @apply com-flex com-items-center com-gap-3 com-p-3 com-rounded-xl;
-      @apply com-bg-primary-100 com-border com-border-solid com-border-Bright-Gray;
-
-      .avatar {
-        @apply com-flex com-items-center com-justify-center com-flex-shrink-0 com-w-10 com-h-10 com-rounded-full;
-        @apply com-bg-primary-600 com-text-white com-text-base com-font-bold;
-      }
+      @apply com-bg-gray-50 com-border com-border-solid com-border-Bright-Gray;
 
       .personal-details {
         @apply com-flex com-flex-col com-flex-1 com-min-w-0;
@@ -323,7 +329,7 @@
 
     .summary-total {
       @apply com-flex com-items-center com-justify-between com-gap-4 com-px-4 com-py-4;
-      @apply com-bg-primary-100 com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+      @apply com-bg-gray-50 com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
 
       .heading {
         @apply com-text-base com-font-semibold com-text-Yankees-Blue;
@@ -380,7 +386,7 @@
   }
 
   .info-container {
-    @apply com-my-2;
+    @apply com-m-2;
   }
 }
 

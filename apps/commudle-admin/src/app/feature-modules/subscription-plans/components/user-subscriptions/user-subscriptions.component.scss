@@ -63,7 +63,7 @@
     }
 
     &.sub-card-pending {
-      @apply com-border-blue-200;
+      @apply com-border-primary-200;
     }
   }
 
@@ -162,9 +162,9 @@
           }
         }
         &.status-pending {
-          @apply com-bg-blue-100 com-text-blue-600;
+          @apply com-bg-primary-100 com-text-primary-600;
           .status-dot {
-            @apply com-bg-blue-500;
+            @apply com-bg-primary-500;
           }
         }
       }

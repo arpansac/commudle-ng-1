@@ -7,7 +7,7 @@ import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { CommudleCardModule } from '@commudle/commudle-theme';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
-import { ToastrService } from '@commudle/shared-services';
+import { ToastrService, ConfettiService } from '@commudle/shared-services';
 import { Router } from '@angular/router';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 import { ICommunityGroup } from '@commudle/shared-models';
@@ -36,6 +36,7 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
   isSubmitting = false;
   isSlugEdited = false;
   slugCheckState: 'idle' | 'checking' | 'available' | 'taken' = 'idle';
+  createdCommunityGroup: ICommunityGroup | null = null;
 
   logoPreview: string | null = null;
   logoFile: File | null = null;
@@ -51,6 +52,7 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
     private communityGroupsService: CommunityGroupsService,
     private toastrService: ToastrService,
     private router: Router,
+    private confettiService: ConfettiService,
   ) {}
 
   ngOnInit(): void {
@@ -149,9 +151,8 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
     this.communityGroupsService.create(formData, this.subscriptionId).subscribe({
       next: (communityGroup: ICommunityGroup) => {
         this.isSubmitting = false;
-        this.toastrService.successDialog('Organization created successfully!');
-        this.dialogRef.close(communityGroup);
-        this.router.navigate(['/orgs', communityGroup.slug]);
+        this.createdCommunityGroup = communityGroup;
+        this.confettiService.celebrate();
       },
       error: () => {
         this.isSubmitting = false;
@@ -159,8 +160,29 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
     });
   }
 
+  goToAdminPage(): void {
+    if (!this.createdCommunityGroup) return;
+    this.dialogRef.close(this.createdCommunityGroup);
+    this.router.navigate(['/admin/orgs', this.createdCommunityGroup.slug]);
+  }
+
+  goToPublicPage(): void {
+    if (!this.createdCommunityGroup) return;
+    this.dialogRef.close(this.createdCommunityGroup);
+    this.router.navigate(['/orgs', this.createdCommunityGroup.slug]);
+  }
+
+  createAnother(): void {
+    this.createdCommunityGroup = null;
+    this.communityGroupForm.reset({ theme_color: this.themeColor });
+    this.logoPreview = null;
+    this.logoFile = null;
+    this.isSlugEdited = false;
+    this.slugCheckState = 'idle';
+  }
+
   close(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(this.createdCommunityGroup ?? undefined);
   }
 
   private toSlug(value: string): string {

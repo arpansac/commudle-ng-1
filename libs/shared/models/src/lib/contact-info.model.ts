@@ -23,4 +23,5 @@ export interface Address {
 
 export interface TaxInfo {
   gst: string;
+  pan_card: string;
 }

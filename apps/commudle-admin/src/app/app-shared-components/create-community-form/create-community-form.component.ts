@@ -7,7 +7,7 @@ import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { CommudleCardModule } from '@commudle/commudle-theme';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
-import { ToastrService } from '@commudle/shared-services';
+import { ToastrService, ConfettiService } from '@commudle/shared-services';
 import { Router } from '@angular/router';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 import { ICommunity } from '@commudle/shared-models';
@@ -38,6 +38,7 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
   isSubmitting = false;
   isSlugEdited = false;
   slugCheckState: 'idle' | 'checking' | 'available' | 'taken' = 'idle';
+  createdCommunity: ICommunity | null = null;
 
   logoPreview: string | null = null;
   logoFile: File | null = null;
@@ -68,6 +69,7 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
     private communitiesService: CommunitiesService,
     private toastrService: ToastrService,
     private router: Router,
+    private confettiService: ConfettiService,
   ) {}
 
   ngOnInit(): void {
@@ -175,9 +177,8 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
     this.communitiesService.createWithSubscription(formData, this.subscriptionId).subscribe({
       next: (community: ICommunity) => {
         this.isSubmitting = false;
-        this.toastrService.successDialog('Community created successfully!');
-        this.dialogRef.close(community);
-        this.router.navigate(['/communities', community.slug]);
+        this.createdCommunity = community;
+        this.confettiService.celebrate();
       },
       error: () => {
         this.isSubmitting = false;
@@ -185,8 +186,31 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
     });
   }
 
+  goToAdminPage(): void {
+    if (!this.createdCommunity) return;
+    this.dialogRef.close(this.createdCommunity);
+    this.router.navigate(['/admin/communities', this.createdCommunity.slug]);
+  }
+
+  goToPublicPage(): void {
+    if (!this.createdCommunity) return;
+    this.dialogRef.close(this.createdCommunity);
+    this.router.navigate(['/communities', this.createdCommunity.slug]);
+  }
+
+  createAnother(): void {
+    this.createdCommunity = null;
+    this.communityForm.reset();
+    this.logoPreview = null;
+    this.logoFile = null;
+    this.bannerPreview = null;
+    this.bannerFile = null;
+    this.isSlugEdited = false;
+    this.slugCheckState = 'idle';
+  }
+
   close(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(this.createdCommunity ?? undefined);
   }
 
   private isValidImage(file: File): boolean {
