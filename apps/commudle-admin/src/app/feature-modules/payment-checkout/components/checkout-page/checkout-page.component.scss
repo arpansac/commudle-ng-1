@@ -8,13 +8,27 @@
 
 /* Checkout banner */
 .checkout-banner {
-  @apply com-mb-2 com-mx-2 com-p-5 com-rounded-2xl com-bg-white;
+  @apply com-mb-4 com-mx-2 com-p-5 com-bg-white;
   @apply com-border com-border-solid com-border-Bright-Gray com-shadow-sm;
   @apply sm:com-p-6;
 
   .banner-main {
     @apply com-flex com-flex-col com-gap-2 com-pb-5 com-mb-5;
     @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
+    .banner-top-row {
+      @apply com-flex com-items-center com-justify-between com-gap-3;
+
+      .banner-greeting {
+        @apply com-text-sm com-font-semibold com-text-gray-500;
+
+        .wave {
+          @apply com-inline-block;
+          transform-origin: 70% 70%;
+          animation: waveHand 2.4s ease-in-out infinite;
+        }
+      }
+    }
 
     .banner-badge {
       @apply com-inline-flex com-items-center com-gap-2 com-self-start com-px-3 com-py-1 com-rounded-full;
@@ -75,7 +89,7 @@
 
 /* Shared card title with icon */
 .card-title {
-  @apply com-flex com-items-center com-gap-3 com-text-base com-font-semibold com-text-Yankees-Blue;
+  @apply com-flex com-items-center com-justify-start com-gap-3 com-text-base com-font-semibold com-text-Yankees-Blue;
 
   .card-title-icon {
     @apply com-flex com-items-center com-justify-center com-w-8 com-h-8 com-rounded-lg;
@@ -85,11 +99,11 @@
 
 .order-details-card,
 .company-details-card {
-  @apply com-mb-4 com-rounded-xl com-overflow-hidden;
+  @apply com-mb-4 com-mx-2 com-overflow-hidden;
 }
 
 .company-details-card {
-  nb-card-body {
+  com-card-body {
     @apply com-p-0;
   }
 
@@ -193,13 +207,17 @@
 }
 
 .payment-details-section {
-  @apply com-sticky com-top-20;
+  @apply com-sticky com-top-20 com-mx-2;
 
   .summary-card {
-    @apply com-mb-2 com-rounded-xl com-overflow-hidden;
+    @apply com-mb-2 com-overflow-hidden;
 
-    nb-card-body {
+    com-card-body {
       @apply com-p-0;
+    }
+
+    .currency-note {
+      @apply com-px-4 com-pt-3 com-m-0 com-text-xs com-text-gray-400 com-text-right;
     }
 
     .paid-message-container {
@@ -228,6 +246,14 @@
 
         .heading {
           @apply com-flex com-items-center com-gap-1.5 com-text-sm com-text-gray-500;
+        }
+
+        &.subtotal-row .heading {
+          @apply com-flex-col com-items-start com-gap-0.5;
+
+          .breakdown {
+            @apply com-text-xs com-text-gray-400 com-font-normal;
+          }
         }
 
         .value {
@@ -276,14 +302,13 @@
     }
 
     .promo-code {
-      @apply com-flex com-flex-col com-gap-2 com-px-4 com-py-4 com-mt-2;
-      @apply com-bg-gray-50 com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+      @apply com-flex com-flex-col com-gap-1.5 com-px-4 com-py-3;
 
       .promo-label {
-        @apply com-flex com-items-center com-gap-1.5 com-text-sm com-font-medium com-text-Yankees-Blue;
+        @apply com-flex com-items-center com-gap-1.5 com-text-xs com-font-normal com-text-gray-500;
 
         fa-icon {
-          @apply com-text-primary-500;
+          @apply com-text-gray-400 com-text-xs;
         }
       }
 
@@ -327,9 +352,17 @@
       @apply com-px-4 com-pb-2 com-m-0 com-text-xs com-text-gray-500 com-text-right;
     }
 
+    .cancel-note {
+      @apply com-flex com-items-center com-gap-1.5 com-px-4 com-pb-3 com-m-0 com-text-xs com-text-gray-400;
+
+      fa-icon {
+        @apply com-flex-shrink-0 com-text-gray-400;
+      }
+    }
+
     .summary-total {
       @apply com-flex com-items-center com-justify-between com-gap-4 com-px-4 com-py-4;
-      @apply com-bg-gray-50 com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+      @apply com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
 
       .heading {
         @apply com-text-base com-font-semibold com-text-Yankees-Blue;
@@ -393,7 +426,7 @@
 .payment-error-dialog {
   @apply com-w-96;
 
-  nb-card-body {
+  com-card-body {
     .exclamation-container {
       @apply com-flex com-justify-center com-my-3;
 
@@ -421,5 +454,32 @@
     .secondary-text {
       @apply com-text-xs com-font-normal com-italic;
     }
+  }
+}
+
+@keyframes waveHand {
+  0%,
+  60%,
+  100% {
+    transform: rotate(0deg);
+  }
+  10%,
+  30% {
+    transform: rotate(14deg);
+  }
+  20% {
+    transform: rotate(-8deg);
+  }
+  40% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checkout-banner .banner-greeting .wave {
+    animation: none;
   }
 }
