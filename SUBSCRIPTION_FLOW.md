@@ -4,6 +4,8 @@
 
 This document covers the complete subscription model — the admin setup required before going live, the full end-user journey from pricing page to community creation, the technical flow for both payment types, and the production deployment checklist.
 
+> Backend counterpart (models, Razorpay plans/webhooks, console setup): `gdgapp/SUBSCRIPTION_FLOW.md`.
+
 ---
 
 ## Table of Contents
@@ -139,11 +141,13 @@ pp.update!(metadata: {
 Call `POST /api/v2/product_prices/create_rzp_plan?price_uuid=<uuid>` as a SYS_ADMIN user.
 
 **What this does:**
+
 - Reads `final_price`, `currency`, `billing_cycle`, `product_name`, `plan_name` from the `ProductPrice`
 - Calls `Razorpay::Plan.create(period, interval: 1, item: { amount, currency, name })`
 - Saves the returned Razorpay `plan.id` into `ProductPrice.metadata['rzp_plan_id']`
 
 **Response:**
+
 ```json
 {
   "rzp_plan_id": "plan_AbcXyz123456",
@@ -174,6 +178,7 @@ If `rzp_plan_id` is present — setup is complete. Users can now buy the plan.
 ## 3. User Journey — Step by Step
 
 ### Step 1 — User lands on Pricing Page
+
 - **URL:** `/pricing`
 - User sees plan cards: **Startup**, **Enterprise**, **DevRel**
 - Each card shows pricing (Monthly / Annual toggle), key features, and a CTA button
@@ -183,6 +188,7 @@ If `rzp_plan_id` is present — setup is complete. Users can now buy the plan.
 ---
 
 ### Step 2 — User clicks "Buy Now" / Plan CTA
+
 - Frontend checks if the user is **logged in**
   - If **not logged in** → redirect to `/login`
   - If **logged in** → proceed
@@ -198,6 +204,7 @@ If `rzp_plan_id` is present — setup is complete. Users can now buy the plan.
 ---
 
 ### Step 3 — Checkout Page
+
 - **URL:** `/checkout/<purchase_order_uuid>`
 - Page loads `PurchaseOrder` via `GET /api/v2/purchase_orders/show?purchase_order_uuid=<uuid>`
 - If PO is already `paid` → redirect to `/subscriptions`
@@ -211,6 +218,7 @@ If `rzp_plan_id` is present — setup is complete. Users can now buy the plan.
 ### Step 4 — User clicks "Pay Now"
 
 #### Branch A — Regular One-Time Payment (`is_subscription_plan: false`)
+
 ```
 Frontend
   → Saves contact info: POST /api/v2/purchase_orders/create_contact_info
@@ -229,6 +237,7 @@ Frontend
 ```
 
 #### Branch B — Subscription Plan (`is_subscription_plan: true`)
+
 ```
 Frontend
   → Saves contact info: POST /api/v2/purchase_orders/create_contact_info
@@ -257,6 +266,7 @@ Frontend
 ---
 
 ### Step 5 — My Subscriptions Page
+
 - **URL:** `/subscriptions`
 - Fetches user's subscriptions: `GET /api/v2/user_subscriptions`
 - Each subscription card shows:
@@ -272,13 +282,16 @@ Frontend
 ---
 
 ### Step 6 — User clicks "New Community"
+
 - Opens `CreateCommunityFormComponent` dialog
 - `subscriptionId` is passed as context to the dialog
 
 ---
 
 ### Step 7 — Community Creation Form
+
 User fills in:
+
 - **Community Name** (required, min 3 chars)
 - **URL Slug** — auto-generated from name, validated in real-time
   - Calls `GET /api/v2/communities/check_slug?slug=<slug>` (debounced 500ms)
@@ -294,6 +307,7 @@ User fills in:
 ---
 
 ### Step 8 — User submits Community Form
+
 ```
 Frontend
   → POST /api/v2/communities?user_subscription_id=<id>
@@ -442,6 +456,79 @@ Frontend
 
 ---
 
+## 6b. Free Trial Flow (Checkout)
+
+Some subscription plans offer a **free trial** (`ProductPrice.metadata.trial_period_days > 0`,
+surfaced to the frontend as `trial_enabled` / `trial_period_days`).
+
+- The plan card (`product-price-details`) shows an **"N-day free trial"** badge.
+- On the checkout page, when the plan offers a trial the **trial toggle defaults ON**
+  (`withTrial = hasTrial` in `onProductPriceLoaded`). The summary then shows
+  **"Due today → $0"** with **"Then $X after your N-day trial"**, and the pay button
+  reads **"Start N-day free trial"**.
+- `createRzpSubscription(poId, withTrial)` sends `with_trial=true`, so the backend sets
+  Razorpay `start_at`. The card is authorized now (a small, auto-refunded card-mandate
+  auth may appear — a Razorpay requirement for cards), **$0 is charged today**, and the
+  plan is **auto-charged when the trial ends**.
+- The user can uncheck the toggle to skip the trial and pay in full immediately.
+- The post-trial charge is reflected in our DB by the `subscription.charged` webhook
+  (see backend doc §9).
+
+---
+
+## 6c. Billing Details — Personal vs Business
+
+The checkout "Billing details" card supports two modes:
+
+- **Personal** (default) — uses the current user's name/email; no extra inputs.
+- **Business** (checkbox "I'm purchasing for a business") reveals:
+  - **Country** (native select, defaults to the user's country from `phone_country_code`)
+  - **Company Name**, **Company Address**, **Pin Code** (all required)
+  - **PAN Card** — required for business
+  - **GST Number** — shown only when the country is **India** (optional)
+
+Payload sent to `POST /api/v2/purchase_orders/create_contact_info`:
+
+```json
+{
+  "contact_info": {
+    "country_code": "IN",
+    "address": { "company_name": "...", "address": "...", "pin_code": "..." },
+    "tax_info": { "gst": "...", "pan_card": "..." }
+  }
+}
+```
+
+Interfaces: `IContactInfo.tax_info` = `{ gst, pan_card }`.
+
+---
+
+## 6d. Community Group Subscriptions
+
+Organizations (community groups) can also be created under a subscription:
+
+- `CommunityGroupsService.create(formData, subscriptionId)` →
+  `POST /api/v2/community_groups?user_subscription_id=<id>`.
+- Backend **requires** `user_subscription_id` (non-admins), validates
+  `can_create_community_group` + `max_community_groups`, links the group to the
+  subscription, and grants the creator the **community administrator** role.
+
+---
+
+## 6e. Post-Create Success Dialog
+
+After creating a community or organization, the dialog does **not** redirect. Instead it
+shows an in-dialog success state with confetti and action buttons:
+
+- **Go to Admin Panel** → `/admin/communities/:slug` or `/admin/orgs/:slug`
+- **View Public Page** → `/communities/:slug` or `/orgs/:slug`
+- **Create another** (resets the form) / **Close**
+
+Successful checkout for a product price also triggers a celebratory confetti burst
+(`ConfettiService.celebrate()` from `@commudle/shared-services`).
+
+---
+
 ## 7. Subscription Status Lifecycle
 
 ```
@@ -468,13 +555,13 @@ Frontend
       └─────────┘  └─────────┘  └──────────────┘
 ```
 
-| Status           | Can Create Community  | Notes                                                  |
-|------------------|-----------------------|--------------------------------------------------------|
-| `pending`        | ✗ No                  | Payment not yet confirmed                              |
-| `active`         | ✓ Yes (if quota left) | Normal working state                                   |
-| `expired`        | ✗ No                  | Plan period ended — communities still visible          |
-| `cancelled`      | ✗ No                  | User/admin cancelled                                   |
-| `payment_failed` | ✗ No                  | Payment attempt failed                                 |
+| Status           | Can Create Community  | Notes                                         |
+| ---------------- | --------------------- | --------------------------------------------- |
+| `pending`        | ✗ No                  | Payment not yet confirmed                     |
+| `active`         | ✓ Yes (if quota left) | Normal working state                          |
+| `expired`        | ✗ No                  | Plan period ended — communities still visible |
+| `cancelled`      | ✗ No                  | User/admin cancelled                          |
+| `payment_failed` | ✗ No                  | Payment attempt failed                        |
 
 ---
 
@@ -482,50 +569,50 @@ Frontend
 
 ### Admin — Plan Setup (SYS_ADMIN only)
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/api/v2/product_prices` | Create a ProductPrice record |
-| `PUT`  | `/api/v2/product_prices?price_uuid=<uuid>` | Update ProductPrice |
-| `GET`  | `/api/v2/product_prices` | List all ProductPrices |
-| `GET`  | `/api/v2/product_prices/show?price_uuid=<uuid>` | Fetch single ProductPrice (includes `rzp_plan_id`) |
-| `POST` | `/api/v2/product_prices/create_rzp_plan?price_uuid=<uuid>` | **Create Razorpay Plan and save `rzp_plan_id`** |
+| Method | Endpoint                                                   | Description                                        |
+| ------ | ---------------------------------------------------------- | -------------------------------------------------- |
+| `POST` | `/api/v2/product_prices`                                   | Create a ProductPrice record                       |
+| `PUT`  | `/api/v2/product_prices?price_uuid=<uuid>`                 | Update ProductPrice                                |
+| `GET`  | `/api/v2/product_prices`                                   | List all ProductPrices                             |
+| `GET`  | `/api/v2/product_prices/show?price_uuid=<uuid>`            | Fetch single ProductPrice (includes `rzp_plan_id`) |
+| `POST` | `/api/v2/product_prices/create_rzp_plan?price_uuid=<uuid>` | **Create Razorpay Plan and save `rzp_plan_id`**    |
 
 ### Pricing & Purchase Order
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET`  | `/api/v2/product_prices/show?price_uuid=<uuid>` | Fetch plan details with live pricing |
-| `POST` | `/api/v2/product_prices/create_purchase_order?price_uuid=<uuid>` | Create purchase order for a plan |
-| `GET`  | `/api/v2/purchase_orders/show?purchase_order_uuid=<uuid>` | Fetch purchase order details |
-| `PUT`  | `/api/v2/purchase_orders?purchase_order_uuid=<uuid>` | Update quantity / discount code |
-| `POST` | `/api/v2/purchase_orders/create_contact_info?purchase_order_uuid=<uuid>` | Save billing details |
+| Method | Endpoint                                                                 | Description                          |
+| ------ | ------------------------------------------------------------------------ | ------------------------------------ |
+| `GET`  | `/api/v2/product_prices/show?price_uuid=<uuid>`                          | Fetch plan details with live pricing |
+| `POST` | `/api/v2/product_prices/create_purchase_order?price_uuid=<uuid>`         | Create purchase order for a plan     |
+| `GET`  | `/api/v2/purchase_orders/show?purchase_order_uuid=<uuid>`                | Fetch purchase order details         |
+| `PUT`  | `/api/v2/purchase_orders?purchase_order_uuid=<uuid>`                     | Update quantity / discount code      |
+| `POST` | `/api/v2/purchase_orders/create_contact_info?purchase_order_uuid=<uuid>` | Save billing details                 |
 
 ### Payment — One-Time
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/api/v2/razorpay/find_or_create_order?po_id=<id>` | Create Razorpay order |
-| `PUT`  | `/api/v2/razorpay/create_or_update_payment` | Confirm payment after Razorpay modal |
+| Method | Endpoint                                           | Description                          |
+| ------ | -------------------------------------------------- | ------------------------------------ |
+| `POST` | `/api/v2/razorpay/find_or_create_order?po_id=<id>` | Create Razorpay order                |
+| `PUT`  | `/api/v2/razorpay/create_or_update_payment`        | Confirm payment after Razorpay modal |
 
 ### Payment — Subscription
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/api/v2/razorpay/create_rzp_subscription?po_id=<id>` | Create Razorpay Subscription — returns `rzp_subscription_id` |
-| `PUT`  | `/api/v2/razorpay/create_or_update_payment?subscription_id=<rzp_sub_id>` | Activate subscription after Razorpay modal |
+| Method | Endpoint                                                                 | Description                                                  |
+| ------ | ------------------------------------------------------------------------ | ------------------------------------------------------------ |
+| `POST` | `/api/v2/razorpay/create_rzp_subscription?po_id=<id>`                    | Create Razorpay Subscription — returns `rzp_subscription_id` |
+| `PUT`  | `/api/v2/razorpay/create_or_update_payment?subscription_id=<rzp_sub_id>` | Activate subscription after Razorpay modal                   |
 
 ### Subscriptions
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET`  | `/api/v2/user_subscriptions` | List all subscriptions for current user |
-| `GET`  | `/api/v2/user_subscriptions/show?id=<id>` | Single subscription details |
+| Method | Endpoint                                  | Description                             |
+| ------ | ----------------------------------------- | --------------------------------------- |
+| `GET`  | `/api/v2/user_subscriptions`              | List all subscriptions for current user |
+| `GET`  | `/api/v2/user_subscriptions/show?id=<id>` | Single subscription details             |
 
 ### Community Creation
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET`  | `/api/v2/communities/check_slug?slug=<slug>` | Real-time slug availability check |
+| Method | Endpoint                                        | Description                             |
+| ------ | ----------------------------------------------- | --------------------------------------- |
+| `GET`  | `/api/v2/communities/check_slug?slug=<slug>`    | Real-time slug availability check       |
 | `POST` | `/api/v2/communities?user_subscription_id=<id>` | Create community linked to subscription |
 
 ---
@@ -548,7 +635,7 @@ Frontend
 
 8. **Only subscription plan purchases redirect to `/subscriptions`** — Non-subscription `ProductPrice` purchases redirect to `/checkout/:uuid/complete` after payment.
 
-9. **Razorpay webhook handles async payment events** — `POST /webhooks/razorpay` receives events (`payment.captured`, `payment.authorized`, `payment.failed`, `order.paid`) and processes them via `WRazorpay::RazorpayWebhookWorker` on the `:rzp_webhook` Sidekiq queue.
+9. **Razorpay webhook handles async payment & subscription events** — `POST /api/v2/wh/razorpay_api` receives events and processes them via `WRazorpay::RazorpayWebhookWorker` on the `:rzp_webhook` Sidekiq queue. Payment/order events (`payment.captured`, `payment.authorized`, `payment.failed`, `order.paid`) update orders; subscription events (`subscription.charged`, `subscription.activated`, `subscription.pending`, `subscription.halted`, `subscription.cancelled`, `subscription.completed`) drive **auto-billing** — `subscription.charged` extends `ends_at`, clears the trial, and marks the PO paid (idempotent). See `gdgapp/SUBSCRIPTION_FLOW.md` §9.
 
 ---
 
@@ -560,11 +647,11 @@ Frontend
 
 Set these in your Elastic Beanstalk / server environment before deploying:
 
-| Variable | Description | Where to get it |
-|----------|-------------|-----------------|
-| `RAZORPAY_API_KEY_ID` | Razorpay live API key ID | Razorpay Dashboard → Settings → API Keys |
+| Variable                  | Description                  | Where to get it                          |
+| ------------------------- | ---------------------------- | ---------------------------------------- |
+| `RAZORPAY_API_KEY_ID`     | Razorpay live API key ID     | Razorpay Dashboard → Settings → API Keys |
 | `RAZORPAY_API_KEY_SECRET` | Razorpay live API key secret | Razorpay Dashboard → Settings → API Keys |
-| `RAZORPAY_WEBHOOK_SECRET` | Webhook signature secret | Razorpay Dashboard → Webhooks → Secret |
+| `RAZORPAY_WEBHOOK_SECRET` | Webhook signature secret     | Razorpay Dashboard → Webhooks → Secret   |
 
 #### Database Migrations
 
@@ -575,6 +662,7 @@ bundle exec rails db:migrate
 ```
 
 Key migrations required for the subscription system:
+
 - `user_subscriptions` table with `rzp_subscription_id`, `starts_at`, `ends_at`, `status`, `purchase_order_id`
 - `product_prices` table with `is_subscription_plan`, `billing_cycle`, `metadata` (JSONB)
 - `kommunities` table with `user_subscription_id` column
@@ -608,20 +696,22 @@ bundle exec sidekiq -C config/sidekiq.yml
 In the Razorpay Dashboard, register the webhook URL pointing to production:
 
 ```
-URL:    https://api.commudle.com/webhooks/razorpay
+URL:    https://api.commudle.com/api/v2/wh/razorpay_api
 Secret: <RAZORPAY_WEBHOOK_SECRET value>
 ```
 
 Enable these webhook events:
+
 - `payment.authorized`
 - `payment.captured`
 - `payment.failed`
 - `order.paid`
 - `subscription.activated` ← required for subscription plans
-- `subscription.charged`
+- `subscription.charged` ← required for auto-billing (first charge after trial + renewals)
+- `subscription.pending`
+- `subscription.halted`
 - `subscription.cancelled`
-- `subscription.paused`
-- `subscription.resumed`
+- `subscription.completed`
 
 ---
 
@@ -688,6 +778,7 @@ curl -X POST "https://api.commudle.com/api/v2/product_prices/create_rzp_plan?pri
 ```
 
 Expected response:
+
 ```json
 {
   "rzp_plan_id": "plan_XXXXXXXXXXXXXXX",

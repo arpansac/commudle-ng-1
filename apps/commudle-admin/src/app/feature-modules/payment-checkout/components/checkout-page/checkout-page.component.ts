@@ -39,6 +39,7 @@ import {
   SeoService,
   ToastrService,
   countries_details,
+  ConfettiService,
 } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { Subject, finalize, takeUntil } from 'rxjs';
@@ -117,6 +118,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     private discountCodesService: DiscountCodesService,
     private gtm: GoogleTagManagerService,
     private seoService: SeoService,
+    private confettiService: ConfettiService,
     @Inject(PLATFORM_ID) private platformId: object,
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -129,6 +131,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       country: [''],
       companyName: [''],
       gst: [''],
+      panCard: [''],
       companyAddress: [''],
       pinCode: [''],
     });
@@ -200,7 +203,8 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     const hasBusinessInfo = !!(
       contactInfo.address?.address ||
       contactInfo.address?.pin_code ||
-      contactInfo.tax_info?.gst
+      contactInfo.tax_info?.gst ||
+      contactInfo.tax_info?.pan_card
     );
 
     this.contactInfoForm.patchValue({
@@ -208,6 +212,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       country: contactInfo.country_code || this.getUserCountryCode(),
       companyName: contactInfo.address?.company_name || '',
       gst: contactInfo.tax_info?.gst || '',
+      panCard: contactInfo.tax_info?.pan_card || '',
       companyAddress: contactInfo.address?.address || '',
       pinCode: contactInfo.address?.pin_code || '',
     });
@@ -257,7 +262,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   private updateBillingValidators(isBusiness: boolean): void {
-    const businessFields = ['companyName', 'companyAddress', 'pinCode', 'country'];
+    const businessFields = ['companyName', 'companyAddress', 'pinCode', 'country', 'panCard'];
     businessFields.forEach((field) => {
       const control = this.contactInfoForm.get(field);
       if (isBusiness) {
@@ -290,7 +295,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   private buildContactInfoPayload(): {
     country_code: string;
-    tax_info: { gst: string };
+    tax_info: { gst: string; pan_card: string };
     address: { address: string; company_name: string; pin_code: string };
   } {
     if (this.isBusinessBilling) {
@@ -299,6 +304,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         country_code: country,
         tax_info: {
           gst: country === 'IN' ? this.contactInfoForm.get('gst')?.value || '' : '',
+          pan_card: this.contactInfoForm.get('panCard')?.value || '',
         },
         address: {
           address: this.contactInfoForm.get('companyAddress')?.value || '',
@@ -311,7 +317,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     // Personal billing uses the current user's details
     return {
       country_code: this.getUserCountryCode(),
-      tax_info: { gst: '' },
+      tax_info: { gst: '', pan_card: '' },
       address: {
         address: '',
         company_name: this.currentUser?.name || '',
@@ -487,6 +493,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
                   : 'Subscription activated successfully!',
               );
               this.paymentPaid = true;
+              this.celebratePurchase();
               this.router.navigate(['/subscriptions']);
             },
             error: () => {
@@ -536,6 +543,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           }
           this.toastrService.successDialog('Order completed successfully');
           this.paymentPaid = true;
+          this.celebratePurchase();
           if (
             this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE &&
             this.productPrice?.is_subscription_plan
@@ -585,6 +593,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
                 }
                 this.toastrService.successDialog('Your Payment Was Received Successfully');
                 this.paymentPaid = true;
+                this.celebratePurchase();
                 if (
                   this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE &&
                   this.productPrice?.is_subscription_plan
@@ -710,6 +719,9 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     this.productPrice = productPrice;
     this.minQuantity = productPrice.min_quantity || 1;
     this.quantity = Math.max(this.minQuantity, this.quantity);
+    // Default to the free trial when the plan offers one, so an eligible plan
+    // authorizes the card and charges $0 today (billed automatically after the trial).
+    this.withTrial = this.hasTrial;
     this.updateTotalPrice();
   }
 
@@ -858,6 +870,12 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   private gtmDataLayerPushEvent(eventName: string, eventData: Record<string, string | number> = {}): void {
     this.gtm.dataLayerPushEvent(eventName, eventData);
+  }
+
+  private celebratePurchase(): void {
+    if (this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE) {
+      this.confettiService.celebrate();
+    }
   }
 
   get subtotal(): number {

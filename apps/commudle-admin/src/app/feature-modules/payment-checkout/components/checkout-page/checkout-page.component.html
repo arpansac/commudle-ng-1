@@ -21,11 +21,11 @@
       <div class="banner-features">
         <div class="feature">
           <span class="feature-icon">
-            <fa-icon [icon]="icons.faShieldHalved"></fa-icon>
+            <fa-icon [icon]="icons.faTag"></fa-icon>
           </span>
           <div class="feature-text">
-            <span class="feature-title">256-bit encrypted</span>
-            <span class="feature-desc">Your details stay safe</span>
+            <span class="feature-title">No hidden fees</span>
+            <span class="feature-desc">Pay exactly what you see</span>
           </div>
         </div>
 
@@ -41,11 +41,11 @@
 
         <div class="feature">
           <span class="feature-icon">
-            <fa-icon [icon]="icons.faReceipt"></fa-icon>
+            <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
           </span>
           <div class="feature-text">
-            <span class="feature-title">Invoice included</span>
-            <span class="feature-desc">GST-ready receipt by email</span>
+            <span class="feature-title">Help when you need it</span>
+            <span class="feature-desc">Dedicated payments support</span>
           </div>
         </div>
       </div>
@@ -94,7 +94,6 @@
             >
               <!-- Personal billing summary (default) -->
               <div class="personal-billing" *ngIf="!isBusinessBilling">
-                <div class="avatar">{{ currentUser?.name || 'U' | slice : 0 : 1 | uppercase }}</div>
                 <div class="personal-details">
                   <div class="name">{{ currentUser?.name | titlecase }}</div>
                   <span class="email">{{ currentUser?.email }}</span>
@@ -186,6 +185,17 @@
                   </commudle-alert>
                 </div>
 
+                <!-- PAN Card (required for business) -->
+                <div class="form-field">
+                  <label for="panCard">PAN Card <span class="required">*</span></label>
+                  <input nbInput fullWidth id="panCard" formControlName="panCard" placeholder="Enter PAN card number" />
+                  <commudle-alert
+                    [error]="!!(contactInfoForm.get('panCard')?.invalid && contactInfoForm.get('panCard')?.touched)"
+                    errorMessage="PAN card is required"
+                  >
+                  </commudle-alert>
+                </div>
+
                 <!-- GST Number (India only) -->
                 <div class="form-field" *ngIf="isIndiaSelected">
                   <label for="gst">GST Number <span class="optional">(optional)</span></label>
@@ -216,6 +226,10 @@
               <div class="detail-row" *ngIf="purchaseOrder.contact_info.address?.pin_code">
                 <span class="heading">Pin Code</span>
                 <span class="value">{{ purchaseOrder.contact_info.address?.pin_code }}</span>
+              </div>
+              <div class="detail-row" *ngIf="purchaseOrder.contact_info.tax_info?.pan_card">
+                <span class="heading">PAN Card</span>
+                <span class="value">{{ purchaseOrder.contact_info.tax_info?.pan_card }}</span>
               </div>
               <div class="detail-row" *ngIf="purchaseOrder.contact_info.tax_info?.gst">
                 <span class="heading">GST Number</span>
@@ -253,7 +267,7 @@
                 </div>
 
                 <!-- Annual billing callout -->
-                <div class="annual-billing-callout" *ngIf="productPrice?.billing_cycle === 'yearly'">
+                <!-- <div class="annual-billing-callout" *ngIf="productPrice?.billing_cycle === 'yearly'">
                   <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
                   <span>
                     Annual plan, billed as
@@ -262,11 +276,11 @@
                     }}</strong>
                     for 12 months
                   </span>
-                </div>
+                </div> -->
 
                 <!-- Quantity Selector -->
                 <div class="summary-row" *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE">
-                  <span class="heading">Quantity</span>
+                  <span class="heading">Number of {{ quantity === 1 ? 'community' : 'communities' }}</span>
                   <div class="quantity-control" *ngIf="purchaseOrder.status !== EPurchaseOrderStatus.PAID">
                     <button
                       nbButton
@@ -316,7 +330,7 @@
                     fullWidth
                     [(ngModel)]="discountCode"
                     (input)="onDiscountCodeInput($event)"
-                    placeholder="Enter code"
+                    placeholder="Enter Discount Code"
                     [disabled]="discountCodeApplied"
                   />
                   <button
@@ -365,14 +379,14 @@
               </p>
 
               <!-- Recipient -->
-              <div class="recipient">
+              <!-- <div class="recipient">
                 <span class="recipient-label">Billed to</span>
                 <div class="recipient-details">
                   <div class="name">{{ purchaseOrder.user?.name | titlecase }}</div>
                   <span class="email">{{ purchaseOrder.user?.email }}</span>
                   <span class="phone" *ngIf="purchaseOrder.user?.phone">{{ purchaseOrder.user.phone }}</span>
                 </div>
-              </div>
+              </div> -->
 
               <!-- Pay Button -->
               <div class="pay-button-wrapper" *ngIf="!paymentPaid">

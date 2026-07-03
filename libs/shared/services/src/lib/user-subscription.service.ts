@@ -25,10 +25,16 @@ export class UserSubscriptionService {
     );
   }
 
-  getStats(): Observable<{ active_count: number; total_communities: number; total_organizations: number }> {
-    return this.http.get<{ active_count: number; total_communities: number; total_organizations: number }>(
-      this.baseApiService.getRoute(API_ROUTES.USER_SUBSCRIPTIONS.STATS),
-    );
+  getStats(): Observable<{
+    active_count: number;
+    trialing_count: number;
+    expired_count: number;
+  }> {
+    return this.http.get<{
+      active_count: number;
+      trialing_count: number;
+      expired_count: number;
+    }>(this.baseApiService.getRoute(API_ROUTES.USER_SUBSCRIPTIONS.STATS));
   }
 
   getPaymentHistory(page = 1, count = 10): Observable<IPaginationCount<IPurchaseOrder>> {

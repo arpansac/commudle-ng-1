@@ -50,3 +50,4 @@ export * from './lib/hackathon-emails.service';
 export * from './lib/hms-room.service';
 export * from './lib/layout.service';
 export * from './lib/app-showcase-stats.constant';
+export * from './lib/confetti.service';
