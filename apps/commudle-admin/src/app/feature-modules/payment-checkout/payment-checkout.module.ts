@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { PaymentCheckoutRoutes } from './payment-checkout.routing';
 import { CheckoutPageComponent } from './components/checkout-page/checkout-page.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NbButtonModule, NbCardModule, NbCheckboxModule, NbInputModule } from '@commudle/theme';
+import { NbButtonModule, NbCheckboxModule, NbInputModule } from '@commudle/theme';
+import { CommudleCardModule } from '@commudle/commudle-theme';
 import { SharedComponentsModule as NewSharedComponentModule } from '@commudle/shared-components';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { FormsModule } from '@angular/forms';
@@ -19,7 +20,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     FormsModule,
 
     // Theme modules
-    NbCardModule,
+    CommudleCardModule,
     NbButtonModule,
     NbInputModule,
     ReactiveFormsModule,

@@ -1,19 +1,25 @@
 <div class="base-layout checkout-page">
   <div class="container">
     <!-- Checkout Banner -->
-    <div class="checkout-banner" *ngIf="purchaseOrder">
+    <com-card class="checkout-banner" *ngIf="purchaseOrder">
       <div class="banner-main">
-        <span class="banner-badge">
-          <fa-icon [icon]="icons.faLock"></fa-icon>
-          Secure checkout
-        </span>
+        <div class="banner-top-row">
+          <span class="banner-greeting">
+            Hey {{ (currentUser?.name | titlecase) || 'there' }} <span class="wave">👋</span>
+          </span>
+          <span class="banner-badge">
+            <fa-icon [icon]="icons.faLock"></fa-icon>
+            Secure checkout
+          </span>
+        </div>
         <h1 class="banner-title">{{ paymentPaid ? 'Order confirmed' : 'Complete your purchase' }}</h1>
         <p class="banner-subtitle">
           {{
             paymentPaid
               ? 'Your payment was processed successfully. A confirmation is on its way to your inbox.'
-              : (currentUser?.name ? 'Hey ' + (currentUser.name | titlecase) + ', review' : 'Review') +
-                ' your order and pay securely to get started right away.'
+              : productPrice?.product_name
+              ? "You're one step away from unlocking " + productPrice.product_name + '.'
+              : 'Review your order and pay securely to get started right away.'
           }}
         </p>
       </div>
@@ -49,44 +55,44 @@
           </div>
         </div>
       </div>
-    </div>
+    </com-card>
 
     <div class="two-column-layout medium">
       <!-- Left Column - Order Details -->
       <div class="main-column">
         <!-- Campaign Details -->
-        <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.WALLET" class="order-details-card">
-          <nb-card-header class="card-title">
+        <com-card *ngIf="purchaseOrder?.orderable_type === EDbModels.WALLET" class="order-details-card">
+          <com-card-header class="card-title">
             <span class="card-title-icon"><fa-icon [icon]="icons.faBagShopping"></fa-icon></span>
             <span>What you're buying</span>
-          </nb-card-header>
-          <nb-card-body>
+          </com-card-header>
+          <com-card-body>
             <commudle-campaign-details [campaignId]="purchaseOrder.notes.campaign.id"></commudle-campaign-details>
             <commudle-wallet-details [campaignId]="purchaseOrder.notes.campaign.id"></commudle-wallet-details>
-          </nb-card-body>
-        </nb-card>
+          </com-card-body>
+        </com-card>
 
         <!-- Product Price Details -->
-        <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE" class="order-details-card">
-          <nb-card-header class="card-title">
+        <com-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE" class="order-details-card">
+          <com-card-header class="card-title">
             <span class="card-title-icon"><fa-icon [icon]="icons.faBagShopping"></fa-icon></span>
             <span>What you're buying</span>
-          </nb-card-header>
-          <nb-card-body>
+          </com-card-header>
+          <com-card-body>
             <commudle-product-price-details
               [productPriceId]="purchaseOrder.orderable_id"
               (productPriceLoaded)="onProductPriceLoaded($event)"
             ></commudle-product-price-details>
-          </nb-card-body>
-        </nb-card>
+          </com-card-body>
+        </com-card>
 
         <!-- Company Details Card -->
-        <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE" class="company-details-card">
-          <nb-card-header class="card-title">
+        <com-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE" class="company-details-card">
+          <com-card-header class="card-title">
             <span class="card-title-icon"><fa-icon [icon]="icons.faBuilding"></fa-icon></span>
             <span>Billing details</span>
-          </nb-card-header>
-          <nb-card-body>
+          </com-card-header>
+          <com-card-body>
             <div
               class="billing-form-container"
               *ngIf="purchaseOrder.status !== EPurchaseOrderStatus.PAID"
@@ -236,19 +242,21 @@
                 <span class="value">{{ purchaseOrder.contact_info.tax_info?.gst }}</span>
               </div>
             </div>
-          </nb-card-body>
-        </nb-card>
+          </com-card-body>
+        </com-card>
       </div>
 
       <!-- Right Column - Payment Summary -->
       <div class="right-column">
         <div class="payment-details-section" *ngIf="purchaseOrder">
-          <nb-card class="summary-card">
-            <nb-card-header class="card-title summary-header">
+          <com-card class="summary-card">
+            <com-card-header class="card-title summary-header">
               <span class="card-title-icon"><fa-icon [icon]="icons.faReceipt"></fa-icon></span>
               <span>Order summary</span>
-            </nb-card-header>
-            <nb-card-body>
+            </com-card-header>
+            <com-card-body>
+              <p class="currency-note">Prices are in {{ purchaseOrder.currency }}</p>
+
               <!-- Payment Success Message -->
               <div *ngIf="paymentPaid" class="paid-message-container">
                 <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
@@ -266,17 +274,19 @@
                   </span>
                 </div>
 
-                <!-- Annual billing callout -->
-                <!-- <div class="annual-billing-callout" *ngIf="productPrice?.billing_cycle === 'yearly'">
-                  <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
-                  <span>
-                    Annual plan, billed as
-                    <strong>{{
-                      (purchaseOrder.price / 100) * 12 * quantity | currency : purchaseOrder.currency
-                    }}</strong>
-                    for 12 months
+                <!-- Billing cycle -->
+                <div class="summary-row" *ngIf="productPrice?.is_subscription_plan && productPrice?.billing_cycle">
+                  <span class="heading">Billing</span>
+                  <span class="value">
+                    {{ productPrice.billing_cycle | titlecase }}
+                    <span class="billing-cycle-note" *ngIf="productPrice.billing_cycle === 'yearly'"
+                      >· billed once a year</span
+                    >
+                    <span class="billing-cycle-note" *ngIf="productPrice.billing_cycle === 'monthly'"
+                      >· billed monthly</span
+                    >
                   </span>
-                </div> -->
+                </div>
 
                 <!-- Quantity Selector -->
                 <div class="summary-row" *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE">
@@ -303,8 +313,17 @@
                 </div>
 
                 <!-- Subtotal -->
-                <div class="summary-row" *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE">
-                  <span class="heading">Subtotal</span>
+                <div class="summary-row subtotal-row" *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE">
+                  <span class="heading">
+                    Subtotal
+                    <span class="breakdown">
+                      {{ purchaseOrder.price / 100 | currency : purchaseOrder.currency }} × {{ quantity }}
+                      {{ quantity === 1 ? 'community' : 'communities' }}
+                      <ng-container *ngIf="subscriptionMonths">
+                        × {{ subscriptionMonths }} {{ subscriptionMonths === 1 ? 'month' : 'months' }}
+                      </ng-container>
+                    </span>
+                  </span>
                   <span class="value">{{ subtotal | currency : purchaseOrder.currency }}</span>
                 </div>
 
@@ -328,6 +347,7 @@
                   <input
                     nbInput
                     fullWidth
+                    fieldSize="small"
                     [(ngModel)]="discountCode"
                     (input)="onDiscountCodeInput($event)"
                     placeholder="Enter Discount Code"
@@ -336,13 +356,21 @@
                   <button
                     *ngIf="!discountCodeApplied"
                     nbButton
+                    size="small"
                     status="primary"
                     (click)="applyDiscountCode()"
                     [disabled]="!discountCode || discountCodeApplied"
                   >
                     Apply
                   </button>
-                  <button *ngIf="discountCodeApplied" nbButton status="danger" outline (click)="removePromoCode(true)">
+                  <button
+                    *ngIf="discountCodeApplied"
+                    nbButton
+                    size="small"
+                    status="danger"
+                    outline
+                    (click)="removePromoCode(true)"
+                  >
                     Remove
                   </button>
                 </div>
@@ -378,15 +406,10 @@
                 Then {{ totalPrice | currency : purchaseOrder.currency }} after your {{ trialDays }}-day trial
               </p>
 
-              <!-- Recipient -->
-              <!-- <div class="recipient">
-                <span class="recipient-label">Billed to</span>
-                <div class="recipient-details">
-                  <div class="name">{{ purchaseOrder.user?.name | titlecase }}</div>
-                  <span class="email">{{ purchaseOrder.user?.email }}</span>
-                  <span class="phone" *ngIf="purchaseOrder.user?.phone">{{ purchaseOrder.user.phone }}</span>
-                </div>
-              </div> -->
+              <p class="cancel-note" *ngIf="productPrice?.is_subscription_plan && !paymentPaid">
+                <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
+                You can cancel your subscription anytime.
+              </p>
 
               <!-- Pay Button -->
               <div class="pay-button-wrapper" *ngIf="!paymentPaid">
@@ -406,8 +429,8 @@
                   <span class="trust-footer-item">Powered by Razorpay</span>
                 </div>
               </div>
-            </nb-card-body>
-          </nb-card>
+            </com-card-body>
+          </com-card>
 
           <!-- Support & Refund Information -->
           <div class="info-container">
@@ -433,8 +456,8 @@
 
 <!-- Payment Error Dialog -->
 <ng-template #paymentErrorDialog let-data let-ref="dialogRef">
-  <nb-card class="payment-error-dialog">
-    <nb-card-body>
+  <com-card class="payment-error-dialog">
+    <com-card-body>
       <div class="exclamation-container">
         <div>
           <fa-icon [icon]="icons.faTriangleExclamation"></fa-icon>
@@ -446,8 +469,8 @@
         Refresh to retry payment
       </p>
       <p class="secondary-text">If money was deducted from your account, please reach out to our support</p>
-    </nb-card-body>
-  </nb-card>
+    </com-card-body>
+  </com-card>
 </ng-template>
 
 <!-- Loading Dialog -->
