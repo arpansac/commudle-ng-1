@@ -4,11 +4,13 @@
     isLoading ||
     (userProfileDetails &&
       (currentUser?.id === user?.id ||
-        userProfileDetails.speaker_events_count > 0 ||
+        userProfileDetails.speaker_sessions_count > 0 ||
         userProfileDetails.published_labs_count > 0 ||
         userProfileDetails.published_community_builds_count > 0 ||
-        userProfileDetails.events_attended_count > 0 ||
-        userProfileDetails.social_resources_count > 0))
+        userProfileDetails.hackathon_judge_count + userProfileDetails.hackathon_mentor_count > 0 ||
+        userProfileDetails.hackathon_participant_count > 0 ||
+        userProfileDetails.hackathon_won_count > 0 ||
+        userProfileDetails.events_attended_count > 0))
   "
 >
   <h4 class="stats-title">AT A GLANCE</h4>
@@ -27,61 +29,85 @@
       </div>
     </div>
 
-    <!-- Talks Given -->
-    <div class="stat-card" *ngIf="userProfileDetails.speaker_events_count > 0 || currentUser?.id === user?.id">
+    <!-- Talks at Events -->
+    <div class="stat-card" *ngIf="userProfileDetails.speaker_sessions_count > 0 || currentUser?.id === user?.id">
       <div class="stat-icon icon-red">
         <fa-icon [icon]="faMicrophone"></fa-icon>
       </div>
       <div class="stat-info">
-        <span class="stat-count">{{ userProfileDetails.speaker_events_count || 0 }}</span>
-        <span class="stat-label">Talks Given</span>
+        <span class="stat-count">{{ userProfileDetails.speaker_sessions_count || 0 }}</span>
+        <span class="stat-label">Talks at Events</span>
       </div>
     </div>
 
-    <!-- Labs Published -->
-    <div class="stat-card" *ngIf="userProfileDetails.published_labs_count > 0 || currentUser?.id === user?.id">
-      <div class="stat-icon icon-teal">
-        <fa-icon [icon]="faFlask"></fa-icon>
-      </div>
-      <div class="stat-info">
-        <span class="stat-count">{{ userProfileDetails.published_labs_count || 0 }}</span>
-        <span class="stat-label">Labs</span>
-      </div>
-    </div>
-
-    <!-- Builds Published -->
+    <!-- Builds and Labs -->
     <div
       class="stat-card"
-      *ngIf="userProfileDetails.published_community_builds_count > 0 || currentUser?.id === user?.id"
+      *ngIf="
+        userProfileDetails.published_community_builds_count + userProfileDetails.published_labs_count > 0 ||
+        currentUser?.id === user?.id
+      "
     >
       <div class="stat-icon icon-amber">
         <fa-icon [icon]="faLightbulb"></fa-icon>
       </div>
       <div class="stat-info">
-        <span class="stat-count">{{ userProfileDetails.published_community_builds_count || 0 }}</span>
-        <span class="stat-label">Builds</span>
+        <span class="stat-count">{{
+          (userProfileDetails.published_community_builds_count || 0) + (userProfileDetails.published_labs_count || 0)
+        }}</span>
+        <span class="stat-label">Builds & Labs</span>
       </div>
     </div>
 
-    <!-- Attended Events -->
+    <!-- Hackathons Judged/Mentored -->
+    <div
+      class="stat-card"
+      *ngIf="
+        userProfileDetails.hackathon_judge_count + userProfileDetails.hackathon_mentor_count > 0 ||
+        currentUser?.id === user?.id
+      "
+    >
+      <div class="stat-icon icon-teal">
+        <fa-icon [icon]="faGavel"></fa-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-count">{{
+          (userProfileDetails.hackathon_judge_count || 0) + (userProfileDetails.hackathon_mentor_count || 0)
+        }}</span>
+        <span class="stat-label">Hackathons Judged/Mentored</span>
+      </div>
+    </div>
+
+    <!-- Hackathons Participated -->
+    <div class="stat-card" *ngIf="userProfileDetails.hackathon_participant_count > 0 || currentUser?.id === user?.id">
+      <div class="stat-icon icon-blue">
+        <fa-icon [icon]="faUsers"></fa-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-count">{{ userProfileDetails.hackathon_participant_count || 0 }}</span>
+        <span class="stat-label">Hackathons Participated</span>
+      </div>
+    </div>
+
+    <!-- Hackathons Won -->
+    <div class="stat-card" *ngIf="userProfileDetails.hackathon_won_count > 0 || currentUser?.id === user?.id">
+      <div class="stat-icon icon-orange">
+        <fa-icon [icon]="faTrophy"></fa-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-count">{{ userProfileDetails.hackathon_won_count || 0 }}</span>
+        <span class="stat-label">Hackathons Won</span>
+      </div>
+    </div>
+
+    <!-- Events Attended -->
     <div class="stat-card" *ngIf="userProfileDetails.events_attended_count > 0 || currentUser?.id === user?.id">
-      <div class="stat-icon icon-green">
+      <div class="stat-icon icon-indigo">
         <fa-icon [icon]="faCalendarCheck"></fa-icon>
       </div>
       <div class="stat-info">
         <span class="stat-count">{{ userProfileDetails.events_attended_count || 0 }}</span>
-        <span class="stat-label">Events</span>
-      </div>
-    </div>
-
-    <!-- Content Shared -->
-    <div class="stat-card" *ngIf="userProfileDetails.social_resources_count > 0 || currentUser?.id === user?.id">
-      <div class="stat-icon icon-blue">
-        <fa-icon [icon]="faBookmark"></fa-icon>
-      </div>
-      <div class="stat-info">
-        <span class="stat-count">{{ userProfileDetails.social_resources_count || 0 }}</span>
-        <span class="stat-label">Content</span>
+        <span class="stat-label">Events Attended</span>
       </div>
     </div>
   </div>

@@ -41,6 +41,14 @@
     @apply com-text-green-600 com-bg-green-50;
   }
 
+  &.icon-orange {
+    @apply com-text-orange-600 com-bg-orange-50;
+  }
+
+  &.icon-indigo {
+    @apply com-text-indigo-600 com-bg-indigo-50;
+  }
+
   &.icon-blue {
     @apply com-text-blue-600 com-bg-blue-50;
   }

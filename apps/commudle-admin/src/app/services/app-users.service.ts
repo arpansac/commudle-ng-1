@@ -211,6 +211,11 @@ export class AppUsersService {
     return this.http.get<IUserStat>(this.baseApiService.getRoute(API_ROUTES.USERS.PROFILE_STATS));
   }
 
+  getPublicProfileStats(username: string): Observable<IUserStat> {
+    const params = new HttpParams().set('username', username);
+    return this.http.get<IUserStat>(this.baseApiService.getRoute(API_ROUTES.USERS.PUBLIC_PROFILE_STATS), { params });
+  }
+
   getProfileByEmail(userEmail): Observable<IUser> {
     const params = new HttpParams().set('user_email', userEmail);
     return this.http.get<IUser>(this.baseApiService.getRoute(API_ROUTES.USERS.GET_USER_BY_EMAIL), { params });

@@ -8,6 +8,9 @@ import {
   faLightbulb,
   faCalendarCheck,
   faBookmark,
+  faTrophy,
+  faUsers,
+  faGavel,
 } from '@fortawesome/free-solid-svg-icons';
 import { IUser, IUserStat } from '@commudle/shared-models';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
@@ -35,6 +38,9 @@ export class UserFeaturesStatsComponent implements OnInit, OnChanges, OnDestroy 
   faLightbulb = faLightbulb;
   faCalendarCheck = faCalendarCheck;
   faBookmark = faBookmark;
+  faTrophy = faTrophy;
+  faUsers = faUsers;
+  faGavel = faGavel;
 
   private subscriptions: Subscription[] = [];
 
@@ -61,7 +67,7 @@ export class UserFeaturesStatsComponent implements OnInit, OnChanges, OnDestroy 
   private fetchProfileStats(): void {
     this.isLoading = true;
     this.subscriptions.push(
-      this.appUsersService.getProfileStats().subscribe((data: IUserStat) => {
+      this.appUsersService.getPublicProfileStats(this.user.username).subscribe((data: IUserStat) => {
         this.userProfileDetails = data;
         this.isLoading = false;
       }),

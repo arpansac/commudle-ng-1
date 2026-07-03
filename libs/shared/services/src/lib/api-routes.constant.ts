@@ -576,6 +576,7 @@ export const API_ROUTES = {
     PROFILE_COMPLETION_STATUS: 'api/v2/users/profile_completion_status',
     SPEAKER_JUDGE_MENTOR: 'api/v2/users/speaker_judge_mentor', //GET
     PARTICIPATED_AND_WON: 'api/v2/users/participated_and_won', //GET
+    PUBLIC_PROFILE_STATS: 'api/v2/users/public_profile_stats', //GET
   },
 
   SPEAKER_RESOURCES: {

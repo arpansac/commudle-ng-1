@@ -4,7 +4,7 @@ p {
 }
 
 .user-details-container {
-  @apply com-m-0 com-rounded-bl-none com-rounded-br-none com-overflow-hidden;
+  @apply com-m-0 com-rounded-none md:com-rounded-t-[10px] md:com-rounded-b-none com-overflow-hidden;
 
   nb-card-body {
     @apply com-p-0;
