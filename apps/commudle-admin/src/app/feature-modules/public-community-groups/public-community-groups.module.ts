@@ -1,11 +1,12 @@
 import {
-  NbCardModule,
   NbIconModule,
   NbTabsetModule,
   NbRouteTabsetModule,
   NbButtonModule,
   NbContextMenuModule,
+  NbTagModule,
 } from '@commudle/theme';
+import { CommudleCardModule } from '@commudle/commudle-theme';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PublicCommunityGroupsRoutingModule } from './public-community-groups-routing.module';
@@ -16,7 +17,6 @@ import { CommunityGroupTeamComponent } from './components/community-group-team/c
 import { CommunityGroupAboutComponent } from './components/community-group-about/community-group-about.component';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
-import { NbTagModule } from '@commudle/theme';
 import { CommunityGroupActivityComponent } from './components/community-group-activity/community-group-activity.component';
 import { CommunityGroupEventsComponent } from './components/community-group-events/community-group-events.component';
 import { CommunityGroupChannelsComponent } from './components/community-group-channels/community-group-channels.component';
@@ -68,7 +68,7 @@ import { InfiniteScrollModule } from 'apps/shared-modules/infinite-scroll/infini
     EventMediumCardComponent,
     SkeletonCardsComponent,
     // Nebular
-    NbCardModule,
+    CommudleCardModule,
     NbIconModule,
     NbTabsetModule,
     NbRouteTabsetModule,

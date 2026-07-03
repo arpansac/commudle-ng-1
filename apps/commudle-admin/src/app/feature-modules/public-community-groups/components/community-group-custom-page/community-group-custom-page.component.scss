@@ -1,17 +1,21 @@
-nb-card {
+com-card {
   @apply com-mx-0 com-min-h-[70dvh];
-  nb-card-body {
+
+  com-card-body {
     .page {
       @apply com-my-1;
+
       h5 {
         @apply com-my-0;
       }
+
       .content {
         @apply com-break-words;
       }
     }
   }
-  nb-card-footer {
+
+  com-card-footer {
     @apply com-pt-0 com-border-0;
   }
 }

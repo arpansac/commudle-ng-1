@@ -1,8 +1,8 @@
-nb-card {
-  @apply com-mx-0;
+com-card {
+  @apply com-m-0 com-mt-4;
 
-  nb-card-body {
-    @apply com-min-h-[300px];
+  com-card-body {
+    @apply com-p-4;
   }
 }
 

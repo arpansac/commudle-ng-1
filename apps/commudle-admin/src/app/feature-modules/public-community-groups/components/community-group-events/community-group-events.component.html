@@ -1,5 +1,5 @@
-<nb-card>
-  <nb-card-body>
+<com-card>
+  <com-card-body>
     <!-- upcoming events -->
     <app-loading-spinner *ngIf="isLoadingUpcoming"></app-loading-spinner>
     <section *ngIf="upcomingEvents.length > 0">
@@ -26,5 +26,5 @@
         <app-loading-spinner *ngIf="isLoadingPast" class="com-mt-4"></app-loading-spinner>
       </div>
     </section>
-  </nb-card-body>
-</nb-card>
+  </com-card-body>
+</com-card>
