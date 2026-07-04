@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NbButtonModule, NbCardModule, NbIconModule } from '@commudle/theme';
+import { NbButtonModule, NbIconModule } from '@commudle/theme';
+import { CommudleCardModule } from '@commudle/commudle-theme';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { IEvent } from 'apps/shared-models/event.model';
@@ -15,7 +16,7 @@ import { faUserGroup, faMapPin } from '@fortawesome/free-solid-svg-icons';
   imports: [
     CommonModule,
     RouterModule,
-    NbCardModule,
+    CommudleCardModule,
     SharedComponentsModule,
     NbButtonModule,
     FontAwesomeModule,
@@ -23,15 +24,11 @@ import { faUserGroup, faMapPin } from '@fortawesome/free-solid-svg-icons';
   ],
   styleUrls: ['./event-medium-card.component.scss'],
 })
-export class EventMediumCardComponent implements OnInit {
+export class EventMediumCardComponent {
   @Input() event: IEvent;
   @Input() width: string;
   moment = moment;
 
   faUserGroup = faUserGroup;
   faMapPin = faMapPin;
-
-  constructor() {}
-
-  ngOnInit(): void {}
 }

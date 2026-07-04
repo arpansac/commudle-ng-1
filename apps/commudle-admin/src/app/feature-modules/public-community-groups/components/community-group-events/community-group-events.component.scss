@@ -1,5 +1,19 @@
-com-card {
-  @apply com-mx-0;
+.events-card {
+  @apply com-m-0 com-mt-4;
+
+  com-card-header {
+    @apply com-px-4 com-py-3 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+    background: linear-gradient(135deg, #f7f7f8 0%, #ffffff 50%, #f7f7f8 100%);
+    @apply dark:com-from-[#080808] dark:com-via-[#141414] dark:com-to-[#080808] dark:com-bg-gradient-to-br;
+
+    .section-title {
+      @apply com-m-0 com-text-base com-font-semibold com-text-Yankees-Blue;
+    }
+  }
+
+  com-card-body {
+    @apply com-p-4;
+  }
 }
 
 .upcoming-event-cards-list {

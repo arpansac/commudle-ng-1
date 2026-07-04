@@ -1,30 +1,31 @@
-<com-card>
+<!-- upcoming events -->
+<com-card *ngIf="upcomingEvents.length > 0" class="events-card">
+  <com-card-header>
+    <h6 class="section-title">Upcoming Events</h6>
+  </com-card-header>
   <com-card-body>
-    <!-- upcoming events -->
     <app-loading-spinner *ngIf="isLoadingUpcoming"></app-loading-spinner>
-    <section *ngIf="upcomingEvents.length > 0">
-      <h3 class="com-mt-0">Upcoming Events</h3>
-      <div
-        class="upcoming-event-cards-list"
-        [ngClass]="upcomingEvents.length === 1 ? 'single-event' : 'multiple-event '"
-      >
-        <commudle-event-medium-card *ngFor="let event of upcomingEvents" [event]="event"></commudle-event-medium-card>
-      </div>
-      <button (click)="getUpcomingEvents()" *ngIf="upcomingPageInfo?.has_next_page" fullWidth ghost nbButton>
-        Load More Upcoming Events
-      </button>
-    </section>
+    <div class="upcoming-event-cards-list" [ngClass]="upcomingEvents.length === 1 ? 'single-event' : 'multiple-event'">
+      <commudle-event-medium-card *ngFor="let event of upcomingEvents" [event]="event"></commudle-event-medium-card>
+    </div>
+    <button (click)="getUpcomingEvents()" *ngIf="upcomingPageInfo?.has_next_page" fullWidth ghost nbButton>
+      Load More Upcoming Events
+    </button>
+  </com-card-body>
+</com-card>
 
-    <!-- past events -->
-    <section>
-      <h3>Past Events</h3>
-      <app-loading-spinner *ngIf="isLoadingPast"></app-loading-spinner>
-      <div (scrolled)="getPastEvents()" [infiniteScrollDisabled]="pastEvents.length >= total" appInfiniteScroll>
-        <div class="past-events-card-list">
-          <commudle-event-card *ngFor="let event of pastEvents" [event]="event"></commudle-event-card>
-        </div>
-        <app-loading-spinner *ngIf="isLoadingPast" class="com-mt-4"></app-loading-spinner>
+<!-- past events -->
+<com-card class="events-card">
+  <com-card-header>
+    <h6 class="section-title">Past Events</h6>
+  </com-card-header>
+  <com-card-body>
+    <app-loading-spinner *ngIf="isLoadingPast"></app-loading-spinner>
+    <div (scrolled)="getPastEvents()" [infiniteScrollDisabled]="pastEvents.length >= total" appInfiniteScroll>
+      <div class="past-events-card-list">
+        <commudle-event-card *ngFor="let event of pastEvents" [event]="event"></commudle-event-card>
       </div>
-    </section>
+      <app-loading-spinner *ngIf="isLoadingPast" class="com-mt-4"></app-loading-spinner>
+    </div>
   </com-card-body>
 </com-card>

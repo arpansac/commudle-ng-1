@@ -20,11 +20,12 @@
 
         .events-body {
           @apply com-p-0;
+
           app-badge {
             @apply com-absolute com-top-0;
           }
 
-          nb-card-body {
+          com-card-body {
             nb-icon,
             fa-icon {
               @apply com-text-5xl;
@@ -73,6 +74,7 @@
                   @apply md:com-mt-2;
                 }
               }
+
               .collaboration-badges {
                 @apply com-gap-3 com-items-center com-line-clamp-1 com-mt-2 com-hidden md:com-flex;
               }
@@ -84,6 +86,7 @@
 
               div {
                 @apply com-flex com-items-center;
+
                 nb-icon,
                 fa-icon {
                   @apply com-mr-2 com-text-Dark-Jungle-Green;

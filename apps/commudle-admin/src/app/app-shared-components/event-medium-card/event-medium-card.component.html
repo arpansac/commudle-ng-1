@@ -2,8 +2,8 @@
   <div class="events-container">
     <a [routerLink]="['/communities', event.kommunity_slug, 'events', event.slug]" [ngClass]="width">
       <div>
-        <nb-card class="events">
-          <nb-card-body class="events-body">
+        <com-card class="events">
+          <com-card-body class="events-body">
             <div *ngIf="event.header_image_path">
               <commudle-banner-image
                 [headerImagePath]="event.header_image_path"
@@ -53,8 +53,8 @@
                 <button nbButton status="primary" shape="semi-round" class="register-button" outline>Register</button>
               </div>
             </div>
-          </nb-card-body>
-        </nb-card>
+          </com-card-body>
+        </com-card>
       </div>
     </a>
   </div>
