@@ -19,7 +19,7 @@
           <commudle-tech-sessions-card [session]="session" [horizontalScroll]="true"></commudle-tech-sessions-card>
         </div>
       </div>
-      <div class="load-more">
+      <div *ngIf="(showSpinner && !showSkeletonCard) || page_info?.has_next_page" class="load-more">
         <app-loading-spinner *ngIf="showSpinner && !showSkeletonCard"></app-loading-spinner>
         <button
           *ngIf="page_info?.has_next_page"
