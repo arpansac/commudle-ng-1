@@ -3,7 +3,7 @@
     <div class="two-column-layout medium">
       <div class="main-column">
         <!-- upcoming Events -->
-        <com-card *ngIf="events.length > 0">
+        <com-card *ngIf="events.length > 0" class="upcoming-events-card">
           <com-card-header class="event-card-header">
             <div class="header">
               <div class="icon">
@@ -50,13 +50,15 @@
         </com-card>
 
         <!-- channels -->
-        <com-card *ngIf="channels.length > 0">
-          <com-card-header class="header">
-            <div class="icon">
-              <fa-icon [icon]="faHashtag"></fa-icon>
-            </div>
-            <div>
-              <h5>Active Channels to join</h5>
+        <com-card *ngIf="channels.length > 0" class="channel-card-header">
+          <com-card-header>
+            <div class="header">
+              <div class="icon">
+                <fa-icon [icon]="faHashtag"></fa-icon>
+              </div>
+              <div>
+                <h5>Active Channels to join</h5>
+              </div>
             </div>
           </com-card-header>
           <com-card-body class="card-body">
@@ -70,7 +72,7 @@
         </com-card>
 
         <!-- communities -->
-        <com-card *ngIf="communities.length > 0">
+        <com-card *ngIf="communities.length > 0" class="communities-card-header">
           <com-card-header>
             <div class="header">
               <div class="icon">
@@ -97,13 +99,15 @@
         </com-card>
 
         <!--forums-->
-        <com-card *ngIf="forums.length > 0">
-          <com-card-header class="header">
-            <div class="icon">
-              <fa-icon [icon]="faHashtag"></fa-icon>
-            </div>
-            <div>
-              <h5>Active Forums to join</h5>
+        <com-card *ngIf="forums.length > 0" class="forum-card-header">
+          <com-card-header>
+            <div class="header">
+              <div class="icon">
+                <fa-icon [icon]="faHashtag"></fa-icon>
+              </div>
+              <div>
+                <h5>Active Forums to join</h5>
+              </div>
             </div>
           </com-card-header>
           <com-card-body class="card-body">
@@ -116,6 +120,7 @@
           </com-card-body>
         </com-card>
       </div>
+
       <div class="right-column">
         <div class="speakers-upcoming">
           <commudle-public-home-list-speakers-upcoming

@@ -19,26 +19,32 @@
 }
 
 com-card {
-  @apply com-mx-0;
+  @apply com-m-0 com-mb-4;
 
-  .header {
-    @apply com-flex com-space-x-4 com-items-center com-overflow-auto;
+  com-card-header {
+    @apply com-px-4 com-py-3 com-flex com-items-center com-justify-between com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+    background: linear-gradient(135deg, #f7f7f8 0%, #ffffff 50%, #f7f7f8 100%);
+    @apply dark:com-from-[#080808] dark:com-via-[#141414] dark:com-to-[#080808] dark:com-bg-gradient-to-br;
 
-    .icon {
-      @apply com-bg-blue-100 com-border com-border-solid com-border-primary-500 com-rounded-full com-w-6 com-h-6 md:com-w-9 md:com-h-9 com-flex com-justify-center com-items-center com-p-4;
+    .header {
+      @apply com-flex com-items-center com-gap-3 com-m-0;
 
-      fa-icon {
-        @apply com-text-primary-500;
+      .icon {
+        @apply com-text-lg com-text-primary-500;
+      }
+
+      h5 {
+        @apply com-m-0 com-text-base com-font-semibold com-text-Yankees-Blue;
       }
     }
 
     .navigation-button {
-      @apply com-flex com-justify-end md:com-mr-2 com-mb-2 com-p-1;
+      @apply com-flex com-items-center com-gap-1;
     }
   }
 
-  .card-body {
-    @apply com-px-0 com-mx-4;
+  com-card-body {
+    @apply com-p-4;
   }
 }
 
@@ -70,4 +76,11 @@ com-card {
 .recent-tech,
 .speakers {
   @apply com-m-0 md:com-mt-4 com-mt-10;
+}
+
+.upcoming-events-card,
+.channel-card-header,
+.communities-card-header,
+.forum-card-header {
+  @apply com-m-0 com-mt-4;
 }
