@@ -28,11 +28,11 @@
       @apply com-p-3 com-relative;
 
       .description {
-        @apply com-text-base com-font-medium com-text-Dark-Jungle-Green com-h-12 com-line-clamp-2;
+        @apply com-m-0 com-text-sm com-font-medium com-text-Yankees-Blue com-h-10 com-line-clamp-2;
       }
 
       .discussion-name {
-        @apply com-p-0 com-pt-4 com-text-sm com-font-medium com-text-Auro-Metal-Saurus;
+        @apply com-m-0 com-p-0 com-pt-2 com-text-xs com-font-normal com-text-gray-500;
       }
     }
   }

@@ -65,10 +65,10 @@ com-card {
 }
 
 .forums-cards-list {
-  @apply com-flex com-flex-wrap com-gap-4;
+  @apply com-grid com-grid-cols-1 md:com-grid-cols-3 com-gap-4;
 
   .forum-card {
-    @apply md:com-w-[266px] com-w-full;
+    @apply com-w-full;
   }
 }
 

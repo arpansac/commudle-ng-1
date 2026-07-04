@@ -81,6 +81,7 @@
   .sticky-active {
     @apply com-shadow-lg;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.55));
+    @apply com-bg-gradient-to-b dark:com-from-[#12121299] dark:com-to-[#12121266];
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
