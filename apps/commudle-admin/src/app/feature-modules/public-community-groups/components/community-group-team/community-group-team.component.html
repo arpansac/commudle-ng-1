@@ -1,5 +1,8 @@
 <div class="team">
-  <com-card>
+  <com-card class="team-card">
+    <com-card-header>
+      <h6 class="section-title">Team</h6>
+    </com-card-header>
     <com-card-body>
       <div class="members" (scrolled)="getTeam()" [infiniteScrollDisabled]="team.length >= total" appInfiniteScroll>
         <div class="member" *ngFor="let member of team">
