@@ -23,6 +23,10 @@ import { FooterService } from 'apps/commudle-admin/src/app/services/footer.servi
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
   standalone: false,
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
+  standalone: false,
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;
@@ -86,8 +90,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.seoService.noIndex(false);
   }
 
-  checkMobileView() {
-    this.isMobileView = window.innerWidth < 768;
+  get logoUrl(): string {
+    return this.communityGroup?.logo?.url || '';
+  }
+
+  get groupSubscriptionId(): number {
+    return this.communityGroup?.user_subscription_id || 0;
   }
 
   toggleSidebar() {
