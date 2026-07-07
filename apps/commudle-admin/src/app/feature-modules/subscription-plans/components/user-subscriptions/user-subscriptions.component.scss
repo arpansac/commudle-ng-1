@@ -173,6 +173,17 @@
         @apply com-text-xs com-font-bold com-bg-primary-100 com-text-primary-700 com-px-2.5 com-py-1 com-rounded-full;
       }
 
+      .cancel-scheduled-chip {
+        @apply com-text-xs com-font-semibold com-px-2.5 com-py-1 com-rounded-full;
+        @apply com-bg-yellow-100 com-text-yellow-700 dark:com-bg-yellow-900 dark:com-text-yellow-300;
+      }
+
+      .cancel-chip {
+        @apply com-text-xs com-font-medium com-text-Cadet-Grey com-bg-transparent com-border-0 com-cursor-pointer;
+        @apply com-px-2 com-py-1 com-rounded-full com-transition-colors;
+        @apply hover:com-text-red-600 hover:com-bg-red-50 dark:hover:com-bg-red-900;
+      }
+
       .pay-now-chip {
         @apply com-flex com-items-center com-gap-1 com-no-underline com-text-xs com-font-semibold com-text-white;
         @apply com-bg-primary-500 com-px-3 com-py-1.5 com-rounded-full com-transition-colors;
@@ -334,5 +345,28 @@
   // ── Pagination ────────────────────────────────────────────
   .pagination-wrapper {
     @apply com-flex com-justify-center com-pt-4;
+  }
+}
+
+/* ── Cancel confirmation dialog ── */
+.cancel-dialog {
+  @apply com-max-w-md com-bg-white;
+
+  .cancel-dialog-header {
+    @apply com-flex com-items-center com-justify-between com-text-base com-font-bold com-text-Yankees-Blue;
+  }
+
+  .cancel-dialog-body {
+    .cancel-dialog-text {
+      @apply com-m-0 com-text-sm com-text-Cadet-Grey com-leading-relaxed;
+
+      strong {
+        @apply com-text-Yankees-Blue com-font-semibold;
+      }
+    }
+  }
+
+  .cancel-dialog-actions {
+    @apply com-flex com-items-center com-justify-end com-gap-2;
   }
 }

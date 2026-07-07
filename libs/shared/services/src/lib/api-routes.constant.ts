@@ -1170,6 +1170,7 @@ export const API_ROUTES = {
     CREATE: 'api/v2/user_subscriptions', //POST
     STATS: 'api/v2/user_subscriptions/stats', //GET
     PAYMENT_HISTORY: 'api/v2/user_subscriptions/payment_history', //GET
+    CANCEL: 'api/v2/user_subscriptions/cancel', //POST
   },
 
   HACKATHON_TEAM_ROUND_SUBMISSIONS: {
