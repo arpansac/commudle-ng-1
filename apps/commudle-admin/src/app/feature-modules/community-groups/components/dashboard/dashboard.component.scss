@@ -1,19 +1,5 @@
-.hackathon-details {
-  @apply md:com-px-4 md:com-py-2 com-p-2 com-bg-white com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-flex com-gap-3 com-items-center com-flex-wrap;
-
-  .toggle-sidebar-btn {
-    @apply com-mr-2;
-  }
-
-  h1 {
-    @apply com-text-2xl com-font-medium com-m-0;
-  }
-}
-
-.sidebar {
-  @apply md:com-sticky com-h-[calc(100vh-70px)];
-  top: var(--mobile-navbar-offset, 52px);
-
+.sidebar-container {
+  @apply com-sticky com-top-16 com-h-[calc(100vh-4rem)] com-flex com-flex-col;
   a {
     @apply com-text-inherit com-no-underline;
   }
@@ -54,20 +40,47 @@
       .action-button-name {
         @apply com-text-sm com-font-normal;
       }
+      &.public-event-page {
+        @apply com-text-Azure;
+        .icon {
+          @apply com-text-Azure;
+        }
+      }
+      &.stats {
+        @apply com-text-Caribbean-Green;
+        .icon {
+          @apply com-text-Caribbean-Green;
+        }
+      }
     }
   }
 }
 
-a {
-  @apply com-flex com-gap-2 com-items-center;
+.community-identity {
+  @apply com-flex com-items-center com-gap-2 com-p-3 com-bg-white com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+
+  .community-logo {
+    @apply com-h-8 com-w-8 com-flex-shrink-0 com-overflow-hidden com-rounded-md;
+
+    img {
+      @apply com-h-full com-w-full com-object-contain;
+    }
+  }
+
+  .community-info {
+    @apply com-flex com-flex-col com-gap-0 com-overflow-hidden;
+
+    .community-name {
+      @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-truncate;
+    }
+  }
 }
 
-.router {
-  @apply com-w-full com-my-2 com-mx-0 md:com-mx-4;
-}
-
-.header-icons {
-  @apply com-flex;
+.right-column {
+  @apply com-flex-1 com-min-w-0;
+  .router {
+    @apply com-w-full com-max-w-screen-xl com-mx-auto;
+  }
 }
 
 .header-icons-non-expanded {
