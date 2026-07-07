@@ -12,6 +12,7 @@ export interface IUserSubscription {
   starts_at: string;
   ends_at: string;
   rzp_subscription_id: string;
+  cancellation_requested_at?: string;
   last_billed_at: string;
   next_billing_at: string;
   kommunities_count: number;

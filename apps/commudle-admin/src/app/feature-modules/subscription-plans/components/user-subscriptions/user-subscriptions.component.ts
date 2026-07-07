@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IUserSubscription } from '@commudle/shared-models';
-import { AuthService, UserSubscriptionService } from '@commudle/shared-services';
-import { NbDialogService } from '@commudle/theme';
+import { AuthService, ToastrService, UserSubscriptionService } from '@commudle/shared-services';
+import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { CreateCommunityFormComponent } from 'apps/commudle-admin/src/app/app-shared-components/create-community-form/create-community-form.component';
 import { CreateCommunityGroupFormComponent } from 'apps/commudle-admin/src/app/app-shared-components/create-community-group-form/create-community-group-form.component';
 import { Subject, takeUntil, filter } from 'rxjs';
@@ -20,6 +20,10 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
   page = 1;
   count = 5;
   total = 0;
+  isCancelling = false;
+  cancelTarget: IUserSubscription | null = null;
+
+  @ViewChild('cancelDialog') cancelDialog: TemplateRef<unknown>;
 
   private destroy$ = new Subject<void>();
 
@@ -28,6 +32,7 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private dialogService: NbDialogService,
+    private toastrService: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -159,8 +164,33 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
   }
 
   cancelPlan(subscription: IUserSubscription): void {
-    // TODO: show confirmation dialog then call cancel API
-    console.log('Cancel plan:', subscription.id);
+    this.cancelTarget = subscription;
+    this.dialogService.open(this.cancelDialog, {
+      closeOnBackdropClick: !this.isCancelling,
+    });
+  }
+
+  confirmCancel(ref: NbDialogRef<unknown>): void {
+    if (!this.cancelTarget) return;
+    this.isCancelling = true;
+    this.userSubscriptionService
+      .cancelSubscription(this.cancelTarget.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (updated) => {
+          this.isCancelling = false;
+          const idx = this.subscriptions.findIndex((s) => s.id === updated.id);
+          if (idx !== -1) {
+            this.subscriptions = [...this.subscriptions.slice(0, idx), updated, ...this.subscriptions.slice(idx + 1)];
+          }
+          this.cancelTarget = null;
+          ref.close();
+          this.toastrService.successDialog('Your subscription cancellation has been scheduled.');
+        },
+        error: () => {
+          this.isCancelling = false;
+        },
+      });
   }
 
   private fetchSubscriptions(): void {

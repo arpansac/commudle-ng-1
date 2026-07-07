@@ -83,7 +83,13 @@
             <span class="status-pill" [ngClass]="getStatusClass(sub.status)">
               <span class="status-dot"></span>{{ sub.status | titlecase }}
             </span>
-            <span class="days-chip" *ngIf="getDaysLeft(sub) > 0 && sub.status === 'active'">
+            <span class="cancel-scheduled-chip" *ngIf="sub.cancellation_requested_at && sub.status === 'active'">
+              Cancels {{ sub.ends_at | date : 'MMM d' }}
+            </span>
+            <span
+              class="days-chip"
+              *ngIf="getDaysLeft(sub) > 0 && sub.status === 'active' && !sub.cancellation_requested_at"
+            >
               {{ getDaysLeft(sub) }}d left
             </span>
             <a
@@ -94,6 +100,14 @@
               <nb-icon icon="credit-card-outline"></nb-icon>
               Complete Payment
             </a>
+            <button
+              type="button"
+              class="cancel-chip"
+              *ngIf="sub.status === 'active' && !sub.cancellation_requested_at"
+              (click)="cancelPlan(sub)"
+            >
+              Cancel
+            </button>
           </div>
         </div>
 
@@ -227,7 +241,9 @@
         <div class="status-notice" *ngIf="sub.status === 'expired' || sub.status === 'cancelled'">
           <nb-icon icon="alert-triangle-outline"></nb-icon>
           <span>Subscription {{ sub.status }}. Existing resources remain active but new creation is blocked.</span>
-          <a [routerLink]="['/pricing']" nbButton status="warning" size="tiny" shape="semi-round">Renew</a>
+          <!-- Renew temporarily disabled: renewal creates a new subscription and existing
+               communities are not yet re-linked to it. Re-enable once re-association is handled. -->
+          <!-- <a [routerLink]="['/pricing']" nbButton status="warning" size="tiny" shape="semi-round">Renew</a> -->
         </div>
       </div>
 
@@ -245,3 +261,30 @@
     </div>
   </ng-container>
 </div>
+
+<!-- ── Cancel subscription confirmation ── -->
+<ng-template #cancelDialog let-ref="dialogRef">
+  <nb-card class="cancel-dialog">
+    <nb-card-header class="cancel-dialog-header">
+      <span>Cancel subscription?</span>
+      <button ghost nbButton size="small" shape="round" (click)="ref.close()" [disabled]="isCancelling">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body class="cancel-dialog-body">
+      <p class="cancel-dialog-text">
+        Your <strong>{{ cancelTarget?.product_price?.plan_name || 'subscription' }}</strong> will stay active until
+        <strong>{{ cancelTarget?.ends_at | date : 'MMM d, y' }}</strong
+        >. You won't be charged again, and existing communities remain active. This can't be undone.
+      </p>
+    </nb-card-body>
+    <nb-card-footer class="cancel-dialog-actions">
+      <button nbButton status="basic" shape="semi-round" (click)="ref.close()" [disabled]="isCancelling">
+        Keep subscription
+      </button>
+      <button nbButton status="danger" shape="semi-round" (click)="confirmCancel(ref)" [disabled]="isCancelling">
+        {{ isCancelling ? 'Cancelling...' : 'Yes, cancel' }}
+      </button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

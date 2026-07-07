@@ -57,4 +57,15 @@ export class UserSubscriptionService {
       params,
     });
   }
+
+  /**
+   * Cancel a subscription. By default it cancels at the end of the current billing
+   * cycle so the user keeps access until the paid period ends.
+   */
+  cancelSubscription(id: number, cancelAtCycleEnd = true): Observable<IUserSubscription> {
+    return this.http.post<IUserSubscription>(this.baseApiService.getRoute(API_ROUTES.USER_SUBSCRIPTIONS.CANCEL), {
+      id,
+      cancel_at_cycle_end: cancelAtCycleEnd,
+    });
+  }
 }
