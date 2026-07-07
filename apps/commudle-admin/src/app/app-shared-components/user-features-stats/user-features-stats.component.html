@@ -10,7 +10,8 @@
         userProfileDetails.hackathon_judge_count + userProfileDetails.hackathon_mentor_count > 0 ||
         userProfileDetails.hackathon_participant_count > 0 ||
         userProfileDetails.hackathon_won_count > 0 ||
-        userProfileDetails.events_attended_count > 0))
+        userProfileDetails.events_attended_count > 0 ||
+        userProfileDetails.event_volunteer_count > 0))
   "
 >
   <h4 class="stats-title">AT A GLANCE</h4>
@@ -30,34 +31,81 @@
     </div>
 
     <!-- Talks at Events -->
-    <div class="stat-card" *ngIf="userProfileDetails.speaker_sessions_count > 0 || currentUser?.id === user?.id">
-      <div class="stat-icon icon-red">
-        <fa-icon [icon]="faMicrophone"></fa-icon>
-      </div>
-      <div class="stat-info">
-        <span class="stat-count">{{ userProfileDetails.speaker_sessions_count || 0 }}</span>
-        <span class="stat-label">Talks at Events</span>
-      </div>
-    </div>
+    <ng-container *ngIf="userProfileDetails.speaker_sessions_count > 0 || currentUser?.id === user?.id">
+      <a
+        class="stat-card"
+        [class.stat-card-link]="(userProfileDetails.speaker_sessions_count || 0) === 0"
+        [routerLink]="(userProfileDetails.speaker_sessions_count || 0) === 0 ? ['/speakers/cfp'] : null"
+      >
+        <div class="stat-icon icon-red">
+          <fa-icon class="default-icon" [icon]="faMicrophone"></fa-icon>
+          <fa-icon
+            class="hovered-icon"
+            [icon]="faArrowUpRightFromSquare"
+            *ngIf="(userProfileDetails.speaker_sessions_count || 0) === 0"
+          ></fa-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-count">{{ userProfileDetails.speaker_sessions_count || 0 }}</span>
+          <span class="stat-label default-label">Talks at Events</span>
+          <span class="stat-label hovered-label" *ngIf="(userProfileDetails.speaker_sessions_count || 0) === 0"
+            >Give Your First Talk</span
+          >
+        </div>
+      </a>
+    </ng-container>
 
     <!-- Builds and Labs -->
-    <div
-      class="stat-card"
+    <ng-container
       *ngIf="
         userProfileDetails.published_community_builds_count + userProfileDetails.published_labs_count > 0 ||
         currentUser?.id === user?.id
       "
     >
-      <div class="stat-icon icon-amber">
-        <fa-icon [icon]="faLightbulb"></fa-icon>
-      </div>
-      <div class="stat-info">
-        <span class="stat-count">{{
-          (userProfileDetails.published_community_builds_count || 0) + (userProfileDetails.published_labs_count || 0)
-        }}</span>
-        <span class="stat-label">Builds & Labs</span>
-      </div>
-    </div>
+      <a
+        class="stat-card"
+        [class.stat-card-link]="
+          (userProfileDetails.published_community_builds_count || 0) +
+            (userProfileDetails.published_labs_count || 0) ===
+          0
+        "
+        [routerLink]="
+          (userProfileDetails.published_community_builds_count || 0) +
+            (userProfileDetails.published_labs_count || 0) ===
+          0
+            ? ['/builds/create']
+            : null
+        "
+      >
+        <div class="stat-icon icon-amber">
+          <fa-icon class="default-icon" [icon]="faLightbulb"></fa-icon>
+          <fa-icon
+            class="hovered-icon"
+            [icon]="faArrowUpRightFromSquare"
+            *ngIf="
+              (userProfileDetails.published_community_builds_count || 0) +
+                (userProfileDetails.published_labs_count || 0) ===
+              0
+            "
+          ></fa-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-count">{{
+            (userProfileDetails.published_community_builds_count || 0) + (userProfileDetails.published_labs_count || 0)
+          }}</span>
+          <span class="stat-label default-label">Builds & Labs</span>
+          <span
+            class="stat-label hovered-label"
+            *ngIf="
+              (userProfileDetails.published_community_builds_count || 0) +
+                (userProfileDetails.published_labs_count || 0) ===
+              0
+            "
+            >Create Your Build</span
+          >
+        </div>
+      </a>
+    </ng-container>
 
     <!-- Hackathons Judged/Mentored -->
     <div
@@ -79,15 +127,29 @@
     </div>
 
     <!-- Hackathons Participated -->
-    <div class="stat-card" *ngIf="userProfileDetails.hackathon_participant_count > 0 || currentUser?.id === user?.id">
-      <div class="stat-icon icon-blue">
-        <fa-icon [icon]="faUsers"></fa-icon>
-      </div>
-      <div class="stat-info">
-        <span class="stat-count">{{ userProfileDetails.hackathon_participant_count || 0 }}</span>
-        <span class="stat-label">Hackathons Participated</span>
-      </div>
-    </div>
+    <ng-container *ngIf="userProfileDetails.hackathon_participant_count > 0 || currentUser?.id === user?.id">
+      <a
+        class="stat-card"
+        [class.stat-card-link]="(userProfileDetails.hackathon_participant_count || 0) === 0"
+        [routerLink]="(userProfileDetails.hackathon_participant_count || 0) === 0 ? ['/hackathons'] : null"
+      >
+        <div class="stat-icon icon-blue">
+          <fa-icon class="default-icon" [icon]="faUsers"></fa-icon>
+          <fa-icon
+            class="hovered-icon"
+            [icon]="faArrowUpRightFromSquare"
+            *ngIf="(userProfileDetails.hackathon_participant_count || 0) === 0"
+          ></fa-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-count">{{ userProfileDetails.hackathon_participant_count || 0 }}</span>
+          <span class="stat-label default-label">Hackathons Participated</span>
+          <span class="stat-label hovered-label" *ngIf="(userProfileDetails.hackathon_participant_count || 0) === 0"
+            >Join a Hackathon</span
+          >
+        </div>
+      </a>
+    </ng-container>
 
     <!-- Hackathons Won -->
     <div class="stat-card" *ngIf="userProfileDetails.hackathon_won_count > 0 || currentUser?.id === user?.id">
@@ -101,13 +163,38 @@
     </div>
 
     <!-- Events Attended -->
-    <div class="stat-card" *ngIf="userProfileDetails.events_attended_count > 0 || currentUser?.id === user?.id">
-      <div class="stat-icon icon-indigo">
-        <fa-icon [icon]="faCalendarCheck"></fa-icon>
+    <ng-container *ngIf="userProfileDetails.events_attended_count > 0 || currentUser?.id === user?.id">
+      <a
+        class="stat-card"
+        [class.stat-card-link]="(userProfileDetails.events_attended_count || 0) === 0"
+        [routerLink]="(userProfileDetails.events_attended_count || 0) === 0 ? ['/events'] : null"
+      >
+        <div class="stat-icon icon-indigo">
+          <fa-icon class="default-icon" [icon]="faCalendarCheck"></fa-icon>
+          <fa-icon
+            class="hovered-icon"
+            [icon]="faArrowUpRightFromSquare"
+            *ngIf="(userProfileDetails.events_attended_count || 0) === 0"
+          ></fa-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-count">{{ userProfileDetails.events_attended_count || 0 }}</span>
+          <span class="stat-label default-label">Events Attended</span>
+          <span class="stat-label hovered-label" *ngIf="(userProfileDetails.events_attended_count || 0) === 0"
+            >Attend an Event</span
+          >
+        </div>
+      </a>
+    </ng-container>
+
+    <!-- Event Volunteer -->
+    <div class="stat-card" *ngIf="userProfileDetails.event_volunteer_count > 0 || currentUser?.id === user?.id">
+      <div class="stat-icon icon-pink">
+        <fa-icon [icon]="faHandshake"></fa-icon>
       </div>
       <div class="stat-info">
-        <span class="stat-count">{{ userProfileDetails.events_attended_count || 0 }}</span>
-        <span class="stat-label">Events Attended</span>
+        <span class="stat-count">{{ userProfileDetails.event_volunteer_count || 0 }}</span>
+        <span class="stat-label">Events Volunteered</span>
       </div>
     </div>
   </div>

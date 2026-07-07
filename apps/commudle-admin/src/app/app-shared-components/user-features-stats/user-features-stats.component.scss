@@ -11,10 +11,40 @@
 }
 
 .stat-card {
-  @apply com-flex com-items-center com-gap-2 com-p-0 com-rounded-lg;
+  @apply com-flex com-items-center com-gap-2 com-p-0 com-rounded-lg com-no-underline;
 
   .stat-info {
     @apply com-flex md:com-flex-row-reverse com-flex-col com-justify-between com-w-full;
+  }
+}
+
+.stat-card-link {
+  @apply com-cursor-pointer;
+
+  .hovered-icon {
+    @apply com-hidden;
+  }
+
+  .hovered-label {
+    @apply com-hidden;
+  }
+
+  &:hover {
+    .default-icon {
+      @apply com-hidden;
+    }
+
+    .hovered-icon {
+      @apply com-block;
+    }
+
+    .default-label {
+      @apply com-hidden;
+    }
+
+    .hovered-label {
+      @apply com-block;
+    }
   }
 }
 
@@ -51,6 +81,10 @@
 
   &.icon-blue {
     @apply com-text-blue-600 com-bg-blue-50;
+  }
+
+  &.icon-pink {
+    @apply com-text-pink-500 com-bg-pink-50;
   }
 }
 
