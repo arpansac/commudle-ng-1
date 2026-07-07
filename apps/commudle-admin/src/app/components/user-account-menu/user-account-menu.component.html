@@ -30,6 +30,17 @@
         <span class="label">Job Applications</span>
         <fa-icon [icon]="faChevronRight" class="chevron-icon"></fa-icon>
       </li>
+      <li [routerLink]="['/subscriptions']" class="menu-item">
+        <fa-icon [icon]="faCreditCard" class="icon"></fa-icon>
+        <span class="label">My Subscriptions</span>
+        <app-badge
+          [color]="'com-bg-primary-500'"
+          [fontSize]="'xx-small'"
+          [text]="'New'"
+          [borderRadius]="'semi-round'"
+        ></app-badge>
+        <fa-icon [icon]="faChevronRight" class="chevron-icon"></fa-icon>
+      </li>
       <li
         [routerLink]="['/users', currentUser.username, { outlets: { p: ['settings', 'goals-and-skills'] } }]"
         class="menu-item"

@@ -388,7 +388,9 @@
                 <p class="trial-note">
                   <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
                   <span>
-                    Pay nothing today. You'll be charged
+                    Only a refundable
+                    <strong>{{ cardVerificationCharge | currency : purchaseOrder.currency }}</strong>
+                    card-verification charge today (refunded right away). You'll then be charged
                     <strong>{{ totalPrice | currency : purchaseOrder.currency }}</strong>
                     automatically after {{ trialDays }} days. Cancel anytime before then.
                   </span>
@@ -399,11 +401,14 @@
               <div class="summary-total">
                 <span class="heading">{{ hasTrial && withTrial ? 'Due today' : 'Total payable' }}</span>
                 <span class="value">
-                  {{ (hasTrial && withTrial ? 0 : totalPrice) | currency : purchaseOrder.currency }}
+                  {{
+                    (hasTrial && withTrial ? cardVerificationCharge : totalPrice) | currency : purchaseOrder.currency
+                  }}
                 </span>
               </div>
               <p class="trial-billing-note" *ngIf="hasTrial && withTrial">
-                Then {{ totalPrice | currency : purchaseOrder.currency }} after your {{ trialDays }}-day trial
+                Refundable card verification, returned immediately. Then
+                {{ totalPrice | currency : purchaseOrder.currency }} after your {{ trialDays }}-day trial.
               </p>
 
               <p class="cancel-note" *ngIf="productPrice?.is_subscription_plan && !paymentPaid">
