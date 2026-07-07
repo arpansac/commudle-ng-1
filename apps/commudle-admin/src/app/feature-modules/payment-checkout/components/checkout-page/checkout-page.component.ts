@@ -894,4 +894,10 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   get trialDays(): number {
     return this.productPrice?.trial_period_days || 0;
   }
+
+  /**
+   * Small refundable card-verification charge applied by the payment provider (Razorpay)
+   * when starting a trialed subscription, to validate the card. It is refunded immediately.
+   */
+  readonly cardVerificationCharge = 0.5;
 }

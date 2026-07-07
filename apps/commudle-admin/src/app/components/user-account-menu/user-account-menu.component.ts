@@ -6,6 +6,7 @@ import {
   faArrowRightFromBracket,
   faAudioDescription,
   faChevronRight,
+  faCreditCard,
   faFlask,
   faHouse,
   faLightbulb,
@@ -31,6 +32,7 @@ export class UserAccountMenuComponent implements OnInit, OnDestroy {
   faLightbulb = faLightbulb;
   faFlask = faFlask;
   faSuitcase = faSuitcase;
+  faCreditCard = faCreditCard;
   faAudioDescription = faAudioDescription;
   faArrowRightFromBracket = faArrowRightFromBracket;
   faLink = faLink;
