@@ -77,6 +77,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
       round_type: [ERoundType.GENERAL],
       has_marking_criteria: [true],
       allow_multiple_mentors: [false],
+      is_elimination_round: [false],
     });
   }
 
@@ -128,6 +129,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
         round_type: round.round_type,
         has_marking_criteria: round.has_marking_criteria ?? true,
         allow_multiple_mentors: round.allow_multiple_mentors ?? false,
+        is_elimination_round: round.is_elimination_round ?? false,
       });
       this.markingCriteria = round.marking_criteria ? [...round.marking_criteria] : [];
     } else {
@@ -224,6 +226,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
       round_type: ['general'],
       has_marking_criteria: [true],
       allow_multiple_mentors: [false],
+      is_elimination_round: [false],
     });
   }
 

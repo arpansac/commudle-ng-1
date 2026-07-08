@@ -12,6 +12,12 @@
   </div>
   <div class="round-content">
     <div class="round-name">{{ round.name | titlecase }}</div>
+    <div class="round-chips">
+      <span *ngIf="round.is_elimination_round" class="elimination-chip">
+        <nb-icon icon="alert-triangle-outline"></nb-icon>
+        Elimination Round
+      </span>
+    </div>
     <div class="round-date" *ngIf="round.date">
       {{ moment(round.date).format('MMM DD, YYYY, hh:mm A') }}
       @if(round.end_date) {

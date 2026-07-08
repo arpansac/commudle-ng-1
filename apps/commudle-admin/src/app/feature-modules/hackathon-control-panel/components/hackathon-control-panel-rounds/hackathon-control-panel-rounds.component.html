@@ -287,6 +287,17 @@
           }
         </div>
 
+        <!-- is_elimination_round -->
+        <div>
+          <nb-checkbox formControlName="is_elimination_round"> This is an elimination round </nb-checkbox>
+          @if(roundForm.get('is_elimination_round')?.value) {
+          <commudle-alert
+            [info]="true"
+            message="Mark this round as an elimination round where teams can be eliminated based on their performance."
+          ></commudle-alert>
+          }
+        </div>
+
         <!-- marking_criteria -->
         <div *ngIf="roundForm.get('has_marking_criteria')?.value" class="marking-criteria-section">
           <!-- <div class="marking-criteria-header">

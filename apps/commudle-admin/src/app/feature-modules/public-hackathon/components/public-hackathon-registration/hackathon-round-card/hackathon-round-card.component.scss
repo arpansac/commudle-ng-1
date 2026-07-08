@@ -81,6 +81,20 @@
       @apply com-font-semibold com-text-Yankees-Blue com-mb-1;
     }
 
+    .round-chips {
+      @apply com-flex com-flex-wrap com-gap-1.5 com-mb-1;
+
+      .elimination-chip {
+        @apply com-inline-flex com-items-center com-gap-1 com-text-xs com-font-semibold;
+        @apply com-bg-red-100 com-text-red-700 com-px-2 com-py-0.5 com-rounded-full;
+        @apply dark:com-bg-red-900 dark:com-text-red-300;
+
+        nb-icon {
+          @apply com-text-xs;
+        }
+      }
+    }
+
     .round-date {
       @apply com-text-sm com-text-gray-600 com-mb-1 com-break-words;
     }
