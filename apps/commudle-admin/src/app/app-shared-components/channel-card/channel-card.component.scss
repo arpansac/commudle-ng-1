@@ -25,7 +25,7 @@ com-card {
     }
 
     .details-container {
-      @apply com-flex com-flex-col com-w-full;
+      @apply com-flex com-flex-col com-w-full com-min-w-0 com-overflow-hidden;
 
       .details {
         @apply com-flex com-flex-col com-items-start;
