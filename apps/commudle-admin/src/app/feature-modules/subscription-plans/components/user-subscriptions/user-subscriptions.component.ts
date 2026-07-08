@@ -113,17 +113,27 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
 
   canCreateKommunity(subscription: IUserSubscription): boolean {
     if (subscription.status !== 'active') return false;
-    const max = subscription.product_price?.max_kommunities;
-    if (!max) return true;
-    return subscription.kommunities_count < max;
+    const limit = subscription.komunity_limit;
+    if (!limit) return true;
+    return subscription.kommunities_count < limit;
   }
 
   canCreateCommunityGroup(subscription: IUserSubscription): boolean {
     if (subscription.status !== 'active') return false;
     if (!subscription.product_price?.can_create_community_group) return false;
-    const max = subscription.product_price?.max_community_groups;
-    if (!max) return true;
-    return subscription.community_groups_count < max;
+    const limit = subscription.community_group_limit;
+    if (!limit) return true;
+    return subscription.community_groups_count < limit;
+  }
+
+  /** Effective community cap — stored on the subscription at purchase time. */
+  effectiveCommunityMax(subscription: IUserSubscription): number | null {
+    return subscription.komunity_limit ?? null;
+  }
+
+  /** Effective organization cap — stored on the subscription at purchase time. */
+  effectiveGroupMax(subscription: IUserSubscription): number | null {
+    return subscription.community_group_limit ?? null;
   }
 
   createCommunity(subscription: IUserSubscription | null): void {
