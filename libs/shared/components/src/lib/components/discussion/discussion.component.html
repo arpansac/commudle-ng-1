@@ -27,13 +27,21 @@
 
   <commudle-editor
     (contentChange)="discussionHandlerService.sendMessage($event)"
-    *ngIf="(authService.currentUser$ | async)?.id; else notLoggedIn"
+    *ngIf="discussionOpen && (authService.currentUser$ | async)?.id; else notLoggedIn"
     [validators]="validators"
   ></commudle-editor>
   <ng-template #notLoggedIn>
-    <a [routerLink]="['/login']" nbButton status="primary">
-      <nb-icon icon="log-in-outline"></nb-icon>
-      Login to join the discussion
-    </a>
+    <ng-container *ngIf="discussionOpen; else discussionClosed">
+      <a [routerLink]="['/login']" nbButton status="primary">
+        <nb-icon icon="log-in-outline"></nb-icon>
+        Login to join the discussion
+      </a>
+    </ng-container>
+  </ng-template>
+  <ng-template #discussionClosed>
+    <div class="discussion-closed">
+      <nb-icon icon="slash-outline"></nb-icon>
+      <span>Comments are turned off.</span>
+    </div>
   </ng-template>
 </div>

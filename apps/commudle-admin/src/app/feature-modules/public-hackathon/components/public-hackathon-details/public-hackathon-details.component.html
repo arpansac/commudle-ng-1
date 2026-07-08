@@ -202,15 +202,25 @@
     </div>
 
     <com-card id="comments" class="comments">
-      <com-card-header>
+      <com-card-header class="comments-header">
         <h2>
           <a [routerLink]="['.']" fragment="comments"> Comments </a>
         </h2>
+        <button
+          *ngIf="isOrganizer && discussionChat && items"
+          nbButton
+          ghost
+          [nbContextMenu]="items"
+          nbContextMenuTrigger="click"
+        >
+          <fa-icon [icon]="icons.faEllipsisVertical"></fa-icon>
+        </button>
       </com-card-header>
       <com-card-body>
         <commudle-discussion
           *ngIf="discussionChat"
           [discussionId]="discussionChat.id"
+          [discussionOpen]="discussionChat.open"
           discussionParent="hackathon"
         ></commudle-discussion>
       </com-card-body>

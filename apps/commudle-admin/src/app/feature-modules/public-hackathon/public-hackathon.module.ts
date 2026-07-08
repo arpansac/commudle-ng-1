@@ -14,6 +14,7 @@ import {
   NbSelectModule,
   NbTagModule,
   NbPopoverModule,
+  NbContextMenuModule,
 } from '@commudle/theme';
 import { PublicHackathonHomepageComponent } from './components/public-hackathon-homepage/public-hackathon-homepage.component';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
@@ -71,6 +72,7 @@ import { SpeakerCardComponent } from 'apps/commudle-admin/src/app/feature-module
     NbSelectModule,
     NbTagModule,
     NbPopoverModule,
+    NbContextMenuModule,
     FontAwesomeModule,
     NgxDocViewerModule,
     SharedComponentsModule,

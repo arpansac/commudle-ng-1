@@ -31,6 +31,7 @@ export class DiscussionComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() discussionId!: number;
   @Input() discussionParent = '';
   @Input() fromLastRead = false;
+  @Input() discussionOpen = true;
 
   hasRequestedFirstTime = true;
   hackathon: IHackathon;

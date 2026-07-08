@@ -10,6 +10,7 @@ import {
   ICommunity,
 } from '@commudle/shared-models';
 import {
+  DiscussionService,
   FaqService,
   ILogoTint,
   LogoTintService,
@@ -20,6 +21,7 @@ import {
   SeoService,
   removeHtmlTags,
 } from '@commudle/shared-services';
+import { NbMenuService } from '@commudle/theme';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { DiscussionsService } from 'apps/commudle-admin/src/app/services/discussions.service';
 import { HackathonResponseGroupService } from 'apps/commudle-admin/src/app/services/hackathon-response-group.service';
@@ -31,8 +33,15 @@ import { IContactInfo } from 'apps/shared-models/contact-info.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import * as moment from 'moment';
 import * as momentTimezone from 'moment-timezone';
-import { Subject, Subscription, takeUntil } from 'rxjs';
-import { faPencil, faSackDollar, faCircleQuestion, faLink, faGlobe } from '@fortawesome/free-solid-svg-icons';
+import { Subject, Subscription, takeUntil, map } from 'rxjs';
+import {
+  faPencil,
+  faSackDollar,
+  faCircleQuestion,
+  faLink,
+  faGlobe,
+  faEllipsisVertical,
+} from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faLinkedin, faInstagram, faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
 @Component({
   selector: 'commudle-public-hackathon-details',
@@ -59,6 +68,8 @@ export class PublicHackathonDetailsComponent implements OnInit, OnDestroy {
   isRegistrationOpen = false;
   hackathonStatus: string;
   hackathonSocial: IContactInfo;
+  items: [{ title: string }];
+  private commentsMenuInitialized = false;
   icons = {
     faPencil,
     faSackDollar,
@@ -70,6 +81,7 @@ export class PublicHackathonDetailsComponent implements OnInit, OnDestroy {
     faTwitter,
     faGithub,
     faGlobe,
+    faEllipsisVertical,
   };
 
   onSponsorStripGradientEnter = onSponsorStripGradientEnter;
@@ -95,6 +107,8 @@ export class PublicHackathonDetailsComponent implements OnInit, OnDestroy {
     private communitiesService: CommunitiesService,
     private seoService: SeoService,
     private logoTintService: LogoTintService,
+    private discussionService: DiscussionService,
+    private menuService: NbMenuService,
   ) {}
 
   ngOnInit() {
@@ -237,6 +251,7 @@ export class PublicHackathonDetailsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.discussionsService.PublicGetOrCreateForHackathon(this.hackathon.id).subscribe((data) => {
         this.discussionChat = data;
+        this.setupCommentsMenu();
       }),
     );
   }
@@ -264,13 +279,43 @@ export class PublicHackathonDetailsComponent implements OnInit, OnDestroy {
   isOrganizerCheck() {
     this.subscriptions.push(
       this.communitiesService.userManagedCommunities$.subscribe((data: ICommunity[]) => {
-        if (data.find((cSlug) => cSlug.slug === this.community.slug) !== undefined) {
-          this.isOrganizer = true;
-        } else {
-          this.isOrganizer = false;
-        }
+        this.isOrganizer = data.find((cSlug) => cSlug.slug === this.community.slug) !== undefined;
+        this.setupCommentsMenu();
       }),
     );
+  }
+
+  // Organizer-only: context menu to turn comments on/off, mirroring the public event page.
+  private setupCommentsMenu() {
+    if (!this.isOrganizer || !this.discussionChat) {
+      return;
+    }
+    this.updateCommentsMenu();
+
+    if (!this.commentsMenuInitialized) {
+      this.commentsMenuInitialized = true;
+      this.subscriptions.push(
+        this.menuService
+          .onItemClick()
+          .pipe(map(({ item }) => item.title))
+          .subscribe((menuItemTitle) => {
+            if (menuItemTitle === 'Turn OFF Comments' || menuItemTitle === 'Turn ON Comments') {
+              this.toggleComments();
+            }
+          }),
+      );
+    }
+  }
+
+  toggleComments() {
+    this.discussionService.toggleDiscussionOpen(this.discussionChat.id).subscribe((value: boolean) => {
+      this.discussionChat.open = value;
+      this.updateCommentsMenu();
+    });
+  }
+
+  private updateCommentsMenu() {
+    this.items = [{ title: this.discussionChat.open ? 'Turn OFF Comments' : 'Turn ON Comments' }];
   }
 
   getHackathonSocial(): void {
