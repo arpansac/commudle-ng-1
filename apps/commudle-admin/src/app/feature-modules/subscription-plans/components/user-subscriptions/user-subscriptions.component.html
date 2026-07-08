@@ -117,32 +117,37 @@
             <span class="billing-label">Started</span>
             <span class="billing-value">{{ sub.starts_at | date : 'MMM d, y' }}</span>
           </div>
-          <div class="billing-divider"></div>
-          <div class="billing-item" *ngIf="sub.ends_at">
-            <span class="billing-label">{{ sub.status === 'active' ? 'Renews' : 'Ended' }}</span>
-            <span class="billing-value">{{ sub.ends_at | date : 'MMM d, y' }}</span>
-          </div>
-          <div class="billing-divider" *ngIf="sub.ends_at"></div>
-          <div class="billing-item">
-            <span class="billing-label">Communities</span>
-            <span
-              class="billing-value quota-value"
-              [ngClass]="getQuotaClass(sub.kommunities_count, sub.product_price?.max_kommunities)"
-            >
-              {{ sub.kommunities_count
-              }}<span class="quota-max"> / {{ sub.product_price?.max_kommunities ?? '∞' }}</span>
-            </span>
-          </div>
+
+          <ng-container *ngIf="sub.ends_at">
+            <div class="billing-divider"></div>
+            <div class="billing-item">
+              <span class="billing-label">{{ sub.status === 'active' ? 'Renews' : 'Ended' }}</span>
+              <span class="billing-value">{{ sub.ends_at | date : 'MMM d, y' }}</span>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="sub.product_price?.can_create_kommunity">
+            <div class="billing-divider"></div>
+            <div class="billing-item">
+              <span class="billing-label">Communities</span>
+              <span
+                class="billing-value quota-value"
+                [ngClass]="getQuotaClass(sub.kommunities_count, effectiveCommunityMax(sub))"
+              >
+                {{ sub.kommunities_count }}<span class="quota-max"> / {{ effectiveCommunityMax(sub) ?? '∞' }}</span>
+              </span>
+            </div>
+          </ng-container>
+
           <ng-container *ngIf="sub.product_price?.can_create_community_group">
             <div class="billing-divider"></div>
             <div class="billing-item">
               <span class="billing-label">Organizations</span>
               <span
                 class="billing-value quota-value"
-                [ngClass]="getQuotaClass(sub.community_groups_count, sub.product_price?.max_community_groups)"
+                [ngClass]="getQuotaClass(sub.community_groups_count, effectiveGroupMax(sub))"
               >
-                {{ sub.community_groups_count
-                }}<span class="quota-max"> / {{ sub.product_price?.max_community_groups ?? '∞' }}</span>
+                {{ sub.community_groups_count }}<span class="quota-max"> / {{ effectiveGroupMax(sub) ?? '∞' }}</span>
               </span>
             </div>
           </ng-container>
@@ -167,16 +172,16 @@
             </button>
           </div>
 
-          <!-- Progress bar (only when max is set) -->
-          <div class="quota-bar" *ngIf="sub.product_price?.max_kommunities">
+          <!-- Progress bar (only when limit is set) -->
+          <div class="quota-bar" *ngIf="effectiveCommunityMax(sub)">
             <div
               class="quota-bar-fill"
-              [ngClass]="getProgressClass(sub.kommunities_count, sub.product_price?.max_kommunities)"
-              [style.width.%]="getQuotaPercent(sub.kommunities_count, sub.product_price?.max_kommunities)"
+              [ngClass]="getProgressClass(sub.kommunities_count, effectiveCommunityMax(sub))"
+              [style.width.%]="getQuotaPercent(sub.kommunities_count, effectiveCommunityMax(sub))"
             ></div>
           </div>
-          <span class="quota-hint" *ngIf="sub.status === 'active' && sub.product_price?.max_kommunities">
-            {{ getRemaining(sub.kommunities_count, sub.product_price?.max_kommunities) }} slot(s) remaining
+          <span class="quota-hint" *ngIf="sub.status === 'active' && effectiveCommunityMax(sub)">
+            {{ getRemaining(sub.kommunities_count, effectiveCommunityMax(sub)) }} slot(s) remaining
           </span>
           <span class="quota-hint quota-full" *ngIf="!canCreateKommunity(sub) && sub.status === 'active'">
             Quota reached
@@ -215,11 +220,11 @@
             </button>
           </div>
 
-          <div class="quota-bar" *ngIf="sub.product_price?.max_community_groups">
+          <div class="quota-bar" *ngIf="effectiveGroupMax(sub)">
             <div
               class="quota-bar-fill"
-              [ngClass]="getProgressClass(sub.community_groups_count, sub.product_price?.max_community_groups)"
-              [style.width.%]="getQuotaPercent(sub.community_groups_count, sub.product_price?.max_community_groups)"
+              [ngClass]="getProgressClass(sub.community_groups_count, effectiveGroupMax(sub))"
+              [style.width.%]="getQuotaPercent(sub.community_groups_count, effectiveGroupMax(sub))"
             ></div>
           </div>
 

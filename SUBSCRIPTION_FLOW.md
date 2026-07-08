@@ -463,13 +463,18 @@ surfaced to the frontend as `trial_enabled` / `trial_period_days`).
 
 - The plan card (`product-price-details`) shows an **"N-day free trial"** badge.
 - On the checkout page, when the plan offers a trial the **trial toggle defaults ON**
-  (`withTrial = hasTrial` in `onProductPriceLoaded`). The summary then shows
-  **"Due today → $0"** with **"Then $X after your N-day trial"**, and the pay button
-  reads **"Start N-day free trial"**.
+  (`withTrial = hasTrial` in `onProductPriceLoaded`). The summary shows a small
+  **refundable card-verification charge** as "Due today" (`cardVerificationCharge`, ~$0.50)
+  with **"Then $X after your N-day trial"**, and the pay button reads
+  **"Start N-day free trial"**.
 - `createRzpSubscription(poId, withTrial)` sends `with_trial=true`, so the backend sets
-  Razorpay `start_at`. The card is authorized now (a small, auto-refunded card-mandate
-  auth may appear — a Razorpay requirement for cards), **$0 is charged today**, and the
-  plan is **auto-charged when the trial ends**.
+  Razorpay `start_at`. Razorpay runs a **card-mandate authorization transaction** to
+  validate the card (a small nominal amount, ~$0.50 for USD / ₹5 for INR, that is
+  **refunded immediately**) — this is a Razorpay requirement, not an amount we set. The
+  plan itself is **$0 for the trial** and is **auto-charged when the trial ends**.
+- The checkout copy surfaces this so the verification charge isn't a surprise at pay time.
+  See Razorpay docs: [subscriptions workflow](https://razorpay.com/docs/payments/subscriptions/workflow/),
+  [subscriptions FAQs](https://www.razorpay.com/docs/subscriptions/faqs/).
 - The user can uncheck the toggle to skip the trial and pay in full immediately.
 - The post-trial charge is reflected in our DB by the `subscription.charged` webhook
   (see backend doc §9).
@@ -526,6 +531,43 @@ shows an in-dialog success state with confetti and action buttons:
 
 Successful checkout for a product price also triggers a celebratory confetti burst
 (`ConfettiService.celebrate()` from `@commudle/shared-services`).
+
+---
+
+## 6f. Cancelling a Subscription
+
+On the My Subscriptions page (`user-subscriptions` component), active subscriptions show
+a **Cancel** button in the card header.
+
+- Clicking it opens a confirmation dialog explaining the user keeps access until
+  `ends_at`, won't be charged again, and existing communities stay active.
+- Confirming calls `UserSubscriptionService.cancelSubscription(id, cancelAtCycleEnd = true)`
+  → `POST /api/v2/user_subscriptions/cancel`.
+- The affected card is updated **in place** from the response (no full reload), and a
+  "Cancels <date>" chip replaces the "days left" chip while
+  `cancellation_requested_at` is set.
+- Default is **cancel-at-cycle-end**: the subscription stays `active` until the paid
+  period ends; the backend `subscription.cancelled` webhook flips it to `cancelled` when
+  Razorpay actually ends it.
+- **No refund** is issued on cancellation (cancellation and refunds are separate Razorpay
+  operations). See `gdgapp/SUBSCRIPTION_FLOW.md` §11.
+- The **Renew** button on expired/cancelled cards is currently **disabled** — renewal
+  would create a new subscription without re-linking existing communities (see backend
+  §13 edge cases).
+
+`IUserSubscription` exposes `cancellation_requested_at?: string`.
+
+---
+
+## 6g. Navigation Access
+
+"My Subscriptions" (→ `/subscriptions`) is linked from the user menu in both:
+
+- **Desktop** dropdown — `navbar-user-context-menu` (ACCOUNT section, with a "New" badge).
+- **Mobile** menu — `user-account-menu` (icon + label + "New" badge).
+
+The subscriptions area also has a **Payment History** page
+(`GET /api/v2/user_subscriptions/payment_history`, route `/subscriptions/payment-history`).
 
 ---
 
@@ -603,10 +645,13 @@ Successful checkout for a product price also triggers a celebratory confetti bur
 
 ### Subscriptions
 
-| Method | Endpoint                                  | Description                             |
-| ------ | ----------------------------------------- | --------------------------------------- |
-| `GET`  | `/api/v2/user_subscriptions`              | List all subscriptions for current user |
-| `GET`  | `/api/v2/user_subscriptions/show?id=<id>` | Single subscription details             |
+| Method | Endpoint                                     | Description                                           |
+| ------ | -------------------------------------------- | ----------------------------------------------------- |
+| `GET`  | `/api/v2/user_subscriptions`                 | List all subscriptions for current user               |
+| `GET`  | `/api/v2/user_subscriptions/show?id=<id>`    | Single subscription details                           |
+| `GET`  | `/api/v2/user_subscriptions/stats`           | Active / trialing / expired counts                    |
+| `GET`  | `/api/v2/user_subscriptions/payment_history` | Paginated purchase-order history                      |
+| `POST` | `/api/v2/user_subscriptions/cancel`          | Cancel a subscription (`{ id, cancel_at_cycle_end }`) |
 
 ### Community Creation
 
@@ -636,6 +681,12 @@ Successful checkout for a product price also triggers a celebratory confetti bur
 8. **Only subscription plan purchases redirect to `/subscriptions`** — Non-subscription `ProductPrice` purchases redirect to `/checkout/:uuid/complete` after payment.
 
 9. **Razorpay webhook handles async payment & subscription events** — `POST /api/v2/wh/razorpay_api` receives events and processes them via `WRazorpay::RazorpayWebhookWorker` on the `:rzp_webhook` Sidekiq queue. Payment/order events (`payment.captured`, `payment.authorized`, `payment.failed`, `order.paid`) update orders; subscription events (`subscription.charged`, `subscription.activated`, `subscription.pending`, `subscription.halted`, `subscription.cancelled`, `subscription.completed`) drive **auto-billing** — `subscription.charged` extends `ends_at`, clears the trial, and marks the PO paid (idempotent). See `gdgapp/SUBSCRIPTION_FLOW.md` §9.
+
+10. **Cancellation is cancel-at-cycle-end, no refund** — cancelling keeps access until `ends_at` and stops future charges, but never refunds the current period. The `subscription.cancelled` webhook flips status to `cancelled`. See §6f and backend §11.
+
+11. **Community name is globally unique** — `CommunityGroup.name` has a global uniqueness validation + DB index; the create API returns a friendly "Name has already been taken" error.
+
+12. **Known gaps** — quota checks use `max_kommunities` / `max_community_groups` only and ignore the purchased `quantity`; renewal creates a new subscription without re-linking existing communities (the "Renew" button is disabled for now). See backend §13.
 
 ---
 
