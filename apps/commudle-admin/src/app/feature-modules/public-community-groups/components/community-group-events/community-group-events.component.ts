@@ -6,12 +6,13 @@ import { IEvent } from 'apps/shared-models/event.model';
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
+import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-    selector: 'commudle-community-group-events',
-    templateUrl: './community-group-events.component.html',
-    styleUrls: ['./community-group-events.component.scss'],
-    standalone: false
+  selector: 'commudle-community-group-events',
+  templateUrl: './community-group-events.component.html',
+  styleUrls: ['./community-group-events.component.scss'],
+  standalone: false,
 })
 export class CommunityGroupEventsComponent implements OnInit {
   communityGroup: ICommunityGroup;
@@ -26,6 +27,7 @@ export class CommunityGroupEventsComponent implements OnInit {
   limit = 6;
   isLoadingUpcoming = false;
   isLoadingPast = false;
+  faCalendarDays = faCalendarDays;
 
   constructor(
     private activatedRoute: ActivatedRoute,

@@ -5,12 +5,13 @@ import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/com
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
+import { faUserGroup } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-    selector: 'app-community-group-team',
-    templateUrl: './community-group-team.component.html',
-    styleUrls: ['./community-group-team.component.scss'],
-    standalone: false
+  selector: 'app-community-group-team',
+  templateUrl: './community-group-team.component.html',
+  styleUrls: ['./community-group-team.component.scss'],
+  standalone: false,
 })
 export class CommunityGroupTeamComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;
@@ -20,6 +21,7 @@ export class CommunityGroupTeamComponent implements OnInit, OnDestroy {
   total = 0;
   limit = 8;
   isLoading = true;
+  faUserGroup = faUserGroup;
 
   constructor(
     private activatedRoute: ActivatedRoute,

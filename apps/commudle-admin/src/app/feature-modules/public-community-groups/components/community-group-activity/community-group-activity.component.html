@@ -65,7 +65,11 @@
             <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
             <div class="channels-cards-list">
               <div class="channel-card" *ngFor="let channel of channels">
-                <commudle-channel-card [channel]="channel" [horizontalScroll]="true"></commudle-channel-card>
+                <commudle-channel-card
+                  [channel]="channel"
+                  [horizontalScroll]="true"
+                  [showLatestMessage]="false"
+                ></commudle-channel-card>
               </div>
             </div>
           </com-card-body>

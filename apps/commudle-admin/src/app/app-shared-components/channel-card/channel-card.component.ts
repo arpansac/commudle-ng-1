@@ -29,13 +29,14 @@ export class ChannelCardComponent implements OnInit, OnDestroy {
   @Input() channel: ICommunityChannel;
   @Input() community: ICommunity;
   @Input() horizontalScroll = false;
+  @Input() showLatestMessage = true;
   private showDescriptioninterval: Subscription;
   showDescription = true;
 
   constructor(private communitiesService: CommunitiesService, @Inject(PLATFORM_ID) private platformId: object) {}
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
+    if (isPlatformBrowser(this.platformId) && this.showLatestMessage) {
       this.showDescriptioninterval = interval(8000).subscribe(() => {
         this.showDescription = !this.showDescription;
       });

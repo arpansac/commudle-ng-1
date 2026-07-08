@@ -1,7 +1,7 @@
 <!-- upcoming events -->
 <com-card *ngIf="upcomingEvents.length > 0" class="events-card">
   <com-card-header>
-    <h6 class="section-title">Upcoming Events</h6>
+    <h6 class="section-title"><fa-icon [icon]="faCalendarDays"></fa-icon> Upcoming Events</h6>
   </com-card-header>
   <com-card-body>
     <app-loading-spinner *ngIf="isLoadingUpcoming"></app-loading-spinner>
@@ -17,7 +17,7 @@
 <!-- past events -->
 <com-card class="events-card">
   <com-card-header>
-    <h6 class="section-title">Past Events</h6>
+    <h6 class="section-title"><fa-icon [icon]="faCalendarDays"></fa-icon> Past Events</h6>
   </com-card-header>
   <com-card-body>
     <app-loading-spinner *ngIf="isLoadingPast"></app-loading-spinner>

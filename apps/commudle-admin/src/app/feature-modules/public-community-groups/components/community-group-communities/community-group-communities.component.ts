@@ -6,12 +6,13 @@ import { ICommunity } from 'apps/shared-models/community.model';
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-    selector: 'app-community-group-communities',
-    templateUrl: './community-group-communities.component.html',
-    styleUrls: ['./community-group-communities.component.scss'],
-    standalone: false
+  selector: 'app-community-group-communities',
+  templateUrl: './community-group-communities.component.html',
+  styleUrls: ['./community-group-communities.component.scss'],
+  standalone: false,
 })
 export class CommunityGroupCommunitiesComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;
@@ -21,6 +22,7 @@ export class CommunityGroupCommunitiesComponent implements OnInit, OnDestroy {
   limit = 6;
   isLoading = true;
   total: number;
+  faUsers = faUsers;
 
   constructor(
     private activatedRoute: ActivatedRoute,
