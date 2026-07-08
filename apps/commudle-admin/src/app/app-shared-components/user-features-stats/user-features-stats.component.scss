@@ -19,7 +19,12 @@
 }
 
 .stat-card-link {
-  @apply com-cursor-pointer;
+  @apply com-cursor-pointer com-rounded-lg;
+  background: linear-gradient(90deg, rgba(51, 102, 255, 0.08) 0%, rgba(51, 102, 255, 0.04) 100%);
+  background-size: 0% 100%;
+  background-repeat: no-repeat;
+  background-position: left;
+  transition: background-size 0.4s ease;
 
   .hovered-icon {
     @apply com-hidden;
@@ -30,12 +35,16 @@
   }
 
   &:hover {
+    background-size: 100% 100%;
+
     .default-icon {
       @apply com-hidden;
     }
 
     .hovered-icon {
       @apply com-block;
+      color: inherit;
+      animation: popIn 0.3s ease-out;
     }
 
     .default-label {
@@ -43,8 +52,37 @@
     }
 
     .hovered-label {
-      @apply com-block;
+      @apply com-block com-text-primary-500;
+      animation: slideIn 0.3s ease-out;
     }
+  }
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  70% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(-4px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
   }
 }
 
