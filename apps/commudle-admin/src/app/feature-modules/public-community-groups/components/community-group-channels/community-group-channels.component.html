@@ -1,7 +1,14 @@
-<div class="router-tags">
-  <a class="router-tag" [routerLink]="['./']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-    >Org Channels</a
-  >
-  <a class="router-tag" [routerLink]="['./community-channels']" routerLinkActive="active">Community Channels</a>
-</div>
-<router-outlet></router-outlet>
+<com-card class="channels-card">
+  <com-card-header>
+    <h6 class="section-title"><fa-icon [icon]="faHashtag"></fa-icon> Channels</h6>
+  </com-card-header>
+  <com-card-body>
+    <div class="router-tags">
+      <a class="router-tag" [routerLink]="['./']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+        >Org Channels</a
+      >
+      <a class="router-tag" [routerLink]="['./community-channels']" routerLinkActive="active">Community Channels</a>
+    </div>
+    <router-outlet></router-outlet>
+  </com-card-body>
+</com-card>

@@ -2,10 +2,10 @@ com-card {
   @apply com-mx-0;
 
   .channels-cards-list {
-    @apply com-flex com-flex-nowrap md:com-flex-wrap com-justify-between md:com-gap-4 com-gap-0;
+    @apply com-grid com-grid-cols-1 md:com-grid-cols-2 com-gap-4;
 
     .channel-card {
-      @apply md:com-w-[606px] com-w-full;
+      @apply com-w-full;
     }
   }
 }

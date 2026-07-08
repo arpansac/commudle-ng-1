@@ -1,9 +1,38 @@
+.channels-card {
+  @apply com-m-0 com-mt-4;
+
+  com-card-header {
+    @apply com-px-4 com-py-2 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+    background: linear-gradient(135deg, #f7f7f8 0%, #ffffff 50%, #f7f7f8 100%);
+    @apply dark:com-from-[#080808] dark:com-via-[#141414] dark:com-to-[#080808] dark:com-bg-gradient-to-br;
+
+    .section-title {
+      @apply com-m-0 com-text-base com-font-semibold com-text-Yankees-Blue;
+
+      fa-icon {
+        @apply com-text-primary-500 com-mr-2;
+      }
+    }
+  }
+
+  com-card-body {
+    @apply com-p-4;
+  }
+}
+
 .router-tags {
-  @apply com-flex com-gap-4 com-my-4;
+  @apply com-flex com-gap-0 com-mb-6 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
   .router-tag {
-    @apply com-bg-[#EFF3FF] com-text-primary-500 com-px-3 com-py-1 com-border com-border-solid com-border-primary-500 com-rounded-2xl com-no-underline;
+    @apply com-text-sm com-font-medium com-text-gray-500 com-px-4 com-py-2 com-no-underline com-border-0 com-border-b-2 com-border-solid com-border-transparent com-bg-transparent com-rounded-none;
+    transition: color 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+      @apply com-text-primary-500;
+    }
+
     &.active {
-      @apply com-bg-primary-500 com-text-white;
+      @apply com-text-primary-500 com-border-primary-500 com-bg-transparent;
     }
   }
 }
