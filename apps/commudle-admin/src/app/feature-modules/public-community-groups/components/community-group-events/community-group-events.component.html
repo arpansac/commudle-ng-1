@@ -1,11 +1,15 @@
 <!-- upcoming events -->
-<com-card *ngIf="upcomingEvents.length > 0" class="events-card">
+<com-card *ngIf="upcomingEvents.length > 0 || isLoadingUpcoming" class="events-card">
   <com-card-header>
     <h6 class="section-title"><fa-icon [icon]="faCalendarDays"></fa-icon> Upcoming Events</h6>
   </com-card-header>
   <com-card-body>
     <app-loading-spinner *ngIf="isLoadingUpcoming"></app-loading-spinner>
-    <div class="upcoming-event-cards-list" [ngClass]="upcomingEvents.length === 1 ? 'single-event' : 'multiple-event'">
+    <div
+      *ngIf="upcomingEvents.length > 0"
+      class="upcoming-event-cards-list"
+      [ngClass]="upcomingEvents.length === 1 ? 'single-event' : 'multiple-event'"
+    >
       <commudle-event-medium-card *ngFor="let event of upcomingEvents" [event]="event"></commudle-event-medium-card>
     </div>
     <button (click)="getUpcomingEvents()" *ngIf="upcomingPageInfo?.has_next_page" fullWidth ghost nbButton>
@@ -20,7 +24,6 @@
     <h6 class="section-title"><fa-icon [icon]="faCalendarDays"></fa-icon> Past Events</h6>
   </com-card-header>
   <com-card-body>
-    <app-loading-spinner *ngIf="isLoadingPast"></app-loading-spinner>
     <div (scrolled)="getPastEvents()" [infiniteScrollDisabled]="pastEvents.length >= total" appInfiniteScroll>
       <div class="past-events-card-list">
         <commudle-event-card *ngFor="let event of pastEvents" [event]="event"></commudle-event-card>

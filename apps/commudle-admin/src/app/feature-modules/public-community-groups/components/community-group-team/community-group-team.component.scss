@@ -19,7 +19,7 @@
     @apply com-p-4;
 
     .members {
-      @apply com-grid com-grid-cols-2 md:com-grid-cols-4 com-gap-4;
+      @apply com-grid com-grid-cols-1 md:com-grid-cols-4 com-gap-4;
     }
   }
 }

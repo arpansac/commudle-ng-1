@@ -1,5 +1,5 @@
 .community-group {
-  @apply com-m-0 md:com-mb-4;
+  @apply com-m-0 md:com-mb-4 com-overflow-x-hidden;
 
   .header {
     @apply com-flex com-flex-col com-bg-white com-m-0 com-border com-border-solid com-border-Bright-Gray com-border-b-0;
@@ -16,7 +16,7 @@
       @apply com-relative com-flex md:com-flex-row com-flex-col com-content-start com-mx-0 com-pb-4;
 
       .logo-section {
-        @apply com-h-44 com-w-44 com-rounded-xl -com-mt-20 com-mx-6 com-bg-tWhite com-shadow-md com-flex com-items-center com-justify-center com-flex-shrink-0;
+        @apply md:com-h-44 md:com-w-44 com-h-28 com-w-28 com-rounded-xl md:-com-mt-20 -com-mt-[60px] md:com-mx-6 com-mx-4 com-bg-tWhite com-shadow-md com-flex com-items-center com-justify-center com-flex-shrink-0;
 
         .logo {
           @apply com-my-0 com-mx-auto com-h-full com-w-full com-px-2 com-object-contain com-rounded-xl;
@@ -24,10 +24,10 @@
       }
 
       .details {
-        @apply com-flex com-flex-col com-items-center md:com-items-start md:com-ml-0 md:com-mr-4 com-mx-4 com-mt-5 com-w-full;
+        @apply com-flex com-flex-col com-items-start md:com-ml-0 md:com-mr-4 com-mx-4 com-mt-5 com-w-full;
 
         .heading {
-          @apply com-m-0 com-mb-2 com-flex md:com-flex-row com-flex-col com-items-center com-justify-between com-w-full;
+          @apply com-m-0 com-mb-2 com-flex md:com-flex-row com-flex-col com-items-start com-justify-between com-w-full;
 
           .name-logo {
             @apply com-flex com-flex-row com-items-center;
@@ -47,11 +47,11 @@
         }
 
         .mini-description {
-          @apply com-text-sm com-font-normal com-text-gray-500 com-m-0 com-mb-3 md:com-w-full com-w-[80%] md:com-text-start com-text-center;
+          @apply com-text-sm com-font-normal com-text-gray-500 com-m-0 com-mb-3 md:com-w-full com-w-[80%] com-text-start;
         }
 
         .links {
-          @apply com-flex md:com-flex-row com-flex-col md:com-justify-between com-items-center com-w-full com-gap-3;
+          @apply com-flex md:com-flex-row com-flex-col md:com-justify-between com-items-start com-w-full com-gap-3;
 
           .member-count {
             @apply com-m-0 com-text-gray-500 com-text-sm;

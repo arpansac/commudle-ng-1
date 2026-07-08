@@ -44,7 +44,7 @@ com-card {
   }
 
   com-card-body {
-    @apply com-p-4;
+    @apply com-m-4 com-p-0;
   }
 }
 
@@ -75,7 +75,7 @@ com-card {
 .speakers-upcoming,
 .recent-tech,
 .speakers {
-  @apply com-m-0 md:com-mt-4 com-mt-10;
+  @apply com-m-0 com-mt-4;
 }
 
 .upcoming-events-card,
@@ -83,4 +83,8 @@ com-card {
 .communities-card-header,
 .forum-card-header {
   @apply com-m-0 com-mt-4;
+}
+
+.right-column {
+  @apply md:com-bg-transparent com-bg-white md:com-pb-0 com-pb-4;
 }

@@ -2,7 +2,7 @@ com-card {
   @apply com-w-full com-cursor-pointer com-m-0;
 
   com-card-body {
-    @apply com-overflow-hidden com-flex com-flex-row com-p-3;
+    @apply com-overflow-hidden com-flex com-flex-row com-m-3 com-p-0;
 
     .logo-section {
       @apply com-mr-3 com-flex-shrink-0;
