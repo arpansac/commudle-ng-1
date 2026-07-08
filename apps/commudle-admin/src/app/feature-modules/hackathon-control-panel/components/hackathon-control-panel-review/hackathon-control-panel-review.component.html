@@ -374,7 +374,16 @@
                   class="submission-chip project-chip"
                 >
                   <fa-icon [icon]="icons.faLaptopCode"></fa-icon>
-                  <span>Project</span>
+                  <span class="chip-content">
+                    <span class="chip-title">Project</span>
+                    <span class="submission-time">
+                      {{
+                        moment(
+                          userResponse.team.community_build.published_at || userResponse.team.community_build.created_at
+                        ).format('DD MMM YYYY, h:mm A')
+                      }}
+                    </span>
+                  </span>
                 </a>
                 <a
                   *ngFor="let submission of userResponse.team.hackathon_team_round_submissions"
@@ -390,7 +399,12 @@
                   class="submission-chip"
                 >
                   <fa-icon [icon]="submission.file_attachment?.url ? icons.faFilePowerpoint : icons.faLink"></fa-icon>
-                  <span>{{ submission.round.name }}</span>
+                  <span class="chip-content">
+                    <span class="chip-title">{{ submission.round.name }}</span>
+                    <span class="submission-time">
+                      {{ moment(submission.created_at).format('DD MMM YYYY, h:mm A') }}
+                    </span>
+                  </span>
                 </a>
               </div>
               <span

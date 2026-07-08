@@ -182,7 +182,19 @@ th {
       @apply hover:com-bg-orange-100 hover:com-border-orange-300 com-transition-all com-duration-200;
 
       fa-icon {
-        @apply com-text-xs;
+        @apply com-text-xs com-flex-shrink-0;
+      }
+
+      .chip-content {
+        @apply com-flex com-flex-col com-items-start com-leading-tight;
+
+        .chip-title {
+          @apply com-font-medium;
+        }
+
+        .submission-time {
+          @apply com-text-10px com-font-normal com-opacity-80 com-whitespace-nowrap;
+        }
       }
 
       &.project-chip {
