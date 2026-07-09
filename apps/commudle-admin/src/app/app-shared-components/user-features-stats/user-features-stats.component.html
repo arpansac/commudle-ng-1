@@ -16,7 +16,7 @@
 >
   <h4 class="stats-title">AT A GLANCE</h4>
 
-  <app-skeleton-cards *ngIf="isLoading" [cards]="4"></app-skeleton-cards>
+  <app-skeleton-cards *ngIf="isLoading" [cards]="4" [ImageShapeCircle]="false"></app-skeleton-cards>
 
   <div class="stats-grid" *ngIf="!isLoading && userProfileDetails">
     <!-- Profile Visits - only own profile -->
