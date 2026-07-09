@@ -1,24 +1,36 @@
 <com-card class="user-lab">
   <com-card-body>
     <a [routerLink]="['/labs', lab.slug]">
-      <img
-        [alt]="lab.name"
-        [src]="lab.header_image?.medium || '/assets/images/Lab-Default.png'"
-        [title]="lab.name"
-        class="user-lab-cover-image"
-      />
+      <div class="user-lab-cover-image">
+        <commudle-banner-image
+          *appBreakpoints="'>md'"
+          [headerImagePath]="lab.header_image?.medium || '/assets/images/Lab-Default.png'"
+          [name]="lab.name"
+          [aspectRatio]="'16/7'"
+          [bottomRightCurve]="false"
+          [bottomLeftCurve]="false"
+        ></commudle-banner-image>
+        <commudle-banner-image
+          *appBreakpoints="'<=md'"
+          [headerImagePath]="lab.header_image?.medium || '/assets/images/Lab-Default.png'"
+          [name]="lab.name"
+          [aspectRatio]="'1 / 1'"
+          [bottomRightCurve]="false"
+          [topRightCurve]="false"
+        ></commudle-banner-image>
+      </div>
       <div class="content">
         <h4 class="user-lab-name">{{ lab.name }}</h4>
         <p class="user-lab-description">{{ lab.description }}</p>
+        <div class="user-lab-interactions">
+          <app-votes-display
+            [icon]="'heart-outline'"
+            [votableId]="lab.id"
+            [votableType]="'Lab'"
+            [textAlignment]="'after'"
+          ></app-votes-display>
+        </div>
       </div>
     </a>
-    <div class="user-lab-interactions">
-      <app-votes-display
-        [icon]="'heart-outline'"
-        [votableId]="lab.id"
-        [votableType]="'Lab'"
-        [textAlignment]="'after'"
-      ></app-votes-display>
-    </div>
   </com-card-body>
 </com-card>

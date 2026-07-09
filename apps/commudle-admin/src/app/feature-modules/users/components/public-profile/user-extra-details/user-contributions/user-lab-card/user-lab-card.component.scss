@@ -9,18 +9,21 @@ h4 {
   @apply hover:com-shadow-md;
 
   com-card-body {
-    @apply com-p-0;
+    @apply com-p-0 com-flex com-flex-row;
+    @apply md:com-flex-col;
 
     a {
-      @apply com-p-0 com-flex com-flex-col com-no-underline;
+      @apply com-p-0 com-flex com-flex-row com-no-underline com-w-full;
+      @apply md:com-flex-col;
     }
 
     .user-lab-cover-image {
-      @apply com-h-[136px] com-w-full com-object-cover com-object-center;
+      @apply com-w-1/3 com-flex-shrink-0 com-overflow-hidden;
+      @apply md:com-w-full;
     }
 
     .content {
-      @apply com-px-3 com-pt-3 com-pb-0;
+      @apply com-p-3 com-flex-1;
     }
 
     .user-lab-name {
@@ -28,11 +31,12 @@ h4 {
     }
 
     .user-lab-description {
-      @apply com-text-xs com-text-gray-500 com-line-clamp-3 com-mb-3;
+      @apply com-text-xs com-text-gray-500 com-line-clamp-2 com-mb-2;
+      @apply md:com-line-clamp-3;
     }
 
     .user-lab-interactions {
-      @apply com-flex com-flex-row com-text-sm com-gap-4 com-text-Yankees-Blue com-px-3 com-pb-3;
+      @apply com-flex com-flex-row com-text-sm com-gap-4 com-text-Yankees-Blue;
 
       span {
         @apply com-flex com-gap-1 com-items-center;
