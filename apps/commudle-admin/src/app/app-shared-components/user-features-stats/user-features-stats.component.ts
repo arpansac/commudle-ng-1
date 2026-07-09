@@ -34,6 +34,7 @@ export class UserFeaturesStatsComponent implements OnInit, OnChanges, OnDestroy 
   currentUser: IUser;
   userProfileDetails: IUserStat;
   isLoading = true;
+  profileViews;
 
   faEye = faEye;
   faMicrophone = faMicrophone;
@@ -55,6 +56,9 @@ export class UserFeaturesStatsComponent implements OnInit, OnChanges, OnDestroy 
     this.subscriptions.push(
       this.authService.currentUser$.subscribe((data) => {
         this.currentUser = data;
+        if (this.currentUser && this.currentUser.id === this.user?.id) {
+          this.fetchOwnProfileViews();
+        }
       }),
     );
   }
@@ -75,6 +79,14 @@ export class UserFeaturesStatsComponent implements OnInit, OnChanges, OnDestroy 
       this.appUsersService.getPublicProfileStats(this.user.username).subscribe((data: IUserStat) => {
         this.userProfileDetails = data;
         this.isLoading = false;
+      }),
+    );
+  }
+
+  private fetchOwnProfileViews(): void {
+    this.subscriptions.push(
+      this.appUsersService.getProfileStats().subscribe((data: IUserStat) => {
+        this.profileViews = data.profile_views;
       }),
     );
   }
