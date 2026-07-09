@@ -39,13 +39,17 @@
       }
     }
 
+    .banner-eyebrow {
+      @apply com-text-xs com-font-semibold com-uppercase com-tracking-widest com-text-primary-600 com-m-0 com-mb-1;
+    }
+
     .banner-title {
       @apply com-text-2xl com-font-bold com-text-Yankees-Blue com-m-0;
       @apply sm:com-text-3xl;
     }
 
     .banner-subtitle {
-      @apply com-text-sm com-text-gray-500 com-m-0 com-max-w-2xl;
+      @apply com-text-sm com-text-Cadet-Grey com-m-0;
     }
   }
 
@@ -133,15 +137,24 @@
     }
 
     .business-toggle-box {
-      @apply com-flex com-flex-col com-gap-1 com-p-3 com-rounded-xl;
-      @apply com-border com-border-solid com-border-Bright-Gray;
+      @apply com-flex com-items-start com-gap-2 com-p-3 com-rounded-xl;
+      @apply com-bg-Bright-Gray-opacity-30 com-border com-border-solid com-border-Bright-Gray;
+      @apply com-cursor-pointer com-transition-colors;
 
-      .business-toggle {
-        @apply com-text-sm com-font-semibold com-text-Yankees-Blue;
+      &:hover {
+        @apply com-border-primary-300;
+      }
+
+      nb-checkbox {
+        @apply com-mt-0.5 com-flex-shrink-0;
+      }
+
+      .toggle-label {
+        @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-m-0;
       }
 
       .toggle-sub {
-        @apply com-text-xs com-text-gray-500 com-pl-7;
+        @apply com-text-xs com-text-Cadet-Grey com-m-0;
       }
     }
 
@@ -326,17 +339,19 @@
     }
 
     .trial-option {
-      @apply com-flex com-flex-col com-gap-2 com-mx-4 com-my-3 com-p-3 com-rounded-xl;
+      @apply com-flex com-items-start com-gap-2 com-mx-4 com-my-3 com-p-3 com-rounded-xl;
       @apply com-bg-primary-100 com-border com-border-solid com-border-primary-200;
 
-      .trial-checkbox {
-        .trial-title {
-          @apply com-text-sm com-font-semibold com-text-primary-700;
-        }
+      nb-checkbox {
+        @apply com-mt-0.5 com-flex-shrink-0;
+      }
+
+      .trial-title {
+        @apply com-text-sm com-font-semibold com-text-primary-700 com-m-0;
       }
 
       .trial-note {
-        @apply com-flex com-items-start com-gap-2 com-m-0 com-text-xs com-text-primary-700;
+        @apply com-flex com-items-start com-gap-1.5 com-m-0 com-text-xs com-text-primary-700;
 
         fa-icon {
           @apply com-flex-shrink-0 com-mt-0.5;
@@ -419,7 +434,7 @@
   }
 
   .info-container {
-    @apply com-m-2;
+    @apply com-my-2;
   }
 }
 
