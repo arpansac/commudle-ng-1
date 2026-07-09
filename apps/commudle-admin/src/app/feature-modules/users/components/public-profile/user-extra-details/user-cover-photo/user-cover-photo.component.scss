@@ -4,14 +4,15 @@
   @apply com-relative com-bg-white md:com-rounded-t-[10px] com-rounded-t-none com-h-[220px] com-overflow-hidden;
 
   .cover-image {
-    height: inherit;
-    overflow: hidden;
+    @apply com-h-full com-overflow-hidden;
 
-    img {
-      height: inherit;
-      object-fit: cover;
-      object-position: center;
-      width: 100%;
+    commudle-banner-image {
+      @apply com-block com-h-full com-w-full;
+
+      ::ng-deep .image-container {
+        @apply com-h-full;
+        aspect-ratio: unset !important;
+      }
     }
   }
 
