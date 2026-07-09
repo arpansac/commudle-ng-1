@@ -4,7 +4,7 @@ h4 {
 }
 
 a {
-  @apply com-no-underline;
+  @apply com-no-underline com-block com-overflow-hidden;
 }
 
 .user-build {
@@ -20,7 +20,7 @@ a {
     }
 
     .details {
-      @apply com-flex com-flex-col;
+      @apply com-flex com-flex-col com-overflow-hidden com-min-w-0;
     }
 
     .user-build-name {
@@ -32,11 +32,11 @@ a {
     }
 
     .content {
-      @apply com-flex com-flex-row com-justify-between com-p-3;
+      @apply com-flex com-flex-row com-justify-between com-p-3 com-overflow-hidden;
     }
 
     .votes {
-      @apply com-ml-4 md:com-border com-border-0 com-border-Bright-Gray com-border-l com-border-solid com-px-4 com-py-10px md:com-rounded-lg com-rounded-none md:com-h-fit;
+      @apply com-ml-4 md:com-border com-border-0 com-border-Bright-Gray com-border-l com-border-solid com-px-4 com-py-10px md:com-rounded-lg com-rounded-none md:com-h-fit com-flex-shrink-0;
     }
   }
 }

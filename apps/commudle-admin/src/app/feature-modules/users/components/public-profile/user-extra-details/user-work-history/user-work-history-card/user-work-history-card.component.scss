@@ -69,14 +69,14 @@ p {
   }
 
   .date {
-    @apply com-flex com-flex-row com-items-center com-gap-1.5 com-text-sm com-font-medium com-text-gray-500 com-whitespace-nowrap;
+    @apply com-flex com-flex-row com-items-center com-gap-1.5 com-text-sm com-text-gray-500 com-whitespace-nowrap;
 
     .dot-sep {
       @apply com-text-gray-400;
     }
 
     .duration {
-      @apply com-text-sm com-font-medium com-text-gray-500;
+      @apply com-text-sm com-text-gray-500;
     }
   }
 
