@@ -46,6 +46,7 @@ export class UserBasicDetailsComponent implements OnInit, OnDestroy, OnChanges {
   tagsDialog: string[] = [];
   // The original tags
   tags: string[] = [];
+  isMobile = false;
   hiring = false;
 
   environment = environment;
@@ -78,6 +79,7 @@ export class UserBasicDetailsComponent implements OnInit, OnDestroy, OnChanges {
   ) {}
 
   ngOnInit(): void {
+    this.isMobile = typeof window !== 'undefined' ? window.innerWidth <= 768 : false;
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data));
     this.userProfileManagerService.user$.subscribe((data: IUser) => {
       this.user = data;

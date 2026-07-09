@@ -52,7 +52,7 @@
               outline
             >
               <nb-icon icon="paper-plane"></nb-icon>
-              Message
+              <span *appBreakpoints="'>md'">Message</span>
             </button>
           </ng-template>
           <app-user-follow
@@ -62,6 +62,7 @@
             [userId]="user.id"
             [disabled]="user.deactivated"
             [round]="true"
+            [iconOnly]="isMobile"
           ></app-user-follow>
         </div>
       </div>

@@ -16,6 +16,6 @@
       *ngIf="showIcon"
       [icon]="isFollowing ? (isFollowingHovered ? 'close-outline' : 'checkmark') : 'plus'"
     ></nb-icon>
-    {{ isFollowing ? (isFollowingHovered ? 'Unfollow' : 'Following') : 'Follow' }}
+    <span *ngIf="!iconOnly">{{ isFollowing ? (isFollowingHovered ? 'Unfollow' : 'Following') : 'Follow' }}</span>
   </button>
 </div>

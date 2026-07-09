@@ -17,7 +17,7 @@ p {
       }
 
       .action-btn-mobile {
-        @apply com-flex com-items-center com-gap-2 com-w-full com-justify-start com-flex-wrap md:com-mt-0 md:com-w-auto md:com-justify-end;
+        @apply com-flex com-items-center com-gap-2 com-w-full com-justify-end com-flex-wrap md:com-mt-0 md:com-w-auto md:com-justify-end;
       }
 
       .edit-icon {
@@ -66,14 +66,14 @@ p {
     }
 
     .header {
-      @apply com-flex com-flex-col md:com-flex-row com-justify-between;
+      @apply com-flex com-flex-col md:com-flex-row com-justify-between com-gap-2;
     }
 
     .user-info {
       @apply com-w-full com-mt-4;
 
       .name {
-        @apply com-flex md:com-flex-row com-flex-col md:com-gap-2 com-gap-1 md:com-items-center com-items-start com-w-auto com-mb-1 md:com-flex-wrap com-flex-wrap;
+        @apply com-flex md:com-flex-row com-flex-col com-gap-2 md:com-items-center com-items-start com-w-auto com-mb-2 md:com-flex-wrap com-flex-wrap;
 
         h1 {
           @apply com-text-3xl com-font-semibold com-text-Yankees-Blue com-flex com-items-center md:com-flex-shrink com-flex-shrink-0;
@@ -103,7 +103,7 @@ p {
       }
 
       .network {
-        @apply com-flex com-mt-4 com-gap-3;
+        @apply com-flex com-mt-2 com-gap-2;
 
         a {
           @apply com-text-sm com-font-medium com-text-Yankees-Blue com-no-underline;
@@ -115,7 +115,7 @@ p {
       }
 
       .job-toggle-cards {
-        @apply com-flex com-flex-col com-gap-2 com-mt-4 com-w-full;
+        @apply com-flex com-flex-col com-gap-2 com-mt-2 com-w-full;
 
         .job-toggle-card {
           @apply com-flex com-flex-row com-items-center com-justify-between com-px-3 com-py-2 com-rounded-lg com-border com-border-Bright-Gray;
