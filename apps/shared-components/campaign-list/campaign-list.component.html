@@ -292,17 +292,17 @@
             </td>
             <td class="action-buttons">
               <a
-                *ngIf="!isCampaignAdmin"
+                *ngIf="
+                  !isCampaignAdmin &&
+                  campaign.status !== ECampaignStatus.LIVE &&
+                  campaign.status !== ECampaignStatus.COMPLETE
+                "
                 [routerLink]="['/campaigns/edit', campaign.id]"
                 (click)="$event.stopPropagation()"
               >
                 <button
                   nbButton
-                  [disabled]="
-                    campaign.status === ECampaignStatus.APPROVED ||
-                    campaign.status === ECampaignStatus.LIVE ||
-                    campaign.status === ECampaignStatus.COMPLETE
-                  "
+                  [disabled]="campaign.status === ECampaignStatus.APPROVED"
                   outline
                   size="small"
                   class="action-btn-icon edit-btn"
