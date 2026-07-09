@@ -102,6 +102,12 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   readonly EPurchaseOrderStatus = EPurchaseOrderStatus;
   readonly EDbModels = EDbModels;
 
+  /**
+   * Small refundable card-verification charge applied by the payment provider (Razorpay)
+   * when starting a trialed subscription, to validate the card. It is refunded immediately.
+   */
+  readonly cardVerificationCharge = 0.5;
+
   private destroy$ = new Subject<void>();
   private dialogRef?: NbDialogRef<unknown>;
   private readonly isBrowser: boolean;
@@ -423,7 +429,10 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           }),
         )
         .subscribe({
-          next: (data) => this.razorPaySubscriptionSubmit(data.rzp_subscription_id),
+          next: (data) => {
+            console.log('🚀 ~ CheckoutPageComponent ~ createRazorpayOrder ~ data:', data);
+            return this.razorPaySubscriptionSubmit(data.rzp_subscription_id);
+          },
           error: () => {
             this.isLoadingPayment = false;
             this.toastrService.errorDialog('Failed to create subscription');
@@ -894,10 +903,4 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   get trialDays(): number {
     return this.productPrice?.trial_period_days || 0;
   }
-
-  /**
-   * Small refundable card-verification charge applied by the payment provider (Razorpay)
-   * when starting a trialed subscription, to validate the card. It is refunded immediately.
-   */
-  readonly cardVerificationCharge = 0.5;
 }
