@@ -1,9 +1,11 @@
 .role-card {
-  @apply com-flex com-flex-col com-rounded-lg com-overflow-hidden com-border com-border-Bright-Gray com-no-underline com-bg-white com-h-full;
+  @apply com-flex com-flex-row com-rounded-lg com-overflow-hidden com-border com-border-Bright-Gray com-no-underline com-bg-white com-h-full;
+  @apply md:com-flex-col;
   @apply hover:com-shadow-lg com-transition-shadow;
 
   .card-banner {
-    @apply com-relative com-overflow-hidden;
+    @apply com-relative com-overflow-hidden com-w-1/3 com-flex-shrink-0;
+    @apply md:com-w-full;
 
     img {
       @apply com-w-full com-h-full com-object-cover;
@@ -64,7 +66,7 @@
     }
 
     .card-meta {
-      @apply com-flex com-flex-wrap com-items-center com-gap-2 com-mt-auto;
+      @apply com-flex com-flex-col com-gap-2 com-mt-auto;
 
       .meta-item {
         @apply com-text-xs com-text-gray-500 com-flex com-items-center com-gap-1;

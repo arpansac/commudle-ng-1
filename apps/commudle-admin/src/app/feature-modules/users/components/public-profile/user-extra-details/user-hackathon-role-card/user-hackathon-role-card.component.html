@@ -2,11 +2,20 @@
   <com-card class="role-card">
     <div class="card-banner">
       <commudle-banner-image
+        *appBreakpoints="'>md'"
         [headerImagePath]="hackathon.banner_image?.i320 || placeholderImage"
         [name]="hackathon.name"
         [aspectRatio]="'16/7'"
         [bottomRightCurve]="false"
         [bottomLeftCurve]="false"
+      ></commudle-banner-image>
+      <commudle-banner-image
+        *appBreakpoints="'<=md'"
+        [headerImagePath]="hackathon.banner_image?.i320 || placeholderImage"
+        [name]="hackathon.name"
+        [aspectRatio]="'6/5'"
+        [bottomRightCurve]="false"
+        [topRightCurve]="false"
       ></commudle-banner-image>
       <span class="role-badge" [attr.data-role]="roleKey">
         <fa-icon *ngIf="roleIcon" [icon]="roleIcon"></fa-icon>
