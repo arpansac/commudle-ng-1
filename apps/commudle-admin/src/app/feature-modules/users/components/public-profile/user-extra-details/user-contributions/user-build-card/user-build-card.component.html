@@ -3,37 +3,50 @@
     <a [routerLink]="['/builds', build.slug]">
       <div class="build-card-image">
         <commudle-banner-image
+          *appBreakpoints="'>md'"
           [headerImagePath]="
-          build.thumbnail_image
-            ? build.thumbnail_image.i320
-            : build.images?.[0]
-            ? build.images[0].url
-            : staticAssets.community_build_empty_state
-        "
+            build.thumbnail_image
+              ? build.thumbnail_image.i320
+              : build.images?.[0]
+              ? build.images[0].url
+              : staticAssets.community_build_empty_state
+          "
           [name]="build.name"
           [bottomRightCurve]="false"
           [bottomLeftCurve]="false"
           [aspectRatio]="'2 / 1'"
         ></commudle-banner-image>
+        <commudle-banner-image
+          *appBreakpoints="'<=md'"
+          [headerImagePath]="
+            build.thumbnail_image
+              ? build.thumbnail_image.i320
+              : build.images?.[0]
+              ? build.images[0].url
+              : staticAssets.community_build_empty_state
+          "
+          [name]="build.name"
+          [bottomRightCurve]="false"
+          [topRightCurve]="false"
+          [aspectRatio]="'6/5'"
+        ></commudle-banner-image>
       </div>
-    </a>
-    <div class="content">
-      <a [routerLink]="['/builds', build.slug]">
+      <div class="content">
         <div class="details">
           <h4 class="user-build-name">{{ build.name }}</h4>
           <p class="time">{{ moment(build.created_at).format('MMM Do, YYYY') }}</p>
           <app-user-profile-card-small *ngIf="showBuildAuthor" [user]="build.user"></app-user-profile-card-small>
         </div>
-      </a>
-      <div class="votes">
-        <app-votes-display
-          [icon]="'star'"
-          [votableId]="build.id"
-          [votableType]="'CommunityBuild'"
-          [votesDirectionVertical]="true"
-          size="mini"
-        ></app-votes-display>
+        <div class="votes">
+          <app-votes-display
+            [icon]="'star'"
+            [votableId]="build.id"
+            [votableType]="'CommunityBuild'"
+            [votesDirectionVertical]="true"
+            size="mini"
+          ></app-votes-display>
+        </div>
       </div>
-    </div>
+    </a>
   </com-card-body>
 </com-card>

@@ -15,8 +15,18 @@ a {
   com-card-body {
     @apply com-p-0 com-flex com-flex-col;
 
+    a {
+      @apply com-flex com-flex-row com-no-underline com-overflow-hidden;
+      @apply md:com-flex-col;
+    }
+
     .build-card-image {
-      @apply com-flex com-justify-center com-w-full;
+      @apply com-flex com-justify-center com-w-1/3 com-flex-shrink-0 com-overflow-hidden;
+      @apply md:com-w-full;
+    }
+
+    .content {
+      @apply com-flex com-flex-row com-justify-between com-p-3 com-overflow-hidden com-flex-1;
     }
 
     .details {
@@ -29,10 +39,6 @@ a {
 
     .time {
       @apply com-mb-4 com-text-xs com-text-gray-500;
-    }
-
-    .content {
-      @apply com-flex com-flex-row com-justify-between com-p-3 com-overflow-hidden;
     }
 
     .votes {
