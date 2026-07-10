@@ -1,18 +1,23 @@
 .registration-card {
   @apply com-mx-0;
 
+  nb-card-header {
+    @apply com-px-4 com-py-2 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+    background: linear-gradient(135deg, #f7f7f8 0%, #ffffff 50%, #f7f7f8 100%);
+  }
+
   .registration-header {
     @apply com-flex com-justify-between com-items-center com-w-full;
 
     .status-section {
-      @apply com-flex com-flex-col com-gap-2;
+      @apply com-flex com-items-center com-gap-3;
 
       .registration-title {
-        @apply com-text-lg com-font-semibold com-text-Yankees-Blue com-m-0;
+        @apply com-text-base com-font-semibold com-text-Yankees-Blue com-m-0;
       }
 
       .status-badge {
-        @apply com-px-3 com-py-1 com-rounded-full com-text-sm com-font-medium com-w-fit;
+        @apply com-px-2 com-py-0.5 com-rounded-full com-text-xs com-font-medium com-w-fit;
 
         &.status-registered {
           @apply com-bg-blue-100 com-text-blue-800;
@@ -34,20 +39,22 @@
 
     .edit-section {
       .edit-link {
-        @apply com-text-primary-600 com-font-medium com-text-sm hover:com-text-primary-700 com-no-underline;
+        @apply com-text-primary-500 com-font-medium com-text-sm hover:com-text-primary-600 com-no-underline;
       }
     }
   }
 
-  .rounds-section {
-    @apply com-mb-6;
+  nb-card-body {
+    @apply com-p-4;
+  }
 
+  .rounds-section {
     .rounds-title {
-      @apply com-text-lg com-font-semibold com-text-Yankees-Blue com-mb-4;
+      @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-mb-3 com-m-0;
     }
 
     .rounds-container {
-      @apply com-space-y-3;
+      @apply com-flex com-flex-col com-gap-3;
     }
   }
 }

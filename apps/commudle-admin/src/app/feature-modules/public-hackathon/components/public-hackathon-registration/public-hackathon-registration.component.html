@@ -24,7 +24,7 @@
       <h4 class="rounds-title">Hackathon Rounds</h4>
       <div class="rounds-container">
         @for(round of rounds; track round.id; let i = $index){
-        <div class="com-my-1">
+        <div>
           <commudle-hackathon-round-card [round]="round" [index]="i" [userTeamDetails]="userTeamDetails">
           </commudle-hackathon-round-card>
         </div>

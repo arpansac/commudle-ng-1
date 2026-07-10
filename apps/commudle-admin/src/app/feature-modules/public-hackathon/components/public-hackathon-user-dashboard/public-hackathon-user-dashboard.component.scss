@@ -1,19 +1,23 @@
 a {
   @apply com-no-underline;
 }
+
 nb-card {
   @apply com-mx-0;
+
+  nb-card-header {
+    @apply com-px-4 com-py-2 com-text-base com-font-semibold com-text-Yankees-Blue com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+    background: linear-gradient(135deg, #f7f7f8 0%, #ffffff 50%, #f7f7f8 100%);
+  }
 }
 
 .project-details {
-  nb-card-header {
-    @apply com-text-primary-500;
-  }
   nb-card-body {
     .project-name {
-      @apply com-text-Yankees-Blue com-text-lg com-font-semibold;
+      @apply com-text-Yankees-Blue com-text-base com-font-semibold;
     }
   }
+
   nb-card-footer {
     a {
       @apply com-text-primary-500 com-text-base com-font-semibold;
@@ -23,19 +27,25 @@ nb-card {
 
 .channels-list-cards {
   @apply com-grid com-grid-cols-1 md:com-grid-cols-3 com-gap-4 com-p-5;
+
   a {
     @apply com-no-underline;
+
     .channel-list-card {
       @apply com-border com-rounded-lg com-p-4 com-h-32 com-border-gray-200 com-border-solid hover:com-shadow-Card;
+
       p {
         @apply com-p-0 com-m-0;
       }
+
       .name {
         @apply com-text-base com-font-semibold com-line-clamp-1;
       }
+
       .member-count {
         @apply com-text-sm;
       }
+
       .descriptions {
         @apply com-mt-4 com-text-sm com-text-Quartz com-line-clamp-2;
       }
@@ -49,9 +59,11 @@ nb-card {
       @apply com-flex com-flex-col;
     }
   }
+
   button {
     @apply com-px-0;
   }
+
   .team-detail:not(:last-child) {
     @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-mb-2 com-pb-2;
   }
@@ -59,6 +71,7 @@ nb-card {
 
 .remove-teammate-dialogbox {
   @apply md:com-max-w-[30dvw];
+
   nb-card-header,
   nb-card-footer {
     @apply com-flex com-justify-between com-items-center;
@@ -67,6 +80,7 @@ nb-card {
 
 .resend-invite-dialogbox {
   @apply md:com-max-w-[30dvw];
+
   nb-card-header,
   nb-card-footer {
     @apply com-flex com-justify-between com-items-center;
@@ -82,6 +96,7 @@ nb-card {
 
   .select {
     @apply com-flex com-items-center com-gap-2 com-h-10 com-p-2 com-text-base com-rounded-10 com-cursor-pointer com-bg-white hover:com-bg-white-opacity-40 com-border com-border-solid com-border-Bright-Gray com-w-full com-text-Yankees-Blue;
+
     select {
       @apply com-bg-white hover:com-bg-white-opacity-40 com-cursor-pointer com-border-0 com-w-full com-text-Yankees-Blue;
     }
@@ -90,10 +105,12 @@ nb-card {
 
 .edit-team-members-dialog {
   @apply com-w-full md:com-w-[30dvw] com-max-h-90dvh;
+
   nb-card-header {
     @apply com-flex com-justify-between com-items-center;
   }
 }
+
 .problem-statement-prompt {
   @apply com-mb-4;
 
@@ -108,6 +125,7 @@ nb-card {
 
 .problem-statement-dialog {
   @apply com-max-h-[90dvh] md:com-w-[30dvw];
+
   nb-card-header {
     @apply com-flex com-justify-between com-items-center;
   }
@@ -143,6 +161,7 @@ nb-card {
 
 .deactivate-team-dialog {
   @apply md:com-max-w-[30dvw];
+
   nb-card-header,
   nb-card-footer {
     @apply com-flex com-justify-between com-items-center;
@@ -150,26 +169,28 @@ nb-card {
 }
 
 .track-details {
-  @apply com-mb-4;
+  @apply com-mb-4 com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-overflow-hidden;
 
   nb-card-header {
-    @apply com-text-primary-500 com-flex com-justify-between com-items-center;
+    @apply com-flex com-justify-between com-items-center;
   }
 
   nb-card-body {
+    @apply com-p-4;
+
     .track-name {
-      @apply com-text-Yankees-Blue com-text-lg com-font-semibold com-mb-3;
+      @apply com-text-Yankees-Blue com-text-base com-font-medium com-mb-2;
     }
 
     .problem-statement-section {
-      @apply com-mt-2 com-p-3 com-bg-gray-100 com-rounded-lg;
+      @apply com-mt-3 com-p-3 com-bg-gray-50 com-rounded-lg com-border com-border-solid com-border-Bright-Gray;
 
       .problem-label {
-        @apply com-text-sm com-font-medium com-text-gray-700 com-mb-1;
+        @apply com-text-xs com-font-medium com-text-gray-500 com-mb-1;
       }
 
       .problem-name {
-        @apply com-text-base com-text-Yankees-Blue com-font-medium;
+        @apply com-text-sm com-text-Yankees-Blue com-font-medium;
       }
     }
   }
