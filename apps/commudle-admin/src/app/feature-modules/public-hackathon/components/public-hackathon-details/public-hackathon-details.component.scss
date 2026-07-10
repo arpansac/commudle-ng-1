@@ -1,3 +1,7 @@
+.two-column-layout {
+  @apply com-mt-4;
+}
+
 .main-column {
   @apply com-m-0 com-mb-20 md:com-mr-6;
 
@@ -5,7 +9,7 @@
     @apply com-m-0 com-mb-4;
 
     com-card-header {
-      @apply com-flex com-gap-4 com-items-center com-px-4 com-py-3 com-rounded-t-lg com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+      @apply com-flex com-gap-4 com-items-center com-px-4 com-py-2 com-rounded-t-lg com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
       background: linear-gradient(135deg, #f7f7f8 0%, #ffffff 50%, #f7f7f8 100%);
       @apply dark:com-from-[#080808] dark:com-via-[#141414] dark:com-to-[#080808] dark:com-bg-gradient-to-br;
 
@@ -252,7 +256,7 @@
     @apply com-mr-0 com-mb-4;
 
     com-card-header {
-      @apply com-px-4 com-py-3 com-rounded-t-lg com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-text-base com-font-semibold com-text-Yankees-Blue;
+      @apply com-px-4 com-py-2 com-rounded-t-lg com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-text-base com-font-semibold com-text-Yankees-Blue;
       background: linear-gradient(135deg, #f7f7f8 0%, #ffffff 50%, #f7f7f8 100%);
       @apply dark:com-from-[#080808] dark:com-via-[#141414] dark:com-to-[#080808] dark:com-bg-gradient-to-br;
     }

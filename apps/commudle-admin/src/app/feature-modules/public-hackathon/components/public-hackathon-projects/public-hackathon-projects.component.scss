@@ -1,6 +1,11 @@
 nb-card {
   @apply com-mx-0;
+
   .project-card {
     @apply hover:com-shadow-md;
   }
+}
+
+nb-card-body {
+  @apply com-px-4 com-py-2;
 }
