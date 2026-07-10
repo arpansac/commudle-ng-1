@@ -29,6 +29,12 @@ nb-card {
 .user-channels-list {
   nb-card {
     @apply com-mx-0;
+
+    nb-card-header {
+      @apply com-px-4 com-py-2 com-text-base com-font-semibold com-text-Yankees-Blue com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+      background: linear-gradient(135deg, #f7f7f8 0%, #ffffff 50%, #f7f7f8 100%);
+      @apply dark:com-from-[#080808] dark:com-via-[#141414] dark:com-to-[#080808] dark:com-bg-gradient-to-br dark:com-text-tWhite dark:com-border-gray-700;
+    }
   }
 }
 
@@ -142,17 +148,19 @@ nb-card {
 }
 
 .team-selector {
-  @apply com-mt-4 com-mb-4;
+  @apply com-my-4 com-px-4 com-py-3 com-bg-white com-rounded-lg com-border com-border-solid com-border-Bright-Gray;
 
   .team-selector-label {
-    @apply com-block com-text-base com-font-semibold com-text-Yankees-Blue com-mb-2;
+    @apply com-block com-text-sm com-font-medium com-text-gray-500 com-mb-1.5;
   }
 
   .select {
-    @apply com-flex com-items-center com-gap-2 com-h-10 com-p-2 com-text-base com-rounded-10 com-cursor-pointer com-bg-white hover:com-bg-white-opacity-40 com-border com-border-solid com-border-Bright-Gray com-w-full com-text-Yankees-Blue;
+    @apply com-flex com-items-center com-gap-2 com-h-8 com-px-3 com-text-sm com-font-medium com-rounded-md com-cursor-pointer com-bg-gray-50 com-border com-border-solid com-border-Bright-Gray com-w-full com-text-Yankees-Blue;
+    @apply hover:com-border-primary-300 com-transition-colors com-duration-200;
 
     select {
-      @apply com-bg-white hover:com-bg-white-opacity-40 com-cursor-pointer com-border-0 com-w-full com-text-Yankees-Blue;
+      @apply com-bg-transparent com-cursor-pointer com-border-0 com-w-full com-text-sm com-font-medium com-text-Yankees-Blue;
+      @apply focus:com-outline-none;
     }
   }
 }
@@ -166,13 +174,17 @@ nb-card {
 }
 
 .problem-statement-prompt {
-  @apply com-mb-4;
+  @apply com-mb-4 com-rounded-lg com-overflow-hidden;
 
   nb-card-body {
-    @apply com-flex com-items-center com-justify-between;
+    @apply com-flex com-items-center com-justify-between com-gap-3 com-p-3;
 
     p {
-      @apply com-m-0;
+      @apply com-m-0 com-text-sm com-text-Yankees-Blue;
+
+      strong {
+        @apply com-font-semibold;
+      }
     }
   }
 }
