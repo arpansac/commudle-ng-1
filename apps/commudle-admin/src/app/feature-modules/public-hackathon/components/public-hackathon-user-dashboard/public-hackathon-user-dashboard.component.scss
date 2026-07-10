@@ -8,6 +8,7 @@ nb-card {
   nb-card-header {
     @apply com-px-4 com-py-2 com-text-base com-font-semibold com-text-Yankees-Blue com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
     background: linear-gradient(135deg, #f7f7f8 0%, #ffffff 50%, #f7f7f8 100%);
+    @apply dark:com-from-[#080808] dark:com-via-[#141414] dark:com-to-[#080808] dark:com-bg-gradient-to-br dark:com-text-tWhite dark:com-border-gray-700;
   }
 }
 
@@ -61,14 +62,60 @@ nb-card {
 }
 
 .team-details-container {
-  .team-detail {
-    .details {
-      @apply com-flex com-flex-col;
+  @apply com-mx-0;
+
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+
+    h5 {
+      @apply com-m-0 com-text-base com-font-semibold com-text-Yankees-Blue;
     }
   }
 
-  button {
-    @apply com-px-0;
+  nb-card-body {
+    @apply com-p-4;
+  }
+
+  .team-detail {
+    @apply com-flex com-items-center com-gap-3;
+
+    .team-member-profile {
+      @apply com-flex-1 com-min-w-0;
+    }
+
+    .team-member-name {
+      @apply com-text-sm com-font-medium com-text-Yankees-Blue com-flex-1 com-min-w-0 com-truncate;
+    }
+
+    .invite-badge {
+      @apply com-text-xs com-font-medium com-px-2 com-py-0.5 com-rounded-full com-flex-shrink-0;
+      @apply com-bg-gray-100 com-text-gray-600;
+
+      &.invite-accepted,
+      &.invite-self_created {
+        @apply com-bg-green-100 com-text-green-700;
+      }
+
+      &.invite-application_complete {
+        @apply com-bg-gray-100 com-text-gray-600;
+      }
+
+      &.invite-invited {
+        @apply com-bg-blue-100 com-text-blue-700;
+      }
+
+      &.invite-incomplete_application {
+        @apply com-bg-orange-100 com-text-orange-700;
+      }
+
+      &.invite-rejected {
+        @apply com-bg-red-100 com-text-red-700;
+      }
+    }
+
+    .resend-action {
+      @apply com-flex-shrink-0;
+    }
   }
 
   .team-detail:not(:last-child) {
@@ -141,23 +188,27 @@ nb-card {
 .pending-invites-section {
   @apply com-mb-4;
 
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+
   .invite-card {
-    @apply com-flex com-justify-between com-items-center com-py-3;
+    @apply com-flex com-justify-between com-items-center com-py-2 com-gap-3;
 
     .invite-info {
-      @apply com-flex com-flex-col;
+      @apply com-flex com-flex-col com-min-w-0;
 
       .invite-team-name {
-        @apply com-text-base com-font-semibold com-text-Yankees-Blue;
+        @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-truncate;
       }
 
       .invite-members {
-        @apply com-text-sm com-text-gray-500;
+        @apply com-text-xs com-text-gray-500;
       }
     }
 
     .invite-actions {
-      @apply com-flex com-gap-2;
+      @apply com-flex com-gap-2 com-flex-shrink-0;
     }
   }
 

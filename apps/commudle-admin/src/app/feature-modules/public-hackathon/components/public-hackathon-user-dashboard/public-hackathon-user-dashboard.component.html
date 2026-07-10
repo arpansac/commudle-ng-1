@@ -120,44 +120,39 @@
       <nb-card class="team-details-container">
         <nb-card-header>
           <h5>{{ selectedTeam.name }}</h5>
-          <button nbButton ghost status="primary" (click)="openEditTeamMembersDialog()">
-            <fa-icon [icon]="icons.faEdit"></fa-icon> &nbsp; Edit Team Members
+          <button nbButton ghost status="primary" size="small" (click)="openEditTeamMembersDialog()">
+            <fa-icon [icon]="icons.faEdit"></fa-icon> &nbsp; Edit
           </button>
         </nb-card-header>
         <nb-card-body>
           <div *ngFor="let hur of selectedTeam.hackathon_user_responses; let i = index" class="team-detail">
-            <div class="details">
-              <span>{{ hur.name }}</span>
-              <span>{{ hur.user_email }}</span>
-              <span>{{ hur.invite_status | capitalizeAndRemoveUnderscore }}</span>
-            </div>
-            <!-- <div>
-              <button
-                nbButton
-                ghost
-                status="danger"
-                (click)="openDialogBox(removeTeamMember, hur, userTeamDetails[selectedTeamIndex], i, selectedTeamIndex)"
-                *ngIf="userTeamDetails[selectedTeamIndex].user_id !== hur.user_id"
-              >
-                <fa-icon [icon]="icons.faUserMinus"></fa-icon> &nbsp; Remove
-              </button>
-            </div> -->
+            <app-user-profile-card-small
+              *ngIf="hur.user"
+              [user]="hur.user"
+              class="team-member-profile"
+            ></app-user-profile-card-small>
+            <span *ngIf="!hur.user" class="team-member-name">{{ hur.name }}</span>
             <div
               *ngIf="
                 hur.invite_status === EInvitationStatus.INCOMPLETE_APPLICATION ||
                 hur.invite_status === EInvitationStatus.INVITED
               "
+              class="resend-action"
             >
               <button
                 nbButton
                 ghost
                 status="danger"
+                size="tiny"
                 (click)="openDialogBox(resendInvite, hur, selectedTeam, i)"
                 *ngIf="selectedTeam?.user_id !== hur.user_id"
               >
                 Resend Invite
               </button>
             </div>
+            <span class="invite-badge" [ngClass]="'invite-' + hur.invite_status">
+              {{ hur.invite_status | capitalizeAndRemoveUnderscore }}
+            </span>
           </div>
         </nb-card-body>
       </nb-card>

@@ -128,7 +128,7 @@
         }
 
         .slot-booked {
-          @apply com-w-full com-flex com-flex-col com-gap-1 com-mt-1 com-pt-2 com-border-0 com-border-t com-border-solid com-border-Bright-Gray com-text-xs com-text-gray-800;
+          @apply com-w-full com-flex com-flex-col com-gap-1 com-mt-1 com-pt-2 com-border-0 com-border-t com-border-solid com-border-Bright-Gray com-text-xs com-text-gray-700;
 
           .meeting-link {
             @apply com-text-primary-500 com-text-xs com-no-underline hover:com-text-primary-600 com-flex com-items-center com-gap-1;
