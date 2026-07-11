@@ -9,14 +9,14 @@
             {{ round.name }}
             <!-- prettier-ignore -->
             @if(round.date && round.end_date) {
-              @if(moment().isAfter(moment(round.end_date))) {
-                - Completed
-              } @else if(moment().isBetween(moment(round.date), moment(round.end_date), null, '[]')) {
-                - Ongoing
-              } @else {
-                - Upcoming
+            @if(moment().isAfter(moment(round.end_date))) {
+            - Completed
+            } @else if(moment().isBetween(moment(round.date), moment(round.end_date), null, '[]')) {
+            - Ongoing
+            } @else {
+            - Upcoming
             }
-          }
+            }
           </option>
         </select>
       </div>
@@ -27,7 +27,7 @@
       <app-loading-spinner></app-loading-spinner>
     </div>
     <!-- Mentor Slots Section -->
-    <div *ngIf="currentMentor && roundMentorSlots?.length > 0" class="mentor-slots-section">
+    <div *ngIf="currentMentor && roundMentorSlots?.length > 0 && !isLoading" class="mentor-slots-section">
       <h3>My Mentorship Slot Timings</h3>
       <commudle-alert
         [info]="true"
@@ -36,7 +36,7 @@
       <br />
       @if(currentMentor.meeting_location) {
       <div class="meeting-location-display">
-        <strong>Meeting Location:</strong>
+        <span class="meeting-label">Meeting Location:</span>
         @if(currentMentor.meeting_location.startsWith('http://') ||
         currentMentor.meeting_location.startsWith('https://')) {
         <a [href]="currentMentor.meeting_location" target="_blank" rel="noopener noreferrer">
