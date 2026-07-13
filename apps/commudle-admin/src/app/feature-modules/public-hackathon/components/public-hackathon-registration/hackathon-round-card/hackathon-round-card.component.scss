@@ -105,7 +105,7 @@
       @apply com-mt-2 com-overflow-hidden com-flex com-flex-col com-gap-1.5;
 
       .evaluator-card {
-        @apply com-flex com-items-start com-gap-3 com-px-3 com-py-2 com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-no-underline com-bg-gray-50 com-flex-wrap;
+        @apply com-flex com-items-center com-gap-3 com-px-3 com-py-2 com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-no-underline com-bg-gray-50 com-flex-wrap;
 
         .evaluator-avatar {
           @apply com-w-7 com-h-7 com-rounded-full com-object-cover com-flex-shrink-0 com-mt-0.5;
@@ -181,18 +181,31 @@
 }
 
 .book-slot-dialog-card {
-  @apply md:com-max-w-[40dvw] com-max-h-[80dvh];
+  @apply com-m-0 md:com-max-w-[40dvw] com-max-h-[80dvh] md:com-min-w-[20dvw] com-min-w-[60dvw];
 
   nb-card-header {
     @apply com-flex com-items-center com-justify-between com-px-4 com-py-2 com-text-base com-font-semibold com-text-Yankees-Blue com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
     background: linear-gradient(135deg, #f7f7f8 0%, #ffffff 50%, #f7f7f8 100%);
+    @apply dark:com-from-[#080808] dark:com-via-[#141414] dark:com-to-[#080808] dark:com-bg-gradient-to-br dark:com-text-tWhite dark:com-border-gray-700;
+
+    span {
+      @apply com-text-base com-font-semibold com-text-Yankees-Blue;
+    }
   }
 
   nb-card-body {
     @apply com-p-4;
 
     .slot-item {
-      @apply com-flex com-gap-2 com-items-center com-flex-col;
+      @apply com-flex com-gap-2 com-items-stretch com-flex-col;
+
+      p {
+        @apply com-text-sm com-text-gray-500 com-m-0;
+      }
+
+      button {
+        @apply com-text-sm com-font-medium;
+      }
     }
   }
 }
