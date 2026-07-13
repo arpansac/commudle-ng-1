@@ -11,8 +11,12 @@
               <span class="invite-members">{{ invite.hackathon_user_responses?.length }} member(s)</span>
             </div>
             <div class="invite-actions">
-              <button nbButton status="success" size="small" (click)="acceptInvite(invite)">Accept</button>
-              <button nbButton status="danger" size="small" ghost (click)="rejectInvite(invite)">Reject</button>
+              <button comButton status="success" size="small" shape="semi-round" (click)="acceptInvite(invite)">
+                Accept
+              </button>
+              <button comButton status="danger" size="small" shape="semi-round" ghost (click)="rejectInvite(invite)">
+                Reject
+              </button>
             </div>
           </div>
         </com-card-body>
@@ -44,7 +48,7 @@
     <com-card *ngIf="shouldShowProblemStatementPrompt()" class="problem-statement-prompt">
       <com-card-body>
         <p><strong>Action Required:</strong> Please select a Track to continue.</p>
-        <button nbButton status="primary" size="small" (click)="openProblemStatementDialog()">
+        <button comButton status="primary" size="small" shape="semi-round" (click)="openProblemStatementDialog()">
           Select Problem Statement
         </button>
       </com-card-body>
@@ -57,10 +61,11 @@
             hackathon.problem_statement_changeable &&
             selectedTeam.registration_status === EHackathonRegistrationStatus.ACCEPTED
           "
-          nbButton
+          comButton
           ghost
           status="primary"
           size="small"
+          shape="semi-round"
           (click)="openProblemStatementDialog()"
         >
           Change
@@ -121,7 +126,14 @@
       <com-card class="team-details-container">
         <com-card-header>
           <h5>{{ selectedTeam.name }}</h5>
-          <button nbButton ghost status="primary" size="small" (click)="openEditTeamMembersDialog()">
+          <button
+            comButton
+            ghost
+            status="primary"
+            size="small"
+            shape="semi-round"
+            (click)="openEditTeamMembersDialog()"
+          >
             <fa-icon [icon]="icons.faEdit"></fa-icon> &nbsp; Edit
           </button>
         </com-card-header>
@@ -141,10 +153,11 @@
               class="resend-action"
             >
               <button
-                nbButton
+                comButton
                 ghost
                 status="danger"
                 size="tiny"
+                shape="semi-round"
                 (click)="openDialogBox(resendInvite, hur, selectedTeam, i)"
                 *ngIf="selectedTeam?.user_id !== hur.user_id"
               >
@@ -165,7 +178,7 @@
   <com-card class="remove-teammate-dialogbox">
     <com-card-header>
       <span> Are you Sure you want to remove {{ data.hur.name }}?</span>
-      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+      <button ghost comButton size="small" (click)="ref.close()" shape="round">
         <fa-icon [icon]="icons.faXmark"></fa-icon>
       </button>
     </com-card-header>
@@ -175,13 +188,14 @@
     </com-card-body>
     <com-card-footer>
       <button
-        nbButton
+        comButton
         status="danger"
+        shape="semi-round"
         (click)="removeMember(data.hur, data.team, data.index, data.team_index); ref.close()"
       >
         remove
       </button>
-      <button nbButton status="primary" ghost (click)="ref.close()">cancel</button>
+      <button comButton status="primary" ghost shape="semi-round" (click)="ref.close()">cancel</button>
     </com-card-footer>
   </com-card>
 </ng-template>
@@ -190,7 +204,7 @@
   <com-card class="resend-invite-dialogbox">
     <com-card-header>
       <span>Resend Invitation</span>
-      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+      <button ghost comButton size="small" (click)="ref.close()" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
     </com-card-header>
@@ -207,10 +221,15 @@
     </com-card-body>
 
     <com-card-footer>
-      <button nbButton status="primary" (click)="resendInviteToMember(data.hur, data.team); ref.close()">
+      <button
+        comButton
+        status="primary"
+        shape="semi-round"
+        (click)="resendInviteToMember(data.hur, data.team); ref.close()"
+      >
         Resend Invite
       </button>
-      <button nbButton ghost (click)="ref.close()">Cancel</button>
+      <button comButton ghost shape="semi-round" (click)="ref.close()">Cancel</button>
     </com-card-footer>
   </com-card>
 </ng-template>
@@ -219,7 +238,7 @@
   <com-card class="edit-team-members-dialog">
     <com-card-header>
       <span>Edit {{ data.selectedTeam.name }} Members</span>
-      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+      <button ghost comButton size="small" (click)="ref.close()" shape="round">
         <fa-icon [icon]="icons.faXmark"></fa-icon>
       </button>
     </com-card-header>
@@ -241,7 +260,7 @@
   <com-card class="problem-statement-dialog">
     <com-card-header>
       <span>{{ selectedTeam?.track ? 'Change Track & Problem Statement' : 'Select Track' }}</span>
-      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+      <button ghost comButton size="small" (click)="ref.close()" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
     </com-card-header>
@@ -262,7 +281,7 @@
   <com-card class="deactivate-team-dialog">
     <com-card-header>
       <span>Deactivate Your Team?</span>
-      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+      <button ghost comButton size="small" (click)="ref.close()" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
     </com-card-header>
@@ -274,10 +293,10 @@
       <p>You can create a new team later if needed.</p>
     </com-card-body>
     <com-card-footer>
-      <button nbButton status="danger" (click)="deactivateOwnTeamAndAcceptInvite(data.hur, ref)">
+      <button comButton status="danger" shape="semi-round" (click)="deactivateOwnTeamAndAcceptInvite(data.hur, ref)">
         Deactivate My Team & Accept Invite
       </button>
-      <button nbButton ghost (click)="ref.close()">Cancel</button>
+      <button comButton ghost shape="semi-round" (click)="ref.close()">Cancel</button>
     </com-card-footer>
   </com-card>
 </ng-template>

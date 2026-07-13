@@ -64,15 +64,23 @@
             View Link
           </a>
           }
-          <button nbButton status="primary" size="small" (click)="openPPTUploadDialog()" [disabled]="!isLive">
+          <button
+            comButton
+            status="primary"
+            size="small"
+            shape="semi-round"
+            (click)="openPPTUploadDialog()"
+            [disabled]="!isLive"
+          >
             {{ getRoundSubmission() ? 'Update Submission' : 'Submit' }}
           </button>
           } @else if (round.round_type === ERoundType.PROJECT_SUBMISSION || round.round_type ===
           ERoundType.FINAL_JUDGING) {
           <a
-            nbButton
+            comButton
             status="primary"
             size="small"
+            shape="semi-round"
             [routerLink]="
               userTeamDetails.community_build
                 ? ['/builds', userTeamDetails.community_build.slug, 'edit']
@@ -85,9 +93,10 @@
           </a>
           } @else if (round.round_type === ERoundType.PROJECT_UPDATE_SUBMISSION) {
           <a
-            nbButton
+            comButton
             status="primary"
             size="small"
+            shape="semi-round"
             [routerLink]="
               userTeamDetails.community_build
                 ? ['/builds', userTeamDetails.community_build.slug, 'edit']
@@ -164,9 +173,10 @@
         } @else if(mentorSlotsByMentor.get(evaluator.id)?.length > 0 && round.round_mentor_slot_rule?.booking_open &&
         (round.round_mentor_slot_rule?.teams_choose_slots || !round.round_mentor_slot_rule?.only_admin_assigns_teams)) {
         <button
-          nbButton
+          comButton
           size="tiny"
           status="primary"
+          shape="semi-round"
           (click)="$event.stopPropagation(); $event.preventDefault(); openBookSlotDialog(evaluator.id)"
         >
           Book Slot
@@ -178,18 +188,18 @@
 </div>
 
 <ng-template #bookSlotDialog let-ref="dialogRef">
-  <nb-card class="book-slot-dialog-card">
-    <nb-card-header>
+  <com-card class="book-slot-dialog-card">
+    <com-card-header>
       <span>Book Mentor Slot</span>
-      <button nbButton size="small" shape="round" (click)="ref.close()" ghost>
+      <button comButton size="small" shape="round" (click)="ref.close()" ghost>
         <nb-icon icon="close"></nb-icon>
       </button>
-    </nb-card-header>
-    <nb-card-body>
+    </com-card-header>
+    <com-card-body>
       <div class="slot-item">
         @if(selectedMentorSlots.length > 0) {
         <div *ngFor="let slot of selectedMentorSlots">
-          <button nbButton fullWidth status="basic" (click)="bookSlot(slot.id, ref)">
+          <button comButton fullWidth status="basic" shape="semi-round" (click)="bookSlot(slot.id, ref)">
             {{ moment(slot.starts_at).format('MMM DD, YYYY hh:mm A') }} - {{ moment(slot.ends_at).format('hh:mm A') }}
           </button>
         </div>
@@ -197,19 +207,19 @@
         <p>No slots available yet!</p>
         }
       </div>
-    </nb-card-body>
-  </nb-card>
+    </com-card-body>
+  </com-card>
 </ng-template>
 
 <ng-template #confirmDialog let-ref="dialogRef">
-  <nb-card>
-    <nb-card-header>Confirm Slot Booking</nb-card-header>
-    <nb-card-body>
+  <com-card>
+    <com-card-header>Confirm Slot Booking</com-card-header>
+    <com-card-body>
       <p>Are you sure? Once the slot is booked, it cannot be changed.</p>
-    </nb-card-body>
-    <nb-card-footer>
-      <button nbButton status="primary" (click)="ref.close(true)">Confirm</button>
-      <button nbButton status="basic" (click)="ref.close(false)">Cancel</button>
-    </nb-card-footer>
-  </nb-card>
+    </com-card-body>
+    <com-card-footer>
+      <button comButton status="primary" shape="semi-round" (click)="ref.close(true)">Confirm</button>
+      <button comButton status="basic" shape="semi-round" (click)="ref.close(false)">Cancel</button>
+    </com-card-footer>
+  </com-card>
 </ng-template>
