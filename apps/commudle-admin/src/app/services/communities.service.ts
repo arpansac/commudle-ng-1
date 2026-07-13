@@ -32,10 +32,11 @@ export class CommunitiesService {
 
   createWithSubscription(
     formData: FormData,
-    subscriptionId: number,
+    subscriptionId?: number,
     communityGroupId?: string,
   ): Observable<ICommunity> {
-    let params = new HttpParams().set('user_subscription_id', subscriptionId);
+    let params = new HttpParams();
+    if (subscriptionId) params = params.set('user_subscription_id', subscriptionId);
     if (communityGroupId) params = params.set('community_group_id', communityGroupId);
     return this.http.post<ICommunity>(this.apiRoutesService.getRoute(API_ROUTES.COMMUNITIES.CREATE), formData, {
       params,

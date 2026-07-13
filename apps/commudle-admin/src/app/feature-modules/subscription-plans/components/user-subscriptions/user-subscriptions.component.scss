@@ -1,12 +1,12 @@
 .user-subscriptions {
-  @apply com-py-4;
+  @apply com-py-2;
 
   // ── Empty state ───────────────────────────────────────────
   .empty-state {
-    @apply com-flex com-flex-col com-items-center com-gap-8 com-py-16 com-text-center;
+    @apply com-flex com-flex-col com-items-center com-gap-6 com-py-16 com-text-center;
 
     .empty-state-icon {
-      @apply com-w-20 com-h-20 com-rounded-2xl com-bg-primary-100 com-flex com-items-center com-justify-center;
+      @apply com-w-16 com-h-16 com-rounded-2xl com-bg-primary-100 com-flex com-items-center com-justify-center;
 
       nb-icon {
         @apply com-text-4xl com-text-primary-500;
@@ -17,68 +17,103 @@
       @apply com-flex com-flex-col com-items-center com-gap-3 com-max-w-sm;
 
       .empty-state-title {
-        @apply com-text-Card-Subheading com-font-bold com-text-Yankees-Blue com-m-0;
+        @apply com-text-lg com-font-bold com-text-Yankees-Blue com-m-0;
       }
 
       .empty-state-desc {
-        @apply com-text-Paragraph-2 com-text-gray-500 com-m-0 com-leading-relaxed;
+        @apply com-text-sm com-text-Cadet-Grey com-m-0 com-leading-relaxed;
       }
     }
+  }
 
-    .empty-state-features {
-      @apply com-flex com-flex-col com-gap-3 sm:com-flex-row sm:com-gap-6;
+  /* ── List ── */
+  .subscriptions-list {
+    @apply com-flex com-flex-col com-gap-3;
+  }
 
-      .empty-feature-item {
-        @apply com-flex com-items-center com-gap-2 com-text-Caption com-text-gray-500;
+  /* ── Capacity summary card ── */
+  .capacity-card {
+    @apply com-flex com-flex-col com-gap-4 com-p-5 com-rounded-xl;
+    @apply com-bg-primary-100 com-border com-border-solid com-border-primary-200;
 
-        nb-icon {
-          @apply com-text-base com-text-primary-400 com-flex-shrink-0;
+    @screen sm {
+      @apply com-flex-row com-items-center com-justify-between com-gap-6;
+    }
+
+    .capacity-info {
+      @apply com-flex com-flex-col com-gap-1 com-min-w-0;
+
+      .capacity-label {
+        @apply com-text-xs com-font-bold com-uppercase com-tracking-wide com-text-primary-600;
+      }
+
+      .capacity-headline {
+        @apply com-text-2xl com-font-extrabold com-text-Yankees-Blue com-leading-tight;
+      }
+
+      .capacity-subtext {
+        @apply com-text-sm com-text-Cadet-Grey com-leading-relaxed;
+
+        strong {
+          @apply com-text-Yankees-Blue com-font-semibold;
         }
       }
     }
-  }
 
-  // ── Subscriptions list ────────────────────────────────────
-  .subscriptions-list {
-    @apply com-flex com-flex-col com-gap-5;
-  }
-
-  // ── Single subscription card ──────────────────────────────
-  .sub-card {
-    @apply com-bg-white com-rounded-2xl com-border com-border-Bright-Gray;
-    @apply com-flex com-flex-col com-gap-0 com-overflow-hidden;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-    transition: box-shadow 0.2s;
-
-    &:hover {
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.09);
+    .capacity-cta {
+      @apply com-flex-shrink-0 com-cursor-pointer com-whitespace-nowrap;
+      @apply com-px-4 com-py-2.5 com-rounded-lg com-border-0;
+      @apply com-text-sm com-font-semibold com-text-white com-bg-primary-500;
+      @apply com-transition-colors hover:com-bg-primary-600;
     }
+  }
 
-    &.sub-card-inactive {
-      @apply com-opacity-60;
+  /* ── Cancelled/expired collapsed row ── */
+  .sub-row-cancelled {
+    @apply com-flex com-items-center com-gap-2 com-py-2 com-px-1 com-text-xs com-text-Cadet-Grey;
 
-      .pay-now-chip {
-        @apply com-opacity-100;
+    .cancelled-icon {
+      nb-icon {
+        @apply com-text-base com-text-Cadet-Grey;
       }
     }
 
-    &.sub-card-pending {
-      @apply com-border-primary-200;
+    strong {
+      @apply com-text-Yankees-Blue;
     }
   }
 
-  // ── Card Header ───────────────────────────────────────────
-  .sub-header {
-    @apply com-flex com-justify-between com-items-start com-gap-3 com-p-5;
+  /* ── Subscription card ── */
+  .sub-card {
+    @apply com-bg-white com-rounded-xl com-border com-border-solid com-border-Bright-Gray com-overflow-hidden;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 
-    .header-left {
-      @apply com-flex com-items-start com-gap-3;
+    /* Full primary border when the plan still has empty capacity to fill */
+    &.sub-card-highlight {
+      @apply com-border-primary-500;
+    }
 
-      .plan-icon-wrap {
-        @apply com-w-11 com-h-11 com-rounded-xl com-bg-primary-100 com-flex com-items-center com-justify-center com-flex-shrink-0;
+    &.sub-card-pending {
+      @apply com-border-yellow-400 com-bg-yellow-50;
+    }
+
+    &.sub-card-failed {
+      @apply com-border-red-400;
+    }
+  }
+
+  /* ── Plan row (header) ── */
+  .plan-row {
+    @apply com-flex com-items-start com-justify-between com-gap-3 com-px-4 com-py-3;
+
+    .plan-row-left {
+      @apply com-flex com-items-start com-gap-3 com-min-w-0;
+
+      .plan-icon {
+        @apply com-w-8 com-h-8 com-rounded-lg com-bg-primary-100 com-flex com-items-center com-justify-center com-flex-shrink-0;
 
         nb-icon {
-          @apply com-text-xl com-text-primary-600;
+          @apply com-text-sm com-text-primary-600;
         }
 
         &.plan-icon-org {
@@ -90,48 +125,36 @@
         }
       }
 
-      .plan-info {
-        @apply com-flex com-flex-col com-gap-1;
+      .plan-details {
+        @apply com-flex com-flex-col com-gap-0.5 com-min-w-0;
 
-        .plan-name-row {
-          @apply com-flex com-items-center com-gap-2 com-flex-wrap;
+        .plan-title-line {
+          @apply com-flex com-items-center com-gap-1.5 com-flex-wrap;
 
-          .plan-name {
-            @apply com-text-base com-font-bold com-text-Yankees-Blue com-m-0;
+          .plan-cycle {
+            @apply com-text-sm com-font-bold com-text-Yankees-Blue;
           }
 
           .plan-product {
-            @apply com-text-xs com-text-gray-400;
+            @apply com-text-sm com-text-Yankees-Blue;
           }
         }
 
-        .plan-meta {
-          @apply com-flex com-items-center com-gap-1.5;
+        .plan-meta-line {
+          @apply com-flex com-items-center com-flex-wrap com-gap-1 com-text-xs com-text-Cadet-Grey;
 
-          .billing-badge {
-            @apply com-text-xs com-font-medium com-bg-gray-100 com-text-gray-600 com-px-2 com-py-0.5 com-rounded-full;
-          }
-
-          .meta-dot {
-            @apply com-text-gray-300 com-text-xs;
-          }
-
-          .meta-price {
-            @apply com-text-xs com-font-semibold com-text-gray-700;
-          }
-
-          .free-label {
-            @apply com-text-green-600;
+          .meta-sep {
+            @apply com-text-Bright-Gray;
           }
         }
       }
     }
 
-    .header-right {
-      @apply com-flex com-items-center com-gap-2 com-flex-shrink-0;
+    .plan-row-right {
+      @apply com-flex com-items-center com-gap-2 com-flex-shrink-0 com-flex-wrap com-justify-end;
 
       .status-pill {
-        @apply com-flex com-items-center com-gap-1.5 com-px-3 com-py-1 com-rounded-full com-text-xs com-font-semibold;
+        @apply com-inline-flex com-items-center com-gap-1.5 com-px-2.5 com-py-1 com-rounded-full com-text-xs com-font-semibold;
 
         .status-dot {
           @apply com-w-1.5 com-h-1.5 com-rounded-full;
@@ -139,24 +162,27 @@
 
         &.status-active {
           @apply com-bg-green-100 com-text-green-700;
+
           .status-dot {
             @apply com-bg-green-500;
           }
-        }
-        &.status-cancelled {
-          @apply com-bg-gray-100 com-text-gray-500;
-          .status-dot {
-            @apply com-bg-gray-400;
+
+          .days-left {
+            @apply com-font-normal;
           }
         }
-        &.status-expired {
+
+        &.status-pending {
           @apply com-bg-yellow-100 com-text-yellow-700;
-          .status-dot {
-            @apply com-bg-yellow-500;
-          }
         }
+
+        &.status-cancel-sched {
+          @apply com-bg-orange-100 com-text-orange-700;
+        }
+
         &.status-failed {
           @apply com-bg-red-100 com-text-red-600;
+
           .status-dot {
             @apply com-bg-red-500;
           }
@@ -171,6 +197,7 @@
 
       .days-chip {
         @apply com-text-xs com-font-bold com-bg-primary-100 com-text-primary-700 com-px-2.5 com-py-1 com-rounded-full;
+        @apply dark:com-bg-primary-900 dark:com-text-primary-300;
       }
 
       .cancel-scheduled-chip {
@@ -192,129 +219,116 @@
         nb-icon {
           @apply com-text-sm;
         }
-      }
-    }
-  }
 
-  // ── Billing strip ─────────────────────────────────────────
-  .billing-row {
-    @apply com-flex com-items-center com-bg-gray-50 com-px-5 com-py-3 com-border-t com-border-Bright-Gray com-flex-wrap com-gap-y-2;
-
-    .billing-item {
-      @apply com-flex com-flex-col com-gap-0.5 com-flex-1 com-min-w-fit;
-
-      .billing-label {
-        @apply com-text-xs com-text-gray-400 com-uppercase com-tracking-wide;
-      }
-
-      .billing-value {
-        @apply com-text-sm com-font-semibold com-text-gray-800;
-      }
-
-      .quota-value {
-        &.quota-green {
-          @apply com-text-green-600;
-        }
-        &.quota-amber {
-          @apply com-text-yellow-600;
-        }
-        &.quota-red {
-          @apply com-text-red-500;
-        }
-
-        .quota-max {
-          @apply com-text-gray-400 com-font-normal;
+        &.action-btn-primary {
+          @apply com-bg-primary-600 com-text-white hover:com-bg-primary-700;
         }
       }
-    }
 
-    .billing-divider {
-      @apply com-w-px com-h-7 com-bg-gray-200 com-mx-4 com-flex-shrink-0;
+      .cancel-link {
+        @apply com-text-xs com-text-Cadet-Grey com-bg-transparent com-border-0 com-cursor-pointer;
+        @apply com-px-2 com-py-1 com-rounded com-transition-colors;
+        @apply hover:com-text-red-500 hover:com-bg-red-50;
+      }
     }
   }
 
   // ── Resource section (communities / orgs) ─────────────────
   .resource-section {
-    @apply com-flex com-flex-col com-gap-3 com-px-5 com-py-4 com-border-t com-border-Bright-Gray;
+    @apply com-flex com-flex-col com-gap-2 com-px-4 com-pb-4;
+    @apply com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+    padding-top: 0.6rem;
 
-    .resource-section-header {
-      @apply com-flex com-items-center com-justify-between;
+    .resource-header {
+      @apply com-flex com-items-center com-justify-between com-gap-2 com-flex-wrap;
 
-      .resource-section-title {
-        @apply com-flex com-items-center com-gap-2 com-text-sm com-font-semibold com-text-Yankees-Blue;
+      .resource-label {
+        @apply com-flex com-items-center com-gap-1.5 com-text-sm com-font-semibold com-text-Yankees-Blue;
 
         nb-icon {
-          @apply com-text-base com-text-gray-400;
+          @apply com-text-sm com-text-Cadet-Grey;
         }
+
+        .resource-count {
+          @apply com-font-semibold;
+
+          &.count-full {
+            @apply com-text-green-600;
+          }
+
+          &.count-partial {
+            @apply com-text-primary-600;
+          }
+        }
+      }
+
+      .slots-full-badge {
+        @apply com-text-xs com-font-medium com-px-2.5 com-py-1 com-rounded-full;
+        @apply com-bg-Bright-Gray-opacity-30 com-text-Cadet-Grey;
       }
     }
 
     // Progress bar
     .quota-bar {
-      @apply com-w-full com-h-1.5 com-bg-gray-200 com-rounded-full com-overflow-hidden;
+      @apply com-w-full com-h-1 com-bg-Bright-Gray com-rounded-full com-overflow-hidden;
 
       .quota-bar-fill {
         @apply com-h-full com-rounded-full com-transition-all com-duration-300;
-        &.fill-low {
+
+        &.fill-partial {
+          @apply com-bg-primary-500;
+        }
+
+        &.fill-full {
           @apply com-bg-green-500;
         }
-        &.fill-mid {
-          @apply com-bg-yellow-400;
-        }
-        &.fill-high {
-          @apply com-bg-orange-400;
-        }
-        &.fill-full {
-          @apply com-bg-red-500;
-        }
       }
     }
 
-    .quota-hint {
-      @apply com-text-xs com-text-gray-400;
-
-      &.quota-full {
-        @apply com-text-red-400;
-      }
+    .remaining-hint {
+      @apply com-text-xs com-text-primary-600 com-font-medium;
     }
 
-    // Community / org chips grid
-    .resource-grid {
+    .pending-hint {
+      @apply com-text-xs com-text-Cadet-Grey com-italic;
+    }
+
+    .renews-hint {
+      @apply com-text-xs com-text-yellow-600 com-font-medium;
+    }
+
+    .empty-hint {
+      @apply com-text-xs com-text-Cadet-Grey com-italic com-m-0;
+    }
+
+    /* Community 2-column grid */
+    .community-grid {
       @apply com-grid com-gap-2;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 
-      .resource-chip {
-        @apply com-flex com-items-center com-gap-3 com-rounded-xl com-border com-border-Bright-Gray com-p-3;
-        @apply com-no-underline com-transition-all com-duration-150 com-bg-white;
-        @apply hover:com-border-primary-300 hover:com-bg-primary-100 hover:com-shadow-Card;
+      .community-item {
+        @apply com-flex com-items-center com-gap-2.5 com-no-underline com-rounded-lg com-p-2;
+        @apply com-transition-colors hover:com-bg-Bright-Gray-opacity-30;
 
-        .resource-chip-avatar {
+        .community-avatar {
           @apply com-w-9 com-h-9 com-rounded-lg com-flex com-items-center com-justify-center;
           @apply com-text-sm com-font-bold com-flex-shrink-0;
-
-          &.community-avatar {
-            @apply com-bg-primary-100 com-text-primary-700;
-          }
-
-          &.org-avatar {
-            @apply com-bg-indigo-100 com-text-indigo-700;
-          }
         }
 
-        .resource-chip-info {
-          @apply com-flex com-flex-col com-gap-0.5 com-flex-1 com-min-w-0;
+        .community-info {
+          @apply com-flex com-flex-col com-min-w-0;
 
-          .resource-chip-name {
-            @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-truncate com-block;
+          .community-name {
+            @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-truncate;
           }
 
           .resource-chip-date {
-            @apply com-text-xs com-text-gray-400;
+            @apply com-text-xs com-text-Cadet-Grey;
           }
         }
 
         .resource-chip-arrow {
-          @apply com-text-xs com-text-gray-300 com-flex-shrink-0 com-transition-colors;
+          @apply com-text-xs com-text-Cadet-Grey com-flex-shrink-0 com-transition-colors;
         }
 
         &:hover .resource-chip-arrow {
@@ -324,14 +338,16 @@
     }
 
     .resource-empty-hint {
-      @apply com-text-xs com-text-gray-400 com-italic com-m-0;
+      @apply com-text-xs com-text-Cadet-Grey com-italic com-m-0;
     }
   }
 
-  // ── Status notice (expired / cancelled) ───────────────────
+  /* ── Status notice (expired / cancelled) ── */
   .status-notice {
     @apply com-flex com-items-center com-gap-3 com-px-5 com-py-3;
-    @apply com-bg-yellow-50 com-text-yellow-800 com-text-xs com-border-t com-border-yellow-100;
+    @apply com-bg-yellow-50 com-text-yellow-800 com-text-xs;
+    @apply com-border-0 com-border-t com-border-solid com-border-yellow-100;
+    @apply dark:com-bg-yellow-900 dark:com-text-yellow-200 dark:com-border-yellow-800;
 
     nb-icon {
       @apply com-flex-shrink-0 com-text-yellow-500;
@@ -344,13 +360,13 @@
 
   // ── Pagination ────────────────────────────────────────────
   .pagination-wrapper {
-    @apply com-flex com-justify-center com-pt-4;
+    @apply com-pt-4;
   }
 }
 
-/* ── Cancel confirmation dialog ── */
+/* ── Cancel dialog ── */
 .cancel-dialog {
-  @apply com-max-w-md com-bg-white;
+  @apply com-max-w-md;
 
   .cancel-dialog-header {
     @apply com-flex com-items-center com-justify-between com-text-base com-font-bold com-text-Yankees-Blue;

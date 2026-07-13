@@ -283,6 +283,11 @@ p {
   @apply com-bg-gradient-to-r com-from-primary-500 com-to-blue-700 com-text-white #{!important};
 }
 
+/* Two-button group on trial-enabled plans */
+.plan-cta-group {
+  @apply com-flex com-flex-col com-gap-2 com-w-full;
+}
+
 .student-section {
   @apply com-flex md:com-mt-20 com-mt-10 md:com-flex-row com-flex-col-reverse com-rounded-[32px] com-shadow-md com-border com-border-solid com-border-Bright-Gray md:com-mx-0 com-mx-4;
 

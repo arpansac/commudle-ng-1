@@ -139,7 +139,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     });
   }
 
-  createPurchaseOrderForPrice(gtmPushEventName: string, planType: string) {
+  createPurchaseOrderForPrice(gtmPushEventName: string, planType: string, withTrial?: boolean) {
     this.gtmDataLayerPush(gtmPushEventName);
     let productUuid;
 
@@ -152,11 +152,6 @@ export class PricingComponent implements OnInit, OnDestroy {
         productUuid = this.isMonthly ? this.enterprise.priceDetails[1].uuid : this.enterprise.priceDetails[0].uuid;
         break;
       }
-      // Not needed for now
-      // case 'devrel': {
-      //   productUuid = this.isMonthly ? this.devrel.priceDetails[1].uuid : this.devrel.priceDetails[0].uuid;
-      //   break;
-      // }
     }
 
     // Show loading dialog
@@ -182,7 +177,10 @@ export class PricingComponent implements OnInit, OnDestroy {
               this.isFullPageLoading = false;
               if (response && response.uuid) {
                 if (this.isBrowser) {
-                  window.location.href = `/checkout/${response.uuid}`;
+                  /* Append ?with_trial=1 or ?with_trial=0 so the checkout page knows
+                     whether the user deliberately chose a trial or a direct purchase. */
+                  const trialParam = withTrial === undefined ? '' : `?with_trial=${withTrial ? '1' : '0'}`;
+                  window.location.href = `/checkout/${response.uuid}${trialParam}`;
                 }
               }
             },
@@ -222,6 +220,8 @@ export class PricingComponent implements OnInit, OnDestroy {
                 productPrice.final_price - productPrice.original_price ? productPrice.final_price : null;
               this[type].priceDetails[index].discount_percentage = productPrice.discount_percentage;
               this[type].priceDetails[index].uuid = productPrice.uuid;
+              this[type].priceDetails[index].trial_enabled = productPrice.trial_enabled;
+              this[type].priceDetails[index].trial_period_days = productPrice.trial_period_days;
             });
         }
       });

@@ -4,9 +4,7 @@
   <ng-container *ngIf="!isLoading">
     <!-- ── Not logged in ── -->
     <div class="empty-state" *ngIf="!isLoggedIn">
-      <div class="empty-state-icon">
-        <nb-icon icon="lock-outline"></nb-icon>
-      </div>
+      <div class="empty-state-icon"><nb-icon icon="lock-outline"></nb-icon></div>
       <div class="empty-state-content">
         <h3 class="empty-state-title">Sign in to view subscriptions</h3>
         <p class="empty-state-desc">Please log in to manage your subscription plans and communities.</p>
@@ -16,241 +14,246 @@
 
     <!-- ── No subscriptions ── -->
     <div class="empty-state" *ngIf="isLoggedIn && subscriptions.length === 0">
-      <div class="empty-state-icon">
-        <nb-icon icon="credit-card-outline"></nb-icon>
-      </div>
+      <div class="empty-state-icon"><nb-icon icon="credit-card-outline"></nb-icon></div>
       <div class="empty-state-content">
         <h3 class="empty-state-title">No active subscriptions</h3>
-        <p class="empty-state-desc">
-          Choose a plan to start building and growing your developer communities on Commudle.
-        </p>
-        <a [routerLink]="['/pricing']" nbButton status="primary" shape="semi-round" size="medium">
-          View Pricing Plans
-        </a>
-      </div>
-      <div class="empty-state-features">
-        <div class="empty-feature-item">
-          <nb-icon icon="calendar-outline"></nb-icon>
-          <span>Events &amp; Hackathons</span>
-        </div>
-        <div class="empty-feature-item">
-          <nb-icon icon="people-outline"></nb-icon>
-          <span>Unlimited Members</span>
-        </div>
-        <div class="empty-feature-item">
-          <nb-icon icon="email-outline"></nb-icon>
-          <span>Newsletters &amp; Channels</span>
-        </div>
+        <p class="empty-state-desc">Choose a plan to start building and growing your developer communities.</p>
+        <a [routerLink]="['/pricing']" nbButton status="primary" shape="semi-round" size="medium">View Pricing Plans</a>
       </div>
     </div>
 
     <!-- ── Subscription cards ── -->
     <div class="subscriptions-list" *ngIf="subscriptions.length > 0">
-      <div
-        class="sub-card"
-        *ngFor="let sub of subscriptions"
-        [class.sub-card-pending]="sub.status === 'pending'"
-        [class.sub-card-inactive]="
-          sub.status === 'expired' || sub.status === 'cancelled' || sub.status === 'payment_failed'
-        "
-      >
-        <!-- ── Card Header ── -->
-        <div class="sub-header">
-          <div class="header-left">
-            <div class="plan-icon-wrap" [class.plan-icon-org]="sub.product_price?.can_create_community_group">
-              <nb-icon
-                [icon]="sub.product_price?.can_create_community_group ? 'briefcase-outline' : 'globe-outline'"
-              ></nb-icon>
+      <!-- Cancelled summary line (shown collapsed at the bottom) -->
+      <ng-container *ngFor="let sub of subscriptions">
+        <!-- Cancelled / expired — collapsed row only -->
+        <div class="sub-row-cancelled" *ngIf="sub.status === 'cancelled' || sub.status === 'expired'">
+          <span class="cancelled-icon">
+            <nb-icon icon="close-circle-outline"></nb-icon>
+          </span>
+          <span class="cancelled-text">
+            <strong>{{ sub.product_price?.billing_cycle | titlecase }} {{ sub.product_price?.product_name }}</strong>
+            — {{ sub.status | titlecase }} no action needed
+          </span>
+        </div>
+
+        <!-- All other statuses — full card -->
+        <div
+          class="sub-card"
+          *ngIf="sub.status !== 'cancelled' && sub.status !== 'expired'"
+          [class.sub-card-highlight]="hasEmptySlots(sub)"
+          [class.sub-card-pending]="sub.status === 'pending'"
+          [class.sub-card-failed]="sub.status === 'payment_failed'"
+        >
+          <!-- ── Plan row ── -->
+          <div class="plan-row">
+            <div class="plan-row-left">
+              <div class="plan-icon" [class.plan-icon-org]="sub.product_price?.can_create_community_group">
+                <nb-icon
+                  [icon]="sub.product_price?.can_create_community_group ? 'briefcase-outline' : 'globe-outline'"
+                ></nb-icon>
+              </div>
+              <div class="plan-details">
+                <div class="plan-title-line">
+                  <span class="plan-cycle">{{ sub.product_price?.billing_cycle | titlecase }}</span>
+                  <span class="plan-product">{{ sub.product_price?.product_name }}</span>
+                </div>
+                <div class="plan-meta-line">
+                  <span *ngIf="(sub.product_price?.final_price || 0) > 0">
+                    {{
+                      sub.product_price?.final_price | currency : sub.product_price?.currency : 'symbol' : '1.0-0'
+                    }}/mo
+                  </span>
+                  <span class="meta-sep" *ngIf="sub.starts_at">·</span>
+                  <span *ngIf="sub.starts_at">started {{ sub.starts_at | date : 'MMM d, y' }}</span>
+                  <span class="meta-sep" *ngIf="sub.ends_at">·</span>
+                  <span *ngIf="sub.ends_at">
+                    {{ sub.status === 'active' ? 'renews' : 'ended' }} {{ sub.ends_at | date : 'MMM d, y' }}
+                  </span>
+                </div>
+              </div>
             </div>
-            <div class="plan-info">
-              <div class="plan-name-row">
-                <h3 class="plan-name">{{ sub.product_price?.plan_name || 'Subscription' }}</h3>
-                <span class="plan-product">{{ sub.product_price?.product_name }}</span>
-              </div>
-              <div class="plan-meta">
-                <span *ngIf="sub.product_price?.billing_cycle" class="billing-badge">
-                  {{ sub.product_price.billing_cycle | titlecase }}
-                </span>
-                <span class="meta-dot" *ngIf="sub.product_price?.billing_cycle">·</span>
-                <span class="meta-price" *ngIf="sub.product_price?.final_price > 0">
-                  {{ sub.product_price.final_price | currency : sub.product_price.currency : 'symbol' : '1.0-0' }}/mo
-                </span>
-                <span class="meta-price free-label" *ngIf="sub.product_price?.final_price === 0">Free</span>
-              </div>
+            <div class="plan-row-right">
+              <!-- Active pill -->
+              <span class="status-pill status-active" *ngIf="sub.status === 'active' && !sub.cancellation_requested_at">
+                <span class="status-dot"></span>
+                Active
+                <span class="days-left" *ngIf="getDaysLeft(sub) > 0">· {{ getDaysLeft(sub) }}d left</span>
+              </span>
+              <!-- Cancellation scheduled -->
+              <span
+                class="status-pill status-cancel-sched"
+                *ngIf="sub.status === 'active' && sub.cancellation_requested_at"
+              >
+                Cancels {{ sub.ends_at | date : 'MMM d' }}
+              </span>
+              <!-- Pending -->
+              <span class="status-pill status-pending" *ngIf="sub.status === 'pending'"> Pending </span>
+              <!-- Complete Payment button -->
+              <a
+                *ngIf="sub.status === 'pending' && sub.purchase_order?.uuid"
+                [routerLink]="['/checkout', sub.purchase_order.uuid]"
+                class="action-btn action-btn-primary"
+              >
+                <nb-icon icon="credit-card-outline"></nb-icon>
+                Complete Payment
+              </a>
+              <!-- Payment failed -->
+              <span class="status-pill status-failed" *ngIf="sub.status === 'payment_failed'">
+                <span class="status-dot"></span>Payment Failed
+              </span>
+              <!-- Cancel button for active -->
+              <button
+                type="button"
+                class="cancel-link"
+                *ngIf="sub.status === 'active' && !sub.cancellation_requested_at"
+                (click)="cancelPlan(sub)"
+              >
+                Cancel
+              </button>
             </div>
           </div>
-          <div class="header-right">
-            <span class="status-pill" [ngClass]="getStatusClass(sub.status)">
-              <span class="status-dot"></span>{{ sub.status | titlecase }}
-            </span>
-            <span class="cancel-scheduled-chip" *ngIf="sub.cancellation_requested_at && sub.status === 'active'">
-              Cancels {{ sub.ends_at | date : 'MMM d' }}
-            </span>
+
+          <!-- ── Communities resource section ── -->
+          <div class="resource-section" *ngIf="sub.product_price?.can_create_kommunity">
+            <div class="resource-header">
+              <span class="resource-label">
+                <nb-icon icon="globe-outline"></nb-icon>
+                Communities
+                <span
+                  class="resource-count"
+                  [ngClass]="countColorClass(sub.kommunities_count, effectiveCommunityMax(sub))"
+                >
+                  · {{ sub.kommunities_count }} / {{ effectiveCommunityMax(sub) ?? '∞' }}
+                </span>
+              </span>
+              <button
+                nbButton
+                status="primary"
+                size="small"
+                shape="round"
+                *ngIf="sub.status === 'active' && canCreateKommunity(sub)"
+                (click)="createCommunity(sub)"
+              >
+                + Create New Community
+              </button>
+              <span class="slots-full-badge" *ngIf="sub.status === 'active' && !canCreateKommunity(sub)">
+                All slots in use
+              </span>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="quota-bar" *ngIf="effectiveCommunityMax(sub)">
+              <div
+                class="quota-bar-fill"
+                [ngClass]="getProgressClass(sub.kommunities_count, effectiveCommunityMax(sub))"
+                [style.width.%]="getQuotaPercent(sub.kommunities_count, effectiveCommunityMax(sub))"
+              ></div>
+            </div>
+
+            <!-- Remaining hint -->
             <span
-              class="days-chip"
-              *ngIf="getDaysLeft(sub) > 0 && sub.status === 'active' && !sub.cancellation_requested_at"
+              class="remaining-hint"
+              *ngIf="sub.status === 'active' && canCreateKommunity(sub) && effectiveCommunityMax(sub)"
             >
-              {{ getDaysLeft(sub) }}d left
+              {{ getRemaining(sub.kommunities_count, effectiveCommunityMax(sub)) }} slot(s) remaining, you're only
+              halfway through what you paid for
             </span>
-            <a
-              *ngIf="sub.status === 'pending' && sub.purchase_order?.uuid"
-              [routerLink]="['/checkout', sub.purchase_order.uuid]"
-              class="pay-now-chip"
-            >
-              <nb-icon icon="credit-card-outline"></nb-icon>
-              Complete Payment
-            </a>
-            <button
-              type="button"
-              class="cancel-chip"
-              *ngIf="sub.status === 'active' && !sub.cancellation_requested_at"
-              (click)="cancelPlan(sub)"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
 
-        <!-- ── Billing Info ── -->
-        <div class="billing-row">
-          <div class="billing-item">
-            <span class="billing-label">Started</span>
-            <span class="billing-value">{{ sub.starts_at | date : 'MMM d, y' }}</span>
-          </div>
+            <!-- Pending warning -->
+            <span class="pending-hint" *ngIf="sub.status === 'pending'"> Complete payment to unlock this slot. </span>
 
-          <ng-container *ngIf="sub.ends_at">
-            <div class="billing-divider"></div>
-            <div class="billing-item">
-              <span class="billing-label">{{ sub.status === 'active' ? 'Renews' : 'Ended' }}</span>
-              <span class="billing-value">{{ sub.ends_at | date : 'MMM d, y' }}</span>
-            </div>
-          </ng-container>
-
-          <ng-container *ngIf="sub.product_price?.can_create_kommunity">
-            <div class="billing-divider"></div>
-            <div class="billing-item">
-              <span class="billing-label">Communities</span>
-              <span
-                class="billing-value quota-value"
-                [ngClass]="getQuotaClass(sub.kommunities_count, effectiveCommunityMax(sub))"
+            <!-- Community grid -->
+            <div class="community-grid" *ngIf="(sub.kommunities?.length || 0) > 0">
+              <a
+                *ngFor="let c of sub.kommunities"
+                [routerLink]="['/admin/communities', c.slug || c.id]"
+                class="community-item"
               >
-                {{ sub.kommunities_count }}<span class="quota-max"> / {{ effectiveCommunityMax(sub) ?? '∞' }}</span>
-              </span>
+                <span
+                  class="community-avatar"
+                  [style.background-color]="'hsl(' + (((c.name?.charCodeAt(0) || 65) * 17) % 360) + ', 60%, 85%)'"
+                  [style.color]="'hsl(' + (((c.name?.charCodeAt(0) || 65) * 17) % 360) + ', 50%, 35%)'"
+                >
+                  {{ c.name || 'C' | slice : 0 : 1 | uppercase }}
+                </span>
+                <div class="community-info">
+                  <span class="community-name">{{ c.name }}</span>
+                  <span class="community-meta" *ngIf="c.members_count">{{ c.members_count | number }} members</span>
+                </div>
+              </a>
             </div>
-          </ng-container>
 
-          <ng-container *ngIf="sub.product_price?.can_create_community_group">
-            <div class="billing-divider"></div>
-            <div class="billing-item">
-              <span class="billing-label">Organizations</span>
-              <span
-                class="billing-value quota-value"
-                [ngClass]="getQuotaClass(sub.community_groups_count, effectiveGroupMax(sub))"
+            <p class="empty-hint" *ngIf="!(sub.kommunities?.length || 0) && sub.status !== 'pending'">
+              No communities yet, create your first one.
+            </p>
+          </div>
+
+          <!-- ── Organizations resource section ── -->
+          <div class="resource-section" *ngIf="sub.product_price?.can_create_community_group">
+            <div class="resource-header">
+              <span class="resource-label">
+                <nb-icon icon="briefcase-outline"></nb-icon>
+                Organizations
+                <span
+                  class="resource-count"
+                  [ngClass]="countColorClass(sub.community_groups_count, effectiveGroupMax(sub))"
+                >
+                  · {{ sub.community_groups_count }} / {{ effectiveGroupMax(sub) ?? '∞' }}
+                </span>
+              </span>
+              <button
+                nbButton
+                status="primary"
+                size="small"
+                shape="round"
+                *ngIf="sub.status === 'active' && canCreateCommunityGroup(sub)"
+                (click)="createOrganization(sub)"
               >
-                {{ sub.community_groups_count }}<span class="quota-max"> / {{ effectiveGroupMax(sub) ?? '∞' }}</span>
-              </span>
+                + Create New Organization
+              </button>
             </div>
-          </ng-container>
-        </div>
 
-        <!-- ── Communities Section ── -->
-        <div class="resource-section" *ngIf="sub.product_price?.can_create_kommunity">
-          <div class="resource-section-header">
-            <span class="resource-section-title">
-              <nb-icon icon="globe-outline"></nb-icon>
-              Communities
-            </span>
-            <button
-              nbButton
-              status="primary"
-              shape="round"
-              [disabled]="sub.status !== 'active' || !canCreateKommunity(sub)"
-              (click)="createCommunity(sub)"
+            <div class="quota-bar" *ngIf="effectiveGroupMax(sub)">
+              <div
+                class="quota-bar-fill"
+                [ngClass]="getProgressClass(sub.community_groups_count, effectiveGroupMax(sub))"
+                [style.width.%]="getQuotaPercent(sub.community_groups_count, effectiveGroupMax(sub))"
+              ></div>
+            </div>
+
+            <!-- Renews notice when no orgs yet -->
+            <span
+              class="renews-hint"
+              *ngIf="!(sub.community_groups?.length || 0) && sub.status === 'active' && sub.ends_at"
             >
-              <nb-icon icon="plus-outline"></nb-icon>
-              Create New Community
-            </button>
-          </div>
-
-          <!-- Progress bar (only when limit is set) -->
-          <div class="quota-bar" *ngIf="effectiveCommunityMax(sub)">
-            <div
-              class="quota-bar-fill"
-              [ngClass]="getProgressClass(sub.kommunities_count, effectiveCommunityMax(sub))"
-              [style.width.%]="getQuotaPercent(sub.kommunities_count, effectiveCommunityMax(sub))"
-            ></div>
-          </div>
-          <span class="quota-hint" *ngIf="sub.status === 'active' && effectiveCommunityMax(sub)">
-            {{ getRemaining(sub.kommunities_count, effectiveCommunityMax(sub)) }} slot(s) remaining
-          </span>
-          <span class="quota-hint quota-full" *ngIf="!canCreateKommunity(sub) && sub.status === 'active'">
-            Quota reached
-          </span>
-
-          <!-- Community chips grid -->
-          <div class="resource-grid" *ngIf="sub.kommunities?.length > 0">
-            <app-community-badge
-              [community]="c"
-              routeBase="/admin/communities"
-              *ngFor="let c of sub.kommunities"
-            ></app-community-badge>
-          </div>
-
-          <p class="resource-empty-hint" *ngIf="!sub.kommunities?.length">
-            No communities yet. Create your first community.
-          </p>
-        </div>
-
-        <!-- ── Organizations Section ── -->
-        <div class="resource-section" *ngIf="sub.product_price?.can_create_community_group">
-          <div class="resource-section-header">
-            <span class="resource-section-title">
-              <nb-icon icon="briefcase-outline"></nb-icon>
-              Organizations
+              ⚠ Renews in {{ getDaysLeft(sub) }} days, nothing created yet
             </span>
-            <button
-              nbButton
-              status="info"
-              shape="round"
-              [disabled]="sub.status !== 'active' || !canCreateCommunityGroup(sub)"
-              (click)="createOrganization(sub)"
-            >
-              <nb-icon icon="plus-outline"></nb-icon>
-              Create New Organization
-            </button>
-          </div>
 
-          <div class="quota-bar" *ngIf="effectiveGroupMax(sub)">
-            <div
-              class="quota-bar-fill"
-              [ngClass]="getProgressClass(sub.community_groups_count, effectiveGroupMax(sub))"
-              [style.width.%]="getQuotaPercent(sub.community_groups_count, effectiveGroupMax(sub))"
-            ></div>
-          </div>
+            <div class="community-grid" *ngIf="(sub.community_groups?.length || 0) > 0">
+              <a *ngFor="let cg of sub.community_groups" [routerLink]="['/admin/orgs', cg.slug]" class="community-item">
+                <span
+                  class="community-avatar"
+                  [style.background-color]="'hsl(' + (((cg.name?.charCodeAt(0) || 65) * 23) % 360) + ', 55%, 82%)'"
+                  [style.color]="'hsl(' + (((cg.name?.charCodeAt(0) || 65) * 23) % 360) + ', 45%, 35%)'"
+                >
+                  {{ cg.name || 'O' | slice : 0 : 1 | uppercase }}
+                </span>
+                <div class="community-info">
+                  <span class="community-name">{{ cg.name }}</span>
+                  <span class="community-meta" *ngIf="cg.kommunities_count">
+                    {{ cg.kommunities_count }} {{ cg.kommunities_count === 1 ? 'community' : 'communities' }}
+                  </span>
+                </div>
+              </a>
+            </div>
 
-          <!-- Org chips grid -->
-          <div class="resource-grid" *ngIf="sub.community_groups?.length > 0">
-            <app-community-group-badge
-              *ngFor="let cg of sub.community_groups"
-              [communityGroup]="cg"
-              routeBase="/admin/orgs"
-            ></app-community-group-badge>
+            <p class="empty-hint" *ngIf="!(sub.community_groups?.length || 0) && sub.status !== 'pending'">
+              No organizations yet, create your first one.
+            </p>
           </div>
-
-          <p class="resource-empty-hint" *ngIf="!sub.community_groups?.length">
-            No organizations yet. Create your first organization.
-          </p>
         </div>
-
-        <!-- ── Expired / Cancelled notice ── -->
-        <div class="status-notice" *ngIf="sub.status === 'expired' || sub.status === 'cancelled'">
-          <nb-icon icon="alert-triangle-outline"></nb-icon>
-          <span>Subscription {{ sub.status }}. Existing resources remain active but new creation is blocked.</span>
-          <!-- Renew temporarily disabled: renewal creates a new subscription and existing
-               communities are not yet re-linked to it. Re-enable once re-association is handled. -->
-          <!-- <a [routerLink]="['/pricing']" nbButton status="warning" size="tiny" shape="semi-round">Renew</a> -->
-        </div>
-      </div>
+      </ng-container>
 
       <!-- Pagination -->
       <div class="pagination-wrapper" *ngIf="total > count">
@@ -267,7 +270,7 @@
   </ng-container>
 </div>
 
-<!-- ── Cancel subscription confirmation ── -->
+<!-- ── Cancel confirmation ── -->
 <ng-template #cancelDialog let-ref="dialogRef">
   <nb-card class="cancel-dialog">
     <nb-card-header class="cancel-dialog-header">

@@ -36,36 +36,6 @@
       </div>
 
       <div class="spb-info-grid">
-        <!-- Price -->
-        <!-- <div class="spb-info-item" *ngIf="subscription.product_price?.final_price >= 0">
-          <span class="spb-info-label">Price</span>
-          <span class="spb-info-value">
-            <ng-container *ngIf="subscription.product_price?.final_price === 0">Free</ng-container>
-            <ng-container *ngIf="subscription.product_price?.final_price > 0">
-              {{ subscription.product_price.final_price | currency: subscription.product_price.currency : 'symbol' : '1.0-0' }}
-              / {{ subscription.product_price.billing_cycle }}
-            </ng-container>
-          </span>
-        </div> -->
-
-        <!-- Communities -->
-        <div class="spb-info-item" *ngIf="subscription.product_price?.can_create_kommunity">
-          <span class="spb-info-label">Communities</span>
-          <span class="spb-info-value">
-            {{ subscription.kommunities_count }}
-            / {{ subscription.product_price?.max_kommunities ?? '∞' }}
-          </span>
-        </div>
-
-        <!-- Organizations -->
-        <div class="spb-info-item" *ngIf="subscription.product_price?.can_create_community_group">
-          <span class="spb-info-label">Organizations</span>
-          <span class="spb-info-value">
-            {{ subscription.community_groups_count }}
-            / {{ subscription.product_price?.max_community_groups ?? '∞' }}
-          </span>
-        </div>
-
         <!-- Started -->
         <div class="spb-info-item">
           <span class="spb-info-label">Started</span>

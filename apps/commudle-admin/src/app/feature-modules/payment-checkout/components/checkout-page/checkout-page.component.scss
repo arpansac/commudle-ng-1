@@ -361,6 +361,20 @@
           @apply com-font-bold;
         }
       }
+
+      /* Shown when trial is locked ON from the pricing page */
+      .trial-locked-badge {
+        @apply com-inline-flex com-items-center com-gap-1.5 com-mb-2;
+        @apply com-text-sm com-font-semibold;
+
+        &.trial-locked-on {
+          @apply com-text-primary-700;
+
+          fa-icon {
+            @apply com-text-primary-500;
+          }
+        }
+      }
     }
 
     .trial-billing-note {

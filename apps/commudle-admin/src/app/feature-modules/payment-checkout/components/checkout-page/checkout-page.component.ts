@@ -74,6 +74,10 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   subscriptionMonths = 1;
 
   withTrial = false;
+  /** true = user came from "Start free trial" on pricing page — trial is locked ON.
+   *  false = user came from "Buy now" on pricing page — trial is locked OFF.
+   *  undefined = user landed on checkout without explicit intent — show the checkbox. */
+  trialLocked: boolean | undefined = undefined;
 
   readonly countries = countries_details;
 
@@ -152,6 +156,17 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       const purchaseOrderUuid = params['purchase_order_uuid'];
       if (purchaseOrderUuid) {
         this.fetchPurchaseOrder(purchaseOrderUuid);
+      }
+    });
+    /* Read the with_trial query param set by the pricing page.
+     * '1' → locked ON (trial), anything else (including absent) → locked OFF. */
+    this.activatedRoute.queryParams.pipe(takeUntil(this.destroy$)).subscribe((qp) => {
+      if (qp['with_trial'] === '1') {
+        this.trialLocked = true;
+        this.withTrial = true;
+      } else {
+        this.trialLocked = false;
+        this.withTrial = false;
       }
     });
   }
@@ -728,9 +743,12 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     this.productPrice = productPrice;
     this.minQuantity = productPrice.min_quantity || 1;
     this.quantity = Math.max(this.minQuantity, this.quantity);
-    // Default to the free trial when the plan offers one, so an eligible plan
-    // authorizes the card and charges $0 today (billed automatically after the trial).
-    this.withTrial = this.hasTrial;
+    /* Respect the explicit trial intent from the pricing page. If no intent was
+     * passed (?with_trial absent), it defaults to false — already set in ngOnInit. */
+    if (this.trialLocked === undefined) {
+      this.withTrial = this.hasTrial;
+    }
+    // trialLocked true/false was already applied in ngOnInit from the query param.
     this.updateTotalPrice();
   }
 
