@@ -30,6 +30,8 @@ export interface IPricingPlanByMonthlyYearly {
   discount_percentage?: number;
   currencyType: string;
   country: string;
+  trial_enabled?: boolean;
+  trial_period_days?: number;
 }
 export interface IPricingPlan {
   price_after_discount?: number;

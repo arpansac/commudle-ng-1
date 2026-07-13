@@ -95,11 +95,29 @@
                   </ul>
                 </div>
                 <ng-container>
-                  <a (click)="createPurchaseOrderForPrice('pricing_plan_startup', 'startup')">
-                    <button nbButton fullWidth shape="semi-round" class="enterprise-btn">
-                      {{ startup.button_text }}
-                    </button>
-                  </a>
+                  <!-- Two CTAs when the plan has a free trial, one otherwise -->
+                  <div
+                    class="plan-cta-group"
+                    *ngIf="startup.priceDetails[isMonthly ? 1 : 0]?.trial_enabled; else startupSingleCta"
+                  >
+                    <a (click)="createPurchaseOrderForPrice('pricing_plan_startup_trial', 'startup', true)">
+                      <button nbButton fullWidth shape="semi-round" status="primary" class="enterprise-btn">
+                        Start {{ startup.priceDetails[isMonthly ? 1 : 0]?.trial_period_days }}-day free trial
+                      </button>
+                    </a>
+                    <a (click)="createPurchaseOrderForPrice('pricing_plan_startup', 'startup', false)">
+                      <button nbButton fullWidth shape="semi-round" status="basic" class="enterprise-btn">
+                        Buy now
+                      </button>
+                    </a>
+                  </div>
+                  <ng-template #startupSingleCta>
+                    <a (click)="createPurchaseOrderForPrice('pricing_plan_startup', 'startup', false)">
+                      <button nbButton fullWidth shape="semi-round" class="enterprise-btn">
+                        {{ startup.button_text }}
+                      </button>
+                    </a>
+                  </ng-template>
                 </ng-container>
               </div>
 
@@ -179,11 +197,29 @@
                   </ul>
                 </div>
                 <ng-container>
-                  <a (click)="createPurchaseOrderForPrice('pricing_plan_enterprise', 'enterprise')">
-                    <button nbButton fullWidth shape="semi-round" class="enterprise-btn">
-                      {{ startup?.button_text }}
-                    </button>
-                  </a>
+                  <!-- Two CTAs when the plan has a free trial, one otherwise -->
+                  <div
+                    class="plan-cta-group"
+                    *ngIf="enterprise.priceDetails[isMonthly ? 1 : 0]?.trial_enabled; else enterpriseSingleCta"
+                  >
+                    <a (click)="createPurchaseOrderForPrice('pricing_plan_enterprise_trial', 'enterprise', true)">
+                      <button nbButton fullWidth shape="semi-round" status="primary" class="enterprise-btn">
+                        Start {{ enterprise.priceDetails[isMonthly ? 1 : 0]?.trial_period_days }}-day free trial
+                      </button>
+                    </a>
+                    <a (click)="createPurchaseOrderForPrice('pricing_plan_enterprise', 'enterprise', false)">
+                      <button nbButton fullWidth shape="semi-round" status="basic" class="enterprise-btn">
+                        Buy now
+                      </button>
+                    </a>
+                  </div>
+                  <ng-template #enterpriseSingleCta>
+                    <a (click)="createPurchaseOrderForPrice('pricing_plan_enterprise', 'enterprise', false)">
+                      <button nbButton fullWidth shape="semi-round" class="enterprise-btn">
+                        {{ startup?.button_text }}
+                      </button>
+                    </a>
+                  </ng-template>
                 </ng-container>
               </div>
 

@@ -392,21 +392,22 @@
               </div>
 
               <!-- Free trial option -->
-              <div class="trial-option" *ngIf="hasTrial && !paymentPaid">
-                <nb-checkbox [(ngModel)]="withTrial"></nb-checkbox>
-                <div class="com-flex com-flex-col com-gap-1.5 com-flex-1">
-                  <p class="trial-title">Start with a {{ trialDays }}-day free trial</p>
-                  <p class="trial-note">
-                    <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
-                    <span>
-                      Only a refundable
-                      <strong>{{ cardVerificationCharge | currency : purchaseOrder.currency }}</strong>
-                      card-verification charge today (refunded right away). You'll then be charged
-                      <strong>{{ totalPrice | currency : purchaseOrder.currency }}</strong>
-                      automatically after {{ trialDays }} days. Cancel anytime before then.
-                    </span>
-                  </p>
+              <div class="trial-option" *ngIf="hasTrial && withTrial && !paymentPaid">
+                <!-- Locked ON: user came from "Start free trial" button -->
+                <div class="trial-locked-badge trial-locked-on">
+                  <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
+                  {{ trialDays }}-day free trial included
                 </div>
+                <p class="trial-note">
+                  <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
+                  <span>
+                    Only a refundable
+                    <strong>{{ cardVerificationCharge | currency : purchaseOrder.currency }}</strong>
+                    card-verification charge today (refunded right away). You'll be charged
+                    <strong>{{ totalPrice | currency : purchaseOrder.currency }}</strong>
+                    automatically after {{ trialDays }} days. Cancel anytime before then.
+                  </span>
+                </p>
               </div>
 
               <!-- Total -->

@@ -87,10 +87,59 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
 
   getProgressClass(used: number, max: number | null): string {
     const pct = this.getQuotaPercent(used, max);
-    if (pct >= 100) return 'fill-full';
-    if (pct >= 60) return 'fill-high';
-    if (pct >= 40) return 'fill-mid';
-    return 'fill-low';
+    return pct >= 100 ? 'fill-full' : 'fill-partial';
+  }
+
+  /** Colour for the "used / max" count text — green when full, primary when there's room. */
+  countColorClass(used: number, max: number | null | undefined): string {
+    return this.getQuotaPercent(used, max) >= 100 ? 'count-full' : 'count-partial';
+  }
+
+  /** A subscription has empty slots when it's active and can still create a community or org. */
+  hasEmptySlots(subscription: IUserSubscription): boolean {
+    return (
+      subscription.status === 'active' &&
+      (this.canCreateKommunity(subscription) || this.canCreateCommunityGroup(subscription))
+    );
+  }
+
+  /* ── Capacity summary (top card) ── */
+
+  /** Total number of active paid plans. */
+  get capacityTotal(): number {
+    return this.activeSubscriptions().length;
+  }
+
+  /** Active plans that have no communities or organizations created yet. */
+  get capacityUnused(): number {
+    return this.activeSubscriptions().filter(
+      (s) => (s.kommunities_count || 0) === 0 && (s.community_groups_count || 0) === 0,
+    ).length;
+  }
+
+  /** Total communities live across all active plans. */
+  get totalCommunitiesLive(): number {
+    return this.activeSubscriptions().reduce((sum, s) => sum + (s.kommunities_count || 0), 0);
+  }
+
+  /** Name of the first plan that has a live community/org — used as the flagship in the subtext. */
+  get flagshipName(): string {
+    for (const s of this.activeSubscriptions()) {
+      if (s.kommunities?.length) return s.kommunities[0].name;
+      if (s.community_groups?.length) return s.community_groups[0].name;
+    }
+    return this.activeSubscriptions()[0]?.product_price?.product_name || 'Your plan';
+  }
+
+  /** Create a community/org on the first eligible active plan with empty capacity. */
+  fillEmptyPlans(): void {
+    const target = this.activeSubscriptions().find((s) => this.hasEmptySlots(s));
+    if (!target) return;
+    if (this.canCreateKommunity(target)) {
+      this.createCommunity(target);
+    } else if (this.canCreateCommunityGroup(target)) {
+      this.createOrganization(target);
+    }
   }
 
   getQuotaClass(used: number, max: number | null): string {
