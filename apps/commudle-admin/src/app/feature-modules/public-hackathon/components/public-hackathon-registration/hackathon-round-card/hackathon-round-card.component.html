@@ -10,25 +10,98 @@
   <div class="round-indicator">
     <div class="round-number">{{ index + 1 }}</div>
   </div>
-  <div class="round-content">
-    <div class="round-name">{{ round.name | titlecase }}</div>
-    <div class="round-chips">
-      <span *ngIf="round.is_elimination_round" class="elimination-chip">
-        <nb-icon icon="alert-triangle-outline"></nb-icon>
-        Elimination Round
-      </span>
-    </div>
-    <div class="round-date" *ngIf="round.date">
-      {{ moment(round.date).format('MMM DD, YYYY, hh:mm A') }}
-      @if(round.end_date) {
-      <span> -> {{ moment(round.end_date).format('MMM DD, YYYY, hh:mm A') }}</span>
-      }
-    </div>
-    <div class="round-description" *ngIf="round.description">
-      <span #descriptionSpan [innerHTML]="round.description" [class.expanded]="isDescriptionExpanded"></span>
-      <button class="read-more-btn" (click)="toggleDescription()" *ngIf="isDescriptionTruncated">
-        {{ isDescriptionExpanded ? 'Show less' : 'Read more' }}
-      </button>
+  <div class="round-content-profile">
+    <div class="round-content-actions">
+      <div class="round-content">
+        <div class="round-name">{{ round.name | titlecase }}</div>
+        <div class="round-chips">
+          <span *ngIf="round.is_elimination_round" class="elimination-chip">
+            <nb-icon icon="alert-triangle-outline"></nb-icon>
+            Elimination Round
+          </span>
+        </div>
+        <div class="round-date" *ngIf="round.date">
+          {{ moment(round.date).format('MMM DD, YYYY, hh:mm A') }}
+          @if(round.end_date) {
+          <span> -> {{ moment(round.end_date).format('MMM DD, YYYY, hh:mm A') }}</span>
+          }
+        </div>
+        <div class="round-description" *ngIf="round.description">
+          <span #descriptionSpan [innerHTML]="round.description" [class.expanded]="isDescriptionExpanded"></span>
+          <button class="read-more-btn" (click)="toggleDescription()" *ngIf="isDescriptionTruncated">
+            {{ isDescriptionExpanded ? 'Show less' : 'Read more' }}
+          </button>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="round-status">
+          <div *ngIf="isLive" class="status-live">Live</div>
+          <div *ngIf="this.userTeamDetails?.round?.id === round.id" class="status-current">👉 You are here</div>
+          <div *ngIf="isCompleted" class="status-completed">✓</div>
+          <div
+            *ngIf="!isLive && this.userTeamDetails?.round?.id !== round.id && !isCompleted && isUpcoming"
+            class="status-upcoming"
+          >
+            Upcoming
+          </div>
+        </div>
+        @if(userTeamDetails?.round?.id === round.id && userTeamDetails.registration_status ===
+        EHackathonRegistrationStatus.ACCEPTED && (round.round_type === ERoundType.PPT_SUBMISSION || round.round_type ===
+        ERoundType.PROJECT_SUBMISSION || round.round_type === ERoundType.PROJECT_UPDATE_SUBMISSION || round.round_type
+        === ERoundType.FINAL_JUDGING)) {
+        <div class="round-action">
+          @if(round.round_type === ERoundType.PPT_SUBMISSION){ @if(getRoundSubmission()?.file_attachment) {
+          <a
+            class="view-ppt-link"
+            [href]="getRoundSubmission().file_attachment.url"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View PPT
+          </a>
+          } @else if(getRoundSubmission()?.link) {
+          <a class="view-ppt-link" [href]="getRoundSubmission().link" target="_blank" rel="noopener noreferrer">
+            View Link
+          </a>
+          }
+          <button nbButton status="primary" size="small" (click)="openPPTUploadDialog()" [disabled]="!isLive">
+            {{ getRoundSubmission() ? 'Update Submission' : 'Submit' }}
+          </button>
+          } @else if (round.round_type === ERoundType.PROJECT_SUBMISSION || round.round_type ===
+          ERoundType.FINAL_JUDGING) {
+          <a
+            nbButton
+            status="primary"
+            size="small"
+            [routerLink]="
+              userTeamDetails.community_build
+                ? ['/builds', userTeamDetails.community_build.slug, 'edit']
+                : ['/builds/create']
+            "
+            [queryParams]="{ parent_type: 'HackathonTeam', parent_id: userTeamDetails.id }"
+            [class.disabled]="!isLive"
+          >
+            Submit Project
+          </a>
+          } @else if (round.round_type === ERoundType.PROJECT_UPDATE_SUBMISSION) {
+          <a
+            nbButton
+            status="primary"
+            size="small"
+            [routerLink]="
+              userTeamDetails.community_build
+                ? ['/builds', userTeamDetails.community_build.slug, 'edit']
+                : ['/builds/create']
+            "
+            [queryParams]="{ parent_type: 'HackathonTeam', parent_id: userTeamDetails.id }"
+            [class.disabled]="!isLive"
+          >
+            Submit Update
+          </a>
+          }
+        </div>
+        }
+      </div>
     </div>
     <div class="round-evaluators" *ngIf="roundEvaluators.length > 0">
       <a
@@ -101,74 +174,6 @@
         }
       </a>
     </div>
-  </div>
-  <div class="actions">
-    <div class="round-status">
-      <div *ngIf="isLive" class="status-live">Live</div>
-      <div *ngIf="this.userTeamDetails?.round?.id === round.id" class="status-current">👉 You are here</div>
-      <div *ngIf="isCompleted" class="status-completed">✓</div>
-      <div
-        *ngIf="!isLive && this.userTeamDetails?.round?.id !== round.id && !isCompleted && isUpcoming"
-        class="status-upcoming"
-      >
-        Upcoming
-      </div>
-    </div>
-    @if(userTeamDetails?.round?.id === round.id && userTeamDetails.registration_status ===
-    EHackathonRegistrationStatus.ACCEPTED && (round.round_type === ERoundType.PPT_SUBMISSION || round.round_type ===
-    ERoundType.PROJECT_SUBMISSION || round.round_type === ERoundType.PROJECT_UPDATE_SUBMISSION || round.round_type ===
-    ERoundType.FINAL_JUDGING)) {
-    <div class="round-action">
-      @if(round.round_type === ERoundType.PPT_SUBMISSION){ @if(getRoundSubmission()?.file_attachment) {
-      <a
-        class="view-ppt-link"
-        [href]="getRoundSubmission().file_attachment.url"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        View PPT
-      </a>
-      } @else if(getRoundSubmission()?.link) {
-      <a class="view-ppt-link" [href]="getRoundSubmission().link" target="_blank" rel="noopener noreferrer">
-        View Link
-      </a>
-      }
-      <button nbButton status="primary" size="small" (click)="openPPTUploadDialog()" [disabled]="!isLive">
-        {{ getRoundSubmission() ? 'Update Submission' : 'Submit' }}
-      </button>
-      } @else if (round.round_type === ERoundType.PROJECT_SUBMISSION || round.round_type === ERoundType.FINAL_JUDGING) {
-      <a
-        nbButton
-        status="primary"
-        size="small"
-        [routerLink]="
-          userTeamDetails.community_build
-            ? ['/builds', userTeamDetails.community_build.slug, 'edit']
-            : ['/builds/create']
-        "
-        [queryParams]="{ parent_type: 'HackathonTeam', parent_id: userTeamDetails.id }"
-        [class.disabled]="!isLive"
-      >
-        Submit Project
-      </a>
-      } @else if (round.round_type === ERoundType.PROJECT_UPDATE_SUBMISSION) {
-      <a
-        nbButton
-        status="primary"
-        size="small"
-        [routerLink]="
-          userTeamDetails.community_build
-            ? ['/builds', userTeamDetails.community_build.slug, 'edit']
-            : ['/builds/create']
-        "
-        [queryParams]="{ parent_type: 'HackathonTeam', parent_id: userTeamDetails.id }"
-        [class.disabled]="!isLive"
-      >
-        Submit Update
-      </a>
-      }
-    </div>
-    }
   </div>
 </div>
 

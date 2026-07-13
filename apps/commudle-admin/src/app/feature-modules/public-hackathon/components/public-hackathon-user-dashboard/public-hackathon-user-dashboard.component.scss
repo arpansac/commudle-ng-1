@@ -12,6 +12,10 @@ com-card {
   }
 }
 
+.main-column {
+  @apply com-m-0 md:com-mr-6;
+}
+
 .project-details {
   com-card-body {
     .project-name {
@@ -78,6 +82,10 @@ com-card {
     h5 {
       @apply com-m-0 com-text-base com-font-semibold com-text-Yankees-Blue;
     }
+  }
+
+  button {
+    @apply com-p-0;
   }
 
   com-card-body {
@@ -179,7 +187,7 @@ com-card {
   @apply com-mb-4 com-rounded-lg com-overflow-hidden;
 
   com-card-body {
-    @apply com-flex com-items-center com-justify-between com-gap-3 com-p-3;
+    @apply com-flex com-flex-row com-justify-between com-gap-3 com-p-3;
 
     p {
       @apply com-m-0 com-text-sm com-text-Yankees-Blue;

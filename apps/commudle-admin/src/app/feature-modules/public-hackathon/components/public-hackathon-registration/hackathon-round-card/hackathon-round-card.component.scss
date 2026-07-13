@@ -100,50 +100,50 @@
         @apply hover:com-text-primary-600;
       }
     }
+  }
 
-    .round-evaluators {
-      @apply com-mt-2 com-overflow-hidden com-flex com-flex-col com-gap-1.5;
+  .round-evaluators {
+    @apply com-mt-2 com-overflow-hidden com-flex com-flex-col com-gap-1.5;
 
-      .evaluator-card {
-        @apply com-flex com-items-center com-gap-3 com-px-3 com-py-2 com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-no-underline com-bg-gray-50 com-flex-wrap;
+    .evaluator-card {
+      @apply com-flex com-items-center com-gap-3 com-px-3 com-py-2 com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-no-underline com-bg-gray-50 com-flex-wrap;
 
-        .evaluator-avatar {
-          @apply com-w-7 com-h-7 com-rounded-full com-object-cover com-flex-shrink-0 com-mt-0.5;
+      .evaluator-avatar {
+        @apply com-w-7 com-h-7 com-rounded-full com-object-cover com-flex-shrink-0 com-mt-0.5;
+      }
+
+      .evaluator-info {
+        @apply com-flex com-flex-col com-flex-1 com-min-w-0;
+
+        .evaluator-name {
+          @apply com-text-sm com-font-medium com-text-Yankees-Blue com-truncate;
         }
 
-        .evaluator-info {
-          @apply com-flex com-flex-col com-flex-1 com-min-w-0;
+        .evaluator-role {
+          @apply com-text-xs com-text-gray-500;
+        }
+      }
 
-          .evaluator-name {
-            @apply com-text-sm com-font-medium com-text-Yankees-Blue com-truncate;
-          }
+      .follow-btn {
+        @apply com-flex-shrink-0;
+      }
 
-          .evaluator-role {
-            @apply com-text-xs com-text-gray-500;
-          }
+      .slot-booked {
+        @apply com-w-full com-flex com-flex-col com-gap-1 com-mt-1 com-pt-2 com-border-0 com-border-t com-border-solid com-border-Bright-Gray com-text-xs com-text-gray-700;
+
+        .meeting-link {
+          @apply com-text-primary-500 com-text-xs com-no-underline hover:com-text-primary-600 com-flex com-items-center com-gap-1;
         }
 
-        .follow-btn {
-          @apply com-flex-shrink-0;
-        }
-
-        .slot-booked {
-          @apply com-w-full com-flex com-flex-col com-gap-1 com-mt-1 com-pt-2 com-border-0 com-border-t com-border-solid com-border-Bright-Gray com-text-xs com-text-gray-700;
-
-          .meeting-link {
-            @apply com-text-primary-500 com-text-xs com-no-underline hover:com-text-primary-600 com-flex com-items-center com-gap-1;
-          }
-
-          .meeting-location-text {
-            @apply com-text-xs com-text-gray-500 com-flex com-items-center com-gap-1;
-          }
+        .meeting-location-text {
+          @apply com-text-xs com-text-gray-500 com-flex com-items-center com-gap-1;
         }
       }
     }
   }
 
   .actions {
-    @apply com-flex-shrink-0 com-ml-2 com-flex com-flex-col com-items-end com-gap-2;
+    @apply com-flex-shrink-0 com-flex com-flex-col com-items-end com-gap-2;
   }
 
   .round-status {
@@ -208,4 +208,12 @@
       }
     }
   }
+}
+
+.round-content-profile {
+  @apply com-flex com-flex-col com-gap-6px com-w-full;
+}
+
+.round-content-actions {
+  @apply com-flex com-flex-row com-gap-2;
 }
