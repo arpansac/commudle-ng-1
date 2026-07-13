@@ -45,13 +45,13 @@
         } @else {
         <span>{{ currentMentor.meeting_location }}</span>
         }&nbsp;
-        <button comButton size="tiny" status="basic" (click)="openAddMeetingLocationDialog()">
+        <button comButton shape="semi-round" size="tiny" status="basic" (click)="openAddMeetingLocationDialog()">
           <fa-icon [icon]="icons.faEdit"></fa-icon>
         </button>
       </div>
       } @else {
       <div class="meeting-location-add">
-        <button comButton size="small" status="basic" (click)="openAddMeetingLocationDialog()">
+        <button comButton shape="semi-round" size="small" status="basic" (click)="openAddMeetingLocationDialog()">
           <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add Meeting Location
         </button>
       </div>
@@ -277,6 +277,7 @@
                         *ngIf="update.details.length > 100"
                         comButton
                         ghost
+                        shape="semi-round"
                         size="tiny"
                         status="primary"
                         (click)="toggleUpdateExpansion(update.id)"
@@ -336,6 +337,7 @@
               @if(selectedRound?.has_marking_criteria) { @if(true) {
               <button
                 comButton
+                shape="semi-round"
                 size="small"
                 status="primary"
                 (click)="openScoringDialog(teamData)"
@@ -354,6 +356,7 @@
 
               <button
                 comButton
+                shape="semi-round"
                 size="small"
                 status="primary"
                 (click)="openScoringDialog(teamData)"
@@ -393,7 +396,7 @@
       <p [innerHTML]="data.ps?.title | safeHtml"></p>
     </com-card-body>
     <com-card-footer>
-      <button comButton status="primary" outline (click)="ref.close()">Close</button>
+      <button comButton shape="semi-round" status="primary" outline (click)="ref.close()">Close</button>
     </com-card-footer>
   </com-card>
 </ng-template>
@@ -437,12 +440,12 @@
             </span>
             }
           </span>
-          <button comButton size="tiny" status="primary">Assign</button>
+          <button comButton shape="semi-round" size="tiny" status="primary">Assign</button>
         </div>
       </div>
     </com-card-body>
     <com-card-footer>
-      <button comButton (click)="ref.close()">Close</button>
+      <button comButton shape="semi-round" (click)="ref.close()">Close</button>
     </com-card-footer>
   </com-card>
 </ng-template>
@@ -459,8 +462,8 @@
       <p>Are you sure you want to cancel this slot?</p>
     </com-card-body>
     <com-card-footer>
-      <button comButton status="danger" (click)="cancelSlot(); ref.close(false)">Yes, Cancel</button>
-      <button comButton (click)="ref.close(false)">No</button>
+      <button comButton shape="semi-round" status="danger" (click)="cancelSlot(); ref.close(false)">Yes, Cancel</button>
+      <button comButton shape="semi-round" (click)="ref.close(false)">No</button>
     </com-card-footer>
   </com-card>
 </ng-template>
@@ -487,8 +490,8 @@
       </div>
     </com-card-body>
     <com-card-footer>
-      <button comButton status="primary" (click)="updateMeetingLocation(ref)">Update</button>
-      <button comButton (click)="ref.close()">Cancel</button>
+      <button comButton shape="semi-round" status="primary" (click)="updateMeetingLocation(ref)">Update</button>
+      <button comButton shape="semi-round" (click)="ref.close()">Cancel</button>
     </com-card-footer>
   </com-card>
 </ng-template>
@@ -505,8 +508,10 @@
       <p>Are you sure you want to activate this slot?</p>
     </com-card-body>
     <com-card-footer>
-      <button comButton status="success" (click)="activateSlot(); ref.close(false)">Yes, Activate</button>
-      <button comButton (click)="ref.close(false)">No</button>
+      <button comButton shape="semi-round" status="success" (click)="activateSlot(); ref.close(false)">
+        Yes, Activate
+      </button>
+      <button comButton shape="semi-round" (click)="ref.close(false)">No</button>
     </com-card-footer>
   </com-card>
 </ng-template>
@@ -523,8 +528,8 @@
       <p>Are you sure you want to remove this team from the slot?</p>
     </com-card-body>
     <com-card-footer>
-      <button comButton status="danger" (click)="ref.close(true)">Yes, Remove</button>
-      <button comButton (click)="ref.close(false)">No</button>
+      <button comButton shape="semi-round" status="danger" (click)="ref.close(true)">Yes, Remove</button>
+      <button comButton shape="semi-round" (click)="ref.close(false)">No</button>
     </com-card-footer>
   </com-card>
 </ng-template>
