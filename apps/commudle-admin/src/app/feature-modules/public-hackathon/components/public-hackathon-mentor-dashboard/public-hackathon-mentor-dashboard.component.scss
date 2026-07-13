@@ -229,7 +229,7 @@ nb-card {
               @apply com-flex com-flex-col com-gap-1;
 
               .evaluators-label {
-                @apply com-text-xs com-text-gray-500;
+                @apply com-text-xs com-font-normal com-text-gray-500;
               }
 
               .evaluators-cards {

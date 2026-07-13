@@ -51,6 +51,9 @@
               [min]="criteria.min"
               [max]="criteria.max"
               [step]="1"
+              [style.--slider-progress]="
+                ((scoreForm.get('criteria_' + i)?.value - criteria.min) / (criteria.max - criteria.min)) * 100 + '%'
+              "
             />
             <span class="slider-value">{{ scoreForm.get('criteria_' + i)?.value || criteria.min }}</span>
           </div>
