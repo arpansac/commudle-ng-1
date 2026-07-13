@@ -73,7 +73,12 @@
   }
 
   .cf-field {
-    @apply com-flex com-flex-col com-gap-1 com-mb-4;
+    @apply com-flex com-flex-col com-gap-1 com-mb-4 com-w-full;
+
+    editor {
+      display: block;
+      width: 100%;
+    }
   }
 
   .cf-label {
@@ -119,6 +124,6 @@
 
   // ── Footer ──
   .cf-footer {
-    @apply com-flex com-justify-end com-items-center com-mt-4 com-pt-4 com-border-t com-border-gray-100;
+    @apply com-flex com-justify-end com-items-center;
   }
 }

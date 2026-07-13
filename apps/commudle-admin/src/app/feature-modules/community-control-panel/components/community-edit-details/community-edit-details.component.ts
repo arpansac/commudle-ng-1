@@ -10,17 +10,17 @@ import { ICommunity } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-    selector: 'app-community-edit-details',
-    templateUrl: './community-edit-details.component.html',
-    styleUrls: ['./community-edit-details.component.scss'],
-    standalone: false
+  selector: 'app-community-edit-details',
+  templateUrl: './community-edit-details.component.html',
+  styleUrls: ['./community-edit-details.component.scss'],
+  standalone: false,
 })
 export class CommunityEditDetailsComponent implements OnInit, OnDestroy {
   community: ICommunity;
   uploadedLogo: any;
   uploadedBanner: any;
   uploadedLogoFile: File;
-  uploadedBannerFile: File;
+  uploadedBannerFile: File | null;
   tags: string[] = [];
   minimumTags = 5;
 
@@ -35,7 +35,7 @@ export class CommunityEditDetailsComponent implements OnInit, OnDestroy {
   tinyMCE = {
     placeholder: 'Start typing here...*',
     min_height: 500,
-    width: '650',
+    width: '100%',
     menubar: false,
     convert_urls: false,
     plugins: [
