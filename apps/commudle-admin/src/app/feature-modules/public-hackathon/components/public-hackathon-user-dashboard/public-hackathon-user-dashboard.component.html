@@ -2,9 +2,9 @@
   <div class="main-column com-mr-2">
     <!-- Pending Invites Section -->
     <div *ngIf="pendingInvites.length > 0" class="pending-invites-section">
-      <nb-card status="info">
-        <nb-card-header>PENDING TEAM INVITES</nb-card-header>
-        <nb-card-body>
+      <com-card>
+        <com-card-header>PENDING TEAM INVITES</com-card-header>
+        <com-card-body>
           <div *ngFor="let invite of pendingInvites" class="invite-card">
             <div class="invite-info">
               <span class="invite-team-name">{{ invite.name }}</span>
@@ -15,8 +15,8 @@
               <button nbButton status="danger" size="small" ghost (click)="rejectInvite(invite)">Reject</button>
             </div>
           </div>
-        </nb-card-body>
-      </nb-card>
+        </com-card-body>
+      </com-card>
     </div>
 
     <div *ngIf="userTeamDetails && userTeamDetails.length > 1" class="team-selector">
@@ -41,16 +41,16 @@
         </select>
       </div>
     </div>
-    <nb-card *ngIf="shouldShowProblemStatementPrompt()" status="warning" class="problem-statement-prompt">
-      <nb-card-body>
+    <com-card *ngIf="shouldShowProblemStatementPrompt()" class="problem-statement-prompt">
+      <com-card-body>
         <p><strong>Action Required:</strong> Please select a Track to continue.</p>
         <button nbButton status="primary" size="small" (click)="openProblemStatementDialog()">
           Select Problem Statement
         </button>
-      </nb-card-body>
-    </nb-card>
-    <nb-card *ngIf="userTeamDetails && selectedTeam?.track" class="track-details">
-      <nb-card-header>
+      </com-card-body>
+    </com-card>
+    <com-card *ngIf="userTeamDetails && selectedTeam?.track" class="track-details">
+      <com-card-header>
         <span>SELECTED TRACK</span>
         <button
           *ngIf="
@@ -65,30 +65,30 @@
         >
           Change
         </button>
-      </nb-card-header>
-      <nb-card-body>
+      </com-card-header>
+      <com-card-body>
         <div class="track-name">{{ selectedTeam.track.name }}</div>
         <div *ngIf="selectedTeam.problem_statement" class="problem-statement-section">
           <div class="problem-label">Problem Statement:</div>
           <div [innerHTML]="selectedTeam.problem_statement.title" class="problem-name"></div>
         </div>
-      </nb-card-body>
-    </nb-card>
-    <nb-card class="project-details" *ngIf="userTeamDetails && selectedTeam?.community_build">
-      <nb-card-header>PROJECT DETAILS</nb-card-header>
-      <nb-card-body>
+      </com-card-body>
+    </com-card>
+    <com-card class="project-details" *ngIf="userTeamDetails && selectedTeam?.community_build">
+      <com-card-header>PROJECT DETAILS</com-card-header>
+      <com-card-body>
         <div class="project-name">{{ selectedTeam.community_build.name }}</div>
         <div [innerHTML]="selectedTeam.community_build.description"></div>
-      </nb-card-body>
-      <nb-card-footer>
+      </com-card-body>
+      <com-card-footer>
         <a
           [routerLink]="['/builds', selectedTeam.community_build.slug, 'edit']"
           [queryParams]="{ parent_type: 'HackathonTeam', parent_id: selectedTeam.id }"
           target="_blank"
           >Post Updates &nbsp; <fa-icon [icon]="icons.faArrowRight"></fa-icon
         ></a>
-      </nb-card-footer>
-    </nb-card>
+      </com-card-footer>
+    </com-card>
     <div *ngIf="hrgId && selectedTeam">
       <commudle-public-hackathon-registration
         [hackathon]="hackathon"
@@ -97,9 +97,9 @@
       ></commudle-public-hackathon-registration>
     </div>
     <div class="user-channels-list">
-      <nb-card>
-        <nb-card-header>Channels</nb-card-header>
-        <nb-card-body class="channels-list-cards">
+      <com-card>
+        <com-card-header>Channels</com-card-header>
+        <com-card-body class="channels-list-cards">
           <div *ngFor="let channel of channels">
             <a [routerLink]="['../channels', channel.id]">
               <div class="channel-list-card">
@@ -111,21 +111,21 @@
               </div>
             </a>
           </div>
-        </nb-card-body>
-      </nb-card>
+        </com-card-body>
+      </com-card>
     </div>
   </div>
 
   <div class="right-column">
     <div *ngIf="hrgId && selectedTeam">
-      <nb-card class="team-details-container">
-        <nb-card-header>
+      <com-card class="team-details-container">
+        <com-card-header>
           <h5>{{ selectedTeam.name }}</h5>
           <button nbButton ghost status="primary" size="small" (click)="openEditTeamMembersDialog()">
             <fa-icon [icon]="icons.faEdit"></fa-icon> &nbsp; Edit
           </button>
-        </nb-card-header>
-        <nb-card-body>
+        </com-card-header>
+        <com-card-body>
           <div *ngFor="let hur of selectedTeam.hackathon_user_responses; let i = index" class="team-detail">
             <app-user-profile-card-small
               *ngIf="hur.user"
@@ -155,25 +155,25 @@
               {{ hur.invite_status | capitalizeAndRemoveUnderscore }}
             </span>
           </div>
-        </nb-card-body>
-      </nb-card>
+        </com-card-body>
+      </com-card>
     </div>
   </div>
 </div>
 
 <ng-template #removeTeamMember let-data let-ref="dialogRef">
-  <nb-card class="remove-teammate-dialogbox">
-    <nb-card-header>
+  <com-card class="remove-teammate-dialogbox">
+    <com-card-header>
       <span> Are you Sure you want to remove {{ data.hur.name }}?</span>
       <button ghost nbButton size="small" (click)="ref.close()" shape="round">
         <fa-icon [icon]="icons.faXmark"></fa-icon>
       </button>
-    </nb-card-header>
-    <nb-card-body>
+    </com-card-header>
+    <com-card-body>
       If you remove {{ data.hur.name }}({{ data.hur.user_email }}) from the team, they will also lose access to all the
       channels of this hackathon.
-    </nb-card-body>
-    <nb-card-footer>
+    </com-card-body>
+    <com-card-footer>
       <button
         nbButton
         status="danger"
@@ -182,20 +182,20 @@
         remove
       </button>
       <button nbButton status="primary" ghost (click)="ref.close()">cancel</button>
-    </nb-card-footer>
-  </nb-card>
+    </com-card-footer>
+  </com-card>
 </ng-template>
 
 <ng-template #resendInvite let-data let-ref="dialogRef">
-  <nb-card class="resend-invite-dialogbox">
-    <nb-card-header>
+  <com-card class="resend-invite-dialogbox">
+    <com-card-header>
       <span>Resend Invitation</span>
       <button ghost nbButton size="small" (click)="ref.close()" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
-    </nb-card-header>
+    </com-card-header>
 
-    <nb-card-body>
+    <com-card-body>
       <p>
         Are you sure you want to resend an invite to <strong>{{ data.hur.name }}</strong
         >?
@@ -204,26 +204,26 @@
         This will resend an invitation email to <strong>{{ data.hur.user_email }}</strong> and allow them to accept or
         reject your hackathon team invite.
       </p>
-    </nb-card-body>
+    </com-card-body>
 
-    <nb-card-footer>
+    <com-card-footer>
       <button nbButton status="primary" (click)="resendInviteToMember(data.hur, data.team); ref.close()">
         Resend Invite
       </button>
       <button nbButton ghost (click)="ref.close()">Cancel</button>
-    </nb-card-footer>
-  </nb-card>
+    </com-card-footer>
+  </com-card>
 </ng-template>
 
 <ng-template #editTeamMembersDialog let-data let-ref="dialogRef">
-  <nb-card class="edit-team-members-dialog">
-    <nb-card-header>
+  <com-card class="edit-team-members-dialog">
+    <com-card-header>
       <span>Edit {{ data.selectedTeam.name }} Members</span>
       <button ghost nbButton size="small" (click)="ref.close()" shape="round">
         <fa-icon [icon]="icons.faXmark"></fa-icon>
       </button>
-    </nb-card-header>
-    <nb-card-body>
+    </com-card-header>
+    <com-card-body>
       <commudle-public-hackathon-teammate-form
         [hackathonUserResponse]="data.hackathonUserResponse"
         [hackathonResponseGroup]="data.hackathonResponseGroup"
@@ -233,19 +233,19 @@
         [hasSubmitButton]="true"
         (submitTeammateDetailsEvent)="submitTeammateDetails($event, ref, data.hackathonUserResponse.id)"
       ></commudle-public-hackathon-teammate-form>
-    </nb-card-body>
-  </nb-card>
+    </com-card-body>
+  </com-card>
 </ng-template>
 
 <ng-template #problemStatementDialog let-data let-ref="dialogRef">
-  <nb-card class="problem-statement-dialog">
-    <nb-card-header>
+  <com-card class="problem-statement-dialog">
+    <com-card-header>
       <span>{{ selectedTeam?.track ? 'Change Track & Problem Statement' : 'Select Track' }}</span>
       <button ghost nbButton size="small" (click)="ref.close()" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
-    </nb-card-header>
-    <nb-card-body>
+    </com-card-header>
+    <com-card-body>
       <commudle-public-hackathon-project-details-form
         [hackathon]="hackathon"
         [hackathonUserResponse]="data.selectedTeam.hackathon_user_responses[0]"
@@ -254,30 +254,30 @@
         [submitButtonText]="'Submit'"
         (createOrUpdateProjectDetails)="submitProjectDetails($event, ref)"
       ></commudle-public-hackathon-project-details-form>
-    </nb-card-body>
-  </nb-card>
+    </com-card-body>
+  </com-card>
 </ng-template>
 
 <ng-template #deactivateTeamDialog let-data let-ref="dialogRef">
-  <nb-card class="deactivate-team-dialog">
-    <nb-card-header>
+  <com-card class="deactivate-team-dialog">
+    <com-card-header>
       <span>Deactivate Your Team?</span>
       <button ghost nbButton size="small" (click)="ref.close()" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
-    </nb-card-header>
-    <nb-card-body>
+    </com-card-header>
+    <com-card-body>
       <p>
         You already have your own team <strong>"{{ ownTeams[0]?.name }}"</strong>. To accept the invite to join
         <strong>"{{ data.inviteTeam.name }}"</strong>, your current team will be deactivated.
       </p>
       <p>You can create a new team later if needed.</p>
-    </nb-card-body>
-    <nb-card-footer>
+    </com-card-body>
+    <com-card-footer>
       <button nbButton status="danger" (click)="deactivateOwnTeamAndAcceptInvite(data.hur, ref)">
         Deactivate My Team & Accept Invite
       </button>
       <button nbButton ghost (click)="ref.close()">Cancel</button>
-    </nb-card-footer>
-  </nb-card>
+    </com-card-footer>
+  </com-card>
 </ng-template>

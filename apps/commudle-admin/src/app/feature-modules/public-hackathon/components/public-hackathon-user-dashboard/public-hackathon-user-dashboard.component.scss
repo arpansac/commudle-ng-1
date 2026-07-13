@@ -2,10 +2,10 @@ a {
   @apply com-no-underline;
 }
 
-nb-card {
+com-card {
   @apply com-mx-0;
 
-  nb-card-header {
+  com-card-header {
     @apply com-px-4 com-py-2 com-text-base com-font-semibold com-text-Yankees-Blue com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
     background: linear-gradient(135deg, #f7f7f8 0%, #ffffff 50%, #f7f7f8 100%);
     @apply dark:com-from-[#080808] dark:com-via-[#141414] dark:com-to-[#080808] dark:com-bg-gradient-to-br dark:com-text-tWhite dark:com-border-gray-700;
@@ -13,13 +13,13 @@ nb-card {
 }
 
 .project-details {
-  nb-card-body {
+  com-card-body {
     .project-name {
       @apply com-text-Yankees-Blue com-text-base com-font-semibold;
     }
   }
 
-  nb-card-footer {
+  com-card-footer {
     a {
       @apply com-text-primary-500 com-text-base com-font-semibold;
     }
@@ -27,10 +27,12 @@ nb-card {
 }
 
 .user-channels-list {
-  nb-card {
+  @apply com-my-4;
+
+  com-card {
     @apply com-mx-0;
 
-    nb-card-header {
+    com-card-header {
       @apply com-px-4 com-py-2 com-text-base com-font-semibold com-text-Yankees-Blue com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
       background: linear-gradient(135deg, #f7f7f8 0%, #ffffff 50%, #f7f7f8 100%);
       @apply dark:com-from-[#080808] dark:com-via-[#141414] dark:com-to-[#080808] dark:com-bg-gradient-to-br dark:com-text-tWhite dark:com-border-gray-700;
@@ -70,7 +72,7 @@ nb-card {
 .team-details-container {
   @apply com-m-0 com-mt-4;
 
-  nb-card-header {
+  com-card-header {
     @apply com-flex com-justify-between com-items-center;
 
     h5 {
@@ -78,7 +80,7 @@ nb-card {
     }
   }
 
-  nb-card-body {
+  com-card-body {
     @apply com-p-4;
   }
 
@@ -132,8 +134,8 @@ nb-card {
 .remove-teammate-dialogbox {
   @apply md:com-max-w-[30dvw];
 
-  nb-card-header,
-  nb-card-footer {
+  com-card-header,
+  com-card-footer {
     @apply com-flex com-justify-between com-items-center;
   }
 }
@@ -141,8 +143,8 @@ nb-card {
 .resend-invite-dialogbox {
   @apply md:com-max-w-[30dvw];
 
-  nb-card-header,
-  nb-card-footer {
+  com-card-header,
+  com-card-footer {
     @apply com-flex com-justify-between com-items-center;
   }
 }
@@ -168,7 +170,7 @@ nb-card {
 .edit-team-members-dialog {
   @apply com-w-full md:com-w-[30dvw] com-max-h-90dvh;
 
-  nb-card-header {
+  com-card-header {
     @apply com-flex com-justify-between com-items-center;
   }
 }
@@ -176,7 +178,7 @@ nb-card {
 .problem-statement-prompt {
   @apply com-mb-4 com-rounded-lg com-overflow-hidden;
 
-  nb-card-body {
+  com-card-body {
     @apply com-flex com-items-center com-justify-between com-gap-3 com-p-3;
 
     p {
@@ -192,7 +194,7 @@ nb-card {
 .problem-statement-dialog {
   @apply com-max-h-[90dvh] md:com-w-[30dvw];
 
-  nb-card-header {
+  com-card-header {
     @apply com-flex com-justify-between com-items-center;
   }
 }
@@ -200,7 +202,7 @@ nb-card {
 .pending-invites-section {
   @apply com-mb-4;
 
-  nb-card-header {
+  com-card-header {
     @apply com-flex com-justify-between com-items-center;
   }
 
@@ -232,20 +234,20 @@ nb-card {
 .deactivate-team-dialog {
   @apply md:com-max-w-[30dvw];
 
-  nb-card-header,
-  nb-card-footer {
+  com-card-header,
+  com-card-footer {
     @apply com-flex com-justify-between com-items-center;
   }
 }
 
 .track-details {
-  @apply com-mb-4 com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-overflow-hidden;
+  @apply com-mt-4 com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-overflow-hidden;
 
-  nb-card-header {
+  com-card-header {
     @apply com-flex com-justify-between com-items-center;
   }
 
-  nb-card-body {
+  com-card-body {
     @apply com-p-4;
 
     .track-name {
