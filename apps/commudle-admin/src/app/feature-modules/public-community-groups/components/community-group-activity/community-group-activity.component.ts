@@ -3,19 +3,21 @@ import { ICommunityChannel } from 'apps/shared-models/community-channel.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { faUsers, faCalendar, faHashtag } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faCalendar, faHashtag, faLaptopCode } from '@fortawesome/free-solid-svg-icons';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
+import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { IEvent } from 'apps/shared-models/event.model';
+import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { EDbModels } from '@commudle/shared-models';
 
 @Component({
-    selector: 'commudle-community-group-activity',
-    templateUrl: './community-group-activity.component.html',
-    styleUrls: ['./community-group-activity.component.scss'],
-    standalone: false
+  selector: 'commudle-community-group-activity',
+  templateUrl: './community-group-activity.component.html',
+  styleUrls: ['./community-group-activity.component.scss'],
+  standalone: false,
 })
 export class CommunityGroupActivityComponent implements OnInit, OnDestroy {
   limit = 6;
@@ -24,6 +26,7 @@ export class CommunityGroupActivityComponent implements OnInit, OnDestroy {
   channels: ICommunityChannel[] = [];
   forums: ICommunityChannel[] = [];
   events: IEvent[] = [];
+  upcomingHackathons: IHackathon[] = [];
   subscriptions: Subscription[] = [];
   EDbModels = EDbModels;
 
@@ -40,6 +43,7 @@ export class CommunityGroupActivityComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private communityGroupsService: CommunityGroupsService,
+    private hackathonService: HackathonService,
     private seoService: SeoService,
   ) {}
 
@@ -49,6 +53,7 @@ export class CommunityGroupActivityComponent implements OnInit, OnDestroy {
         this.communityGroup = data.community_group;
         this.getActiveCommunitiesAndChannels();
         this.getEvents();
+        this.getUpcomingHackathons();
         this.setMeta();
       }),
     );
@@ -80,6 +85,14 @@ export class CommunityGroupActivityComponent implements OnInit, OnDestroy {
           this.page_info = data.page_info;
           this.isLoadingEvents = false;
         }),
+    );
+  }
+
+  getUpcomingHackathons() {
+    this.subscriptions.push(
+      this.hackathonService.pIndexHackathons(this.communityGroup.id, 'CommunityGroup', 'future').subscribe((data) => {
+        this.upcomingHackathons = data.values;
+      }),
     );
   }
 

@@ -16,14 +16,40 @@ com-card {
   }
 }
 
+.main-column {
+  @apply com-m-0 md:com-mr-4;
+}
+
 .communities-cards {
-  @apply com-grid md:com-grid-cols-4 com-grid-cols-1 com-overflow-x-auto com-gap-5;
+  @apply com-grid com-grid-cols-1 md:com-grid-cols-3 com-overflow-x-auto com-gap-5;
 
   .community-card {
     @apply com-w-full;
   }
 }
 
+.speakers-upcoming,
+.recent-tech,
+.speakers {
+  @apply com-m-0 com-mt-4;
+}
+
 app-loading-spinner {
   @apply com-mt-4;
+}
+
+.upcoming-hackathons {
+  @apply com-m-0 com-mt-4;
+
+  .heading {
+    @apply com-mb-3;
+
+    .title {
+      @apply com-m-0 com-text-sm com-font-semibold com-text-Yankees-Blue;
+    }
+  }
+
+  .upcoming-hackathons-list {
+    @apply com-flex com-flex-col com-gap-3;
+  }
 }

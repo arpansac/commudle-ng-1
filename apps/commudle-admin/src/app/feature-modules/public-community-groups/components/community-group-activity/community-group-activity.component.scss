@@ -78,6 +78,22 @@ com-card {
   @apply com-m-0 com-mt-4;
 }
 
+.upcoming-hackathons {
+  @apply com-m-0 com-mt-4;
+
+  .heading {
+    @apply com-mb-3;
+
+    .title {
+      @apply com-m-0 com-text-sm com-font-semibold com-text-Yankees-Blue;
+    }
+  }
+
+  .upcoming-hackathons-list {
+    @apply com-flex com-flex-col com-gap-3;
+  }
+}
+
 .upcoming-events-card,
 .channel-card-header,
 .communities-card-header,

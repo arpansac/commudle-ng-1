@@ -1,12 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
+import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { ICommunity } from 'apps/shared-models/community.model';
+import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import { EDbModels } from '@commudle/shared-models';
 
 @Component({
   selector: 'app-community-group-communities',
@@ -23,10 +26,13 @@ export class CommunityGroupCommunitiesComponent implements OnInit, OnDestroy {
   isLoading = true;
   total: number;
   faUsers = faUsers;
+  EDbModels = EDbModels;
+  upcomingHackathons: IHackathon[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private communityGroupsService: CommunityGroupsService,
+    private hackathonService: HackathonService,
     private seoService: SeoService,
   ) {}
 
@@ -35,6 +41,7 @@ export class CommunityGroupCommunitiesComponent implements OnInit, OnDestroy {
       this.activatedRoute.parent.data.subscribe((data) => {
         this.communityGroup = data.community_group;
         this.getCommunities();
+        this.getUpcomingHackathons();
         this.setMeta();
       }),
     );
@@ -63,6 +70,14 @@ export class CommunityGroupCommunitiesComponent implements OnInit, OnDestroy {
       `Communities | ${this.communityGroup.name}`,
       this.communityGroup.mini_description,
       this.communityGroup.logo.i350,
+    );
+  }
+
+  getUpcomingHackathons() {
+    this.subscriptions.push(
+      this.hackathonService.pIndexHackathons(this.communityGroup.id, 'CommunityGroup', 'future').subscribe((data) => {
+        this.upcomingHackathons = data.values;
+      }),
     );
   }
 }

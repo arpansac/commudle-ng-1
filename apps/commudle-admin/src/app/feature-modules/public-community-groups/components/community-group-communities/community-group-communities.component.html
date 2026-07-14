@@ -1,37 +1,75 @@
-<com-card>
-  <com-card-header>
-    <h6 class="section-title"><fa-icon [icon]="faUsers"></fa-icon> Communities</h6>
-  </com-card-header>
-  <com-card-body>
-    <div
-      *appBreakpoints="'>lg'"
-      (scrolled)="getCommunities()"
-      [infiniteScrollDisabled]="communities.length >= total"
-      appInfiniteScroll
-    >
-      <div class="communities-cards">
-        <div *ngFor="let community of communities" class="community-card">
-          <commudle-featured-community-card-medium
-            [community]="community"
-            [showDescription]="true"
-          ></commudle-featured-community-card-medium>
+<div class="two-column-layout medium">
+  <div class="main-column">
+    <com-card>
+      <com-card-header>
+        <h6 class="section-title"><fa-icon [icon]="faUsers"></fa-icon> Communities</h6>
+      </com-card-header>
+      <com-card-body>
+        <div
+          *appBreakpoints="'>lg'"
+          (scrolled)="getCommunities()"
+          [infiniteScrollDisabled]="communities.length >= total"
+          appInfiniteScroll
+        >
+          <div class="communities-cards">
+            <div *ngFor="let community of communities" class="community-card">
+              <commudle-featured-community-card-medium
+                [community]="community"
+                [showDescription]="true"
+              ></commudle-featured-community-card-medium>
+            </div>
+          </div>
+          <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
         </div>
-      </div>
-      <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-    </div>
-    <div *appBreakpoints="'<=lg'">
-      <div class="communities-cards">
-        <div *ngFor="let community of communities" class="community-card">
-          <commudle-featured-community-card-medium
-            [community]="community"
-            [showDescription]="true"
-          ></commudle-featured-community-card-medium>
+        <div *appBreakpoints="'<=lg'">
+          <div class="communities-cards">
+            <div *ngFor="let community of communities" class="community-card">
+              <commudle-featured-community-card-medium
+                [community]="community"
+                [showDescription]="true"
+              ></commudle-featured-community-card-medium>
+            </div>
+          </div>
+          <app-loading-spinner *ngIf="isLoading" class="com-mt-4"></app-loading-spinner>
+          <button (click)="getCommunities()" *ngIf="pageInfo?.has_next_page" fullWidth ghost nbButton>
+            Load More Communities
+          </button>
         </div>
-      </div>
-      <app-loading-spinner *ngIf="isLoading" class="com-mt-4"></app-loading-spinner>
-      <button (click)="getCommunities()" *ngIf="pageInfo?.has_next_page" fullWidth ghost nbButton>
-        Load More Communities
-      </button>
+      </com-card-body>
+    </com-card>
+  </div>
+
+  <div class="right-column">
+    <div *ngIf="upcomingHackathons?.length > 0" class="upcoming-hackathons">
+      <com-card>
+        <com-card-body>
+          <div class="heading">
+            <h3 class="title">Upcoming Hackathons</h3>
+          </div>
+          <div class="upcoming-hackathons-list">
+            <commudle-hackathon-medium-card
+              *ngFor="let hackathon of upcomingHackathons"
+              [hackathon]="hackathon"
+            ></commudle-hackathon-medium-card>
+          </div>
+        </com-card-body>
+      </com-card>
     </div>
-  </com-card-body>
-</com-card>
+    <div class="speakers-upcoming">
+      <commudle-public-home-list-speakers-upcoming
+        [parentType]="EDbModels.COMMUNITY_GROUP"
+      ></commudle-public-home-list-speakers-upcoming>
+    </div>
+    <div class="recent-tech">
+      <commudle-public-home-list-events-tech-sessions
+        [communityGroupId]="communityGroup?.id"
+      ></commudle-public-home-list-events-tech-sessions>
+    </div>
+    <div class="speakers">
+      <commudle-public-home-list-events-speakers
+        [parentType]="'communities'"
+        [communityGroupId]="communityGroup?.id"
+      ></commudle-public-home-list-events-speakers>
+    </div>
+  </div>
+</div>
