@@ -5,7 +5,7 @@
   <div class="pp-header">
     <div class="pp-badges">
       <div class="pp-plan-badge">{{ productPrice.billing_cycle | titlecase }} Plan</div>
-      <div class="pp-trial-badge" *ngIf="productPrice.trial_enabled && productPrice.trial_period_days">
+      <div class="pp-trial-badge" *ngIf="productPrice.trial_enabled && productPrice.trial_period_days && withTrial">
         {{ productPrice.trial_period_days }}-day free trial
       </div>
     </div>
