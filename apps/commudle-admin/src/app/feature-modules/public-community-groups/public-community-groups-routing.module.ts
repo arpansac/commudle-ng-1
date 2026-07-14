@@ -11,6 +11,7 @@ import { CommunityGroupDetailsResolver } from './resolvers/community-group-detai
 import { CommunityGroupCustomPageComponent } from './components/community-group-custom-page/community-group-custom-page.component';
 import { CommunitiesChannelsComponent } from './components/community-group-channels/communities-channels/communities-channels.component';
 import { OrgChannelsComponent } from './components/community-group-channels/org-channels/org-channels.component';
+import { CommunityGroupHackathonsComponent } from './components/community-group-hackathons/community-group-hackathons.component';
 
 const routes = [
   {
@@ -31,6 +32,10 @@ const routes = [
       {
         path: 'events',
         component: CommunityGroupEventsComponent,
+      },
+      {
+        path: 'hackathons',
+        component: CommunityGroupHackathonsComponent,
       },
       {
         path: 'channels',

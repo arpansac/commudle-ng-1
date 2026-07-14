@@ -1,4 +1,4 @@
-com-card {
+.hackathons-card {
   @apply com-m-0 com-mt-4;
 
   com-card-header {
@@ -17,17 +17,13 @@ com-card {
 
   com-card-body {
     @apply com-p-4;
-
-    .description ::ng-deep p {
-      @apply com-m-0;
-    }
   }
 }
 
-.community-social-links {
-  @apply com-flex com-gap-3 com-mt-6 com-flex-wrap;
+.hackathon-cards-list {
+  @apply com-flex com-flex-col com-gap-4;
+}
 
-  a {
-    @apply com-no-underline;
-  }
+.hackathon-cards-grid {
+  @apply com-grid com-grid-cols-1 md:com-grid-cols-2 com-gap-4;
 }

@@ -37,6 +37,8 @@ import { OrgChannelsComponent } from 'apps/commudle-admin/src/app/feature-module
 import { CommunityChannelsModule } from 'apps/commudle-admin/src/app/feature-modules/community-channels/community-channels.module';
 import { InfiniteScrollModule } from 'apps/shared-modules/infinite-scroll/infinite-scroll.module';
 
+import { CommunityGroupHackathonsComponent } from './components/community-group-hackathons/community-group-hackathons.component';
+
 @NgModule({
   declarations: [
     CommunityGroupHomeComponent,
@@ -45,6 +47,7 @@ import { InfiniteScrollModule } from 'apps/shared-modules/infinite-scroll/infini
     CommunityGroupAboutComponent,
     CommunityGroupActivityComponent,
     CommunityGroupEventsComponent,
+    CommunityGroupHackathonsComponent,
     CommunityGroupChannelsComponent,
     CommunityGroupCustomPageComponent,
     CommunitiesChannelsComponent,
