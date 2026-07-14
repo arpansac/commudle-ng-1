@@ -25,10 +25,6 @@ const routes = [
         component: CommunityGroupActivityComponent,
       },
       {
-        path: 'about',
-        component: CommunityGroupAboutComponent,
-      },
-      {
         path: 'communities',
         component: CommunityGroupCommunitiesComponent,
       },

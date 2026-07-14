@@ -79,19 +79,14 @@
         <div #stickySentinel class="sticky-sentinel"></div>
         <div class="menu-items-footer menu-items-footer-sticky" [ngClass]="{ 'sticky-active': isMenuSticky }">
           <div class="menu-items d-flex">
-            <a [routerLink]="['/orgs', communityGroup.slug, 'about']" class="d-flex" routerLinkActive="active">
-              <fa-icon [icon]="faCircleInfo"></fa-icon>
-              <span class="title">About</span>
-            </a>
-
             <a
               [routerLinkActiveOptions]="{ exact: true }"
               [routerLink]="['/orgs', communityGroup.slug]"
               class="com-flex"
               routerLinkActive="active"
             >
-              <fa-icon [icon]="faArrowTrendUp"></fa-icon>
-              <span class="title">Activity</span>
+              <fa-icon [icon]="faCircleInfo"></fa-icon>
+              <span class="title">Overview</span>
             </a>
 
             <a [routerLink]="['/orgs', communityGroup.slug, 'communities']" class="d-flex" routerLinkActive="active">

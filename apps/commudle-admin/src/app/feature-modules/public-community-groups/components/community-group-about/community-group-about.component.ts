@@ -5,7 +5,7 @@ import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 import { faTwitter, faLinkedinIn, faFacebookF, faGithub } from '@fortawesome/free-brands-svg-icons';
-import { faGlobe } from '@fortawesome/free-solid-svg-icons';
+import { faGlobe, faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-community-group-about',
@@ -21,6 +21,7 @@ export class CommunityGroupAboutComponent implements OnInit, OnDestroy {
   faFacebookF = faFacebookF;
   faGithub = faGithub;
   faGlobe = faGlobe;
+  faCircleInfo = faCircleInfo;
 
   subscriptions: Subscription[] = [];
 
