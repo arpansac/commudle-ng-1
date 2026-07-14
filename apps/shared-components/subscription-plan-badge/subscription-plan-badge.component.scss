@@ -1,16 +1,11 @@
 // ── Pro chip ──────────────────────────────────────────
 .spb-chip {
-  @apply com-inline-flex com-items-center com-gap-1 com-cursor-pointer com-select-none;
-  @apply com-px-2.5 com-py-0.5 com-rounded-full com-text-xs com-font-bold;
-  @apply com-bg-primary-500 com-text-white;
-  @apply com-transition-colors hover:com-bg-primary-600;
-
-  nb-icon {
-    @apply com-text-xs;
-  }
+  @apply com-inline-flex com-items-center com-cursor-pointer com-select-none;
+  @apply com-text-xs com-font-bold com-text-primary-500;
+  @apply com-transition-colors hover:com-text-primary-600;
 
   &.spb-chip-inactive {
-    @apply com-bg-gray-200 com-text-gray-500 hover:com-bg-gray-300;
+    @apply com-text-gray-400 hover:com-text-gray-500;
   }
 }
 

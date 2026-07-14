@@ -1,7 +1,5 @@
 <ng-container *ngIf="!isLoading && subscription">
-  <!-- Pro chip -->
   <span class="spb-chip" [class.spb-chip-inactive]="subscription.status !== 'active'" (click)="openDialog()">
-    <nb-icon icon="star"></nb-icon>
     {{ subscription.product_price?.plan_name || 'Pro' }}
   </span>
 </ng-container>

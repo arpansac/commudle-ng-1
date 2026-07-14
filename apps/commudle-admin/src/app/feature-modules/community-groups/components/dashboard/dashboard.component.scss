@@ -1,57 +1,56 @@
-.sidebar-container {
-  @apply com-sticky com-top-16 com-h-[calc(100vh-4rem)] com-flex com-flex-col;
-  a {
-    @apply com-text-inherit com-no-underline;
+.community-mobile-header {
+  @apply com-items-center com-gap-3 com-p-4 com-border-b com-border-gray-200 md:com-hidden;
+
+  .community-logo-mobile {
+    @apply com-flex com-items-center com-gap-3;
+
+    img {
+      @apply com-h-8 com-w-8 com-rounded-md com-object-contain;
+    }
+
+    span {
+      @apply com-font-semibold com-text-gray-900;
+    }
+  }
+}
+
+.sidebar {
+  @apply com-sticky com-top-16 com-h-[calc(100vh-4rem)] com-flex-shrink-0 com-flex com-flex-col com-overflow-hidden;
+}
+
+a {
+  @apply com-text-inherit com-no-underline;
+}
+
+.action-buttons {
+  @apply com-p-4 com-pt-0 com-overflow-x-hidden;
+
+  .category {
+    @apply com-flex com-flex-col com-gap-1;
   }
 
-  .action-buttons {
-    @apply com-p-4 com-pt-0 com-overflow-x-hidden;
+  .action-button {
+    @apply com-p-2 com-pr-3 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer com-text-gray-700;
 
-    .categories {
-      @apply com-flex com-flex-col com-gap-6;
-    }
+    &.active,
+    &:hover {
+      @apply com-bg-primary-100 com-text-Yankees-Blue;
 
-    .category-heading {
-      @apply com-text-Caption com-font-semibold com-mb-2 com-flex com-items-center com-px-3 com-py-1;
-    }
-
-    .action-button {
-      @apply com-p-2 com-pr-3 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer;
-
-      &.active,
-      &:hover {
-        @apply com-bg-Azure-opacity-10 com-text-tYankees-Blue;
-
-        .action-button-name {
-          @apply com-font-semibold com-text-primary-500;
-        }
-
-        .icon {
-          fa-icon {
-            @apply com-text-primary-500;
-          }
-        }
+      .heading {
+        @apply com-font-semibold com-text-primary-500;
       }
 
       .icon {
-        @apply com-text-sm com-flex com-text-Cadet-Grey com-items-center com-justify-center com-w-5 com-h-5;
+        @apply com-text-primary-500;
       }
+    }
 
-      .action-button-name {
-        @apply com-text-sm com-font-normal;
-      }
-      &.public-event-page {
-        @apply com-text-Azure;
-        .icon {
-          @apply com-text-Azure;
-        }
-      }
-      &.stats {
-        @apply com-text-Caribbean-Green;
-        .icon {
-          @apply com-text-Caribbean-Green;
-        }
-      }
+    .icon {
+      @apply com-text-sm com-flex com-text-Cadet-Grey com-items-center com-justify-center com-w-5 com-h-5;
+    }
+
+    .heading {
+      @apply com-text-sm com-font-normal;
     }
   }
 }
@@ -60,7 +59,7 @@
   @apply com-flex com-items-center com-gap-2 com-p-3 com-bg-white com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
 
   .community-logo {
-    @apply com-h-8 com-w-8 com-flex-shrink-0 com-overflow-hidden com-rounded-md;
+    @apply com-h-12 com-w-12 com-flex-shrink-0 com-overflow-hidden com-rounded-md;
 
     img {
       @apply com-h-full com-w-full com-object-contain;
@@ -76,17 +75,40 @@
   }
 }
 
-.right-column {
-  @apply com-flex-1 com-min-w-0;
-  .router {
-    @apply com-w-full com-max-w-screen-xl com-mx-auto;
+.mobile-nav {
+  @apply com-w-full com-p-4;
+
+  nb-card {
+    @apply com-m-0;
+  }
+
+  .menu {
+    @apply com-flex com-flex-wrap com-gap-2;
+
+    .action-button {
+      @apply com-flex com-flex-col com-items-center com-gap-1 com-p-3 com-rounded-lg com-cursor-pointer com-text-gray-600;
+      @apply com-border com-border-transparent;
+
+      &.active,
+      &:hover {
+        @apply com-bg-primary-100 com-text-primary-500 com-border-primary-300;
+      }
+
+      .icon {
+        @apply com-text-lg;
+      }
+
+      .heading {
+        @apply com-text-xs com-font-medium;
+      }
+    }
   }
 }
 
-.header-icons-non-expanded {
-  @apply com-mb-4 com-justify-center;
-}
+.right-column {
+  @apply com-flex-1 com-min-w-0;
 
-.header-icons-expanded {
-  @apply com-justify-between com-gap-3;
+  .router {
+    @apply com-w-full com-max-w-screen-xl com-mx-auto;
+  }
 }
