@@ -7,6 +7,6 @@
     [value]="inputValue"
     (input)="onInputChange($event)"
     (blur)="onBlur()"
-    (wheel)="type === 'number' && $event.target.blur()"
+    (wheel)="type === 'number' && $event.preventDefault()"
   />
 </div>
