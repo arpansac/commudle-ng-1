@@ -1,15 +1,51 @@
-<div class="team">
-  <com-card class="team-card">
-    <com-card-header>
-      <h6 class="section-title"><fa-icon [icon]="faUserGroup"></fa-icon> Team</h6>
-    </com-card-header>
-    <com-card-body>
-      <div class="members" (scrolled)="getTeam()" [infiniteScrollDisabled]="team.length >= total" appInfiniteScroll>
-        <div class="member" *ngFor="let member of team">
-          <app-speaker-card [speaker]="member"></app-speaker-card>
+<div class="two-column-layout medium">
+  <div class="main-column">
+    <com-card class="team-card">
+      <com-card-header>
+        <h6 class="section-title"><fa-icon [icon]="faUserGroup"></fa-icon> Team</h6>
+      </com-card-header>
+      <com-card-body>
+        <div class="members" (scrolled)="getTeam()" [infiniteScrollDisabled]="team.length >= total" appInfiniteScroll>
+          <div class="member" *ngFor="let member of team">
+            <app-speaker-card [speaker]="member"></app-speaker-card>
+          </div>
         </div>
-      </div>
-      <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-    </com-card-body>
-  </com-card>
+        <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+      </com-card-body>
+    </com-card>
+  </div>
+
+  <div class="right-column">
+    <div *ngIf="upcomingHackathons?.length > 0" class="upcoming-hackathons">
+      <com-card>
+        <com-card-body>
+          <div class="heading">
+            <h3 class="title">Upcoming Hackathons</h3>
+          </div>
+          <div class="upcoming-hackathons-list">
+            <commudle-hackathon-medium-card
+              *ngFor="let hackathon of upcomingHackathons"
+              [hackathon]="hackathon"
+            ></commudle-hackathon-medium-card>
+          </div>
+        </com-card-body>
+      </com-card>
+    </div>
+    <div class="speakers-upcoming">
+      <commudle-public-home-list-speakers-upcoming
+        [parentType]="EDbModels.COMMUNITY_GROUP"
+      ></commudle-public-home-list-speakers-upcoming>
+    </div>
+    <div class="recent-tech">
+      <commudle-public-home-list-events-tech-sessions
+        [communityGroupId]="communityGroup?.id"
+      ></commudle-public-home-list-events-tech-sessions>
+    </div>
+    <div class="speakers">
+      <commudle-public-home-list-events-speakers
+        [parentType]="'communities'"
+        [communityGroupId]="communityGroup?.id"
+      ></commudle-public-home-list-events-speakers>
+    </div>
+  </div>
 </div>

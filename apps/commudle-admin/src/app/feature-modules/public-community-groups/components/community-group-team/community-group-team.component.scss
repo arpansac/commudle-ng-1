@@ -23,3 +23,13 @@
     }
   }
 }
+
+.main-column {
+  @apply com-m-0 md:com-mr-4;
+}
+
+.speakers-upcoming,
+.recent-tech,
+.speakers {
+  @apply com-m-0 com-mt-4;
+}

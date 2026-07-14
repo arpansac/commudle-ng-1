@@ -22,6 +22,7 @@ export class CommunityGroupHackathonsComponent implements OnInit, OnDestroy {
   isLoadingUpcoming = false;
   isLoadingPast = false;
   faCalendarDays = faCalendarDays;
+  EDbModels = EDbModels;
 
   constructor(
     private activatedRoute: ActivatedRoute,

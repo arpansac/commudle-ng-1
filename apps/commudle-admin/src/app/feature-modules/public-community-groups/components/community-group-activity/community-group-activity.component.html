@@ -56,7 +56,11 @@
           <com-card-header class="event-card-header">
             <div class="header">
               <div class="icon">
-                <fa-icon [icon]="faLaptopCode"></fa-icon>
+                <img
+                  [src]="environment.base_url + '/icons/hackathon-icon-primary.svg'"
+                  alt="Hackathon Icon"
+                  class="com-w-5 com-h-5"
+                />
               </div>
               <div>
                 <h5>Upcoming Hackathons</h5>
@@ -150,26 +154,6 @@
       </div>
 
       <div class="right-column">
-        <div *ngIf="upcomingHackathons.length > 0" class="upcoming-hackathons">
-          <com-card>
-            <com-card-body>
-              <div class="heading">
-                <h3 class="title">Upcoming Hackathons</h3>
-              </div>
-              <div class="upcoming-hackathons-list">
-                <commudle-hackathon-medium-card
-                  *ngFor="let hackathon of upcomingHackathons"
-                  [hackathon]="hackathon"
-                ></commudle-hackathon-medium-card>
-              </div>
-            </com-card-body>
-          </com-card>
-        </div>
-        <div class="speakers-upcoming">
-          <commudle-public-home-list-speakers-upcoming
-            [parentType]="EDbModels.COMMUNITY_GROUP"
-          ></commudle-public-home-list-speakers-upcoming>
-        </div>
         <div class="recent-tech">
           <commudle-public-home-list-events-tech-sessions
             [communityGroupId]="communityGroup?.id"

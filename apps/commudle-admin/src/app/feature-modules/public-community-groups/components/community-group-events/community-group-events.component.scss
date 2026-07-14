@@ -1,3 +1,11 @@
+.two-column-layout {
+  @apply com-mt-4;
+}
+
+.main-column {
+  @apply com-m-0 md:com-mr-4;
+}
+
 .events-card {
   @apply com-m-0 com-mt-4;
 
@@ -34,4 +42,10 @@
 
 .past-events-card-list {
   @apply com-grid com-grid-cols-1 md:com-grid-cols-3 com-gap-4;
+}
+
+.speakers-upcoming,
+.recent-tech,
+.speakers {
+  @apply com-m-0 com-mt-4;
 }

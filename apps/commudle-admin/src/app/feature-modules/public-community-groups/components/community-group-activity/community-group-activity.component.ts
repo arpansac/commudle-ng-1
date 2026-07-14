@@ -12,6 +12,7 @@ import { IEvent } from 'apps/shared-models/event.model';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { EDbModels } from '@commudle/shared-models';
+import { environment } from '@commudle/shared-environments';
 
 @Component({
   selector: 'commudle-community-group-activity',
@@ -29,6 +30,7 @@ export class CommunityGroupActivityComponent implements OnInit, OnDestroy {
   upcomingHackathons: IHackathon[] = [];
   subscriptions: Subscription[] = [];
   EDbModels = EDbModels;
+  environment = environment;
 
   page_info: IPageInfo;
 
