@@ -297,6 +297,10 @@ th {
   }
 }
 
+.notes-button-wrapper {
+  @apply com-relative com-inline-flex com-items-center;
+}
+
 .updates {
   ::ng-deep {
     p {

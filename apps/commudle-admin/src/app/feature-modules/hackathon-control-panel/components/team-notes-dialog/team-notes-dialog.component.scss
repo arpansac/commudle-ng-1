@@ -1,0 +1,113 @@
+.notes-dialog {
+  @apply com-w-[560px] com-max-w-[90vw] com-max-h-[80vh];
+
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center com-border-b com-border-Bright-Gray;
+
+    .header-content {
+      @apply com-flex com-items-center com-gap-2;
+
+      nb-icon {
+        @apply com-text-primary-500;
+      }
+
+      span {
+        @apply com-font-semibold com-text-base com-text-Yankees-Blue;
+      }
+    }
+  }
+
+  nb-card-body {
+    @apply com-p-5 com-overflow-hidden com-flex com-flex-col;
+  }
+
+  .add-note-section {
+    @apply com-mb-5 com-pb-5 com-border-b com-border-Bright-Gray;
+
+    textarea {
+      @apply com-text-sm com-rounded-lg;
+      resize: vertical;
+    }
+
+    .add-note-actions {
+      @apply com-flex com-justify-between com-items-center com-mt-3;
+
+      .shortcut-hint {
+        @apply com-text-xs com-text-gray-400;
+      }
+    }
+  }
+
+  .notes-list {
+    @apply com-overflow-y-auto com-flex-1;
+
+    .empty-state {
+      @apply com-flex com-flex-col com-items-center com-justify-center com-py-10 com-text-center;
+
+      nb-icon {
+        @apply com-text-4xl com-text-gray-300 com-mb-2;
+      }
+
+      p {
+        @apply com-text-sm com-font-medium com-text-gray-500 com-m-0 com-mb-1;
+      }
+
+      span {
+        @apply com-text-xs com-text-gray-400;
+      }
+    }
+
+    .note-item {
+      @apply com-py-3 com-px-4 com-rounded-lg com-mb-2 com-bg-gray-50;
+      @apply hover:com-bg-gray-100 com-transition-colors com-duration-150;
+
+      .note-content {
+        @apply com-mb-2;
+
+        .note-text {
+          @apply com-text-sm com-text-Yankees-Blue com-m-0 com-whitespace-pre-wrap com-leading-relaxed;
+        }
+      }
+
+      .note-meta {
+        @apply com-flex com-justify-between com-items-center;
+
+        .note-info {
+          @apply com-flex com-items-center com-gap-1;
+
+          .note-author {
+            @apply com-text-xs com-font-medium com-text-gray-600;
+          }
+
+          .note-separator {
+            @apply com-text-xs com-text-gray-400;
+          }
+
+          .note-date {
+            @apply com-text-xs com-text-gray-400;
+          }
+        }
+      }
+    }
+  }
+}
+
+.confirm-dialog {
+  @apply com-w-[400px] com-max-w-[90vw];
+
+  .confirm-header {
+    @apply com-flex com-justify-between com-items-center;
+
+    span {
+      @apply com-font-semibold com-text-base;
+    }
+  }
+
+  .confirm-text {
+    @apply com-text-sm com-text-gray-600 com-m-0;
+  }
+
+  .confirm-actions {
+    @apply com-flex com-justify-end com-gap-3;
+  }
+}

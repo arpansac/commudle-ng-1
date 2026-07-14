@@ -75,6 +75,7 @@ import { MentorSlotTeamAssignmentComponent } from 'apps/commudle-admin/src/app/f
 import { MentorSlotListComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-mentor-slots/mentor-slot-list/mentor-slot-list.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { MentorNotesDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/mentor-notes-dialog/mentor-notes-dialog.component';
+import { TeamNotesDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/team-notes-dialog/team-notes-dialog.component';
 import { MentorTeamAssignmentEmailDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/mentor-team-assignment-email-dialog/mentor-team-assignment-email-dialog.component';
 import { MentorMessageToTeamsDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/mentor-message-to-teams-dialog/mentor-message-to-teams-dialog.component';
 import { HackathonProblemStatementChartComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-review/hackathon-problem-statement-chart/hackathon-problem-statement-chart.component';
@@ -123,6 +124,7 @@ import { HackathonScoreDashboardComponent } from 'apps/commudle-admin/src/app/fe
     MentorSlotTeamAssignmentComponent,
     MentorSlotListComponent,
     MentorNotesDialogComponent,
+    TeamNotesDialogComponent,
     MentorTeamAssignmentEmailDialogComponent,
     MentorMessageToTeamsDialogComponent,
     HackathonProblemStatementChartComponent,
