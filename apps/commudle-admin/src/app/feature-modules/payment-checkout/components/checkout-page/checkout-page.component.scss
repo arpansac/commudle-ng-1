@@ -339,46 +339,24 @@
     }
 
     .trial-option {
-      @apply com-flex com-items-start com-gap-2 com-mx-4 com-my-3 com-p-3 com-rounded-xl;
+      @apply com-flex com-items-center com-gap-2 com-mx-4 com-my-3 com-px-3 com-py-2 com-rounded-lg;
       @apply com-bg-primary-100 com-border com-border-solid com-border-primary-200;
 
-      nb-checkbox {
-        @apply com-mt-0.5 com-flex-shrink-0;
+      > fa-icon {
+        @apply com-text-primary-500 com-flex-shrink-0;
       }
 
-      .trial-title {
-        @apply com-text-sm com-font-semibold com-text-primary-700 com-m-0;
-      }
-
-      .trial-note {
-        @apply com-flex com-items-start com-gap-1.5 com-m-0 com-text-xs com-text-primary-700;
-
-        fa-icon {
-          @apply com-flex-shrink-0 com-mt-0.5;
-        }
+      .trial-summary {
+        @apply com-text-xs com-text-primary-700 com-leading-snug;
 
         strong {
-          @apply com-font-bold;
-        }
-      }
-
-      /* Shown when trial is locked ON from the pricing page */
-      .trial-locked-badge {
-        @apply com-inline-flex com-items-center com-gap-1.5 com-mb-2;
-        @apply com-text-sm com-font-semibold;
-
-        &.trial-locked-on {
-          @apply com-text-primary-700;
-
-          fa-icon {
-            @apply com-text-primary-500;
-          }
+          @apply com-font-semibold;
         }
       }
     }
 
     .trial-billing-note {
-      @apply com-px-4 com-pb-2 com-m-0 com-text-xs com-text-gray-500 com-text-right;
+      @apply com-px-4 com-pb-2 com-m-0 com-text-xs com-text-gray-500;
     }
 
     .cancel-note {

@@ -120,7 +120,7 @@
                 class="business-toggle-box"
                 (click)="contactInfoForm.get('isBusiness')?.setValue(!isBusinessBilling)"
               >
-                <nb-checkbox formControlName="isBusiness"></nb-checkbox>
+                <nb-checkbox formControlName="isBusiness" (click)="$event.stopPropagation()"></nb-checkbox>
                 <div>
                   <p class="toggle-label">Purchasing for a business?</p>
                   <p class="toggle-sub">Add company details to receive a GST invoice</p>
@@ -393,21 +393,12 @@
 
               <!-- Free trial option -->
               <div class="trial-option" *ngIf="hasTrial && withTrial && !paymentPaid">
-                <!-- Locked ON: user came from "Start free trial" button -->
-                <div class="trial-locked-badge trial-locked-on">
-                  <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
-                  {{ trialDays }}-day free trial included
-                </div>
-                <p class="trial-note">
-                  <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
-                  <span>
-                    Only a refundable
-                    <strong>{{ cardVerificationCharge | currency : purchaseOrder.currency }}</strong>
-                    card-verification charge today (refunded right away). You'll be charged
-                    <strong>{{ totalPrice | currency : purchaseOrder.currency }}</strong>
-                    automatically after {{ trialDays }} days. Cancel anytime before then.
-                  </span>
-                </p>
+                <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
+                <span class="trial-summary">
+                  {{ trialDays }}-day free trial ·
+                  <strong>{{ cardVerificationCharge | currency : purchaseOrder.currency }}</strong> verification charge
+                  (refunded immediately)
+                </span>
               </div>
 
               <!-- Total -->
