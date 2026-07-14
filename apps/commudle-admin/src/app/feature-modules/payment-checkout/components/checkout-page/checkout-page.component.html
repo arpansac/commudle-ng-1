@@ -1,4 +1,4 @@
-<div class="base-layout checkout-page">
+<div class="base-layout checkout-page medium">
   <div class="container">
     <!-- Checkout Banner -->
     <com-card class="checkout-banner" *ngIf="purchaseOrder">
@@ -88,6 +88,7 @@
           <com-card-body>
             <commudle-product-price-details
               [productPriceId]="purchaseOrder.orderable_id"
+              [withTrial]="withTrial"
               (productPriceLoaded)="onProductPriceLoaded($event)"
             ></commudle-product-price-details>
           </com-card-body>
@@ -120,7 +121,7 @@
                 class="business-toggle-box"
                 (click)="contactInfoForm.get('isBusiness')?.setValue(!isBusinessBilling)"
               >
-                <nb-checkbox formControlName="isBusiness" (click)="$event.stopPropagation()"></nb-checkbox>
+                <nb-checkbox formControlName="isBusiness"></nb-checkbox>
                 <div>
                   <p class="toggle-label">Purchasing for a business?</p>
                   <p class="toggle-sub">Add company details to receive a GST invoice</p>
