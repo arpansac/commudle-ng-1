@@ -105,7 +105,7 @@
 }
 
 .sidebar {
-  @apply com-sticky com-top-[132px] com-h-[calc(100vh-148px)] com-flex com-flex-col com-overflow-hidden;
+  @apply com-sticky com-top-[112px] com-h-[calc(100vh-60px-52px)] com-flex com-flex-col com-overflow-hidden;
 
   a {
     @apply com-text-inherit com-no-underline;
