@@ -30,12 +30,36 @@
                 {{ communityGroup.mini_description }}
               </p>
               <div class="links">
-                <p class="member-count">
-                  <a [routerLink]="['/orgs', communityGroup.slug, 'communities']">
-                    <fa-icon [icon]="faUserGroup"></fa-icon>
-                    {{ communityGroup.member_count }} Members
-                  </a>
-                </p>
+                <div class="counts">
+                  <p class="member-count">
+                    <a [routerLink]="['/orgs', communityGroup.slug, 'communities']">
+                      <fa-icon [icon]="faUserGroup"></fa-icon>
+                      {{ communityGroup.member_count }} Members
+                    </a>
+                  </p>
+                  <p *ngIf="communityGroup.kommunities_count" class="member-count">
+                    <a [routerLink]="['/orgs', communityGroup.slug, 'communities']">
+                      <fa-icon [icon]="faBuilding"></fa-icon>
+                      {{ communityGroup.kommunities_count }} Communities
+                    </a>
+                  </p>
+                  <p *ngIf="communityGroup.events_count" class="member-count">
+                    <a [routerLink]="['/orgs', communityGroup.slug, 'events']">
+                      <fa-icon [icon]="faCalendarDays"></fa-icon>
+                      {{ communityGroup.events_count }} Events
+                    </a>
+                  </p>
+                  <p *ngIf="communityGroup.hackathons_count" class="member-count">
+                    <a [routerLink]="['/orgs', communityGroup.slug]">
+                      <img
+                        [src]="environment.base_url + '/icons/hackathon-icon-gray.svg'"
+                        alt="Hackathon Icon"
+                        class="hackathon-icon"
+                      />
+                      {{ communityGroup.hackathons_count }} Hackathons
+                    </a>
+                  </p>
+                </div>
                 <div *ngIf="isOrganizer">
                   <a
                     nbButton

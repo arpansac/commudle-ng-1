@@ -15,12 +15,14 @@ import {
   faPencil,
   faCaretDown,
   faGlobe,
+  faCalendarDays,
 } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter, faLinkedinIn, faFacebookF, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 import { NbMenuService } from '@commudle/theme';
 import { CustomPageService } from 'apps/commudle-admin/src/app/services/custom-page.service';
 import { EDbModels } from '@commudle/shared-models';
+import { environment } from '@commudle/shared-environments';
 
 interface CustomMenuItem {
   title: string;
@@ -57,6 +59,8 @@ export class CommunityGroupHomeComponent implements OnInit, OnDestroy, AfterView
   faBuilding = faBuilding;
   faPencil = faPencil;
   faCaretDown = faCaretDown;
+  faCalendarDays = faCalendarDays;
+  environment = environment;
 
   items = [{ title: 'pages', slug: 'pages' }];
 
