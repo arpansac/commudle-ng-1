@@ -192,7 +192,7 @@ com-card {
 }
 
 .problem-statement-prompt {
-  @apply com-mb-4 com-rounded-lg com-overflow-hidden;
+  @apply com-flex com-justify-between com-rounded-lg com-overflow-hidden;
 
   com-card-body {
     @apply com-flex com-flex-row com-justify-between com-gap-3 com-p-3;

@@ -47,12 +47,16 @@
     </div>
     <com-card *ngIf="shouldShowProblemStatementPrompt()" class="problem-statement-prompt">
       <com-card-body>
-        <p><strong>Action Required:</strong> Please select a Track to continue.</p>
+        <commudle-alert
+          [info]="true"
+          [message]="'Action Required: Please select a Track to continue.'"
+        ></commudle-alert>
         <button comButton status="primary" size="small" shape="semi-round" (click)="openProblemStatementDialog()">
           Select Problem Statement
         </button>
       </com-card-body>
     </com-card>
+
     <com-card *ngIf="userTeamDetails && selectedTeam?.track" class="track-details">
       <com-card-header>
         <span>Selected Track</span>
