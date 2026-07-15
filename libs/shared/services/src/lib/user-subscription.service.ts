@@ -68,4 +68,11 @@ export class UserSubscriptionService {
       cancel_at_cycle_end: cancelAtCycleEnd,
     });
   }
+
+  addCommunities(userSubscriptionId: number, extraCommunities: number): Observable<IPurchaseOrder> {
+    return this.http.post<IPurchaseOrder>(this.baseApiService.getRoute(API_ROUTES.USER_SUBSCRIPTIONS.ADD_COMMUNITIES), {
+      user_subscription_id: userSubscriptionId,
+      extra_communities: extraCommunities,
+    });
+  }
 }

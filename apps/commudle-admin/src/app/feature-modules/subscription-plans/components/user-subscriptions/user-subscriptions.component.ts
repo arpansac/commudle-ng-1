@@ -23,7 +23,12 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
   isCancelling = false;
   cancelTarget: IUserSubscription | null = null;
 
+  isAddingCommunities = false;
+  addTarget: IUserSubscription | null = null;
+  extraCommunities = 1;
+
   @ViewChild('cancelDialog') cancelDialog: TemplateRef<unknown>;
+  @ViewChild('addCommunitiesDialog') addCommunitiesDialog: TemplateRef<unknown>;
 
   private destroy$ = new Subject<void>();
 
@@ -248,6 +253,32 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
         },
         error: () => {
           this.isCancelling = false;
+        },
+      });
+  }
+
+  openAddCommunitiesDialog(subscription: IUserSubscription): void {
+    this.addTarget = subscription;
+    this.extraCommunities = 1;
+    this.dialogService.open(this.addCommunitiesDialog, { closeOnBackdropClick: !this.isAddingCommunities });
+  }
+
+  confirmAddCommunities(ref: NbDialogRef<unknown>): void {
+    if (!this.addTarget || this.extraCommunities < 1) return;
+    this.isAddingCommunities = true;
+
+    this.userSubscriptionService
+      .addCommunities(this.addTarget.id, this.extraCommunities)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (po) => {
+          this.isAddingCommunities = false;
+          ref.close();
+          this.router.navigate(['/checkout', po.uuid]);
+        },
+        error: (err) => {
+          this.isAddingCommunities = false;
+          this.toastrService.errorDialog(err?.error?.message || 'Failed to initiate payment. Please try again.');
         },
       });
   }

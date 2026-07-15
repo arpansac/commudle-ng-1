@@ -3,7 +3,7 @@ import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, TemplateRef, ViewChi
 import { IFaq, IProductPrice, IPurchaseOrder } from '@commudle/shared-models';
 import { AuthService, GoogleTagManagerService, ProductPriceService, SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
-import { faArrowDown, faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faCircleCheck, faCircleXmark, faGift } from '@fortawesome/free-solid-svg-icons';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
@@ -41,6 +41,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     faCircleCheck,
     faArrowDown,
     faCircleXmark,
+    faGift,
   };
   private destroy$ = new Subject<void>();
   private isBrowser = false;

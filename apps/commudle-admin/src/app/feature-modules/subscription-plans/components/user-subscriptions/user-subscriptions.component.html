@@ -137,9 +137,18 @@
               >
                 + Create New Community
               </button>
-              <span class="slots-full-badge" *ngIf="sub.status === 'active' && !canCreateKommunity(sub)">
-                All slots in use
-              </span>
+              <ng-container *ngIf="sub.status === 'active'">
+                <button
+                  nbButton
+                  status="info"
+                  size="small"
+                  shape="round"
+                  [disabled]="isAddingCommunities"
+                  (click)="openAddCommunitiesDialog(sub)"
+                >
+                  + Add More
+                </button>
+              </ng-container>
             </div>
 
             <!-- Progress bar -->
@@ -269,6 +278,51 @@
     </div>
   </ng-container>
 </div>
+
+<!-- ── Add More Communities dialog ── -->
+<ng-template #addCommunitiesDialog let-ref="dialogRef">
+  <nb-card class="cancel-dialog">
+    <nb-card-header class="cancel-dialog-header">
+      <span>Add more community slots</span>
+      <button ghost nbButton size="small" shape="round" (click)="ref.close()" [disabled]="isAddingCommunities">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body class="cancel-dialog-body">
+      <p class="cancel-dialog-text">
+        You'll be charged a prorated amount for the remaining days in your current billing cycle. Starting next cycle,
+        your recurring charge will increase by the new slots.
+      </p>
+      <div class="quantity-stepper">
+        <label><strong>Extra Communities:</strong></label>
+        <button
+          nbButton
+          size="tiny"
+          shape="round"
+          (click)="extraCommunities = extraCommunities > 1 ? extraCommunities - 1 : 1"
+        >
+          −
+        </button>
+        <span class="stepper-value">{{ extraCommunities }}</span>
+        <button nbButton size="tiny" shape="round" (click)="extraCommunities = extraCommunities + 1">+</button>
+      </div>
+    </nb-card-body>
+    <nb-card-footer class="cancel-dialog-actions">
+      <button nbButton status="basic" shape="semi-round" (click)="ref.close()" [disabled]="isAddingCommunities">
+        Cancel
+      </button>
+      <button
+        nbButton
+        status="primary"
+        shape="semi-round"
+        (click)="confirmAddCommunities(ref)"
+        [disabled]="isAddingCommunities"
+      >
+        {{ isAddingCommunities ? 'Processing...' : 'Proceed to Pay' }}
+      </button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
 
 <!-- ── Cancel confirmation ── -->
 <ng-template #cancelDialog let-ref="dialogRef">
