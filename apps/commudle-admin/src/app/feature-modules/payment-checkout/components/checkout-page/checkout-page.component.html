@@ -13,13 +13,27 @@
           </span>
         </div>
         <ng-container *ngIf="paymentPaid">
-          <h1 class="banner-title">Order confirmed 🎉</h1>
+          <h1 class="banner-title">{{ isProratedAddon ? 'Communities added 🎉' : 'Order confirmed 🎉' }}</h1>
           <p class="banner-subtitle">
-            Your payment was processed successfully. A confirmation is on its way to your inbox.
+            {{
+              isProratedAddon
+                ? 'Your new community slots are ready. You can start creating them now.'
+                : 'Your payment was processed successfully. A confirmation is on its way to your inbox.'
+            }}
           </p>
         </ng-container>
 
-        <ng-container *ngIf="!paymentPaid">
+        <!-- Add-on (expand plan) banner -->
+        <ng-container *ngIf="!paymentPaid && isProratedAddon">
+          <p class="banner-eyebrow">Subscription add-on</p>
+          <h1 class="banner-title">Add more communities</h1>
+          <p class="banner-subtitle">
+            You're expanding your current plan. Pay only the prorated amount for the days left in this billing cycle.
+          </p>
+        </ng-container>
+
+        <!-- Regular purchase banner -->
+        <ng-container *ngIf="!paymentPaid && !isProratedAddon">
           <p class="banner-eyebrow" *ngIf="productPrice">
             {{ productPrice.product_name }}
             <span *ngIf="productPrice.plan_name"> · {{ productPrice.plan_name }}</span>
@@ -31,7 +45,41 @@
         </ng-container>
       </div>
 
-      <div class="banner-features">
+      <!-- Add-on feature highlights -->
+      <div class="banner-features" *ngIf="isProratedAddon">
+        <div class="feature">
+          <span class="feature-icon">
+            <fa-icon [icon]="icons.faTag"></fa-icon>
+          </span>
+          <div class="feature-text">
+            <span class="feature-title">Prorated fairly</span>
+            <span class="feature-desc">Only pay for days left in the cycle</span>
+          </div>
+        </div>
+
+        <div class="feature">
+          <span class="feature-icon">
+            <fa-icon [icon]="icons.faBolt"></fa-icon>
+          </span>
+          <div class="feature-text">
+            <span class="feature-title">Instant slots</span>
+            <span class="feature-desc">Unlock right after payment</span>
+          </div>
+        </div>
+
+        <div class="feature">
+          <span class="feature-icon">
+            <fa-icon [icon]="icons.faRotateRight"></fa-icon>
+          </span>
+          <div class="feature-text">
+            <span class="feature-title">Auto-renews</span>
+            <span class="feature-desc">Included from your next cycle</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Regular purchase feature highlights -->
+      <div class="banner-features" *ngIf="!isProratedAddon">
         <div class="feature">
           <span class="feature-icon">
             <fa-icon [icon]="icons.faTag"></fa-icon>
@@ -80,7 +128,10 @@
         </com-card>
 
         <!-- Product Price Details -->
-        <com-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE" class="order-details-card">
+        <com-card
+          *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE && !isProratedAddon"
+          class="order-details-card"
+        >
           <com-card-header class="card-title">
             <span class="card-title-icon"><fa-icon [icon]="icons.faBagShopping"></fa-icon></span>
             <span>What you're buying</span>
@@ -91,6 +142,61 @@
               [withTrial]="withTrial"
               (productPriceLoaded)="onProductPriceLoaded($event)"
             ></commudle-product-price-details>
+          </com-card-body>
+        </com-card>
+
+        <!-- Prorated Add-on Summary -->
+        <com-card
+          *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE && isProratedAddon"
+          class="order-details-card"
+        >
+          <com-card-header class="card-title">
+            <span class="card-title-icon"><fa-icon [icon]="icons.faLayerGroup"></fa-icon></span>
+            <span>Adding communities to your plan</span>
+          </com-card-header>
+          <com-card-body>
+            <div class="addon-summary">
+              <!-- Hero count -->
+              <div class="addon-hero">
+                <span class="addon-hero-badge">
+                  <fa-icon [icon]="icons.faLayerGroup"></fa-icon>
+                </span>
+                <div class="addon-hero-text">
+                  <span class="addon-hero-title">
+                    {{ purchaseOrder.notes?.extra_communities }} more
+                    {{ +purchaseOrder.notes?.extra_communities === 1 ? 'community' : 'communities' }}
+                  </span>
+                  <span class="addon-hero-sub">Added to your active subscription</span>
+                </div>
+              </div>
+
+              <!-- What happens -->
+              <div class="addon-steps">
+                <div class="addon-step">
+                  <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
+                  <div class="addon-step-text">
+                    <span class="addon-step-title">Prorated for this cycle</span>
+                    <span class="addon-step-desc"
+                      >You only pay for the days remaining in your current billing period.</span
+                    >
+                  </div>
+                </div>
+                <div class="addon-step">
+                  <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
+                  <div class="addon-step-text">
+                    <span class="addon-step-title">Slots unlock instantly</span>
+                    <span class="addon-step-desc">Create your new communities as soon as payment succeeds.</span>
+                  </div>
+                </div>
+                <div class="addon-step">
+                  <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
+                  <div class="addon-step-text">
+                    <span class="addon-step-title">Included from next cycle</span>
+                    <span class="addon-step-desc">Your recurring charge will automatically cover these slots.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </com-card-body>
         </com-card>
 
@@ -278,7 +384,7 @@
 
               <div class="summary-body">
                 <!-- Price -->
-                <div class="summary-row">
+                <div class="summary-row" *ngIf="!isProratedAddon">
                   <span class="heading">Price per community</span>
                   <span class="value">
                     {{ purchaseOrder.price / 100 | currency : purchaseOrder.currency }}
@@ -287,7 +393,10 @@
                 </div>
 
                 <!-- Billing cycle -->
-                <div class="summary-row" *ngIf="productPrice?.is_subscription_plan && productPrice?.billing_cycle">
+                <div
+                  class="summary-row"
+                  *ngIf="productPrice?.is_subscription_plan && productPrice?.billing_cycle && !isProratedAddon"
+                >
                   <span class="heading">Billing</span>
                   <span class="value">
                     {{ productPrice.billing_cycle | titlecase }}
@@ -301,7 +410,10 @@
                 </div>
 
                 <!-- Quantity Selector -->
-                <div class="summary-row" *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE">
+                <div
+                  class="summary-row"
+                  *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE && !isProratedAddon"
+                >
                   <span class="heading">Number of {{ quantity === 1 ? 'community' : 'communities' }}</span>
                   <div class="quantity-control" *ngIf="purchaseOrder.status !== EPurchaseOrderStatus.PAID">
                     <button
@@ -325,7 +437,10 @@
                 </div>
 
                 <!-- Subtotal -->
-                <div class="summary-row subtotal-row" *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE">
+                <div
+                  class="summary-row subtotal-row"
+                  *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE && !isProratedAddon"
+                >
                   <span class="heading">
                     Subtotal
                     <span class="breakdown">
@@ -393,7 +508,7 @@
               </div>
 
               <!-- Free trial option -->
-              <div class="trial-option" *ngIf="hasTrial && withTrial && !paymentPaid">
+              <div class="trial-option" *ngIf="hasTrial && withTrial && !paymentPaid && !isProratedAddon">
                 <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
                 <span class="trial-summary">
                   {{ trialDays }}-day free trial ·
@@ -404,10 +519,17 @@
 
               <!-- Total -->
               <div class="summary-total">
-                <span class="heading">{{ hasTrial && withTrial ? 'Due today' : 'Total payable' }}</span>
+                <span class="heading">{{
+                  isProratedAddon ? 'Due today (prorated)' : hasTrial && withTrial ? 'Due today' : 'Total payable'
+                }}</span>
                 <span class="value">
                   {{
-                    (hasTrial && withTrial ? cardVerificationCharge : totalPrice) | currency : purchaseOrder.currency
+                    (isProratedAddon
+                      ? purchaseOrder.amount_to_be_paid / 100
+                      : hasTrial && withTrial
+                      ? cardVerificationCharge
+                      : totalPrice
+                    ) | currency : purchaseOrder.currency
                   }}
                 </span>
               </div>
@@ -425,8 +547,13 @@
               <div class="pay-button-wrapper" *ngIf="!paymentPaid">
                 <button nbButton status="primary" fullWidth size="large" (click)="Pay()" [disabled]="isLoadingPayment">
                   <fa-icon [icon]="icons.faLock"></fa-icon>
-                  <ng-container *ngIf="hasTrial && withTrial">Start {{ trialDays }}-day free trial</ng-container>
-                  <ng-container *ngIf="!(hasTrial && withTrial)">
+                  <ng-container *ngIf="isProratedAddon"
+                    >Pay {{ purchaseOrder.amount_to_be_paid / 100 | currency : purchaseOrder.currency }}</ng-container
+                  >
+                  <ng-container *ngIf="!isProratedAddon && hasTrial && withTrial"
+                    >Start {{ trialDays }}-day free trial</ng-container
+                  >
+                  <ng-container *ngIf="!isProratedAddon && !(hasTrial && withTrial)">
                     Pay {{ totalPrice | currency : purchaseOrder.currency }}
                   </ng-container>
                 </button>

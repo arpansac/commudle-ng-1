@@ -106,6 +106,57 @@
   @apply com-mb-4 com-mx-2 com-overflow-hidden;
 }
 
+.addon-summary {
+  @apply com-flex com-flex-col com-gap-5;
+
+  .addon-hero {
+    @apply com-flex com-items-center com-gap-4 com-p-4 com-rounded-2xl;
+    @apply com-bg-primary-100 com-border com-border-solid com-border-primary-200;
+
+    .addon-hero-badge {
+      @apply com-flex com-items-center com-justify-center com-flex-shrink-0;
+      @apply com-h-12 com-w-12 com-rounded-xl;
+      @apply com-bg-primary-500 com-text-white com-text-lg;
+    }
+
+    .addon-hero-text {
+      @apply com-flex com-flex-col;
+
+      .addon-hero-title {
+        @apply com-text-base com-font-semibold com-text-Yankees-Blue;
+      }
+
+      .addon-hero-sub {
+        @apply com-text-sm com-text-gray-500;
+      }
+    }
+  }
+
+  .addon-steps {
+    @apply com-flex com-flex-col com-gap-4;
+
+    .addon-step {
+      @apply com-flex com-items-start com-gap-3;
+
+      fa-icon {
+        @apply com-flex-shrink-0 com-mt-0.5 com-text-primary-500;
+      }
+
+      .addon-step-text {
+        @apply com-flex com-flex-col;
+
+        .addon-step-title {
+          @apply com-text-sm com-font-semibold com-text-Yankees-Blue;
+        }
+
+        .addon-step-desc {
+          @apply com-text-xs com-text-gray-500 com-leading-relaxed;
+        }
+      }
+    }
+  }
+}
+
 .company-details-card {
   com-card-body {
     @apply com-p-0;

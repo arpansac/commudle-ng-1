@@ -30,6 +30,9 @@ export interface IPurchaseOrder {
   notes: {
     subscription_months: number;
     campaign: ICampaign;
+    prorated_addon?: string;
+    extra_communities?: string;
+    user_subscription_id?: string;
   };
   total_amount: number;
 }

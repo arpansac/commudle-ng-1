@@ -380,6 +380,18 @@
         @apply com-text-Yankees-Blue com-font-semibold;
       }
     }
+
+    .quantity-stepper {
+      @apply com-flex com-items-center com-gap-2 com-mt-4;
+
+      label {
+        @apply com-text-sm com-text-Yankees-Blue com-mr-1;
+      }
+
+      .stepper-value {
+        @apply com-min-w-6 com-text-center com-text-sm com-font-semibold com-text-Yankees-Blue;
+      }
+    }
   }
 
   .cancel-dialog-actions {

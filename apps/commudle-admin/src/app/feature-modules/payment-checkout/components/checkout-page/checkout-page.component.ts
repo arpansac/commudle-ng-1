@@ -16,6 +16,7 @@ import {
   faShieldHalved,
   faTag,
   faTriangleExclamation,
+  faLayerGroup,
 } from '@fortawesome/free-solid-svg-icons';
 import { environment } from '@commudle/shared-environments';
 import {
@@ -101,6 +102,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     faBagShopping,
     faBuilding,
     faCircleInfo,
+    faLayerGroup,
   };
 
   readonly EPurchaseOrderStatus = EPurchaseOrderStatus;
@@ -248,7 +250,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         this.router.navigate(['checkout', this.purchaseOrder.uuid, 'complete']);
       } else if (
         this.purchaseOrder.orderable_type === EDbModels.PRODUCT_PRICE &&
-        this.productPrice?.is_subscription_plan
+        (this.productPrice?.is_subscription_plan || this.isProratedAddon)
       ) {
         this.router.navigate(['/subscriptions']);
       }
@@ -433,8 +435,9 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       subscription_months: this.subscriptionMonths,
     };
 
-    // Use Razorpay Subscription flow for subscription plans
-    if (this.productPrice?.is_subscription_plan) {
+    // Use Razorpay Subscription flow for subscription plans.
+    // Prorated add-ons are one-time charges, so they must NOT use the subscription flow.
+    if (this.productPrice?.is_subscription_plan && !this.isProratedAddon) {
       this.razorpayService
         .createRzpSubscription(purchaseOrderId, this.hasTrial && this.withTrial)
         .pipe(
@@ -559,8 +562,8 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           if (this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE) {
             this.gtmDataLayerPushEvent('community-subscription-po-completed', {
               com_purchase_order: this.purchaseOrder.uuid,
-              com_product_price_plan_name: this.productPrice.plan_name,
-              com_product_price_product_name: this.productPrice.product_name,
+              com_product_price_plan_name: this.productPrice?.plan_name,
+              com_product_price_product_name: this.productPrice?.product_name,
               com_purchase_order_quantity: this.purchaseOrder.quantity,
               com_purchase_order_subscription_months: this.purchaseOrder.notes?.subscription_months,
             });
@@ -609,8 +612,8 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
                 if (this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE) {
                   this.gtmDataLayerPushEvent('community-subscription-po-completed', {
                     com_purchase_order: this.purchaseOrder.uuid,
-                    com_product_price_plan_name: this.productPrice.plan_name,
-                    com_product_price_product_name: this.productPrice.product_name,
+                    com_product_price_plan_name: this.productPrice?.plan_name,
+                    com_product_price_product_name: this.productPrice?.product_name,
                     com_purchase_order_quantity: this.purchaseOrder.quantity,
                     com_purchase_order_subscription_months: this.purchaseOrder.notes?.subscription_months,
                   });
@@ -620,7 +623,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
                 this.celebratePurchase();
                 if (
                   this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE &&
-                  this.productPrice?.is_subscription_plan
+                  (this.productPrice?.is_subscription_plan || this.isProratedAddon)
                 ) {
                   this.router.navigate(['/subscriptions']);
                 } else {
@@ -632,8 +635,8 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
               if (this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE) {
                 this.gtmDataLayerPushEvent('community-subscription-po-completed', {
                   com_purchase_order: this.purchaseOrder.uuid,
-                  com_product_price_plan_name: this.productPrice.plan_name,
-                  com_product_price_product_name: this.productPrice.product_name,
+                  com_product_price_plan_name: this.productPrice?.plan_name,
+                  com_product_price_product_name: this.productPrice?.product_name,
                   com_purchase_order_quantity: this.purchaseOrder.quantity,
                   com_purchase_order_subscription_months: this.purchaseOrder.notes?.subscription_months,
                 });
@@ -655,8 +658,8 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           if (this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE) {
             this.gtmDataLayerPushEvent('community-subscription-po-completed', {
               com_purchase_order: this.purchaseOrder.uuid,
-              com_product_price_plan_name: this.productPrice.plan_name,
-              com_product_price_product_name: this.productPrice.product_name,
+              com_product_price_plan_name: this.productPrice?.plan_name,
+              com_product_price_product_name: this.productPrice?.product_name,
               com_purchase_order_quantity: this.purchaseOrder.quantity,
               com_purchase_order_subscription_months: this.purchaseOrder.notes?.subscription_months,
             });
@@ -682,8 +685,8 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
             if (this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE) {
               this.gtmDataLayerPushEvent('community-subscription-po-completed', {
                 com_purchase_order: this.purchaseOrder.uuid,
-                com_product_price_plan_name: this.productPrice.plan_name,
-                com_product_price_product_name: this.productPrice.product_name,
+                com_product_price_plan_name: this.productPrice?.plan_name,
+                com_product_price_product_name: this.productPrice?.product_name,
                 com_purchase_order_quantity: this.purchaseOrder.quantity,
                 com_purchase_order_subscription_months: this.purchaseOrder.notes?.subscription_months,
               });
@@ -695,8 +698,8 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
             if (this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE) {
               this.gtmDataLayerPushEvent('community-subscription-po-completed', {
                 com_purchase_order: this.purchaseOrder.uuid,
-                com_product_price_plan_name: this.productPrice.plan_name,
-                com_product_price_product_name: this.productPrice.product_name,
+                com_product_price_plan_name: this.productPrice?.plan_name,
+                com_product_price_product_name: this.productPrice?.product_name,
                 com_purchase_order_quantity: this.purchaseOrder.quantity,
                 com_purchase_order_subscription_months: this.purchaseOrder.notes?.subscription_months,
               });
@@ -920,5 +923,9 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   get trialDays(): number {
     return this.productPrice?.trial_period_days || 0;
+  }
+
+  get isProratedAddon(): boolean {
+    return this.purchaseOrder?.notes?.prorated_addon === 'true';
   }
 }

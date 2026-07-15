@@ -559,6 +559,76 @@ a **Cancel** button in the card header.
 
 ---
 
+## 6h. Adding More Communities Mid-Cycle (Prorated Add-on)
+
+On an **active** subscription card, the Communities section shows an **"+ Add More"**
+button next to "+ Create New Community". This lets the user buy extra community slots
+without waiting for the next billing cycle.
+
+### Flow
+
+```
+[/subscriptions page]
+      |
+      | click "+ Add More" on an active subscription
+      ↓
+[Add More Communities dialog]  (user-subscriptions component)
+      | stepper to choose how many extra communities (min 1)
+      | click "Proceed to Pay"
+      ↓
+[UserSubscriptionService.addCommunities(subscriptionId, extraCommunities)]
+      | POST /api/v2/user_subscriptions/add_communities
+      | backend creates a prorated one-time PurchaseOrder → { purchase_order_uuid }
+      ↓
+[router.navigate(['/checkout', purchase_order_uuid])]
+      ↓
+[Checkout page — add-on mode]
+      | isProratedAddon = purchaseOrder.notes.prorated_addon === 'true'
+      | pays the prorated amount (one-time payment path)
+      ↓
+[On success → redirect to /subscriptions]
+      | quota already increased on the backend; new slots ready to use
+```
+
+### Checkout page in add-on mode
+
+The checkout page detects the add-on via the `isProratedAddon` getter
+(`purchaseOrder.notes.prorated_addon === 'true'`) and adapts the UI:
+
+- **Banner** — eyebrow "Subscription add-on", title "Add more communities", and add-on
+  feature highlights ("Prorated fairly", "Instant slots", "Auto-renews").
+- **Order details card** — instead of the product-price card, shows an add-on summary:
+  a hero row ("N more communities · Added to your active subscription") plus three
+  "what happens" steps (prorated for this cycle, slots unlock instantly, included from
+  next cycle).
+- **Order summary** — hides the quantity selector, billing cycle, subtotal, and trial
+  rows (they don't apply to an add-on). The **discount code** field is still available.
+  The total reads **"Due today (prorated)"** and the pay button shows the exact prorated
+  amount.
+- **Payment path** — the add-on is always charged as a **one-time payment**, never the
+  subscription flow. The subscription branch is explicitly guarded with
+  `is_subscription_plan && !isProratedAddon`.
+- **After success** — redirects to `/subscriptions` (same as a subscription purchase).
+
+### Model
+
+`IPurchaseOrder.notes` includes the add-on fields:
+
+```typescript
+notes: {
+  subscription_months: number;
+  campaign: ICampaign;
+  prorated_addon?: string;       // 'true' for add-on orders
+  extra_communities?: string;    // number of extra slots being bought
+  user_subscription_id?: string; // the subscription being expanded
+};
+```
+
+The backend increases the subscription's `komunity_limit` on payment success and bumps
+the Razorpay recurring quantity at cycle end. See `gdgapp/SUBSCRIPTION_FLOW.md` §10b.
+
+---
+
 ## 6g. Navigation Access
 
 "My Subscriptions" (→ `/subscriptions`) is linked from the user menu in both:
@@ -645,13 +715,14 @@ The subscriptions area also has a **Payment History** page
 
 ### Subscriptions
 
-| Method | Endpoint                                     | Description                                           |
-| ------ | -------------------------------------------- | ----------------------------------------------------- |
-| `GET`  | `/api/v2/user_subscriptions`                 | List all subscriptions for current user               |
-| `GET`  | `/api/v2/user_subscriptions/show?id=<id>`    | Single subscription details                           |
-| `GET`  | `/api/v2/user_subscriptions/stats`           | Active / trialing / expired counts                    |
-| `GET`  | `/api/v2/user_subscriptions/payment_history` | Paginated purchase-order history                      |
-| `POST` | `/api/v2/user_subscriptions/cancel`          | Cancel a subscription (`{ id, cancel_at_cycle_end }`) |
+| Method | Endpoint                                     | Description                                                                                                                                    |
+| ------ | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET`  | `/api/v2/user_subscriptions`                 | List all subscriptions for current user                                                                                                        |
+| `GET`  | `/api/v2/user_subscriptions/show?id=<id>`    | Single subscription details                                                                                                                    |
+| `GET`  | `/api/v2/user_subscriptions/stats`           | Active / trialing / expired counts                                                                                                             |
+| `GET`  | `/api/v2/user_subscriptions/payment_history` | Paginated purchase-order history                                                                                                               |
+| `POST` | `/api/v2/user_subscriptions/cancel`          | Cancel a subscription (`{ id, cancel_at_cycle_end }`)                                                                                          |
+| `POST` | `/api/v2/user_subscriptions/add_communities` | Buy extra community slots (`{ user_subscription_id, extra_communities }`) → returns `{ purchase_order_uuid }` for a prorated one-time checkout |
 
 ### Community Creation
 
@@ -686,7 +757,9 @@ The subscriptions area also has a **Payment History** page
 
 11. **Community name is globally unique** — `CommunityGroup.name` has a global uniqueness validation + DB index; the create API returns a friendly "Name has already been taken" error.
 
-12. **Known gaps** — quota checks use `max_kommunities` / `max_community_groups` only and ignore the purchased `quantity`; renewal creates a new subscription without re-linking existing communities (the "Renew" button is disabled for now). See backend §13.
+12. **Mid-cycle add-ons are prorated one-time charges** — "+ Add More" creates a prorated `PurchaseOrder` (flagged `notes.prorated_addon`) that is paid via the **one-time** path, not the subscription path. On success the backend grows `komunity_limit` immediately and schedules the Razorpay recurring quantity bump for cycle end. See §6h and backend §10b.
+
+13. **Known gaps** — quota checks use `max_kommunities` / `max_community_groups` only and ignore the purchased `quantity`; renewal creates a new subscription without re-linking existing communities (the "Renew" button is disabled for now). See backend §13.
 
 ---
 
