@@ -41,6 +41,11 @@ nb-card-body {
 .select-recipient {
   @apply com-flex com-flex-col com-mt-6;
 
+  .all-filter,
+  .selected-filter {
+    @apply com-mt-3;
+  }
+
   .selected-status {
     @apply com-mt-5 com-w-full com-border-0 com-rounded-lg com-bg-gray-100 com-pr-2 com-pl-3 com-py-2 md:com-w-56 com-text-sm com-font-normal com-text-Yankees-Blue;
   }

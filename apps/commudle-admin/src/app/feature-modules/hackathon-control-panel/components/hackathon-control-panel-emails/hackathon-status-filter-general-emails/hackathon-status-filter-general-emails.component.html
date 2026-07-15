@@ -30,6 +30,7 @@
           [(ngModel)]="selectedRecipient"
           value="Selected Registration Option"
           class="radio-btn"
+          (change)="onRecipientChange()"
         />
         <label for="SelectedRegistrationOption">Selected Team registration status</label>
       </div>
@@ -46,6 +47,30 @@
           [value]="registrationStatus.value"
         >
           {{ registrationStatus.value | capitalizeAndRemoveUnderscore }}
+        </option>
+      </select>
+      <div class="selected-filter">
+        <input
+          type="radio"
+          name="recipient"
+          id="SelectedApplicationStatus"
+          [(ngModel)]="selectedRecipient"
+          value="Selected Application Status"
+          class="radio-btn"
+          (change)="onRecipientChange()"
+        />
+        <label for="SelectedApplicationStatus">Selected Individual application status</label>
+      </div>
+      <select
+        name=""
+        id=""
+        *ngIf="selectedRecipient === 'Selected Application Status'"
+        [(ngModel)]="selectedHurStatus"
+        class="selected-status"
+      >
+        <option disabled selected value="">Select Status</option>
+        <option *ngFor="let invitationStatus of EInvitationStatus | keyvalue" [value]="invitationStatus.value">
+          {{ invitationStatus.value | capitalizeAndRemoveUnderscore }}
         </option>
       </select>
     </div>

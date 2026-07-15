@@ -7,10 +7,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 
 @Component({
-    selector: 'commudle-hackathon-status-filter-general-emails',
-    templateUrl: './hackathon-status-filter-general-emails.component.html',
-    styleUrls: ['./hackathon-status-filter-general-emails.component.scss'],
-    standalone: false
+  selector: 'commudle-hackathon-status-filter-general-emails',
+  templateUrl: './hackathon-status-filter-general-emails.component.html',
+  styleUrls: ['./hackathon-status-filter-general-emails.component.scss'],
+  standalone: false,
 })
 export class HackathonStatusFilterGeneralEmailsComponent {
   @Input() hackathonId: number;
@@ -21,6 +21,7 @@ export class HackathonStatusFilterGeneralEmailsComponent {
   EInvitationStatus = EInvitationStatus;
   EHackathonRegistrationStatus = EHackathonRegistrationStatus;
   selectedHackathonTeamStatus: EHackathonRegistrationStatus | '' = '';
+  selectedHurStatus: EInvitationStatus | '' = '';
   showPreviewSpinner = false;
   previewEmailForm;
   previewData: string;
@@ -84,7 +85,7 @@ export class HackathonStatusFilterGeneralEmailsComponent {
         this.message,
         this.subject,
         (this.selectedHackathonTeamStatus as EHackathonRegistrationStatus) || undefined,
-        undefined,
+        (this.selectedHurStatus as EInvitationStatus) || undefined,
       )
       .subscribe(
         (data) => {
@@ -101,6 +102,11 @@ export class HackathonStatusFilterGeneralEmailsComponent {
 
   onRecipientChange() {
     if (this.selectedRecipient === 'all') {
+      this.selectedHackathonTeamStatus = '';
+      this.selectedHurStatus = '';
+    } else if (this.selectedRecipient === 'Selected Registration Option') {
+      this.selectedHurStatus = '';
+    } else if (this.selectedRecipient === 'Selected Application Status') {
       this.selectedHackathonTeamStatus = '';
     }
   }
