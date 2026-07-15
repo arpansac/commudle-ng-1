@@ -50,15 +50,17 @@ import {
   faLaptopCode,
   faChartPie,
   faLink,
+  faStickyNote,
 } from '@fortawesome/free-solid-svg-icons';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IHackathon, EHackathonStatus } from 'apps/shared-models/hackathon.model';
 import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/services/hackathon-user-responses.service';
 import { HackathonOverallRoundSelectionUpdateEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-overall-round-selection-update-email/hackathon-overall-round-selection-update-email.component';
-import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, switchMap, Subscription } from 'rxjs';
 import { HackathonIndividualTeamEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-individual-team-email/hackathon-individual-team-email.component';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
+import { TeamNotesDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/team-notes-dialog/team-notes-dialog.component';
 import { HackathonRsvpEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-rsvp-email/hackathon-rsvp-email.component';
 import { HackathonEntryPassEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-entry-pass-email/hackathon-entry-pass-email.component';
 import { StatsHackathonService } from 'apps/commudle-admin/src/app/services/stats/hackathons.service';
@@ -95,6 +97,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     faLaptopCode,
     faChartPie,
     faLink,
+    faStickyNote,
   };
 
   notesForm: FormGroup;
@@ -400,6 +403,15 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   notesIndex(teamId) {
     this.noteService.indexNotes(teamId, EDbModels.HACKATHON_TEAM).subscribe((data) => {
       this.notes = data;
+    });
+  }
+
+  openQuickNoteDialog(userResponse: IHackathonUserResponses, event: Event) {
+    event.stopPropagation();
+    this.nbDialogService.open(TeamNotesDialogComponent, {
+      context: {
+        team: userResponse.team,
+      },
     });
   }
 

@@ -301,6 +301,27 @@
                     <span
                       ><span class="id"> (#{{ userResponse.team.id }})</span> {{ userResponse.team.name }}</span
                     >
+                    <div class="notes-button-wrapper" (click)="$event.stopPropagation()">
+                      <button
+                        nbButton
+                        ghost
+                        status="info"
+                        size="tiny"
+                        (click)="openQuickNoteDialog(userResponse, $event)"
+                        title="Notes"
+                      >
+                        <fa-icon [icon]="icons.faStickyNote"></fa-icon>
+                      </button>
+                      <app-badge
+                        *ngIf="userResponse.team.notes?.length > 0"
+                        [text]="userResponse.team.notes.length.toString()"
+                        [fontColor]="'com-text-white'"
+                        [fontSize]="'xx-small'"
+                        [borderRadius]="'round'"
+                        [color]="'com-bg-red-500'"
+                        [position]="'top right'"
+                      ></app-badge>
+                    </div>
                     @if(userResponse.team.team_leader_hur_status !== EInvitationStatus.APPLICATION_COMPLETE){
                     <fa-icon
                       [icon]="icons.faExclamationTriangle"
