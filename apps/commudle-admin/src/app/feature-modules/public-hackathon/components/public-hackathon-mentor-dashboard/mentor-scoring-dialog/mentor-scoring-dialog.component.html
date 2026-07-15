@@ -1,7 +1,11 @@
 <nb-card class="scoring-dialog">
   <nb-card-header>
     <div class="header-content">
-      <h4 class="dialog-title">Score Team</h4>
+      <h4 class="dialog-title">
+        {{
+          teamData?.score?.status === 'submitted' || teamData?.score?.status === 'draft' ? 'Update Score' : 'Add Score'
+        }}
+      </h4>
       <button nbButton ghost size="small" (click)="close()" class="close-button" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
@@ -25,7 +29,36 @@
       </div>
       <div class="info-item">
         <span class="info-label">Problem Statement:</span>
-        <span class="info-value">{{ teamData?.team?.problem_statement?.display_id || 'N/A' }}</span>
+        <span
+          *ngIf="teamData?.team?.problem_statement"
+          class="info-link"
+          [nbPopover]="psPopover"
+          nbPopoverTrigger="click"
+          nbPopoverPlacement="bottom"
+          >{{ teamData.team.problem_statement.display_id }}</span
+        >
+        <span *ngIf="!teamData?.team?.problem_statement" class="info-value">N/A</span>
+        <ng-template #psPopover>
+          <div class="ps-popover" [innerHTML]="teamData?.team?.problem_statement?.title"></div>
+        </ng-template>
+      </div>
+      <div *ngIf="teamData?.submission?.file_attachment" class="info-item">
+        <span class="info-label">PPT Link:</span>
+        <a class="info-link" [href]="teamData.submission.file_attachment.url" target="_blank">{{
+          teamData.submission.file_attachment.name
+        }}</a>
+      </div>
+      <div *ngIf="teamData?.submission?.link && !teamData?.submission?.file_attachment" class="info-item">
+        <span class="info-label">Submission Link:</span>
+        <a class="info-link" [href]="teamData.submission.link" target="_blank" rel="noopener noreferrer">{{
+          teamData.submission.link
+        }}</a>
+      </div>
+      <div *ngIf="teamData?.team?.community_build" class="info-item">
+        <span class="info-label">Project:</span>
+        <a class="info-link" [routerLink]="['/builds', teamData.team.community_build.slug]" target="_blank">{{
+          teamData.team.community_build.name
+        }}</a>
       </div>
     </div>
 

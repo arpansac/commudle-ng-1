@@ -149,8 +149,17 @@
               [class.submitted]="teamData.score?.status === 'submitted'"
               [class.draft]="teamData.score?.status === 'draft'"
             >
-              @if(teamData.score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED){Submitted} @else
-              if(teamData.score?.status === EHackathonTeamRoundScoreStatus.DRAFT){Draft} @else {Pending}
+              <ng-container *ngIf="teamData.score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED"
+                >Submitted</ng-container
+              >
+              <ng-container *ngIf="teamData.score?.status === EHackathonTeamRoundScoreStatus.DRAFT">Draft</ng-container>
+              <ng-container
+                *ngIf="
+                  teamData.score?.status !== EHackathonTeamRoundScoreStatus.SUBMITTED &&
+                  teamData.score?.status !== EHackathonTeamRoundScoreStatus.DRAFT
+                "
+                >Pending</ng-container
+              >
             </span>
           </div>
           <div class="team-mobile-details">
