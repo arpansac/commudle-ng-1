@@ -462,6 +462,12 @@
                   </span>
                   <span class="value">-{{ discountValue | currency : purchaseOrder.currency }}</span>
                 </div>
+
+                <!-- Tax (charged on one-time orders; included in the total below) -->
+                <div class="summary-row tax-row" *ngIf="!useSubscriptionFlow && purchaseOrder.tax_amount">
+                  <span class="heading">Tax</span>
+                  <span class="value">{{ purchaseOrder.tax_amount / 100 | currency : purchaseOrder.currency }}</span>
+                </div>
               </div>
 
               <!-- Promo Code -->

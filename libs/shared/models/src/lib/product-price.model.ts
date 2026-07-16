@@ -19,6 +19,8 @@ export interface IProductPrice {
   rzp_plan_id?: string;
   trial_period_days?: number;
   trial_enabled?: boolean;
+  recurring_billing_supported?: boolean;
+  recurring_mandate_cap?: number;
 }
 
 export interface IRazorpayPlan {
