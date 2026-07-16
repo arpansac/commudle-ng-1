@@ -42,16 +42,39 @@
 
     <com-card-body>
       <form [formGroup]="communityForm" class="cf-form">
-        <div class="cf-images-row">
-          <!-- Logo -->
-          <div class="cf-image-field">
-            <span class="cf-label">Logo <span class="cf-hint">(PNG, JPG · max 5MB)</span></span>
-            <div class="cf-upload-box cf-upload-square" (click)="logoInput.click()">
-              <img *ngIf="logoPreview" [src]="logoPreview" alt="Logo" class="cf-preview-img" />
-              <ng-container *ngIf="!logoPreview">
-                <nb-icon icon="camera" class="cf-upload-icon"></nb-icon>
-                <span class="cf-upload-text">Upload</span>
-              </ng-container>
+        <div class="cf-media">
+          <!-- Banner -->
+          <div class="cf-banner" [class.has-image]="bannerPreview" (click)="!bannerPreview && bannerInput.click()">
+            <img *ngIf="bannerPreview" [src]="bannerPreview" alt="Banner" class="cf-banner-img" />
+            <div class="cf-banner-placeholder" *ngIf="!bannerPreview">
+              <nb-icon icon="image-outline"></nb-icon>
+              <span>Add a banner <span class="cf-hint">1280×320 · optional</span></span>
+            </div>
+            <div *ngIf="bannerPreview" class="cf-media-actions">
+              <button
+                nbButton
+                status="danger"
+                size="tiny"
+                type="button"
+                (click)="$event.stopPropagation(); removeBanner()"
+              >
+                <nb-icon icon="trash-2-outline"></nb-icon> Remove
+              </button>
+            </div>
+            <input
+              #bannerInput
+              type="file"
+              accept="image/png,image/jpg,image/jpeg"
+              class="cf-hidden"
+              (change)="onBannerSelected($event)"
+            />
+          </div>
+
+          <!-- Logo overlapping banner -->
+          <div class="cf-logo-row">
+            <div class="cf-logo" [class.has-image]="logoPreview" (click)="logoInput.click()">
+              <img *ngIf="logoPreview" [src]="logoPreview" alt="Logo" class="cf-logo-img" />
+              <nb-icon *ngIf="!logoPreview" icon="camera" class="cf-logo-icon"></nb-icon>
               <input
                 #logoInput
                 type="file"
@@ -60,44 +83,18 @@
                 (change)="onLogoSelected($event)"
               />
             </div>
-            <button *ngIf="logoPreview" nbButton status="danger" ghost size="tiny" type="button" (click)="removeLogo()">
-              <nb-icon icon="trash-2-outline"></nb-icon> Remove
-            </button>
-          </div>
-
-          <!-- Banner -->
-          <div class="cf-image-field cf-image-field-banner">
-            <span class="cf-label">Banner <span class="cf-hint">(1280×320px · max 5MB)</span></span>
-            <div class="cf-upload-box cf-upload-banner" (click)="bannerInput.click()">
-              <img *ngIf="bannerPreview" [src]="bannerPreview" alt="Banner" class="cf-preview-img" />
-              <ng-container *ngIf="!bannerPreview">
-                <nb-icon icon="image-outline" class="cf-upload-icon"></nb-icon>
-                <span class="cf-upload-text">Upload Banner</span>
-              </ng-container>
-              <input
-                #bannerInput
-                type="file"
-                accept="image/png,image/jpg,image/jpeg"
-                class="cf-hidden"
-                (change)="onBannerSelected($event)"
-              />
+            <div class="cf-logo-meta">
+              <span class="cf-label">Community Logo <span class="cf-required">*</span></span>
+              <span class="cf-hint">PNG or JPG · max 5MB</span>
             </div>
-            <button
-              *ngIf="bannerPreview"
-              nbButton
-              status="danger"
-              ghost
-              size="tiny"
-              type="button"
-              (click)="removeBanner()"
-            >
-              <nb-icon icon="trash-2-outline"></nb-icon> Remove
-            </button>
           </div>
-        </div>
 
-        <!-- ── Basic Info ── -->
-        <p class="cf-section-label">Basic Info</p>
+          <commudle-alert
+            *ngIf="!logoPreview"
+            [error]="true"
+            errorMessage="A community logo is required."
+          ></commudle-alert>
+        </div>
 
         <div class="cf-row">
           <div class="cf-field">
@@ -189,7 +186,14 @@
           </div>
           <div class="cf-field">
             <label class="cf-label">Location</label>
-            <input nbInput fullWidth formControlName="location" type="text" placeholder="e.g. New Delhi, India" />
+            <input
+              #autocompleteInput
+              nbInput
+              fullWidth
+              formControlName="location"
+              type="text"
+              placeholder="e.g. New Delhi, India"
+            />
           </div>
         </div>
 
@@ -260,6 +264,8 @@
           [disabled]="
             communityForm.invalid ||
             isSubmitting ||
+            !logoPreview ||
+            tags.length < minimumTags ||
             slugCheckState === 'taken' ||
             slugCheckState === 'checking' ||
             slugCheckState === 'idle'

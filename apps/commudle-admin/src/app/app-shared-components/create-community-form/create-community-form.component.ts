@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -7,6 +7,7 @@ import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { CommudleCardModule } from '@commudle/commudle-theme';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
+import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
 import { ToastrService, ConfettiService } from '@commudle/shared-services';
 import { Router } from '@angular/router';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
@@ -31,8 +32,10 @@ import { ICommunity } from '@commudle/shared-models';
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })
-export class CreateCommunityFormComponent implements OnInit, OnDestroy {
+export class CreateCommunityFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() subscriptionId: number;
+
+  @ViewChild('autocompleteInput') autocompleteInput: ElementRef;
 
   communityForm: FormGroup;
   isSubmitting = false;
@@ -44,6 +47,9 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
   logoFile: File | null = null;
   bannerPreview: string | null = null;
   bannerFile: File | null = null;
+
+  tags: string[] = [];
+  minimumTags = 5;
 
   readonly tinyMCE = {
     min_height: 200,
@@ -70,6 +76,7 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
     private toastrService: ToastrService,
     private router: Router,
     private confettiService: ConfettiService,
+    private googlePlacesAutocompleteService: GooglePlacesAutocompleteService,
   ) {}
 
   ngOnInit(): void {
@@ -115,9 +122,33 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
       });
   }
 
+  ngAfterViewInit(): void {
+    this.initAutocomplete();
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private initAutocomplete(): void {
+    // Google Maps may not be loaded in every context; fail gracefully to a plain input.
+    if (!this.autocompleteInput?.nativeElement || typeof google === 'undefined') return;
+    this.googlePlacesAutocompleteService.initAutocomplete(this.autocompleteInput.nativeElement);
+    this.googlePlacesAutocompleteService.placeChanged.pipe(takeUntil(this.destroy$)).subscribe((place) => {
+      this.communityForm.get('location').setValue(place.formatted_address);
+    });
+  }
+
+  onTagAdd(value: string): void {
+    const finalValue = (value || '').trim();
+    if (finalValue && !this.tags.includes(finalValue)) {
+      this.tags.push(finalValue);
+    }
+  }
+
+  onTagDelete(value: string): void {
+    this.tags = this.tags.filter((tag) => tag !== value);
   }
 
   onSlugInput(): void {
@@ -173,6 +204,7 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
 
     if (this.logoFile) formData.append('community[logo_image]', this.logoFile);
     if (this.bannerFile) formData.append('community[banner_image]', this.bannerFile);
+    this.tags.forEach((tag) => formData.append('community[tags][]', tag));
 
     this.communitiesService.createWithSubscription(formData, this.subscriptionId).subscribe({
       next: (community: ICommunity) => {
@@ -205,6 +237,7 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
     this.logoFile = null;
     this.bannerPreview = null;
     this.bannerFile = null;
+    this.tags = [];
     this.isSlugEdited = false;
     this.slugCheckState = 'idle';
   }
