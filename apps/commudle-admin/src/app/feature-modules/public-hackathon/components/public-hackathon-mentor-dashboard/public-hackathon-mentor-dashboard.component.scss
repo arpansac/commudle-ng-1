@@ -420,14 +420,14 @@ com-card {
 }
 
 .problem-statement-dialog {
-  @apply com-w-[600px] com-max-h-[500px];
+  @apply com-w-full md:com-w-[600px] com-max-h-[500px] com-max-w-[90vw];
 
   com-card-header {
     @apply com-flex com-justify-between com-items-center;
   }
 
   com-card-body {
-    @apply com-max-h-[350px] com-overflow-y-auto;
+    @apply com-max-h-[350px] com-overflow-y-auto com-break-words;
   }
 
   com-card-footer {
@@ -525,5 +525,159 @@ com-card {
 
   com-card-body {
     @apply com-p-0 com-overflow-hidden;
+  }
+}
+
+.teams-mobile-cards-grid {
+  @apply com-flex com-flex-col com-gap-5;
+}
+
+.teams-mobile-cards {
+  @apply com-flex com-flex-col com-gap-5 com-mt-4;
+
+  .team-mobile-card {
+    @apply com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-p-3 com-bg-white;
+
+    .team-mobile-header {
+      @apply com-flex com-justify-between com-items-center com-mb-3;
+
+      .team-mobile-name {
+        @apply com-text-sm com-font-semibold com-text-Yankees-Blue;
+      }
+
+      .status-badge {
+        @apply com-text-xs com-font-medium com-px-2 com-py-0.5 com-rounded-full com-bg-gray-100 com-text-gray-600;
+
+        &.submitted {
+          @apply com-bg-green-100 com-text-green-700;
+        }
+
+        &.draft {
+          @apply com-bg-yellow-100 com-text-yellow-700;
+        }
+      }
+    }
+
+    .team-mobile-details {
+      @apply com-flex com-flex-col com-gap-3;
+
+      .team-mobile-row {
+        @apply com-flex com-justify-between com-items-start com-gap-2;
+
+        .team-mobile-label {
+          @apply com-text-xs com-font-medium com-text-gray-500 com-flex-shrink-0;
+        }
+
+        .team-mobile-value {
+          @apply com-text-xs com-text-Yankees-Blue com-text-right;
+        }
+
+        .ps-link {
+          @apply com-text-primary-500 com-cursor-pointer com-underline;
+        }
+
+        .members-count-trigger {
+          @apply com-text-primary-500 com-cursor-pointer com-underline;
+        }
+
+        .submission-link {
+          @apply com-text-xs com-text-primary-500 com-no-underline com-break-all;
+          @apply hover:com-underline;
+        }
+
+        .no-submission {
+          @apply com-text-gray-400;
+        }
+      }
+
+      .team-mobile-row-col {
+        @apply com-flex-col com-items-start;
+      }
+
+      .team-mobile-score-details {
+        @apply com-flex com-flex-col com-gap-1.5 com-mt-2 com-w-full;
+
+        .score-item {
+          @apply com-flex com-justify-between com-items-center com-text-xs com-px-2 com-py-1.5 com-bg-gray-50 com-rounded;
+
+          span:first-child {
+            @apply com-font-medium com-text-Yankees-Blue;
+          }
+
+          span:last-child {
+            @apply com-text-gray-600;
+          }
+        }
+      }
+
+      .team-mobile-submission {
+        @apply com-flex com-flex-col com-gap-1 com-mt-1;
+
+        .project-label {
+          @apply com-text-xs com-text-gray-500;
+        }
+
+        .submission-link {
+          @apply com-text-xs com-text-primary-500 com-no-underline com-break-all;
+          @apply hover:com-underline;
+        }
+
+        .no-submission {
+          @apply com-text-xs com-text-gray-400;
+        }
+      }
+    }
+
+    .team-mobile-actions {
+      @apply com-mt-3 com-pt-3 com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+    }
+
+    .team-mobile-evaluators {
+      @apply com-mt-3 com-pt-3 com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+
+      .evaluators-toggle {
+        @apply com-flex com-items-center com-justify-between com-w-full com-bg-transparent com-border-0 com-cursor-pointer com-p-0 com-text-xs com-font-medium com-text-gray-500;
+
+        nb-icon {
+          @apply com-text-sm com-text-gray-500;
+        }
+      }
+
+      .evaluators-list {
+        @apply com-flex com-flex-col com-gap-1.5 com-mt-2;
+
+        .evaluator-item {
+          @apply com-flex com-justify-between com-items-center com-px-2 com-py-1.5 com-bg-gray-50 com-rounded;
+
+          &.evaluator-item-col {
+            @apply com-flex-col com-items-start com-gap-1;
+          }
+
+          &.evaluator-submitted {
+            @apply com-bg-green-50;
+          }
+
+          .evaluator-name {
+            @apply com-text-xs com-text-Yankees-Blue;
+          }
+
+          .evaluator-meta {
+            @apply com-flex com-items-center com-gap-2 com-w-full com-justify-between;
+
+            .view-more-btn {
+              @apply com-text-xs com-text-primary-500 com-bg-transparent com-border-0 com-cursor-pointer com-p-0 com-font-medium;
+            }
+          }
+
+          .evaluator-status {
+            @apply com-text-xs com-text-gray-500;
+
+            &.status-submitted {
+              @apply com-text-green-600;
+            }
+          }
+        }
+      }
+    }
   }
 }

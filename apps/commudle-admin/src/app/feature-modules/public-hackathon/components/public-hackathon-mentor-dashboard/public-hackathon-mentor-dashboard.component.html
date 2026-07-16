@@ -138,7 +138,188 @@
       <p>No teams assigned for this round</p>
     </div>
 
-    <div class="teams-table-wrapper">
+    <!-- Mobile card view -->
+    <div *appBreakpoints="'<=md'" class="teams-mobile-cards">
+      <div *ngIf="!isLoading && teamDetails.length > 0" class="teams-mobile-cards-grid">
+        <div *ngFor="let teamData of teamDetails" class="team-mobile-card">
+          <div class="team-mobile-header">
+            <span class="team-mobile-name">{{ teamData.team.name }}</span>
+            <span
+              class="status-badge"
+              [class.submitted]="teamData.score?.status === 'submitted'"
+              [class.draft]="teamData.score?.status === 'draft'"
+            >
+              <ng-container *ngIf="teamData.score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED"
+                >Submitted</ng-container
+              >
+              <ng-container *ngIf="teamData.score?.status === EHackathonTeamRoundScoreStatus.DRAFT">Draft</ng-container>
+              <ng-container
+                *ngIf="
+                  teamData.score?.status !== EHackathonTeamRoundScoreStatus.SUBMITTED &&
+                  teamData.score?.status !== EHackathonTeamRoundScoreStatus.DRAFT
+                "
+                >Pending</ng-container
+              >
+            </span>
+          </div>
+          <div class="team-mobile-details">
+            <div *ngIf="teamData.team.track?.name" class="team-mobile-row">
+              <span class="team-mobile-label">Track</span>
+              <span class="team-mobile-value">{{ teamData.team.track.name }}</span>
+            </div>
+            <div *ngIf="teamData.team.problem_statement" class="team-mobile-row">
+              <span class="team-mobile-label">Problem Statement</span>
+              <span
+                class="team-mobile-value ps-link"
+                (click)="showProblemStatement(teamData.team.problem_statement); $event.stopPropagation()"
+                >{{ teamData.team.problem_statement.display_id }}</span
+              >
+            </div>
+            <div class="team-mobile-row">
+              <span class="team-mobile-label">Members</span>
+              <span
+                class="team-mobile-value members-count-trigger"
+                [nbPopover]="mobileMembersPopover"
+                nbPopoverTrigger="click"
+                nbPopoverPlacement="bottom"
+              >
+                {{ teamData.team.team_members_count }}
+              </span>
+              <ng-template #mobileMembersPopover>
+                <div class="members-popover">
+                  @if(teamData.team.team_members && teamData.team.team_members.length > 0) {
+                  <div class="members-popover-list">
+                    @for(member of teamData.team.team_members; track member.id) {
+                    <app-user-profile-card-small [user]="member.user || member"></app-user-profile-card-small>
+                    }
+                  </div>
+                  } @else {
+                  <span class="members-popover-empty">No member details available</span>
+                  }
+                </div>
+              </ng-template>
+            </div>
+            <div
+              *ngIf="teamData.score?.total_score !== null && teamData.score?.total_score !== undefined"
+              class="team-mobile-row"
+            >
+              <span class="team-mobile-label">Total Score</span>
+              <span class="team-mobile-value">{{ teamData.score.total_score }}</span>
+            </div>
+            <div
+              class="team-mobile-row"
+              *ngIf="teamData.submission?.file_attachment || teamData.submission?.link || teamData.team.community_build"
+            >
+              <span class="team-mobile-label">Submission</span>
+              <span class="team-mobile-value">
+                <a
+                  *ngIf="teamData.submission?.file_attachment"
+                  [href]="teamData.submission.file_attachment.url"
+                  target="_blank"
+                  class="submission-link"
+                  >{{ teamData.submission.file_attachment.name }}</a
+                >
+                <a
+                  *ngIf="teamData.submission?.link && !teamData.submission?.file_attachment"
+                  [href]="teamData.submission.link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="submission-link"
+                  >{{ teamData.submission.link }}</a
+                >
+              </span>
+            </div>
+            <div class="team-mobile-row" *ngIf="teamData.team.community_build">
+              <span class="team-mobile-label">Project</span>
+              <a
+                [routerLink]="['/builds', teamData.team.community_build.slug]"
+                target="_blank"
+                class="team-mobile-value submission-link"
+                >{{ teamData.team.community_build.name }}</a
+              >
+            </div>
+            <div
+              class="team-mobile-row"
+              *ngIf="
+                !teamData.submission?.file_attachment && !teamData.submission?.link && !teamData.team.community_build
+              "
+            >
+              <span class="team-mobile-label">Submission</span>
+              <span class="team-mobile-value no-submission">No submission</span>
+            </div>
+            <div *ngIf="teamData.score?.score && teamData.score.score.length > 0" class="team-mobile-evaluators">
+              <button class="evaluators-toggle" (click)="teamData.showScoreDetails = !teamData.showScoreDetails">
+                <span>Score Details</span>
+                <nb-icon
+                  [icon]="teamData.showScoreDetails ? 'arrow-ios-upward-outline' : 'arrow-ios-downward-outline'"
+                ></nb-icon>
+              </button>
+              <div *ngIf="teamData.showScoreDetails" class="evaluators-list">
+                @for(item of teamData.score.score; track item.text) {
+                <div class="evaluator-item">
+                  <span class="evaluator-name">{{ item.text }}</span>
+                  <span class="evaluator-status">{{ item.score }}</span>
+                </div>
+                }
+              </div>
+            </div>
+            <div
+              *ngIf="teamData.team.entity_updates && teamData.team.entity_updates.length > 0"
+              class="team-mobile-evaluators"
+            >
+              <button class="evaluators-toggle" (click)="teamData.showUpdates = !teamData.showUpdates">
+                <span>Updates ({{ teamData.team.entity_updates.length }})</span>
+                <nb-icon
+                  [icon]="teamData.showUpdates ? 'arrow-ios-upward-outline' : 'arrow-ios-downward-outline'"
+                ></nb-icon>
+              </button>
+              <div *ngIf="teamData.showUpdates" class="evaluators-list">
+                <div *ngFor="let update of teamData.team.entity_updates" class="evaluator-item evaluator-item-col">
+                  <span class="evaluator-name" [innerHTML]="update.details | stripHtmlExceptLinks | safeHtml"></span>
+                  <span class="evaluator-status">{{ update.created_at | date : 'short' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="teamData.evaluators && teamData.evaluators.length > 0" class="team-mobile-evaluators">
+            <button class="evaluators-toggle" (click)="teamData.showEvaluators = !teamData.showEvaluators">
+              <span>Other Evaluators ({{ teamData.evaluators.length }})</span>
+              <nb-icon
+                [icon]="teamData.showEvaluators ? 'arrow-ios-upward-outline' : 'arrow-ios-downward-outline'"
+              ></nb-icon>
+            </button>
+            <div *ngIf="teamData.showEvaluators" class="evaluators-list">
+              @for(evaluator of teamData.evaluators; track evaluator.id) {
+              <div class="evaluator-item" [class.evaluator-submitted]="evaluator.has_submitted">
+                <span class="evaluator-name">{{ evaluator.name }}</span>
+                <span class="evaluator-status">{{ evaluator.has_submitted ? 'Scored' : 'Pending' }}</span>
+              </div>
+              }
+            </div>
+          </div>
+          <div *ngIf="selectedRound?.has_marking_criteria" class="team-mobile-actions">
+            <button
+              comButton
+              shape="semi-round"
+              size="small"
+              status="primary"
+              (click)="openScoringDialog(teamData)"
+              [disabled]="!moment().isBetween(moment(selectedRound?.date), moment(selectedRound?.end_date), null, '[]')"
+            >
+              {{
+                teamData.score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED ||
+                teamData.score?.status === EHackathonTeamRoundScoreStatus.DRAFT
+                  ? 'Update Score'
+                  : 'Add Score'
+              }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop table view -->
+    <div *appBreakpoints="'>md'" class="teams-table-wrapper">
       <table *ngIf="!isLoading && teamDetails.length > 0" class="teams-table">
         <thead>
           <tr>
@@ -258,36 +439,35 @@
                 <div class="updates-list">
                   <strong>Updates:</strong>
                   <ol>
-                    @for(update of teamData.team.entity_updates; track update.id) {
-                    <li>
+                    <li
+                      *ngFor="
+                        let update of expandedUpdates['list_' + teamData.team.id]
+                          ? teamData.team.entity_updates
+                          : teamData.team.entity_updates.slice(0, 2)
+                      "
+                    >
                       <span
                         class="update-details"
-                        [innerHTML]="
-                          (expandedUpdates[update.id]
-                            ? update.details
-                            : update.details.length > 100
-                            ? (update.details | slice : 0 : 100) + '...'
-                            : update.details
-                          )
-                            | stripHtmlExceptLinks
-                            | safeHtml
-                        "
+                        [innerHTML]="update.details | stripHtmlExceptLinks | safeHtml"
                       ></span>
-                      <button
-                        *ngIf="update.details.length > 100"
-                        comButton
-                        ghost
-                        shape="semi-round"
-                        size="tiny"
-                        status="primary"
-                        (click)="toggleUpdateExpansion(update.id)"
-                      >
-                        {{ expandedUpdates[update.id] ? 'View Less' : 'View More' }}
-                      </button>
                       <span class="date-time">({{ update.created_at | date : 'short' }})</span>
                     </li>
-                    }
                   </ol>
+                  <button
+                    *ngIf="teamData.team.entity_updates.length > 2"
+                    comButton
+                    ghost
+                    shape="semi-round"
+                    size="tiny"
+                    status="primary"
+                    (click)="toggleUpdateExpansion('list_' + teamData.team.id)"
+                  >
+                    {{
+                      expandedUpdates['list_' + teamData.team.id]
+                        ? 'View Less'
+                        : 'View More (' + (teamData.team.entity_updates.length - 2) + ')'
+                    }}
+                  </button>
                 </div>
                 } @if(!teamData.submission?.file_attachment && !teamData.submission?.link &&
                 !teamData.team.community_build && (!teamData.team.entity_updates || teamData.team.entity_updates.length

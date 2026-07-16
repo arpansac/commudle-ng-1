@@ -27,8 +27,16 @@
           }
         </div>
         <div class="round-description" *ngIf="round.description">
-          <span #descriptionSpan [innerHTML]="round.description" [class.expanded]="isDescriptionExpanded"></span>
-          <button class="read-more-btn" (click)="toggleDescription()" *ngIf="isDescriptionTruncated">
+          <span
+            #descriptionSpan
+            [innerHTML]="round.description"
+            [class.expanded]="isDescriptionExpanded || userTeamDetails?.round?.id === round.id"
+          ></span>
+          <button
+            class="read-more-btn"
+            (click)="toggleDescription()"
+            *ngIf="isDescriptionTruncated && userTeamDetails?.round?.id !== round.id"
+          >
             {{ isDescriptionExpanded ? 'Show less' : 'Read more' }}
           </button>
         </div>

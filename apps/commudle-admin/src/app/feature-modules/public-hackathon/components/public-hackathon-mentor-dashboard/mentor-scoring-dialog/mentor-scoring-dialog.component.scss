@@ -50,11 +50,20 @@
         @apply com-flex com-gap-2 com-text-sm;
 
         .info-label {
-          @apply com-text-gray-500;
+          @apply com-text-gray-500 com-flex-shrink-0;
         }
 
         .info-value {
           @apply com-text-Yankees-Blue;
+        }
+
+        .info-link {
+          @apply com-text-primary-500 com-cursor-pointer com-no-underline;
+          @apply hover:com-text-primary-600 hover:com-underline;
+        }
+
+        .ps-popover {
+          @apply com-max-w-[300px] com-text-xs com-text-Yankees-Blue com-p-2;
         }
       }
     }
