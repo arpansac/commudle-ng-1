@@ -201,15 +201,22 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           if (this.purchaseOrder.discount_code?.code) {
             this.discountCode = this.purchaseOrder.discount_code.code;
             this.totalPrice = this.purchaseOrder.amount_to_be_paid / 100;
-            this.applyDiscountCode();
           }
 
           this.handleOrderStatus(lastSegment);
 
           if (this.purchaseOrder.contact_info) {
             this.prefillContactForm(this.purchaseOrder.contact_info);
-          } else {
+          }
+
+          // Sync totals with the billing country's tax so the displayed amount matches
+          // what Razorpay will charge. For paid orders just reflect the stored values.
+          if (this.purchaseOrder.status === EPurchaseOrderStatus.PAID) {
             this.updateTotalPrice();
+          } else if (this.discountCode) {
+            this.applyDiscountCode();
+          } else {
+            this.refreshOrderTotals();
           }
         },
         error: () => {
@@ -266,6 +273,8 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       if (user && !this.contactInfoForm.get('country')?.value) {
         this.contactInfoForm.patchValue({ country: this.getUserCountryCode() }, { emitEvent: false });
       }
+      // Once the billing country is known, sync tax into the displayed order total.
+      if (user) this.refreshOrderTotals();
     });
   }
 
@@ -281,7 +290,26 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           this.contactInfoForm.patchValue({ country: this.getUserCountryCode() }, { emitEvent: false });
         }
         this.updateBillingValidators(isBusiness);
+        // Billing type changes which country is used for tax, so refresh the order total.
+        this.refreshOrderTotals();
       });
+
+    // Recompute tax (and the displayed total) when the billing country changes.
+    this.contactInfoForm
+      .get('country')
+      ?.valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.refreshOrderTotals());
+  }
+
+  // Re-sync the purchase order with the backend so amount_to_be_paid (incl. tax and
+  // discount) stays accurate for the current inputs. Skipped once payment is done.
+  private refreshOrderTotals(): void {
+    if (this.paymentPaid || !this.purchaseOrder?.uuid) return;
+    if (this.discountCodeApplied) {
+      this.applyDiscountCode();
+    } else {
+      this.updatePurchaseOrder();
+    }
   }
 
   private updateBillingValidators(isBusiness: boolean): void {
@@ -314,6 +342,14 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   get isIndiaSelected(): boolean {
     return this.contactInfoForm.get('country')?.value === 'IN';
+  }
+
+  // The billing country used to compute tax. Must mirror buildContactInfoPayload so the
+  // displayed (tax-inclusive) total matches what is charged at payment time.
+  private get billingCountryCode(): string {
+    return this.isBusinessBilling
+      ? this.contactInfoForm.get('country')?.value || this.getUserCountryCode()
+      : this.getUserCountryCode();
   }
 
   private buildContactInfoPayload(): {
@@ -435,9 +471,10 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       subscription_months: this.subscriptionMonths,
     };
 
-    // Use Razorpay Subscription flow for subscription plans.
-    // Prorated add-ons are one-time charges, so they must NOT use the subscription flow.
-    if (this.productPrice?.is_subscription_plan && !this.isProratedAddon) {
+    // Use Razorpay Subscription flow for subscription plans that support recurring
+    // billing at this quantity. Prorated add-ons and over-cap amounts fall through
+    // to the one-time order flow below.
+    if (this.useSubscriptionFlow) {
       this.razorpayService
         .createRzpSubscription(purchaseOrderId, this.hasTrial && this.withTrial)
         .pipe(
@@ -873,6 +910,15 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   private calcTotalPrice(discountAmount = 0): void {
     if (!this.purchaseOrder?.price) return;
 
+    // For one-time orders, Razorpay charges exactly the backend's amount_to_be_paid
+    // (which already includes tax and discount). Mirror it so the displayed total
+    // matches the Razorpay popup. The recurring subscription flow is billed from the
+    // Razorpay plan, so it keeps the pre-tax base - discount figure.
+    if (!this.useSubscriptionFlow && this.purchaseOrder.amount_to_be_paid != null) {
+      this.totalPrice = this.purchaseOrder.amount_to_be_paid / 100;
+      return;
+    }
+
     const basePrice = (this.purchaseOrder.price / 100) * this.quantity * this.subscriptionMonths;
     this.totalPrice = Math.max(0, basePrice - discountAmount);
   }
@@ -885,6 +931,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         quantity: this.quantity,
         subscription_months: this.subscriptionMonths,
         discount_code: this.discountCode,
+        country_code: this.billingCountryCode,
       })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -917,8 +964,37 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     return this.discountCodeApplied ? this.finalDiscountAmount / 100 : 0;
   }
 
+  // Per-cycle recurring charge in major currency units (final_price is per-month,
+  // a yearly plan bills 12x). Used to decide if a recurring mandate is possible.
+  get recurringCycleAmount(): number {
+    if (!this.productPrice?.final_price) return 0;
+    const periodMonths = this.productPrice.billing_cycle === 'yearly' ? 12 : 1;
+    return this.productPrice.final_price * periodMonths * this.quantity;
+  }
+
+  // Whether this plan can be billed as a recurring Razorpay subscription for the
+  // selected quantity. Above the mandate cap it must fall back to a one-time order.
+  get recurringBillingSupported(): boolean {
+    if (!this.productPrice?.is_subscription_plan) return false;
+    if (this.productPrice.billing_cycle === 'one_time') return false;
+
+    const cap = this.productPrice.recurring_mandate_cap;
+    if (cap == null) return !!this.productPrice.recurring_billing_supported;
+    return this.recurringCycleAmount <= cap;
+  }
+
+  // Use the recurring subscription flow only when it is actually supported for this
+  // quantity; otherwise the checkout uses the one-time order flow.
+  get useSubscriptionFlow(): boolean {
+    return !!this.productPrice?.is_subscription_plan && !this.isProratedAddon && this.recurringBillingSupported;
+  }
+
   get hasTrial(): boolean {
-    return !!this.productPrice?.trial_enabled && (this.productPrice?.trial_period_days || 0) > 0;
+    return (
+      !!this.productPrice?.trial_enabled &&
+      (this.productPrice?.trial_period_days || 0) > 0 &&
+      this.recurringBillingSupported
+    );
   }
 
   get trialDays(): number {

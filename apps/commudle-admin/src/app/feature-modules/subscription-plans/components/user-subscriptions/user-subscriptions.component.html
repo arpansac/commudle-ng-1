@@ -137,7 +137,8 @@
               >
                 + Create New Community
               </button>
-              <ng-container *ngIf="sub.status === 'active'">
+              <!-- Hide "Add More" when the plan already allows unlimited communities -->
+              <ng-container *ngIf="sub.status === 'active' && effectiveCommunityMax(sub)">
                 <button
                   nbButton
                   status="info"
