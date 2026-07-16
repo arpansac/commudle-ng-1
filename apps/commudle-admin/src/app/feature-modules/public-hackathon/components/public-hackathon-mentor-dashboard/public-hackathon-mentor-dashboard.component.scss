@@ -579,6 +579,15 @@ com-card {
         .members-count-trigger {
           @apply com-text-primary-500 com-cursor-pointer com-underline;
         }
+
+        .submission-link {
+          @apply com-text-xs com-text-primary-500 com-no-underline com-break-all;
+          @apply hover:com-underline;
+        }
+
+        .no-submission {
+          @apply com-text-gray-400;
+        }
       }
 
       .team-mobile-row-col {
@@ -627,10 +636,10 @@ com-card {
       @apply com-mt-3 com-pt-3 com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
 
       .evaluators-toggle {
-        @apply com-flex com-items-center com-justify-between com-w-full com-bg-transparent com-border-0 com-cursor-pointer com-p-0 com-text-xs com-font-medium com-text-gray-600;
+        @apply com-flex com-items-center com-justify-between com-w-full com-bg-transparent com-border-0 com-cursor-pointer com-p-0 com-text-xs com-font-medium com-text-gray-500;
 
         nb-icon {
-          @apply com-text-sm;
+          @apply com-text-sm com-text-gray-500;
         }
       }
 
@@ -640,12 +649,24 @@ com-card {
         .evaluator-item {
           @apply com-flex com-justify-between com-items-center com-px-2 com-py-1.5 com-bg-gray-50 com-rounded;
 
+          &.evaluator-item-col {
+            @apply com-flex-col com-items-start com-gap-1;
+          }
+
           &.evaluator-submitted {
             @apply com-bg-green-50;
           }
 
           .evaluator-name {
             @apply com-text-xs com-text-Yankees-Blue;
+          }
+
+          .evaluator-meta {
+            @apply com-flex com-items-center com-gap-2 com-w-full com-justify-between;
+
+            .view-more-btn {
+              @apply com-text-xs com-text-primary-500 com-bg-transparent com-border-0 com-cursor-pointer com-p-0 com-font-medium;
+            }
           }
 
           .evaluator-status {

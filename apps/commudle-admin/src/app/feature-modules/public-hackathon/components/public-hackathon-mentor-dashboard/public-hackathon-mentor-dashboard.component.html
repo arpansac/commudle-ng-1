@@ -206,6 +206,47 @@
               <span class="team-mobile-label">Total Score</span>
               <span class="team-mobile-value">{{ teamData.score.total_score }}</span>
             </div>
+            <div
+              class="team-mobile-row"
+              *ngIf="teamData.submission?.file_attachment || teamData.submission?.link || teamData.team.community_build"
+            >
+              <span class="team-mobile-label">Submission</span>
+              <span class="team-mobile-value">
+                <a
+                  *ngIf="teamData.submission?.file_attachment"
+                  [href]="teamData.submission.file_attachment.url"
+                  target="_blank"
+                  class="submission-link"
+                  >{{ teamData.submission.file_attachment.name }}</a
+                >
+                <a
+                  *ngIf="teamData.submission?.link && !teamData.submission?.file_attachment"
+                  [href]="teamData.submission.link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="submission-link"
+                  >{{ teamData.submission.link }}</a
+                >
+              </span>
+            </div>
+            <div class="team-mobile-row" *ngIf="teamData.team.community_build">
+              <span class="team-mobile-label">Project</span>
+              <a
+                [routerLink]="['/builds', teamData.team.community_build.slug]"
+                target="_blank"
+                class="team-mobile-value submission-link"
+                >{{ teamData.team.community_build.name }}</a
+              >
+            </div>
+            <div
+              class="team-mobile-row"
+              *ngIf="
+                !teamData.submission?.file_attachment && !teamData.submission?.link && !teamData.team.community_build
+              "
+            >
+              <span class="team-mobile-label">Submission</span>
+              <span class="team-mobile-value no-submission">No submission</span>
+            </div>
             <div *ngIf="teamData.score?.score && teamData.score.score.length > 0" class="team-mobile-evaluators">
               <button class="evaluators-toggle" (click)="teamData.showScoreDetails = !teamData.showScoreDetails">
                 <span>Score Details</span>
@@ -222,32 +263,21 @@
                 }
               </div>
             </div>
-            <div class="team-mobile-row team-mobile-row-col">
-              <div class="team-mobile-submission">
-                @if(teamData.submission?.file_attachment) {
-                <a [href]="teamData.submission.file_attachment.url" target="_blank" class="submission-link">{{
-                  teamData.submission.file_attachment.name
-                }}</a>
-                } @else if(teamData.submission?.link) {
-                <a
-                  [href]="teamData.submission.link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="submission-link"
-                  >{{ teamData.submission.link }}</a
-                >
-                } @if(teamData.team.community_build) {
-                <span class="project-label">Project: </span
-                ><a
-                  [routerLink]="['/builds', teamData.team.community_build.slug]"
-                  target="_blank"
-                  class="submission-link"
-                  >{{ teamData.team.community_build.name }}</a
-                >
-                } @if(!teamData.submission?.file_attachment && !teamData.submission?.link &&
-                !teamData.team.community_build) {
-                <span class="no-submission">No submission</span>
-                }
+            <div
+              *ngIf="teamData.team.entity_updates && teamData.team.entity_updates.length > 0"
+              class="team-mobile-evaluators"
+            >
+              <button class="evaluators-toggle" (click)="teamData.showUpdates = !teamData.showUpdates">
+                <span>Updates ({{ teamData.team.entity_updates.length }})</span>
+                <nb-icon
+                  [icon]="teamData.showUpdates ? 'arrow-ios-upward-outline' : 'arrow-ios-downward-outline'"
+                ></nb-icon>
+              </button>
+              <div *ngIf="teamData.showUpdates" class="evaluators-list">
+                <div *ngFor="let update of teamData.team.entity_updates" class="evaluator-item evaluator-item-col">
+                  <span class="evaluator-name" [innerHTML]="update.details | stripHtmlExceptLinks | safeHtml"></span>
+                  <span class="evaluator-status">{{ update.created_at | date : 'short' }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -409,36 +439,35 @@
                 <div class="updates-list">
                   <strong>Updates:</strong>
                   <ol>
-                    @for(update of teamData.team.entity_updates; track update.id) {
-                    <li>
+                    <li
+                      *ngFor="
+                        let update of expandedUpdates['list_' + teamData.team.id]
+                          ? teamData.team.entity_updates
+                          : teamData.team.entity_updates.slice(0, 2)
+                      "
+                    >
                       <span
                         class="update-details"
-                        [innerHTML]="
-                          (expandedUpdates[update.id]
-                            ? update.details
-                            : update.details.length > 100
-                            ? (update.details | slice : 0 : 100) + '...'
-                            : update.details
-                          )
-                            | stripHtmlExceptLinks
-                            | safeHtml
-                        "
+                        [innerHTML]="update.details | stripHtmlExceptLinks | safeHtml"
                       ></span>
-                      <button
-                        *ngIf="update.details.length > 100"
-                        comButton
-                        ghost
-                        shape="semi-round"
-                        size="tiny"
-                        status="primary"
-                        (click)="toggleUpdateExpansion(update.id)"
-                      >
-                        {{ expandedUpdates[update.id] ? 'View Less' : 'View More' }}
-                      </button>
                       <span class="date-time">({{ update.created_at | date : 'short' }})</span>
                     </li>
-                    }
                   </ol>
+                  <button
+                    *ngIf="teamData.team.entity_updates.length > 2"
+                    comButton
+                    ghost
+                    shape="semi-round"
+                    size="tiny"
+                    status="primary"
+                    (click)="toggleUpdateExpansion('list_' + teamData.team.id)"
+                  >
+                    {{
+                      expandedUpdates['list_' + teamData.team.id]
+                        ? 'View Less'
+                        : 'View More (' + (teamData.team.entity_updates.length - 2) + ')'
+                    }}
+                  </button>
                 </div>
                 } @if(!teamData.submission?.file_attachment && !teamData.submission?.link &&
                 !teamData.team.community_build && (!teamData.team.entity_updates || teamData.team.entity_updates.length
