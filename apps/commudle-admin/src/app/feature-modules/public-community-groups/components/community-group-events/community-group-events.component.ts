@@ -50,6 +50,14 @@ export class CommunityGroupEventsComponent implements OnInit, OnDestroy {
     if (params.past_page) {
       this.pastPage = Number(params.past_page);
     }
+    if (!params.upcoming_page || !params.past_page) {
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: { upcoming_page: this.upcomingPage, past_page: this.pastPage },
+        queryParamsHandling: 'merge',
+        replaceUrl: true,
+      });
+    }
 
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((data) => {

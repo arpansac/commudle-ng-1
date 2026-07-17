@@ -43,6 +43,13 @@ export class CommunityGroupCommunitiesComponent implements OnInit, OnDestroy {
     const params = this.activatedRoute.snapshot.queryParams;
     if (params.page) {
       this.page = Number(params.page);
+    } else {
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: { page: 1 },
+        queryParamsHandling: 'merge',
+        replaceUrl: true,
+      });
     }
 
     this.subscriptions.push(
