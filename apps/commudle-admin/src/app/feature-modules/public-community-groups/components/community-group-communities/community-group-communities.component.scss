@@ -31,7 +31,7 @@ com-card {
 .speakers-upcoming,
 .recent-tech,
 .speakers {
-  @apply com-m-0 com-mt-4;
+  @apply com-m-0 com-my-4;
 }
 
 app-loading-spinner {
@@ -52,4 +52,8 @@ app-loading-spinner {
   .upcoming-hackathons-list {
     @apply com-flex com-flex-col com-gap-3;
   }
+}
+
+.right-column {
+  @apply md:com-bg-transparent com-bg-white;
 }

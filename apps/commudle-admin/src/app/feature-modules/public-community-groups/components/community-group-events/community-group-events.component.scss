@@ -45,5 +45,13 @@
 .speakers-upcoming,
 .recent-tech,
 .speakers {
-  @apply com-m-0 com-mt-4;
+  @apply com-m-0 com-my-4;
+}
+
+.upcoming-hackathons {
+  @apply md:com-m-0 md:com-mt-4 com-mt-4;
+}
+
+.right-column {
+  @apply md:com-bg-transparent com-bg-white;
 }
