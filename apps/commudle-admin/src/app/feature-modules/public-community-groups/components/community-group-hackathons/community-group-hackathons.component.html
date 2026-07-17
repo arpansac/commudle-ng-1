@@ -13,6 +13,15 @@
             [hackathon]="hackathon"
           ></commudle-hackathon-large-card>
         </div>
+        <app-pagination
+          *ngIf="upcomingTotal > 0"
+          [count]="upcomingCount"
+          [current]="upcomingPage"
+          [total]="upcomingTotal"
+          (goTo)="onUpcomingPageChange($event)"
+          (next)="onUpcomingPageChange($event)"
+          (previous)="onUpcomingPageChange($event)"
+        ></app-pagination>
       </com-card-body>
     </com-card>
 
@@ -29,9 +38,16 @@
             [hackathon]="hackathon"
           ></commudle-hackathon-medium-card>
         </div>
-        <p *ngIf="!isLoadingPast && pastHackathons.length === 0" class="com-text-sm com-text-gray-500 com-m-0">
-          No past hackathons yet
-        </p>
+        <p *ngIf="!isLoadingPast && pastHackathons.length === 0" class="no-past-event">No Past Hackathons Yet</p>
+        <app-pagination
+          *ngIf="pastTotal > 0"
+          [count]="pastCount"
+          [current]="pastPage"
+          [total]="pastTotal"
+          (goTo)="onPastPageChange($event)"
+          (next)="onPastPageChange($event)"
+          (previous)="onPastPageChange($event)"
+        ></app-pagination>
       </com-card-body>
     </com-card>
   </div>

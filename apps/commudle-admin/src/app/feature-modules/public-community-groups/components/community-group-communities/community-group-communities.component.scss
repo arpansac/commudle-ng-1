@@ -21,7 +21,7 @@ com-card {
 }
 
 .communities-cards {
-  @apply com-grid com-grid-cols-1 md:com-grid-cols-3 com-overflow-x-auto com-gap-5;
+  @apply com-grid com-grid-cols-1 md:com-grid-cols-3 com-overflow-x-auto com-gap-5 com-mb-5;
 
   .community-card {
     @apply com-w-full;

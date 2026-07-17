@@ -17,19 +17,7 @@
 
   <div class="right-column">
     <div *ngIf="upcomingHackathons?.length > 0" class="upcoming-hackathons">
-      <com-card>
-        <com-card-body>
-          <div class="heading">
-            <h3 class="title">Upcoming Hackathons</h3>
-          </div>
-          <div class="upcoming-hackathons-list">
-            <commudle-hackathon-medium-card
-              *ngFor="let hackathon of upcomingHackathons"
-              [hackathon]="hackathon"
-            ></commudle-hackathon-medium-card>
-          </div>
-        </com-card-body>
-      </com-card>
+      <commudle-upcoming-hackathons></commudle-upcoming-hackathons>
     </div>
     <div class="speakers-upcoming">
       <commudle-public-home-list-speakers-upcoming

@@ -10,7 +10,7 @@ import { IPagination } from 'apps/shared-models/pagination.model';
 import { ICommunityChannel } from 'apps/shared-models/community-channel.model';
 import { IEvent } from 'apps/shared-models/event.model';
 import { IUsers } from 'apps/shared-models/users.model';
-import { ICommunity, IPaginationCount, IUser } from '@commudle/shared-models';
+import { ICommunity, IHackathon, IPaginationCount, IUser } from '@commudle/shared-models';
 
 @Injectable({
   providedIn: 'root',
@@ -109,15 +109,9 @@ export class CommunityGroupsService {
     });
   }
 
-  pCommunities(communityGroupId, limit, after?, when?): Observable<IPagination<ICommunities>> {
-    let params = new HttpParams().set('community_group_id', communityGroupId).set('limit', limit);
-    if (when) {
-      params = params.set('when', when);
-    }
-    if (after) {
-      params = params.set('after', after);
-    }
-    return this.http.get<IPagination<ICommunities>>(
+  pCommunities(communityGroupId, page: number, count: number): Observable<IPaginationCount<ICommunity>> {
+    const params = new HttpParams().set('community_group_id', communityGroupId).set('page', page).set('count', count);
+    return this.http.get<IPaginationCount<ICommunity>>(
       this.apiRoutesService.getRoute(API_ROUTES.COMMUNITY_GROUPS.PUBLIC.COMMUNITIES),
       {
         params,
@@ -138,16 +132,26 @@ export class CommunityGroupsService {
     );
   }
 
-  pEvents(communityGroupId, limit, after?, when?): Observable<IPagination<IEvent>> {
-    let params = new HttpParams().set('community_group_id', communityGroupId).set('limit', limit);
+  pEvents(communityGroupId, page: number, count: number, when?: string): Observable<IPaginationCount<IEvent>> {
+    let params = new HttpParams().set('community_group_id', communityGroupId).set('page', page).set('count', count);
     if (when) {
       params = params.set('when', when);
     }
-    if (after) {
-      params = params.set('after', after);
-    }
-    return this.http.get<IPagination<IEvent>>(
+    return this.http.get<IPaginationCount<IEvent>>(
       this.apiRoutesService.getRoute(API_ROUTES.COMMUNITY_GROUPS.PUBLIC.EVENTS),
+      {
+        params,
+      },
+    );
+  }
+
+  pHackathons(communityGroupId, page: number, count: number, when?: string): Observable<IPaginationCount<IHackathon>> {
+    let params = new HttpParams().set('community_group_id', communityGroupId).set('page', page).set('count', count);
+    if (when) {
+      params = params.set('when', when);
+    }
+    return this.http.get<IPaginationCount<IHackathon>>(
+      this.apiRoutesService.getRoute(API_ROUTES.COMMUNITY_GROUPS.PUBLIC.HACKATHONS),
       {
         params,
       },

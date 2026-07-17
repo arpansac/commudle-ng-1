@@ -15,27 +15,6 @@
                 <h5>Upcoming Events</h5>
               </div>
             </div>
-            <div class="navigation-button">
-              <button
-                (click)="getPreviousEvents()"
-                [disabled]="!page_info?.has_previous_page"
-                class="com-mr-2"
-                nbButton
-                shape="round"
-                size="small"
-              >
-                <nb-icon icon="arrow-left-outline"></nb-icon>
-              </button>
-              <button
-                (click)="getNextEvents()"
-                [disabled]="!page_info?.has_next_page"
-                nbButton
-                shape="round"
-                size="small"
-              >
-                <nb-icon icon="arrow-right-outline"></nb-icon>
-              </button>
-            </div>
           </com-card-header>
           <com-card-body class="card-body">
             <div *ngIf="isLoadingEvents" class="com-h-[350px]">
@@ -55,12 +34,8 @@
         <com-card *ngIf="upcomingHackathons.length > 0" class="upcoming-events-card">
           <com-card-header class="event-card-header">
             <div class="header">
-              <div class="icon">
-                <img
-                  [src]="environment.base_url + '/icons/hackathon-icon-primary.svg'"
-                  alt="Hackathon Icon"
-                  class="com-w-5 com-h-5"
-                />
+              <div class="hackathon-image">
+                <img [src]="environment.base_url + '/icons/hackathon-icon-primary.svg'" alt="Hackathon Icon" />
               </div>
               <div>
                 <h5>Upcoming Hackathons</h5>

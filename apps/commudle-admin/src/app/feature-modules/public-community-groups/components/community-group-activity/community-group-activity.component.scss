@@ -7,7 +7,7 @@
 }
 
 .communities-cards {
-  @apply com-flex com-flex-wrap com-gap-4 com-overflow-auto;
+  @apply com-flex com-flex-wrap com-gap-4 com-overflow-auto com-mb-5;
 
   @screen lg {
     @apply com-grid com-grid-cols-3 com-overflow-x-auto com-gap-4;
@@ -103,4 +103,12 @@ com-card {
 
 .right-column {
   @apply md:com-bg-transparent com-bg-white md:com-pb-0 com-pb-4;
+}
+
+.hackathon-image {
+  @apply com-flex com-h-4 com-w-4;
+
+  img {
+    @apply com-h-full com-w-full;
+  }
 }

@@ -1,42 +1,44 @@
-<div *ngIf="upcomingHackathons.length > 0" id="upcoming-hackathons">
-  <div class="heading">
-    <h3 class="title section-heading-anchor">
-      Upcoming Hackathons
-      <a
-        [routerLink]="'.'"
-        fragment="upcoming-hackathons"
-        class="anchor-link"
-        aria-label="Link to upcoming hackathons section"
-      >
-        <fa-icon [icon]="faLink" class="anchor-icon-small"></fa-icon>
-      </a>
-    </h3>
-    <h4 class="sub-heading">Check out amazing hackathons lined up</h4>
-  </div>
-  <app-skeleton-cards
-    *ngIf="showSpinner"
-    [cards]="4"
-    [ImageShapeSquare]="true"
-    [ImageShapeCircle]="false"
-  ></app-skeleton-cards>
-  <div class="upcoming-hackathons custom-scrollbar">
-    <div class="upcoming-hackathons-card" *ngFor="let upcomingHackathon of upcomingHackathons">
-      <commudle-event-mini-card
-        *appBreakpoints="'>lg'"
-        [attendedEvent]="upcomingHackathon"
-        [iconSize]="'medium'"
-        [cardType]="'hackathons'"
-      ></commudle-event-mini-card>
-      <commudle-event-mini-card
-        *appBreakpoints="'<=lg'"
-        [attendedEvent]="upcomingHackathon"
-        [iconSize]="'medium'"
-        [cardType]="'hackathons'"
-        [showCardHorizontal]="true"
-      ></commudle-event-mini-card>
+<com-card *ngIf="upcomingHackathons.length > 0" id="upcoming-hackathons">
+  <com-card-body>
+    <div class="heading">
+      <h3 class="title section-heading-anchor">
+        Upcoming Hackathons
+        <a
+          [routerLink]="'.'"
+          fragment="upcoming-hackathons"
+          class="anchor-link"
+          aria-label="Link to upcoming hackathons section"
+        >
+          <fa-icon [icon]="faLink" class="anchor-icon-small"></fa-icon>
+        </a>
+      </h3>
+      <h4 class="sub-heading">Check out amazing hackathons lined up</h4>
     </div>
-  </div>
-  <div class="load-more">
-    <button [routerLink]="['/hackathons']" comButton outline size="tiny" status="info">View All</button>
-  </div>
-</div>
+    <app-skeleton-cards
+      *ngIf="showSpinner"
+      [cards]="4"
+      [ImageShapeSquare]="true"
+      [ImageShapeCircle]="false"
+    ></app-skeleton-cards>
+    <div class="upcoming-hackathons custom-scrollbar">
+      <div class="upcoming-hackathons-card" *ngFor="let upcomingHackathon of upcomingHackathons">
+        <commudle-event-mini-card
+          *appBreakpoints="'>lg'"
+          [attendedEvent]="upcomingHackathon"
+          [iconSize]="'medium'"
+          [cardType]="'hackathons'"
+        ></commudle-event-mini-card>
+        <commudle-event-mini-card
+          *appBreakpoints="'<=lg'"
+          [attendedEvent]="upcomingHackathon"
+          [iconSize]="'medium'"
+          [cardType]="'hackathons'"
+          [showCardHorizontal]="true"
+        ></commudle-event-mini-card>
+      </div>
+    </div>
+    <div class="load-more">
+      <button [routerLink]="['/hackathons']" comButton outline size="tiny" status="info">View All</button>
+    </div>
+  </com-card-body>
+</com-card>

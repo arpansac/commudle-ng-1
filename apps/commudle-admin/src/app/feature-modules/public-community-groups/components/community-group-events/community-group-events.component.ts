@@ -1,14 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
-import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { IEvent } from 'apps/shared-models/event.model';
-import { IHackathon } from 'apps/shared-models/hackathon.model';
-import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
-import { EDbModels } from '@commudle/shared-models';
+import { EDbModels, IHackathon } from '@commudle/shared-models';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -17,39 +14,70 @@ import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./community-group-events.component.scss'],
   standalone: false,
 })
-export class CommunityGroupEventsComponent implements OnInit {
+export class CommunityGroupEventsComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;
   EDbModels = EDbModels;
   upcomingHackathons: IHackathon[] = [];
   pastEvents: IEvent[] = [];
   upcomingEvents: IEvent[] = [];
   subscriptions: Subscription[] = [];
-  total: number;
-
-  pastPageInfo: IPageInfo;
-  upcomingPageInfo: IPageInfo;
-
-  limit = 6;
-  isLoadingUpcoming = false;
-  isLoadingPast = false;
   faCalendarDays = faCalendarDays;
+
+  // Upcoming pagination
+  upcomingPage = 1;
+  upcomingCount = 6;
+  upcomingTotal = 0;
+  isLoadingUpcoming = false;
+
+  // Past pagination
+  pastPage = 1;
+  pastCount = 9;
+  pastTotal = 0;
+  isLoadingPast = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private communityGroupsService: CommunityGroupsService,
-    private hackathonService: HackathonService,
     private seoService: SeoService,
   ) {}
 
   ngOnInit(): void {
+    const params = this.activatedRoute.snapshot.queryParams;
+    if (params.upcoming_page) {
+      this.upcomingPage = Number(params.upcoming_page);
+    }
+    if (params.past_page) {
+      this.pastPage = Number(params.past_page);
+    }
+
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((data) => {
         this.communityGroup = data.community_group;
-        this.getPastEvents();
         this.getUpcomingEvents();
+        this.getPastEvents();
         this.getUpcomingHackathons();
         this.setMeta();
       }),
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((s) => s.unsubscribe());
+  }
+
+  getUpcomingEvents() {
+    this.isLoadingUpcoming = true;
+    this.subscriptions.push(
+      this.communityGroupsService
+        .pEvents(this.communityGroup.slug, this.upcomingPage, this.upcomingCount, 'future')
+        .subscribe((data) => {
+          this.upcomingEvents = data.values;
+          this.upcomingTotal = data.total;
+          this.upcomingPage = data.page;
+          this.upcomingCount = data.count;
+          this.isLoadingUpcoming = false;
+        }),
     );
   }
 
@@ -57,28 +85,35 @@ export class CommunityGroupEventsComponent implements OnInit {
     this.isLoadingPast = true;
     this.subscriptions.push(
       this.communityGroupsService
-        .pEvents(this.communityGroup.slug, this.limit, this.pastPageInfo?.end_cursor, 'past')
+        .pEvents(this.communityGroup.slug, this.pastPage, this.pastCount, 'past')
         .subscribe((data) => {
-          this.pastEvents = this.pastEvents.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
-          this.pastPageInfo = data.page_info;
-          this.total = data.total;
+          this.pastEvents = data.values;
+          this.pastTotal = data.total;
+          this.pastPage = data.page;
+          this.pastCount = data.count;
           this.isLoadingPast = false;
         }),
     );
   }
 
-  getUpcomingEvents() {
-    this.isLoadingUpcoming = true;
-    this.subscriptions.push(
-      this.communityGroupsService
-        .pEvents(this.communityGroup.slug, this.limit, this.upcomingPageInfo?.end_cursor, 'future')
-        .subscribe((data) => {
-          this.upcomingEvents = this.upcomingEvents.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
-          this.upcomingPageInfo = data.page_info;
-          this.total = data.total;
-          this.isLoadingUpcoming = false;
-        }),
-    );
+  onUpcomingPageChange(page: number) {
+    this.upcomingPage = page;
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { upcoming_page: this.upcomingPage, past_page: this.pastPage },
+      queryParamsHandling: 'merge',
+    });
+    this.getUpcomingEvents();
+  }
+
+  onPastPageChange(page: number) {
+    this.pastPage = page;
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { upcoming_page: this.upcomingPage, past_page: this.pastPage },
+      queryParamsHandling: 'merge',
+    });
+    this.getPastEvents();
   }
 
   setMeta() {
@@ -91,7 +126,7 @@ export class CommunityGroupEventsComponent implements OnInit {
 
   getUpcomingHackathons() {
     this.subscriptions.push(
-      this.hackathonService.pIndexHackathons(this.communityGroup.id, 'CommunityGroup', 'future').subscribe((data) => {
+      this.communityGroupsService.pHackathons(this.communityGroup.id, 1, 5, 'future').subscribe((data) => {
         this.upcomingHackathons = data.values;
       }),
     );

@@ -24,10 +24,10 @@ import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 
 @Component({
-    selector: 'commudle-fill-data-form-confirmation',
-    templateUrl: './fill-data-form-confirmation.component.html',
-    styleUrls: ['./fill-data-form-confirmation.component.scss'],
-    standalone: false
+  selector: 'commudle-fill-data-form-confirmation',
+  templateUrl: './fill-data-form-confirmation.component.html',
+  styleUrls: ['./fill-data-form-confirmation.component.scss'],
+  standalone: false,
 })
 export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   currentUser: IUser;
@@ -212,8 +212,8 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   private fetchCommunityGroupDetails() {
     this.isLoadingCommunityGroupLeaders = true;
     this.isLoadingCommunities = true;
-    this.communityGroupService.pCommunities(this.dataFormEntity.community_group.id, 10).subscribe((data) => {
-      this.communities = this.communities.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
+    this.communityGroupService.pCommunities(this.dataFormEntity.community_group.id, 1, 10).subscribe((data) => {
+      this.communities = data.values;
       this.isLoadingCommunities = false;
       this.isLoading = false;
     });

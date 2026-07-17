@@ -5,55 +5,31 @@
         <h6 class="section-title"><fa-icon [icon]="faUsers"></fa-icon> Communities</h6>
       </com-card-header>
       <com-card-body>
-        <div
-          *appBreakpoints="'>lg'"
-          (scrolled)="getCommunities()"
-          [infiniteScrollDisabled]="communities.length >= total"
-          appInfiniteScroll
-        >
-          <div class="communities-cards">
-            <div *ngFor="let community of communities" class="community-card">
-              <commudle-featured-community-card-medium
-                [community]="community"
-                [showDescription]="true"
-              ></commudle-featured-community-card-medium>
-            </div>
+        <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+        <div *ngIf="!isLoading" class="communities-cards">
+          <div *ngFor="let community of communities" class="community-card">
+            <commudle-featured-community-card-medium
+              [community]="community"
+              [showDescription]="true"
+            ></commudle-featured-community-card-medium>
           </div>
-          <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
         </div>
-        <div *appBreakpoints="'<=lg'">
-          <div class="communities-cards">
-            <div *ngFor="let community of communities" class="community-card">
-              <commudle-featured-community-card-medium
-                [community]="community"
-                [showDescription]="true"
-              ></commudle-featured-community-card-medium>
-            </div>
-          </div>
-          <app-loading-spinner *ngIf="isLoading" class="com-mt-4"></app-loading-spinner>
-          <button (click)="getCommunities()" *ngIf="pageInfo?.has_next_page" fullWidth ghost nbButton>
-            Load More Communities
-          </button>
-        </div>
+        <app-pagination
+          *ngIf="total > 0"
+          [count]="count"
+          [current]="page"
+          [total]="total"
+          (goTo)="onPageChange($event)"
+          (next)="onPageChange($event)"
+          (previous)="onPageChange($event)"
+        ></app-pagination>
       </com-card-body>
     </com-card>
   </div>
 
   <div class="right-column">
     <div *ngIf="upcomingHackathons?.length > 0" class="upcoming-hackathons">
-      <com-card>
-        <com-card-body>
-          <div class="heading">
-            <h3 class="title">Upcoming Hackathons</h3>
-          </div>
-          <div class="upcoming-hackathons-list">
-            <commudle-hackathon-medium-card
-              *ngFor="let hackathon of upcomingHackathons"
-              [hackathon]="hackathon"
-            ></commudle-hackathon-medium-card>
-          </div>
-        </com-card-body>
-      </com-card>
+      <commudle-upcoming-hackathons></commudle-upcoming-hackathons>
     </div>
     <div class="speakers-upcoming">
       <commudle-public-home-list-speakers-upcoming

@@ -132,6 +132,7 @@ export const API_ROUTES = {
       SHOW: 'api/v2/community_groups/public',
       COMMUNITIES: 'api/v2/community_groups/public/communities',
       EVENTS: 'api/v2/community_groups/public/events',
+      HACKATHONS: 'api/v2/community_groups/public/hackathons',
       COMMUNITY_CHANNELS: 'api/v2/community_groups/public/community_channels',
       ACTIVE_COMMUNITIES_AND_CHANNELS: 'api/v2/community_groups/public/active_communities_and_channels',
       ORGANIZERS_ALL_COMMUNITIES: 'api/v2/community_groups/public/organizers_all_communities',

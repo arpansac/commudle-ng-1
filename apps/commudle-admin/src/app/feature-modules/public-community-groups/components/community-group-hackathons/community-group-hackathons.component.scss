@@ -21,7 +21,7 @@
 }
 
 .hackathon-cards-list {
-  @apply com-flex com-flex-col com-gap-4;
+  @apply com-flex com-flex-col com-gap-4 com-mb-5;
 }
 
 .hackathon-cards-grid {
@@ -36,4 +36,8 @@
 .recent-tech,
 .speakers {
   @apply com-m-0 com-mt-4;
+}
+
+.no-past-events {
+  @apply com-flex com-items-center com-justify-center com-text-sm com-text-gray-500 com-m-0;
 }

@@ -3,7 +3,7 @@
     <div class="banner">
       <div *ngIf="community.banner_image" class="banner-image">
         <commudle-banner-image
-          [headerImagePath]="community.banner_image.i320"
+          [headerImagePath]="community.banner_image?.i320"
           [name]="community.name"
           [aspectRatio]="'6/1'"
           [bottomRightCurve]="false"
