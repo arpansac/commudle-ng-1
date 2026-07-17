@@ -1,17 +1,19 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { SeoService } from 'apps/shared-services/seo.service';
+import { ToastrService, UserSubscriptionService } from '@commudle/shared-services';
+import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'commudle-community',
-    templateUrl: './community.component.html',
-    styleUrls: ['./community.component.scss'],
-    standalone: false
+  selector: 'commudle-community',
+  templateUrl: './community.component.html',
+  styleUrls: ['./community.component.scss'],
+  standalone: false,
 })
 export class CommunityComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;
@@ -24,11 +26,23 @@ export class CommunityComponent implements OnInit, OnDestroy {
   page = 1;
   total = 0;
 
+  isAddingCommunities = false;
+  extraCommunities = 1;
+
+  // Exposed for use in the template (capacity bar).
+  Math = Math;
+
+  @ViewChild('addCommunitiesDialog') addCommunitiesDialog: TemplateRef<unknown>;
+
   constructor(
     private communityGroupsService: CommunityGroupsService,
     private activatedRoute: ActivatedRoute,
     private seoService: SeoService,
     private communitiesService: CommunitiesService,
+    private dialogService: NbDialogService,
+    private userSubscriptionService: UserSubscriptionService,
+    private toastrService: ToastrService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -71,5 +85,31 @@ export class CommunityComponent implements OnInit, OnDestroy {
 
   togglePaymentEnable(communityId) {
     this.communitiesService.togglePaymentEnable(communityId).subscribe();
+  }
+
+  openAddCommunitiesDialog(): void {
+    this.extraCommunities = 1;
+    this.dialogService.open(this.addCommunitiesDialog, { closeOnBackdropClick: !this.isAddingCommunities });
+  }
+
+  confirmAddCommunities(ref: NbDialogRef<unknown>): void {
+    if (!this.communityGroup?.user_subscription_id || this.extraCommunities < 1) return;
+    this.isAddingCommunities = true;
+
+    this.subscriptions.push(
+      this.userSubscriptionService
+        .addCommunities(this.communityGroup.user_subscription_id, this.extraCommunities)
+        .subscribe({
+          next: (po) => {
+            this.isAddingCommunities = false;
+            ref.close();
+            this.router.navigate(['/checkout', po.uuid]);
+          },
+          error: (err) => {
+            this.isAddingCommunities = false;
+            this.toastrService.errorDialog(err?.error?.message || 'Failed to initiate payment. Please try again.');
+          },
+        }),
+    );
   }
 }

@@ -42,19 +42,25 @@
 
     <com-card-body>
       <form [formGroup]="communityGroupForm" class="cf-form">
-        <!-- ── Images & Theme ── -->
-        <p class="cf-section-label">Images &amp; Theme</p>
+        <!-- Media: theme-color banner with overlapping logo -->
 
-        <div class="cf-images-row">
-          <!-- Logo on theme color -->
-          <div class="cf-image-field">
-            <span class="cf-label">Logo <span class="cf-hint">(PNG, JPG · max 5MB)</span></span>
-            <div class="cf-logo-canvas" [style.background-color]="themeColor" (click)="logoInput.click()">
+        <div class="cf-media">
+          <!-- Theme-color banner with the colour picker overlaid on it -->
+          <div class="cf-banner cf-banner-theme has-image" [style.background-color]="themeColor">
+            <div class="cf-media-actions cf-theme-picker">
+              <label class="cf-theme-swatch">
+                <input type="color" [value]="themeColor" (input)="onThemeColorChange($event)" class="cf-color-input" />
+                <nb-icon icon="color-palette-outline"></nb-icon>
+              </label>
+              <span class="cf-color-value">{{ themeColor }}</span>
+            </div>
+          </div>
+
+          <!-- Logo overlapping banner -->
+          <div class="cf-logo-row">
+            <div class="cf-logo" [class.has-image]="logoPreview" (click)="logoInput.click()">
               <img *ngIf="logoPreview" [src]="logoPreview" alt="Logo" class="cf-logo-img" />
-              <ng-container *ngIf="!logoPreview">
-                <nb-icon icon="camera-outline" class="cf-upload-icon"></nb-icon>
-                <span class="cf-upload-text">Upload</span>
-              </ng-container>
+              <nb-icon *ngIf="!logoPreview" icon="camera" class="cf-logo-icon"></nb-icon>
               <input
                 #logoInput
                 type="file"
@@ -63,27 +69,20 @@
                 (change)="onLogoSelected($event)"
               />
             </div>
-            <button *ngIf="logoPreview" nbButton status="danger" ghost size="tiny" type="button" (click)="removeLogo()">
-              <nb-icon icon="trash-2-outline"></nb-icon> Remove
-            </button>
+            <div class="cf-logo-meta">
+              <span class="cf-label">Organization Logo <span class="cf-required">*</span></span>
+              <span class="cf-hint">PNG or JPG · max 5MB</span>
+            </div>
           </div>
 
-          <!-- Theme color -->
-          <div class="cf-image-field com-flex-1">
-            <span class="cf-label">Theme Color</span>
-            <div class="cf-color-picker-row">
-              <input type="color" [value]="themeColor" (input)="onThemeColorChange($event)" class="cf-color-input" />
-              <div class="cf-color-meta">
-                <span class="cf-color-value">{{ themeColor }}</span>
-                <span class="cf-field-hint">Used as your organization's accent color</span>
-              </div>
-            </div>
-            <div class="cf-color-preview" [style.background-color]="themeColor"></div>
-          </div>
+          <commudle-alert
+            *ngIf="!logoPreview"
+            [error]="true"
+            errorMessage="An organization logo is required."
+          ></commudle-alert>
         </div>
 
         <!-- ── Basic Info ── -->
-        <p class="cf-section-label">Basic Info</p>
 
         <div class="cf-row">
           <div class="cf-field">
@@ -192,7 +191,6 @@
         </div>
 
         <!-- ── Social Links ── -->
-        <p class="cf-section-label">Social Links</p>
 
         <div class="cf-row">
           <div class="cf-field">
@@ -246,6 +244,7 @@
           [disabled]="
             communityGroupForm.invalid ||
             isSubmitting ||
+            !logoPreview ||
             slugCheckState === 'taken' ||
             slugCheckState === 'checking' ||
             slugCheckState === 'idle'
