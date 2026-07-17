@@ -1,11 +1,55 @@
-nb-card {
-  @apply com-m-0 com-w-full com-max-w-full;
+:host {
+  display: block;
 }
 
-nb-card-body {
-  @apply com-w-full com-overflow-x-auto;
+.cg-shell {
+  @apply com-flex com-flex-col com-gap-4;
 }
 
-::ng-deep nb-route-tabset .route-tabset .route-tab .tab-link {
-  @apply com-p-3;
+// ── Themed org header ──
+.cg-header {
+  @apply com-relative com-flex com-flex-col com-gap-4 com-p-6 com-rounded-2xl com-text-white com-overflow-hidden;
+  @apply sm:com-flex-row sm:com-items-center sm:com-justify-between;
+
+  .cg-identity {
+    @apply com-flex com-items-center com-gap-4 com-min-w-0;
+
+    .cg-logo {
+      @apply com-flex com-items-center com-justify-center com-flex-shrink-0 com-w-16 com-h-16;
+      @apply com-rounded-2xl com-overflow-hidden com-bg-white com-shadow-md;
+
+      img {
+        @apply com-w-full com-h-full com-object-cover;
+      }
+
+      nb-icon {
+        @apply com-text-2xl com-text-gray-400;
+      }
+    }
+
+    .cg-meta {
+      @apply com-flex com-flex-col com-gap-0.5 com-min-w-0;
+
+      .cg-eyebrow {
+        @apply com-text-xs com-font-semibold com-uppercase com-tracking-widest com-opacity-80;
+      }
+
+      .cg-name {
+        @apply com-text-2xl com-font-bold com-m-0 com-truncate com-text-tWhite;
+      }
+
+      .cg-tagline {
+        @apply com-text-sm com-opacity-90 com-m-0 com-truncate com-text-tWhite;
+      }
+    }
+  }
+
+  .cg-public-btn {
+    @apply com-flex-shrink-0;
+  }
+}
+
+// ── Section tabs ──
+.cg-tabs {
+  @apply com-bg-white com-rounded-2xl com-shadow-sm com-overflow-x-auto com-p-4;
 }

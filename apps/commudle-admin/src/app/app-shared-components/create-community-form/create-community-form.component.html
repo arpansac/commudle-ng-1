@@ -209,9 +209,6 @@
           <editor [init]="tinyMCE" formControlName="about"></editor>
         </div>
 
-        <!-- ── Social Links ── -->
-        <p class="cf-section-label">Social Links</p>
-
         <div class="cf-row">
           <div class="cf-field">
             <label class="cf-label cf-social-label">
@@ -265,7 +262,6 @@
             communityForm.invalid ||
             isSubmitting ||
             !logoPreview ||
-            tags.length < minimumTags ||
             slugCheckState === 'taken' ||
             slugCheckState === 'checking' ||
             slugCheckState === 'idle'

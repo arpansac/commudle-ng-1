@@ -25,9 +25,11 @@ import { ICommunityGroup } from '@commudle/shared-models';
     NbInputModule,
     NbFormFieldModule,
     NbIconModule,
+    EditorModule,
     SharedComponentsModule,
     CommudleCardModule,
   ],
+  providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })
 export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
   @Input() subscriptionId: number;
@@ -41,6 +43,20 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
   logoPreview: string | null = null;
   logoFile: File | null = null;
   themeColor = '#3366ff';
+
+  readonly tinyMCE = {
+    min_height: 200,
+    menubar: false,
+    convert_urls: false,
+    placeholder: 'Tell people what your organization is about...',
+    content_style:
+      "@import url('https://fonts.googleapis.com/css?family=Inter'); body { font-family: 'Inter'; font-size: 14px !important; }",
+    plugins: ['autolink', 'lists', 'link', 'autoresize'],
+    toolbar: 'bold italic | link | bullist numlist | removeformat',
+    default_link_target: '_blank',
+    branding: false,
+    license_key: 'gpl',
+  };
 
   private readonly allowedImageTypes = ['image/png', 'image/jpg', 'image/jpeg'];
   private readonly maxImageSize = 5 * 1024 * 1024;
