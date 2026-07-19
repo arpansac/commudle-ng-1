@@ -15,28 +15,6 @@ export interface IProductPrice {
   billing_cycle?: string;
   can_create_community_group?: boolean;
   can_create_kommunity?: boolean;
-  rzp_billing_interval?: number;
-  rzp_plan_id?: string;
   trial_period_days?: number;
   trial_enabled?: boolean;
-  recurring_billing_supported?: boolean;
-  recurring_mandate_cap?: number;
-}
-
-export interface IRazorpayPlan {
-  id: string;
-  entity: string;
-  interval: number;
-  period: string;
-  item: {
-    id: string;
-    active: boolean;
-    amount: number;
-    unit_amount: number;
-    currency: string;
-    name: string;
-    description: string;
-  };
-  notes: Record<string, string>;
-  created_at: number;
 }

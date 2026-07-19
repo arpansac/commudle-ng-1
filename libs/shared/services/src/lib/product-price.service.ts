@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IPaginationCount, IProductPrice, IPurchaseOrder, IRazorpayPlan } from '@commudle/shared-models';
+import { IProductPrice, IPurchaseOrder } from '@commudle/shared-models';
 import { Observable } from 'rxjs';
 import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
@@ -43,25 +43,6 @@ export class ProductPriceService {
     return this.http.post<IPurchaseOrder>(
       this.baseApiService.getRoute(API_ROUTES.PRODUCT_PRICES.CREATE_PURCHASE_ORDER),
       {},
-      { params },
-    );
-  }
-
-  createRzpPlan(
-    priceUuid: string,
-  ): Observable<{ rzp_plan_id: string; plan_name: string; interval: number; period: string }> {
-    const params = new HttpParams().set('price_uuid', priceUuid);
-    return this.http.post<{ rzp_plan_id: string; plan_name: string; interval: number; period: string }>(
-      this.baseApiService.getRoute(API_ROUTES.PRODUCT_PRICES.CREATE_RZP_PLAN),
-      {},
-      { params },
-    );
-  }
-
-  fetchRzpPlans(page = 1, count = 10): Observable<IPaginationCount<IRazorpayPlan>> {
-    const params = new HttpParams().set('page', page).set('count', count);
-    return this.http.get<IPaginationCount<IRazorpayPlan>>(
-      this.baseApiService.getRoute(API_ROUTES.PRODUCT_PRICES.FETCH_RZP_PLANS),
       { params },
     );
   }

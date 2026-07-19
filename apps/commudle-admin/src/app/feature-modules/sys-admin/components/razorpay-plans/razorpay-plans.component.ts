@@ -8,10 +8,7 @@ import { SeoService } from '@commudle/shared-services';
   standalone: false,
 })
 export class RazorpayPlansComponent implements OnInit, OnDestroy {
-  tabs = [
-    { title: 'Product Prices', route: './', exact: true },
-    { title: 'Razorpay Plans', route: './rzp-plans', exact: false },
-  ];
+  tabs = [{ title: 'Product Prices', route: './', exact: true }];
 
   constructor(private seoService: SeoService) {}
 

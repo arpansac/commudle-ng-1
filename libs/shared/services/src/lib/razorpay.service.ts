@@ -69,30 +69,12 @@ export class RazorpayService {
     );
   }
 
-  createRzpSubscription(
-    purchaseOrderId: number,
-    withTrial = false,
-  ): Observable<{ rzp_subscription_id: string; status: string }> {
-    let params = new HttpParams().set('po_id', purchaseOrderId);
-    if (withTrial) {
-      params = params.set('with_trial', true);
-    }
-    return this.http.post<{ rzp_subscription_id: string; status: string }>(
-      this.baseApiService.getRoute(API_ROUTES.RAZORPAY.CREATE_RZP_SUBSCRIPTION),
-      {},
-      { params },
-    );
-  }
-
-  createOrUpdatePayment(response, hasError = false, paymentId?: string, subscriptionId?: string): Observable<any> {
+  createOrUpdatePayment(response, hasError = false, paymentId?: string): Observable<any> {
     let params = new HttpParams();
-    let requestBody: { has_error?: boolean; payment_error?: any; payment_details?: any; subscription_id?: string } = {};
+    let requestBody: { has_error?: boolean; payment_error?: any; payment_details?: any } = {};
 
     if (paymentId) {
       params = params.set('payment_id', paymentId);
-    }
-    if (subscriptionId) {
-      params = params.set('subscription_id', subscriptionId);
     }
     if (hasError === true) {
       requestBody = { has_error: hasError, payment_error: response };

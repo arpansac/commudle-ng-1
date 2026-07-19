@@ -11,7 +11,6 @@ export interface IUserSubscription {
   status: EUserSubscriptionStatus;
   starts_at: string;
   ends_at: string;
-  rzp_subscription_id: string;
   cancellation_requested_at?: string;
   komunity_limit?: number;
   community_group_limit?: number;

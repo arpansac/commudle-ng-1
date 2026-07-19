@@ -33,10 +33,6 @@
               <span class="status-badge status-active" *ngIf="pp.is_subscription_plan">Yes</span>
               <span class="status-badge status-inactive" *ngIf="!pp.is_subscription_plan">No</span>
             </td>
-            <td>
-              <code class="plan-id" *ngIf="pp.rzp_plan_id">{{ pp.rzp_plan_id }}</code>
-              <span class="no-data" *ngIf="!pp.rzp_plan_id">Not linked</span>
-            </td>
           </tr>
         </tbody>
       </table>

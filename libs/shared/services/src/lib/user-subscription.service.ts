@@ -75,4 +75,27 @@ export class UserSubscriptionService {
       extra_communities: extraCommunities,
     });
   }
+
+  /**
+   * Start a free trial for a subscription plan. Creates a UserSubscription active for
+   * the plan's trial_period_days with no PurchaseOrder and no Razorpay call. When the
+   * trial nears end the user should renew to pay via a one-time order.
+   */
+  startTrial(productPriceId: number): Observable<IUserSubscription> {
+    return this.http.post<IUserSubscription>(this.baseApiService.getRoute(API_ROUTES.USER_SUBSCRIPTIONS.START_TRIAL), {
+      product_price_id: productPriceId,
+    });
+  }
+
+  /**
+   * Kick off a renewal: creates a fresh PurchaseOrder mirroring the existing
+   * subscription's price/quantity/months. The frontend then routes to the checkout page
+   * for this PO like a first-time purchase. On payment, the existing subscription's
+   * ends_at is extended by the backend.
+   */
+  renew(userSubscriptionId: number): Observable<IPurchaseOrder> {
+    return this.http.post<IPurchaseOrder>(this.baseApiService.getRoute(API_ROUTES.USER_SUBSCRIPTIONS.RENEW), {
+      user_subscription_id: userSubscriptionId,
+    });
+  }
 }
