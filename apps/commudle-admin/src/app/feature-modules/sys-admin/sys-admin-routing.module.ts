@@ -35,7 +35,6 @@ import { PurchaseOrdersComponent } from './components/purchase-orders/purchase-o
 import { AdminSpamDetectorsComponent } from './components/admin-spam-detectors/admin-spam-detectors.component';
 import { RazorpayPlansComponent } from './components/razorpay-plans/razorpay-plans.component';
 import { AdminProductPricesComponent } from './components/razorpay-plans/product-prices/product-prices.component';
-import { AdminRzpPlansComponent } from './components/razorpay-plans/rzp-plans/rzp-plans.component';
 
 const routes = [
   {
@@ -184,10 +183,7 @@ const routes = [
       {
         path: 'razorpay-plans',
         component: RazorpayPlansComponent,
-        children: [
-          { path: '', component: AdminProductPricesComponent },
-          { path: 'rzp-plans', component: AdminRzpPlansComponent },
-        ],
+        children: [{ path: '', component: AdminProductPricesComponent }],
       },
     ],
   },

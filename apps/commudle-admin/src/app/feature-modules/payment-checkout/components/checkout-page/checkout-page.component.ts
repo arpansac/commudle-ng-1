@@ -471,31 +471,6 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       subscription_months: this.subscriptionMonths,
     };
 
-    // Use Razorpay Subscription flow for subscription plans that support recurring
-    // billing at this quantity. Prorated add-ons and over-cap amounts fall through
-    // to the one-time order flow below.
-    if (this.useSubscriptionFlow) {
-      this.razorpayService
-        .createRzpSubscription(purchaseOrderId, this.hasTrial && this.withTrial)
-        .pipe(
-          takeUntil(this.destroy$),
-          finalize(() => {
-            if (!this.isLoadingPayment) this.isLoadingPayment = false;
-          }),
-        )
-        .subscribe({
-          next: (data) => {
-            console.log('🚀 ~ CheckoutPageComponent ~ createRazorpayOrder ~ data:', data);
-            return this.razorPaySubscriptionSubmit(data.rzp_subscription_id);
-          },
-          error: () => {
-            this.isLoadingPayment = false;
-            this.toastrService.errorDialog('Failed to create subscription');
-          },
-        });
-      return;
-    }
-
     if (amount === 0) {
       this.handleFullDiscount();
     } else {
@@ -517,74 +492,6 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           },
         });
     }
-  }
-
-  private razorPaySubscriptionSubmit(rzpSubscriptionId: string): void {
-    const options = {
-      key: environment.razorpay_key,
-      subscription_id: rzpSubscriptionId,
-      name: this.productPrice?.product_name || 'Commudle',
-      description: this.productPrice?.plan_name || 'Subscription Plan',
-      handler: (response: {
-        razorpay_payment_id: string;
-        razorpay_subscription_id: string;
-        razorpay_signature: string;
-      }) => {
-        this.openLoadingDialog();
-        this.razorpayService
-          .createOrUpdatePayment(
-            {
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_subscription_id: response.razorpay_subscription_id,
-              razorpay_signature: response.razorpay_signature,
-            },
-            false,
-            undefined,
-            rzpSubscriptionId,
-          )
-          .pipe(
-            takeUntil(this.destroy$),
-            finalize(() => {
-              this.isLoadingPayment = false;
-              this.closeLoadingDialog();
-            }),
-          )
-          .subscribe({
-            next: () => {
-              this.toastrService.successDialog(
-                this.hasTrial && this.withTrial
-                  ? `Your ${this.trialDays}-day free trial has started!`
-                  : 'Subscription activated successfully!',
-              );
-              this.paymentPaid = true;
-              this.celebratePurchase();
-              this.router.navigate(['/subscriptions']);
-            },
-            error: () => {
-              this.toastrService.errorDialog('Payment processing failed');
-            },
-          });
-      },
-      prefill: {
-        name: this.currentUser?.name || '',
-        email: this.currentUser?.email || '',
-        contact: this.currentUser?.phone || '',
-      },
-      modal: {
-        escape: false,
-        ondismiss: () => {
-          this.isLoadingPayment = false;
-          this.dialogService.open(this.paymentErrorDialog, { closeOnBackdropClick: false });
-        },
-      },
-    };
-
-    const rzp = new Razorpay(options);
-    rzp.on('payment.failed', (response: { error: { description: string } }) => {
-      this.isLoadingPayment = false;
-      this.toastrService.errorDialog(`Payment failed: ${response.error.description}`);
-    });
-    rzp.open();
   }
 
   private handleFullDiscount() {
@@ -910,11 +817,9 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   private calcTotalPrice(discountAmount = 0): void {
     if (!this.purchaseOrder?.price) return;
 
-    // For one-time orders, Razorpay charges exactly the backend's amount_to_be_paid
-    // (which already includes tax and discount). Mirror it so the displayed total
-    // matches the Razorpay popup. The recurring subscription flow is billed from the
-    // Razorpay plan, so it keeps the pre-tax base - discount figure.
-    if (!this.useSubscriptionFlow && this.purchaseOrder.amount_to_be_paid != null) {
+    // Razorpay charges exactly the backend's amount_to_be_paid (which already includes
+    // tax and discount). Mirror it so the displayed total matches the Razorpay popup.
+    if (this.purchaseOrder.amount_to_be_paid != null) {
       this.totalPrice = this.purchaseOrder.amount_to_be_paid / 100;
       return;
     }
@@ -964,41 +869,16 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     return this.discountCodeApplied ? this.finalDiscountAmount / 100 : 0;
   }
 
-  // Per-cycle recurring charge in major currency units (final_price is per-month,
-  // a yearly plan bills 12x). Used to decide if a recurring mandate is possible.
-  get recurringCycleAmount(): number {
-    if (!this.productPrice?.final_price) return 0;
-    const periodMonths = this.productPrice.billing_cycle === 'yearly' ? 12 : 1;
-    return this.productPrice.final_price * periodMonths * this.quantity;
-  }
-
-  // Whether this plan can be billed as a recurring Razorpay subscription for the
-  // selected quantity. Above the mandate cap it must fall back to a one-time order.
-  get recurringBillingSupported(): boolean {
-    if (!this.productPrice?.is_subscription_plan) return false;
-    if (this.productPrice.billing_cycle === 'one_time') return false;
-
-    const cap = this.productPrice.recurring_mandate_cap;
-    if (cap == null) return !!this.productPrice.recurring_billing_supported;
-    return this.recurringCycleAmount <= cap;
-  }
-
-  // Use the recurring subscription flow only when it is actually supported for this
-  // quantity; otherwise the checkout uses the one-time order flow.
-  get useSubscriptionFlow(): boolean {
-    return !!this.productPrice?.is_subscription_plan && !this.isProratedAddon && this.recurringBillingSupported;
-  }
-
+  // Trials no longer flow through checkout — user starts a trial from the pricing
+  // page (start_trial API), and the checkout page is only reached for a real payment
+  // (fresh purchase, renewal, or prorated add-on). Kept as a getter so the template's
+  // trial UI blocks are naturally hidden without a template surgery pass.
   get hasTrial(): boolean {
-    return (
-      !!this.productPrice?.trial_enabled &&
-      (this.productPrice?.trial_period_days || 0) > 0 &&
-      this.recurringBillingSupported
-    );
+    return false;
   }
 
   get trialDays(): number {
-    return this.productPrice?.trial_period_days || 0;
+    return 0;
   }
 
   get isProratedAddon(): boolean {

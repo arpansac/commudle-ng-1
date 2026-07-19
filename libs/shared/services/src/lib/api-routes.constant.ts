@@ -1070,7 +1070,6 @@ export const API_ROUTES = {
     CREATE: 'api/v2/razorpay', //POST
     INDEX: 'api/v2/razorpay', //GET
     FIND_OR_CREATE_ORDER: 'api/v2/razorpay/find_or_create_order', //POST
-    CREATE_RZP_SUBSCRIPTION: 'api/v2/razorpay/create_rzp_subscription', //POST
     CREATE_OR_UPDATE_PAYMENT: 'api/v2/razorpay/create_or_update_payment', //PUT
     GET_ALL_PAYMENT_DETAILS: 'api/v2/razorpay/get_all_payment_details', //GET
     CREATE_TRANSFER: 'api/v2/razorpay/create_transfer', //GET
@@ -1160,8 +1159,6 @@ export const API_ROUTES = {
     SHOW: 'api/v2/product_prices/show', //GET
     SHOW_BY_ID: 'api/v2/product_prices/show_by_id', //GET
     CREATE_PURCHASE_ORDER: 'api/v2/product_prices/create_purchase_order', //POST
-    CREATE_RZP_PLAN: 'api/v2/product_prices/create_rzp_plan', //POST
-    FETCH_RZP_PLANS: 'api/v2/product_prices/fetch_rzp_plans', //GET
   },
 
   USER_SUBSCRIPTIONS: {
@@ -1172,6 +1169,8 @@ export const API_ROUTES = {
     PAYMENT_HISTORY: 'api/v2/user_subscriptions/payment_history', //GET
     CANCEL: 'api/v2/user_subscriptions/cancel', //POST
     ADD_COMMUNITIES: 'api/v2/user_subscriptions/add_communities', //POST
+    START_TRIAL: 'api/v2/user_subscriptions/start_trial', //POST
+    RENEW: 'api/v2/user_subscriptions/renew', //POST
   },
 
   HACKATHON_TEAM_ROUND_SUBMISSIONS: {

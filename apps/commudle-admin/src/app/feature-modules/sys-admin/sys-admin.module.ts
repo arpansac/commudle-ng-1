@@ -65,7 +65,6 @@ import { DiscountCodeFormComponent } from './components/sys-admin-discount-code/
 import { PurchaseOrdersComponent } from './components/purchase-orders/purchase-orders.component';
 import { RazorpayPlansComponent } from './components/razorpay-plans/razorpay-plans.component';
 import { AdminProductPricesComponent } from './components/razorpay-plans/product-prices/product-prices.component';
-import { AdminRzpPlansComponent } from './components/razorpay-plans/rzp-plans/rzp-plans.component';
 
 @NgModule({
   declarations: [
@@ -106,7 +105,6 @@ import { AdminRzpPlansComponent } from './components/razorpay-plans/rzp-plans/rz
     AdminSpamDetectorsComponent,
     RazorpayPlansComponent,
     AdminProductPricesComponent,
-    AdminRzpPlansComponent,
   ],
   imports: [
     CommonModule,

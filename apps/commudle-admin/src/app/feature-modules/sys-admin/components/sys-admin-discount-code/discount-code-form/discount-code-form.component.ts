@@ -7,10 +7,10 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment';
 
 @Component({
-    selector: 'commudle-discount-code-form',
-    templateUrl: './discount-code-form.component.html',
-    styleUrls: ['./discount-code-form.component.scss'],
-    standalone: false
+  selector: 'commudle-discount-code-form',
+  templateUrl: './discount-code-form.component.html',
+  styleUrls: ['./discount-code-form.component.scss'],
+  standalone: false,
 })
 export class DiscountCodeFormComponent implements OnInit {
   @Input() discountCode?: IDiscountCode;
@@ -44,6 +44,19 @@ export class DiscountCodeFormComponent implements OnInit {
     }
   }
 
+  /** Preset options for the per-user usage cap. `null` means unlimited (lifetime). */
+  readonly usagePresets: { label: string; value: number | null }[] = [
+    { label: 'Unlimited (applies on every renewal)', value: null },
+    { label: 'One-time per customer', value: 1 },
+    { label: '3 uses per customer', value: 3 },
+    { label: '5 uses per customer', value: 5 },
+    { label: '10 uses per customer', value: 10 },
+    { label: 'Custom…', value: -1 },
+  ];
+
+  /** True when the admin picked "Custom…" from the preset dropdown. */
+  showCustomUsageInput = false;
+
   initForm(): void {
     this.discountCodeForm = this.fb.group({
       code: ['', [Validators.required]],
@@ -54,7 +67,20 @@ export class DiscountCodeFormComponent implements OnInit {
       max_limit: [{ value: null, disabled: true }],
       min_users_count: [null, [Validators.min(0)]],
       max_users_count: [null, [Validators.min(1)]],
+      max_applications_per_user: [null], // null = unlimited (lifetime)
+      usage_preset: [null], // UI-only control that drives max_applications_per_user
       expires_at: [null],
+    });
+
+    // Preset dropdown → set the actual field. Selecting "Custom" reveals a number input.
+    this.discountCodeForm.get('usage_preset')?.valueChanges.subscribe((preset) => {
+      if (preset === -1) {
+        this.showCustomUsageInput = true;
+        // don't reset max_applications_per_user — let the admin type
+      } else {
+        this.showCustomUsageInput = false;
+        this.discountCodeForm.get('max_applications_per_user')?.setValue(preset, { emitEvent: false });
+      }
     });
 
     // Add conditional validation for max_limit
@@ -100,6 +126,12 @@ export class DiscountCodeFormComponent implements OnInit {
       expiryDate = this.formatDateForInput(date);
     }
 
+    // Map the saved value back onto a preset if it matches one; otherwise mark as Custom.
+    const savedCap = this.discountCode.max_applications_per_user ?? null;
+    const matchedPreset = this.usagePresets.find((p) => p.value === savedCap);
+    const usagePreset = matchedPreset ? matchedPreset.value : -1;
+    this.showCustomUsageInput = usagePreset === -1;
+
     this.discountCodeForm.patchValue({
       code: this.discountCode.code,
       discount_type: this.discountCode.discount_type,
@@ -111,6 +143,8 @@ export class DiscountCodeFormComponent implements OnInit {
       max_limit: this.discountCode.max_limit,
       min_users_count: this.discountCode.min_users_count,
       max_users_count: this.discountCode.max_users_count,
+      max_applications_per_user: savedCap,
+      usage_preset: usagePreset,
       expires_at: expiryDate,
     });
   }
@@ -135,25 +169,36 @@ export class DiscountCodeFormComponent implements OnInit {
       discountValueControl.setValue(discountValueControl.value * 100);
     }
 
+    // Strip the UI-only preset control before sending, and normalize an empty custom
+    // input to null (= unlimited) rather than an empty string. The service signature
+    // types the payload as IDiscountCode (all fields required) but the backend accepts
+    // a partial — cast through unknown to satisfy the strict signature.
+    const raw = { ...this.discountCodeForm.value } as Record<string, unknown>;
+    delete raw.usage_preset;
+    if (raw.max_applications_per_user === '' || raw.max_applications_per_user === undefined) {
+      raw.max_applications_per_user = null;
+    }
+    const payload = raw as unknown as IDiscountCode;
+
     this.isSubmitting = true;
 
     if (this.isEdit && this.discountCode) {
-      this.updateDiscountCode();
+      this.updateDiscountCode(payload);
     } else {
-      this.createDiscountCode();
+      this.createDiscountCode(payload);
     }
   }
 
-  createDiscountCode(): void {
-    this.discountCodesService.createDiscountCode({ discount_code: this.discountCodeForm.value }).subscribe((data) => {
+  createDiscountCode(payload: IDiscountCode): void {
+    this.discountCodesService.createDiscountCode({ discount_code: payload }).subscribe((data) => {
       this.toastrService.successDialog('Discount code created successfully');
       this.dialogRef.close(data);
     });
   }
 
-  updateDiscountCode(): void {
+  updateDiscountCode(payload: IDiscountCode): void {
     this.discountCodesService
-      .updateDiscountCodes({ discount_code: this.discountCodeForm.value }, this.discountCode.id)
+      .updateDiscountCodes({ discount_code: payload }, this.discountCode.id)
       .subscribe((data) => {
         this.toastrService.successDialog('Discount code updated successfully');
         this.dialogRef.close(data);

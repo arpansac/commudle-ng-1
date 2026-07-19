@@ -215,10 +215,30 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
     });
   }
 
+  isRenewing = false;
+
+  /**
+   * Kick off a renewal: backend creates a fresh PurchaseOrder mirroring this
+   * subscription's plan/quantity/months, then we route to the same checkout page a
+   * first-time purchase uses. On payment the backend extends this subscription's
+   * ends_at and flips status to :active (see PurchaseOrder#update_payment).
+   */
   renewPlan(subscription: IUserSubscription): void {
-    this.router.navigate(['/pricing'], {
-      queryParams: { plan_id: subscription.product_price_id },
-    });
+    if (this.isRenewing) return;
+    this.isRenewing = true;
+    this.userSubscriptionService
+      .renew(subscription.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (po) => {
+          this.isRenewing = false;
+          this.router.navigate(['/checkout', po.uuid]);
+        },
+        error: (err) => {
+          this.isRenewing = false;
+          this.toastrService.errorDialog(err?.error?.message || 'Failed to start renewal. Please try again.');
+        },
+      });
   }
 
   viewBillingHistory(subscription: IUserSubscription): void {
