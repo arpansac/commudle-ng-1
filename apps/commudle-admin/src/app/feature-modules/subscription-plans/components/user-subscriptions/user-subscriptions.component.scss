@@ -230,6 +230,11 @@
         @apply com-px-2 com-py-1 com-rounded com-transition-colors;
         @apply hover:com-text-red-500 hover:com-bg-red-50;
       }
+
+      // Kebab-menu trigger (three-dot button) in the card header
+      .sub-menu-trigger {
+        @apply com-text-Cadet-Grey;
+      }
     }
   }
 
@@ -265,23 +270,6 @@
       .slots-full-badge {
         @apply com-text-xs com-font-medium com-px-2.5 com-py-1 com-rounded-full;
         @apply com-bg-Bright-Gray-opacity-30 com-text-Cadet-Grey;
-      }
-    }
-
-    // Progress bar
-    .quota-bar {
-      @apply com-w-full com-h-1 com-bg-Bright-Gray com-rounded-full com-overflow-hidden;
-
-      .quota-bar-fill {
-        @apply com-h-full com-rounded-full com-transition-all com-duration-300;
-
-        &.fill-partial {
-          @apply com-bg-primary-500;
-        }
-
-        &.fill-full {
-          @apply com-bg-green-500;
-        }
       }
     }
 

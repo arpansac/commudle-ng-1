@@ -40,7 +40,11 @@
       </div>
     </com-card-header>
 
-    <com-card-body>
+    <com-card-body class="cf-body">
+      <div *ngIf="isSubmitting" class="cf-submitting-overlay">
+        <commudle-loading-spinner></commudle-loading-spinner>
+        <span class="cf-submitting-label">Creating your community…</span>
+      </div>
       <form [formGroup]="communityForm" class="cf-form">
         <div class="cf-media">
           <!-- Banner -->
@@ -90,7 +94,7 @@
           </div>
 
           <commudle-alert
-            *ngIf="!logoPreview"
+            *ngIf="submitAttempted && !logoPreview"
             [error]="true"
             errorMessage="A community logo is required."
           ></commudle-alert>
@@ -205,22 +209,34 @@
         </div>
 
         <div class="cf-field">
-          <label class="cf-label">About</label>
+          <label class="cf-label">About <span class="cf-required">*</span></label>
           <editor [init]="tinyMCE" formControlName="about"></editor>
+          <commudle-alert
+            *ngIf="
+              communityForm.get('about').invalid &&
+              (communityForm.get('about').dirty || communityForm.get('about').touched)
+            "
+            [error]="true"
+            [errorMessage]="
+              communityForm.get('about').errors?.['required']
+                ? 'About is required.'
+                : 'About must be at least 100 characters.'
+            "
+          ></commudle-alert>
         </div>
 
         <div class="cf-row">
           <div class="cf-field">
             <label class="cf-label cf-social-label">
-              <nb-icon icon="facebook" class="cf-social-icon cf-facebook"></nb-icon> Facebook
+              <nb-icon icon="linkedin" class="cf-social-icon cf-linkedin"></nb-icon> LinkedIn
             </label>
-            <input nbInput fullWidth formControlName="facebook" type="url" placeholder="https://facebook.com/..." />
+            <input nbInput fullWidth formControlName="linkedin" type="url" placeholder="https://linkedin.com/..." />
           </div>
           <div class="cf-field">
             <label class="cf-label cf-social-label">
-              <nb-icon icon="twitter" class="cf-social-icon cf-twitter"></nb-icon> Twitter / X
+              <nb-icon icon="at" class="cf-social-icon cf-instagram"></nb-icon> Instagram
             </label>
-            <input nbInput fullWidth formControlName="twitter" type="url" placeholder="https://twitter.com/..." />
+            <input nbInput fullWidth formControlName="instagram" type="url" placeholder="https://instagram.com/..." />
           </div>
         </div>
 
@@ -233,18 +249,18 @@
           </div>
           <div class="cf-field">
             <label class="cf-label cf-social-label">
-              <nb-icon icon="linkedin" class="cf-social-icon cf-linkedin"></nb-icon> LinkedIn
+              <nb-icon icon="twitter" class="cf-social-icon cf-twitter"></nb-icon> Twitter / X
             </label>
-            <input nbInput fullWidth formControlName="linkedin" type="url" placeholder="https://linkedin.com/..." />
+            <input nbInput fullWidth formControlName="twitter" type="url" placeholder="https://twitter.com/..." />
           </div>
         </div>
 
         <div class="cf-row">
           <div class="cf-field">
             <label class="cf-label cf-social-label">
-              <nb-icon icon="at" class="cf-social-icon cf-instagram"></nb-icon> Instagram
+              <nb-icon icon="facebook" class="cf-social-icon cf-facebook"></nb-icon> Facebook
             </label>
-            <input nbInput fullWidth formControlName="instagram" type="url" placeholder="https://instagram.com/..." />
+            <input nbInput fullWidth formControlName="facebook" type="url" placeholder="https://facebook.com/..." />
           </div>
         </div>
       </form>

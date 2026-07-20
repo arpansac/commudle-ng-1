@@ -39,6 +39,8 @@ export class CreateCommunityFormComponent implements OnInit, AfterViewInit, OnDe
 
   communityForm: FormGroup;
   isSubmitting = false;
+  /** Flipped on the first submit attempt so the "logo required" error only shows once the user has actually tried to save. */
+  submitAttempted = false;
   isSlugEdited = false;
   slugCheckState: 'idle' | 'checking' | 'available' | 'taken' = 'idle';
   createdCommunity: ICommunity | null = null;
@@ -49,7 +51,6 @@ export class CreateCommunityFormComponent implements OnInit, AfterViewInit, OnDe
   bannerFile: File | null = null;
 
   tags: string[] = [];
-  minimumTags = 5;
 
   readonly tinyMCE = {
     min_height: 200,
@@ -85,7 +86,7 @@ export class CreateCommunityFormComponent implements OnInit, AfterViewInit, OnDe
       slug: ['', [Validators.required, Validators.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)]],
       contact_email: ['', [Validators.required, Validators.email]],
       mini_description: ['', [Validators.required, Validators.maxLength(200)]],
-      about: [''],
+      about: ['', [Validators.required, Validators.minLength(100)]],
       location: [''],
       website: [''],
       facebook: [''],
@@ -140,17 +141,6 @@ export class CreateCommunityFormComponent implements OnInit, AfterViewInit, OnDe
     });
   }
 
-  onTagAdd(value: string): void {
-    const finalValue = (value || '').trim();
-    if (finalValue && !this.tags.includes(finalValue)) {
-      this.tags.push(finalValue);
-    }
-  }
-
-  onTagDelete(value: string): void {
-    this.tags = this.tags.filter((tag) => tag !== value);
-  }
-
   onSlugInput(): void {
     this.isSlugEdited = true;
   }
@@ -177,16 +167,13 @@ export class CreateCommunityFormComponent implements OnInit, AfterViewInit, OnDe
     this.readPreview(file, (r) => (this.bannerPreview = r));
   }
 
-  removeLogo(): void {
-    this.logoFile = null;
-    this.logoPreview = null;
-  }
   removeBanner(): void {
     this.bannerFile = null;
     this.bannerPreview = null;
   }
 
   createCommunity(): void {
+    this.submitAttempted = true;
     if (this.communityForm.invalid || this.slugCheckState === 'taken' || this.slugCheckState === 'checking') {
       this.communityForm.markAllAsTouched();
       return;
@@ -233,6 +220,7 @@ export class CreateCommunityFormComponent implements OnInit, AfterViewInit, OnDe
   createAnother(): void {
     this.createdCommunity = null;
     this.communityForm.reset();
+    this.submitAttempted = false;
     this.logoPreview = null;
     this.logoFile = null;
     this.bannerPreview = null;

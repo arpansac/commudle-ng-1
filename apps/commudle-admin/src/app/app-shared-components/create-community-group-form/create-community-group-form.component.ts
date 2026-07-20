@@ -39,6 +39,8 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
   isSlugEdited = false;
   slugCheckState: 'idle' | 'checking' | 'available' | 'taken' = 'idle';
   createdCommunityGroup: ICommunityGroup | null = null;
+  /** Flipped on the first submit attempt so the "logo required" error only shows once the user has actually tried to save. */
+  submitAttempted = false;
 
   logoPreview: string | null = null;
   logoFile: File | null = null;
@@ -77,7 +79,7 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
       slug: ['', [Validators.required, Validators.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)]],
       contact_email: ['', [Validators.required, Validators.email]],
       mini_description: ['', [Validators.required, Validators.maxLength(200)]],
-      description: [''],
+      description: ['', [Validators.required, Validators.minLength(100)]],
       theme_color: [this.themeColor],
       website: [''],
       facebook: [''],
@@ -141,12 +143,8 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
     reader.readAsDataURL(file);
   }
 
-  removeLogo(): void {
-    this.logoFile = null;
-    this.logoPreview = null;
-  }
-
   createCommunityGroup(): void {
+    this.submitAttempted = true;
     if (this.communityGroupForm.invalid || this.slugCheckState === 'taken' || this.slugCheckState === 'checking') {
       this.communityGroupForm.markAllAsTouched();
       return;
@@ -191,6 +189,7 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
   createAnother(): void {
     this.createdCommunityGroup = null;
     this.communityGroupForm.reset({ theme_color: this.themeColor });
+    this.submitAttempted = false;
     this.logoPreview = null;
     this.logoFile = null;
     this.isSlugEdited = false;
