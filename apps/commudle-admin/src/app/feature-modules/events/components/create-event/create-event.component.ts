@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EEventType } from '@commudle/shared-models';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
+import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { IEvent } from 'apps/shared-models/event.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
@@ -11,10 +12,10 @@ import * as moment from 'moment';
 import * as momentTimezone from 'moment-timezone';
 
 @Component({
-    selector: 'app-create-event',
-    templateUrl: './create-event.component.html',
-    styleUrls: ['./create-event.component.scss'],
-    standalone: false
+  selector: 'app-create-event',
+  templateUrl: './create-event.component.html',
+  styleUrls: ['./create-event.component.scss'],
+  standalone: false,
 })
 export class CreateEventComponent implements OnInit {
   event: IEvent;
@@ -41,8 +42,12 @@ export class CreateEventComponent implements OnInit {
   eventForm;
 
   tags: string[] = [];
-  minimumTags = 3;
   isFormSubmitting = false;
+  isPublishing = false;
+  setupRegistration = false;
+
+  uploadedHeaderImageFile: File;
+  uploadedHeaderImage: string | ArrayBuffer;
 
   tinyMCE = {
     height: 300,
@@ -82,6 +87,7 @@ export class CreateEventComponent implements OnInit {
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private eventsService: EventsService,
+    private eventDataFormEntityGroupsService: EventDataFormEntityGroupsService,
     private toastLogService: LibToastLogService,
     private router: Router,
     private seoService: SeoService,
@@ -123,8 +129,12 @@ export class CreateEventComponent implements OnInit {
     });
   }
 
-  createEvent() {
-    this.isFormSubmitting = true;
+  createEvent(publish = false) {
+    if (publish) {
+      this.isPublishing = true;
+    } else {
+      this.isFormSubmitting = true;
+    }
     const formValue = this.eventForm.get('event').value;
     delete formValue['start_date'];
     delete formValue['end_date'];
@@ -135,6 +145,7 @@ export class CreateEventComponent implements OnInit {
       if (this.startTime > this.endTime) {
         this.toastLogService.warningDialog('End time has to be greater then start time');
         this.isFormSubmitting = false;
+        this.isPublishing = false;
         return;
       } else {
         formValue['start_time'] = this.startTime;
@@ -144,12 +155,34 @@ export class CreateEventComponent implements OnInit {
 
     this.eventsService.createEvent(formValue, this.community, this.tags).subscribe(
       (data) => {
-        this.isFormSubmitting = false;
-        this.toastLogService.successDialog('Created!');
-        this.router.navigate(['/admin/communities', this.community.slug, 'event-dashboard', data.slug]);
+        if (this.uploadedHeaderImageFile) {
+          this.uploadHeaderImage(data.id);
+        }
+        if (this.setupRegistration) {
+          this.createDefaultRegistrationForm(data.id);
+        }
+        if (publish) {
+          this.eventsService.updateStatus(data.id, 'open').subscribe(
+            () => {
+              this.isPublishing = false;
+              this.toastLogService.successDialog('Event published!');
+              this.router.navigate(['/admin/communities', this.community.slug, 'event-dashboard', data.slug]);
+            },
+            () => {
+              this.isPublishing = false;
+              this.toastLogService.successDialog('Created as draft, but could not publish.');
+              this.router.navigate(['/admin/communities', this.community.slug, 'event-dashboard', data.slug]);
+            },
+          );
+        } else {
+          this.isFormSubmitting = false;
+          this.toastLogService.successDialog('Created and Saved as draft!');
+          this.router.navigate(['/admin/communities', this.community.slug, 'event-dashboard', data.slug]);
+        }
       },
       (error) => {
         this.isFormSubmitting = false;
+        this.isPublishing = false;
       },
     );
   }
@@ -190,5 +223,52 @@ export class CreateEventComponent implements OnInit {
 
   onTagDelete(value: string) {
     this.tags = this.tags.filter((tag) => tag !== value);
+  }
+
+  displaySelectedHeaderImage(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      if (file.size > 2425190) {
+        this.toastLogService.warningDialog('Image should be less than 2 Mb', 3000);
+        return;
+      }
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+      if (!allowedTypes.includes(file.type)) {
+        this.toastLogService.warningDialog('Please upload a valid image file (PNG, JPG, JPEG)');
+        return;
+      }
+      this.uploadedHeaderImageFile = file;
+      const reader = new FileReader();
+      reader.onload = () => (this.uploadedHeaderImage = reader.result);
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removeHeaderImage() {
+    this.uploadedHeaderImageFile = null;
+    this.uploadedHeaderImage = null;
+  }
+
+  private uploadHeaderImage(eventId: number) {
+    const formData = new FormData();
+    formData.append('header_image', this.uploadedHeaderImageFile);
+    this.eventsService.updateHeaderImage(eventId, formData).subscribe();
+  }
+
+  private createDefaultRegistrationForm(eventId: number) {
+    const userDetails = {
+      name: true,
+      profile_image: true,
+      email: true,
+      designation: false,
+      about_me: true,
+      location: false,
+      work_experience_months: false,
+      education: false,
+      phone: false,
+    };
+    this.eventDataFormEntityGroupsService
+      .createEventDataFormEntityGroup(eventId, 'Attendee Registration', 2, null, userDetails)
+      .subscribe();
   }
 }

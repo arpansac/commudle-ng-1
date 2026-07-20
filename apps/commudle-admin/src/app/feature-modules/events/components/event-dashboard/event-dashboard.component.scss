@@ -1,9 +1,11 @@
 .event-details {
-  @apply com-p-4 com-bg-white com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+  @apply com-flex com-flex-col com-items-start com-p-4 com-gap-2 com-bg-white com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
   .event-name {
     @apply com-m-0 com-text-3xl;
   }
 }
+
 .header {
   @apply com-bg-white com-h-28 com-border com-border-solid com-border-Bright-Gray com-border-t-0 com-flex;
 }
@@ -14,6 +16,7 @@
   a {
     @apply com-text-inherit com-no-underline;
   }
+
   .action-buttons {
     @apply com-p-4 com-pt-0;
 
@@ -27,6 +30,7 @@
 
     .back-admin {
       @apply com-py-1 com-pr-3 com-rounded-md;
+
       .heading {
         @apply com-text-Cadet-Grey com-text-sm com-font-medium;
       }
@@ -41,30 +45,38 @@
     .category-heading {
       @apply com-px-3 com-m-0 com-py-1 com-rounded-md com-text-Caption com-font-semibold;
     }
+
     .action-button {
       @apply com-p-2 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer;
+
       &.active,
       &:hover {
         @apply com-bg-Azure-opacity-10;
+
         .heading {
           @apply com-font-semibold com-text-primary-500;
         }
+
         .icon {
           @apply com-text-primary-500;
         }
       }
+
       .icon {
         @apply com-h-5 com-w-5 com-text-sm com-flex com-text-Cadet-Grey com-items-center com-justify-center;
       }
+
       .heading {
         @apply com-text-sm com-font-normal;
       }
     }
   }
 }
+
 a {
   @apply com-flex com-gap-2 com-items-center;
 }
+
 .right-column {
   @apply com-w-full com-mx-auto;
 }
@@ -73,22 +85,28 @@ a {
   @apply com-sticky com-top-[var(--mobile-navbar-offset,52px)] com-z-10;
   nb-card {
     @apply com-mx-0;
+
     nb-card-body {
       @apply com-p-0;
 
       div {
         @apply com-flex;
+
         .action-button {
-          @apply com-p-2 com-flex com-gap-2 com-items-center  com-text-inherit com-no-underline com-w-max;
+          @apply com-p-2 com-flex com-gap-2 com-items-center com-text-inherit com-no-underline com-w-max;
+
           &.active {
             @apply com-border-0 com-border-b-3 com-border-solid com-border-primary-500;
+
             .heading {
               @apply com-text-primary-500;
             }
           }
+
           .icon {
             @apply com-text-lg com-text-Cadet-Grey;
           }
+
           .heading {
             @apply com-text-base com-font-medium com-w-max;
           }
@@ -112,4 +130,8 @@ a {
 
 .header-icons-expanded {
   @apply com-justify-between com-gap-3;
+}
+
+.event-name-share {
+  @apply com-flex com-flex-row com-gap-5;
 }

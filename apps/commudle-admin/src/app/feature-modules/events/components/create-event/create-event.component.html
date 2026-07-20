@@ -1,134 +1,211 @@
-<div class="event-create-form-container">
-  <br />
-  <div class="back-button">
-    <commudle-back-button text="Back to events list"></commudle-back-button>
-  </div>
-  <nb-card>
-    <nb-card-body>
-      <div class="help-section">
-        <h3>Create an Event For {{ community.name }}</h3>
-        <commudle-help-section [helpDictionaryName]="'event-create'"></commudle-help-section>
+<div class="base-layout">
+  <div class="container">
+    <div class="one-column-layout">
+      <div class="back-button">
+        <commudle-back-button text="Back to events list"></commudle-back-button>
       </div>
-      <p>Let's begin by adding some details</p>
-    </nb-card-body>
-  </nb-card>
-  <nb-card>
-    <nb-card-body>
-      <form (ngSubmit)="createEvent()" [formGroup]="eventForm" class="event-create-form">
-        <div formGroupName="event">
-          <div role="group">
-            <div>
-              <label fullWidth>
-                Name*
-                <input formControlName="name" fullWidth nbInput type="text" />
-              </label>
-              <span
-                *ngIf="
-                  eventForm['controls'].event['controls'].name.touched &&
-                  eventForm['controls'].event['controls'].name.invalid &&
-                  eventForm['controls'].event['controls'].name.errors.required
-                "
+
+      <nb-card class="form-card">
+        <nb-card-body>
+          <h3 class="page-title">Create an Event for {{ community.name }}</h3>
+
+          <form [formGroup]="eventForm" class="event-create-form">
+            <div formGroupName="event">
+              <!-- Banner Image -->
+              <div class="banner-upload-section">
+                <div *ngIf="uploadedHeaderImage" class="banner-preview">
+                  <img [src]="uploadedHeaderImage" alt="Event Banner" class="banner-image" />
+                  <button type="button" class="banner-remove" (click)="removeHeaderImage()">✕</button>
+                </div>
+                <label *ngIf="!uploadedHeaderImage" class="banner-placeholder">
+                  <svg class="upload-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z"
+                    />
+                  </svg>
+                  <span class="upload-text">Upload a banner image</span>
+                  <span class="upload-hint">1260 × 460 px (PNG, JPG)</span>
+                  <input
+                    (change)="displaySelectedHeaderImage($event)"
+                    accept="image/*"
+                    type="file"
+                    class="file-input"
+                  />
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label>Name <span class="required">*</span></label>
+                <input formControlName="name" fullWidth nbInput type="text" class="form-input" />
+                <commudle-alert
+                  *ngIf="
+                    eventForm['controls'].event['controls'].name.touched &&
+                    eventForm['controls'].event['controls'].name.invalid &&
+                    eventForm['controls'].event['controls'].name.errors.required
+                  "
+                  [errorMessage]="'Required Field'"
+                  [error]="true"
+                ></commudle-alert>
+              </div>
+
+              <div class="timing-alert">
+                <commudle-alert [info]="true" message="Timings (Leave empty if you are yet to decide)"></commudle-alert>
+              </div>
+
+              <div class="date-timezone-row">
+                <div class="date-fields">
+                  <div class="date-time-group">
+                    <span class="date-label">Start</span>
+                    <div class="date-time-inputs">
+                      <div class="input-cell">
+                        <span class="input-hint">📅</span>
+                        <input type="date" formControlName="start_date" nbInput class="form-input date-input" />
+                      </div>
+                      <div class="input-cell">
+                        <span class="input-hint">🕐</span>
+                        <input type="time" formControlName="start_time_pick" nbInput class="form-input time-input" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="date-time-group">
+                    <span class="date-label">End</span>
+                    <div class="date-time-inputs">
+                      <div class="input-cell">
+                        <span class="input-hint">📅</span>
+                        <input type="date" formControlName="end_date" nbInput class="form-input date-input" />
+                      </div>
+                      <div class="input-cell">
+                        <span class="input-hint">🕐</span>
+                        <input type="time" formControlName="end_time_pick" nbInput class="form-input time-input" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="timezone-field">
+                  <span class="tz-icon">🌐</span>
+                  <nb-select formControlName="timezone" placeholder="Timezone" size="small" status="basic">
+                    <nb-option *ngFor="let tz of allTimeZones" [value]="tz">
+                      {{ tz }}
+                    </nb-option>
+                  </nb-select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Event Type <span class="required">*</span></label>
+                <div class="event-type-options">
+                  <label
+                    class="event-type-option"
+                    [class.selected]="eventForm.get('event.event_type').value === EEventType.ONLINE"
+                  >
+                    <input [value]="EEventType.ONLINE" formControlName="event_type" type="radio" class="radio-input" />
+                    <span class="type-emoji">💻</span>
+                    <span class="type-label">Online</span>
+                  </label>
+                  <label
+                    class="event-type-option"
+                    [class.selected]="eventForm.get('event.event_type').value === EEventType.OFFLINE"
+                  >
+                    <input [value]="EEventType.OFFLINE" formControlName="event_type" type="radio" class="radio-input" />
+                    <span class="type-emoji">📍</span>
+                    <span class="type-label">In Person</span>
+                  </label>
+                </div>
+                <commudle-alert
+                  *ngIf="
+                    eventForm['controls'].event['controls'].event_type.touched &&
+                    eventForm['controls'].event['controls'].event_type.invalid &&
+                    eventForm['controls'].event['controls'].event_type.errors.required
+                  "
+                  [errorMessage]="'Required Field'"
+                  [error]="true"
+                ></commudle-alert>
+              </div>
+
+              <div class="form-group">
+                <label>Description <span class="required">*</span></label>
+                <commudle-alert
+                  *ngIf="
+                    eventForm['controls'].event['controls'].description.touched &&
+                    eventForm['controls'].event['controls'].description.invalid &&
+                    eventForm['controls'].event['controls'].description.errors.required
+                  "
+                  [errorMessage]="'Required Field'"
+                  [error]="true"
+                ></commudle-alert>
+                <editor [init]="tinyMCE" formControlName="description"></editor>
+              </div>
+
+              <div class="form-group">
+                <label>Tags</label>
+                <div class="tag-container">
+                  <app-tag
+                    (tagAdd)="onTagAdd($event)"
+                    (tagDelete)="onTagDelete($event)"
+                    [backgroundColor]="'com-bg-tAnti-Flash'"
+                    [editable]="true"
+                    [fontColor]="'com-text-tYankees-Blue'"
+                    [tags]="tags"
+                  ></app-tag>
+                </div>
+              </div>
+
+              <div class="registration-toggle">
+                <div class="toggle-row">
+                  <div class="toggle-content">
+                    <span class="toggle-label">Set up registrations</span>
+                    <span class="toggle-hint">Create a default attendee registration form</span>
+                  </div>
+                  <nb-toggle
+                    [(ngModel)]="setupRegistration"
+                    [ngModelOptions]="{ standalone: true }"
+                    status="primary"
+                  ></nb-toggle>
+                </div>
+                <div *ngIf="setupRegistration" class="registration-info">
+                  <commudle-alert [info]="true">
+                    <div infoContent>
+                      <p class="info-text">A registration form will be created with the following fields:</p>
+                      <ul class="info-fields">
+                        <li>Name</li>
+                        <li>Profile Image</li>
+                        <li>Email</li>
+                        <li>About Me</li>
+                      </ul>
+                      <p class="info-hint">You can customize the form later from the event dashboard.</p>
+                    </div>
+                  </commudle-alert>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button
+                [disabled]="!eventForm.valid || isFormSubmitting || isPublishing"
+                [nbSpinner]="isFormSubmitting"
+                nbButton
+                status="basic"
+                type="button"
+                (click)="createEvent(false)"
+                class="submit-button"
               >
-                <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-              </span>
+                Save Draft
+              </button>
+              <button
+                [disabled]="!eventForm.valid || isFormSubmitting || isPublishing"
+                [nbSpinner]="isPublishing"
+                nbButton
+                status="info"
+                type="button"
+                (click)="createEvent(true)"
+                class="submit-button"
+              >
+                Publish
+              </button>
             </div>
-          </div>
-          <div class="alert">
-            <commudle-alert [info]="true" message="Timings (Leave empty if you are yet to decide)"></commudle-alert>
-          </div>
-
-          <div class="event-date-details">
-            <label>Start Date</label>
-            <div>
-              <div>
-                <input type="datetime-local" formControlName="start_date" nbInput placeholder="Date" />
-              </div>
-            </div>
-          </div>
-
-          <div class="event-date-details">
-            <label>End Date</label>
-            <div>
-              <div>
-                <input type="datetime-local" formControlName="end_date" nbInput placeholder="Date" />
-              </div>
-            </div>
-          </div>
-
-          <div class="event-date-details" role="group">
-            <label>
-              <nb-select formControlName="timezone" hero placeholder="TimeZone*" size="large" status="primary">
-                <nb-option *ngFor="let tz of allTimeZones" [value]="tz">
-                  {{ tz }}
-                </nb-option>
-              </nb-select>
-            </label>
-          </div>
-
-          <div class="event-type">
-            <label>Event Type *</label>
-            <div>
-              <div *ngFor="let type of EEventType | keyvalue">
-                <input [id]="type.key" [value]="type.value" formControlName="event_type" type="radio" />
-                <label [for]="type.key">{{ type.value | titlecase }}</label>
-              </div>
-            </div>
-            <span
-              *ngIf="
-                eventForm['controls'].event['controls'].event_type.touched &&
-                eventForm['controls'].event['controls'].event_type.invalid &&
-                eventForm['controls'].event['controls'].event_type.errors.required
-              "
-            >
-              <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-            </span>
-          </div>
-
-          <div role="individual">
-            <label> Description* </label>
-            <span
-              *ngIf="
-                eventForm['controls'].event['controls'].description.touched &&
-                eventForm['controls'].event['controls'].description.invalid &&
-                eventForm['controls'].event['controls'].description.errors.required
-              "
-            >
-              <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-            </span>
-            <editor [init]="tinyMCE" formControlName="description"> </editor>
-          </div>
-
-          <div role="group">
-            <div>
-              <label fullWidth>Tags*</label>
-              <div class="tag">
-                <app-tag
-                  (tagAdd)="onTagAdd($event)"
-                  (tagDelete)="onTagDelete($event)"
-                  [backgroundColor]="'com-bg-tAnti-Flash'"
-                  [editable]="true"
-                  [fontColor]="'com-text-tYankees-Blue'"
-                  [minimumTags]="minimumTags"
-                  [tags]="tags"
-                ></app-tag>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="save-button-bottom">
-          <button
-            [disabled]="!eventForm.valid || tags.length < 3 || isFormSubmitting"
-            [nbSpinner]="isFormSubmitting"
-            fullWidth
-            nbButton
-            status="info"
-            type="submit"
-          >
-            Save
-          </button>
-        </div>
-      </form>
-    </nb-card-body>
-  </nb-card>
+          </form>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
 </div>

@@ -1,7 +1,12 @@
 <section class="event-details">
-  <app-community-badge [community]="community" size="small"></app-community-badge>
-  <h1 class="event-name">{{ event.name }}</h1>
-  <div class="com-flex com-gap-4 com-flex-wrap" *appBreakpoints="'<=md'">
+  <div class="event-name-share">
+    <h1 class="event-name">{{ event.name }}</h1>
+    <button nbButton size="small" status="info" (click)="copyTextToClipboard()">
+      <fa-icon [icon]="icons.faShare"></fa-icon>
+      &nbsp;Share
+    </button>
+  </div>
+  <div *appBreakpoints="'<=md'" class="com-flex com-gap-4 com-flex-wrap">
     <div class="com-flex com-justify-between com-w-full">
       <a
         [routerLink]="['/communities', community.slug, 'events', event.slug]"
@@ -18,6 +23,10 @@
         Stats<sup>new</sup> &nbsp;
         <nb-icon icon="external-link"></nb-icon>
       </a>
+      <button nbButton size="small" status="info" outline (click)="copyTextToClipboard()">
+        <fa-icon [icon]="icons.faShare"></fa-icon>
+        &nbsp;Share
+      </button>
     </div>
     <a
       [routerLink]="['/communities', community.slug, 'events', event.slug, 'attended-members']"
@@ -31,6 +40,7 @@
       View attended members
     </a>
   </div>
+  <app-community-badge *appBreakpoints="'>md'" [community]="community" size="small"></app-community-badge>
 </section>
 
 <section class="md:com-flex">
@@ -134,7 +144,7 @@
           </div>
           <div class="category">
             <div *ngIf="sidebarExpanded" class="category-heading">
-              <div>LINKS & STATS</div>
+              <div>LINKS</div>
             </div>
             <a
               [routerLink]="['/communities', community.slug, 'events', event.slug]"
@@ -146,6 +156,21 @@
               </div>
               <div *ngIf="sidebarExpanded" class="heading">Public Event Page</div>
             </a>
+            <a
+              [routerLink]="['/admin', 'communities', community.slug, 'event-dashboard', event.slug, 'scan-entry-pass']"
+              target="_blank"
+              class="action-button public-event-page"
+            >
+              <div class="icon">
+                <fa-icon [icon]="icons.faExpand"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Scan Entry Pass</div>
+            </a>
+          </div>
+          <div class="category">
+            <div *ngIf="sidebarExpanded" class="category-heading">
+              <div>INSIGHTS</div>
+            </div>
             <a [routerLink]="['stats']" class="action-button stats" [routerLinkActive]="'active'">
               <div class="icon">
                 <fa-icon [icon]="icons.faChartPie"></fa-icon>
@@ -162,23 +187,6 @@
               </div>
               <div *ngIf="sidebarExpanded" class="heading">Attended Members</div>
             </a>
-            <a class="action-button" (click)="copyTextToClipboard()">
-              <div class="icon">
-                <fa-icon [icon]="icons.faShare"></fa-icon>
-              </div>
-              <div *ngIf="sidebarExpanded" class="heading">Share Event</div>
-            </a>
-            <a
-              [routerLink]="['/admin', 'communities', community.slug, 'event-dashboard', event.slug, 'scan-entry-pass']"
-              target="_blank"
-              class="action-button public-event-page"
-            >
-              <div class="icon">
-                <fa-icon [icon]="icons.faExpand"></fa-icon>
-              </div>
-              <div *ngIf="sidebarExpanded" class="heading">Scan Entry Pass</div>
-            </a>
-
             <a [routerLink]="['emails']" [routerLinkActive]="'active'" class="action-button">
               <div class="icon">
                 <fa-icon [icon]="icons.faEnvelopeCircleCheck"></fa-icon>
