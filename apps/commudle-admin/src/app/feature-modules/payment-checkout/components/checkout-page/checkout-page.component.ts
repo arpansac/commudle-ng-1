@@ -146,6 +146,10 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       panCard: [''],
       companyAddress: [''],
       pinCode: [''],
+      // Company contact person details — stored in contact_info.address JSONB on save.
+      companyContactPersonName: [''],
+      companyContactEmail: ['', [Validators.email]],
+      companyContactPhone: [''],
     });
   }
 
@@ -245,6 +249,10 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       panCard: contactInfo.tax_info?.pan_card || '',
       companyAddress: contactInfo.address?.address || '',
       pinCode: contactInfo.address?.pin_code || '',
+      // Prefill contact person name from the saved value, else from the current user.
+      companyContactPersonName: contactInfo.address?.contact_person_name || this.currentUser?.name || '',
+      companyContactEmail: contactInfo.address?.contact_email || '',
+      companyContactPhone: contactInfo.address?.contact_phone || '',
     });
 
     this.updateBillingValidators(hasBusinessInfo);
@@ -313,13 +321,32 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   private updateBillingValidators(isBusiness: boolean): void {
-    const businessFields = ['companyName', 'companyAddress', 'pinCode', 'country', 'panCard'];
+    const businessFields = [
+      'companyName',
+      'companyAddress',
+      'pinCode',
+      'country',
+      'panCard',
+      'companyContactPersonName',
+      'companyContactEmail',
+      'companyContactPhone',
+    ];
     businessFields.forEach((field) => {
       const control = this.contactInfoForm.get(field);
       if (isBusiness) {
-        control?.setValidators(Validators.required);
+        // Email keeps its format validator on top of required.
+        if (field === 'companyContactEmail') {
+          control?.setValidators([Validators.required, Validators.email]);
+        } else {
+          control?.setValidators(Validators.required);
+        }
       } else {
-        control?.clearValidators();
+        // Restore email format validator when leaving business mode; strip required.
+        if (field === 'companyContactEmail') {
+          control?.setValidators([Validators.email]);
+        } else {
+          control?.clearValidators();
+        }
       }
       control?.updateValueAndValidity({ emitEvent: false });
     });
@@ -355,7 +382,14 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   private buildContactInfoPayload(): {
     country_code: string;
     tax_info: { gst: string; pan_card: string };
-    address: { address: string; company_name: string; pin_code: string };
+    address: {
+      address: string;
+      company_name: string;
+      pin_code: string;
+      contact_person_name: string;
+      contact_email: string;
+      contact_phone: string;
+    };
   } {
     if (this.isBusinessBilling) {
       const country = this.contactInfoForm.get('country')?.value || this.getUserCountryCode();
@@ -369,6 +403,9 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           address: this.contactInfoForm.get('companyAddress')?.value || '',
           company_name: this.contactInfoForm.get('companyName')?.value || '',
           pin_code: this.contactInfoForm.get('pinCode')?.value || '',
+          contact_person_name: this.contactInfoForm.get('companyContactPersonName')?.value || '',
+          contact_email: this.contactInfoForm.get('companyContactEmail')?.value || '',
+          contact_phone: this.contactInfoForm.get('companyContactPhone')?.value || '',
         },
       };
     }
@@ -381,6 +418,9 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         address: '',
         company_name: this.currentUser?.name || '',
         pin_code: '',
+        contact_person_name: this.currentUser?.name || '',
+        contact_email: '',
+        contact_phone: '',
       },
     };
   }

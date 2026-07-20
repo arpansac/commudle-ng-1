@@ -102,14 +102,22 @@
               <span class="status-pill status-failed" *ngIf="sub.status === 'payment_failed'">
                 <span class="status-dot"></span>Payment Failed
               </span>
-              <!-- Cancel button for active -->
+              <!-- Context menu (Add more communities / Cancel) -->
               <button
                 type="button"
-                class="cancel-link"
-                *ngIf="sub.status === 'active' && !sub.cancellation_requested_at"
-                (click)="cancelPlan(sub)"
+                nbButton
+                ghost
+                size="small"
+                shape="round"
+                class="sub-menu-trigger"
+                *ngIf="showSubContextMenu(sub)"
+                [nbContextMenu]="getSubMenuItems(sub)"
+                [nbContextMenuTag]="'sub-menu-' + sub.id"
+                nbContextMenuTrigger="click"
+                nbContextMenuPlacement="bottom"
+                aria-label="More actions"
               >
-                Cancel
+                <nb-icon icon="more-vertical-outline"></nb-icon>
               </button>
             </div>
           </div>
@@ -137,28 +145,6 @@
               >
                 + Create New Community
               </button>
-              <!-- Hide "Add More" when the plan already allows unlimited communities -->
-              <ng-container *ngIf="sub.status === 'active' && effectiveCommunityMax(sub)">
-                <button
-                  nbButton
-                  status="info"
-                  size="small"
-                  shape="round"
-                  [disabled]="isAddingCommunities"
-                  (click)="openAddCommunitiesDialog(sub)"
-                >
-                  + Add More
-                </button>
-              </ng-container>
-            </div>
-
-            <!-- Progress bar -->
-            <div class="quota-bar" *ngIf="effectiveCommunityMax(sub)">
-              <div
-                class="quota-bar-fill"
-                [ngClass]="getProgressClass(sub.kommunities_count, effectiveCommunityMax(sub))"
-                [style.width.%]="getQuotaPercent(sub.kommunities_count, effectiveCommunityMax(sub))"
-              ></div>
             </div>
 
             <!-- Remaining hint -->
@@ -222,14 +208,6 @@
               >
                 + Create New Organization
               </button>
-            </div>
-
-            <div class="quota-bar" *ngIf="effectiveGroupMax(sub)">
-              <div
-                class="quota-bar-fill"
-                [ngClass]="getProgressClass(sub.community_groups_count, effectiveGroupMax(sub))"
-                [style.width.%]="getQuotaPercent(sub.community_groups_count, effectiveGroupMax(sub))"
-              ></div>
             </div>
 
             <!-- Renews notice when no orgs yet -->

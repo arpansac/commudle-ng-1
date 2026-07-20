@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/c
 import { Router } from '@angular/router';
 import { IUserSubscription } from '@commudle/shared-models';
 import { AuthService, ToastrService, UserSubscriptionService } from '@commudle/shared-services';
-import { NbDialogRef, NbDialogService } from '@commudle/theme';
+import { NbDialogRef, NbDialogService, NbMenuItem, NbMenuService } from '@commudle/theme';
 import { CreateCommunityFormComponent } from 'apps/commudle-admin/src/app/app-shared-components/create-community-form/create-community-form.component';
 import { CreateCommunityGroupFormComponent } from 'apps/commudle-admin/src/app/app-shared-components/create-community-group-form/create-community-group-form.component';
 import { Subject, takeUntil, filter } from 'rxjs';
@@ -38,6 +38,7 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
     private router: Router,
     private dialogService: NbDialogService,
     private toastrService: ToastrService,
+    private nbMenuService: NbMenuService,
   ) {}
 
   ngOnInit(): void {
@@ -52,6 +53,56 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
           this.fetchSubscriptions();
         }
       });
+
+    this.setupContextMenuListener();
+  }
+
+  /**
+   * Route Nebular context-menu clicks to the right action on the right subscription.
+   * Each subscription card uses tag `sub-menu-<id>` and each item carries an `action`
+   * discriminator in item.data.
+   */
+  private setupContextMenuListener(): void {
+    this.nbMenuService
+      .onItemClick()
+      .pipe(
+        filter(({ tag }) => !!tag && tag.startsWith('sub-menu-')),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(({ tag, item }) => {
+        const subId = Number(tag.replace('sub-menu-', ''));
+        const sub = this.subscriptions.find((s) => s.id === subId);
+        if (!sub || !item?.data?.action) return;
+        if (item.data.action === 'add-more') {
+          this.openAddCommunitiesDialog(sub);
+        } else if (item.data.action === 'cancel') {
+          this.cancelPlan(sub);
+        }
+      });
+  }
+
+  /**
+   * Build the Nebular context-menu items for a subscription card. Items are filtered
+   * by availability so a subscription with only one applicable action shows just that
+   * one, and the trigger itself is hidden entirely by `showSubContextMenu` when none apply.
+   */
+  getSubMenuItems(subscription: IUserSubscription): NbMenuItem[] {
+    const items: NbMenuItem[] = [];
+    if (this.canAddMoreCommunities(subscription)) {
+      items.push({
+        title: 'Add more communities',
+        icon: 'plus-outline',
+        data: { action: 'add-more' },
+      });
+    }
+    if (this.canCancelSub(subscription)) {
+      items.push({
+        title: 'Cancel subscription',
+        icon: 'close-circle-outline',
+        data: { action: 'cancel' },
+      });
+    }
+    return items;
   }
 
   ngOnDestroy(): void {
@@ -88,11 +139,6 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
   getQuotaPercent(used: number, max: number | null): number {
     if (!max) return 0;
     return Math.min(100, Math.round((used / max) * 100));
-  }
-
-  getProgressClass(used: number, max: number | null): string {
-    const pct = this.getQuotaPercent(used, max);
-    return pct >= 100 ? 'fill-full' : 'fill-partial';
   }
 
   /** Colour for the "used / max" count text — green when full, primary when there's room. */
@@ -145,13 +191,6 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
     } else if (this.canCreateCommunityGroup(target)) {
       this.createOrganization(target);
     }
-  }
-
-  getQuotaClass(used: number, max: number | null): string {
-    const pct = this.getQuotaPercent(used, max);
-    if (pct >= 100) return 'quota-red';
-    if (pct >= 60) return 'quota-amber';
-    return 'quota-green';
   }
 
   getRemaining(used: number, max: number | null): number {
@@ -245,6 +284,21 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
     this.router.navigate(['/subscriptions/payment-history'], {
       queryParams: { subscription_id: subscription.id },
     });
+  }
+
+  /** Whether the "Add more communities" action is available on this subscription. */
+  canAddMoreCommunities(subscription: IUserSubscription): boolean {
+    return subscription.status === 'active' && !!this.effectiveCommunityMax(subscription);
+  }
+
+  /** Whether the "Cancel subscription" action is available on this subscription. */
+  canCancelSub(subscription: IUserSubscription): boolean {
+    return subscription.status === 'active' && !subscription.cancellation_requested_at;
+  }
+
+  /** True when the kebab menu should render for this subscription (i.e. it has ≥1 action). */
+  showSubContextMenu(subscription: IUserSubscription): boolean {
+    return this.canAddMoreCommunities(subscription) || this.canCancelSub(subscription);
   }
 
   cancelPlan(subscription: IUserSubscription): void {

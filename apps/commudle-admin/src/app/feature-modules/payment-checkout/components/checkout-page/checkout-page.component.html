@@ -335,6 +335,86 @@
                     message="Add your GST number and we'll share a GST invoice with you"
                   ></commudle-alert>
                 </div>
+
+                <!-- Company Contact Person Name (prefilled from user profile) -->
+                <div class="form-field">
+                  <label for="companyContactPersonName">
+                    Company Contact Person Full Name <span class="required">*</span>
+                  </label>
+                  <input
+                    nbInput
+                    fullWidth
+                    id="companyContactPersonName"
+                    formControlName="companyContactPersonName"
+                    placeholder="Enter contact person's full name"
+                  />
+                  <commudle-alert
+                    [error]="
+                      !!(
+                        contactInfoForm.get('companyContactPersonName')?.invalid &&
+                        contactInfoForm.get('companyContactPersonName')?.touched
+                      )
+                    "
+                    errorMessage="Contact person name is required"
+                  >
+                  </commudle-alert>
+                </div>
+
+                <!-- Company Contact Email -->
+                <div class="form-field">
+                  <label for="companyContactEmail">Company Contact Email <span class="required">*</span></label>
+                  <input
+                    nbInput
+                    fullWidth
+                    id="companyContactEmail"
+                    type="email"
+                    formControlName="companyContactEmail"
+                    placeholder="Enter contact email"
+                  />
+                  <commudle-alert
+                    *ngIf="
+                      contactInfoForm.get('companyContactEmail')?.touched &&
+                      contactInfoForm.get('companyContactEmail')?.errors?.['required']
+                    "
+                    [error]="true"
+                    errorMessage="Contact email is required"
+                  >
+                  </commudle-alert>
+                  <commudle-alert
+                    *ngIf="
+                      contactInfoForm.get('companyContactEmail')?.touched &&
+                      contactInfoForm.get('companyContactEmail')?.errors?.['email']
+                    "
+                    [error]="true"
+                    errorMessage="Enter a valid email address"
+                  >
+                  </commudle-alert>
+                </div>
+
+                <!-- Company Contact Phone -->
+                <div class="form-field">
+                  <label for="companyContactPhone">
+                    Company Contact Phone Number <span class="required">*</span>
+                  </label>
+                  <input
+                    nbInput
+                    fullWidth
+                    id="companyContactPhone"
+                    type="tel"
+                    formControlName="companyContactPhone"
+                    placeholder="Enter contact phone number"
+                  />
+                  <commudle-alert
+                    [error]="
+                      !!(
+                        contactInfoForm.get('companyContactPhone')?.invalid &&
+                        contactInfoForm.get('companyContactPhone')?.touched
+                      )
+                    "
+                    errorMessage="Contact phone number is required"
+                  >
+                  </commudle-alert>
+                </div>
               </div>
             </div>
 
@@ -414,7 +494,7 @@
                   class="summary-row"
                   *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE && !isProratedAddon"
                 >
-                  <span class="heading">Number of {{ quantity === 1 ? 'community' : 'communities' }}</span>
+                  <span class="heading">Number of communities</span>
                   <div class="quantity-control" *ngIf="purchaseOrder.status !== EPurchaseOrderStatus.PAID">
                     <button
                       nbButton
@@ -583,13 +663,6 @@
                 <a href="mailto:payments_support@commudle.com">payments_support&#64;commudle.com</a>
               </div>
             </commudle-alert>
-          </div>
-
-          <div class="info-container">
-            <commudle-alert
-              [info]="true"
-              message="For any refund related queries please reach out to the event organizers. Commudle is not responsible for any refund or disputes between the ticket purchasing party and the ticket seller."
-            ></commudle-alert>
           </div>
         </div>
       </div>
