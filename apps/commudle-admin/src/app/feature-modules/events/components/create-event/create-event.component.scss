@@ -1,13 +1,13 @@
 :host {
   .back-button {
-    @apply com-mt-4 com-mb-3;
+    @apply com-mt-4 com-mb-3 com-mx-3;
   }
 
   .form-card {
     @apply com-m-0;
 
     nb-card-body {
-      @apply com-p-5 md:com-p-6;
+      @apply com-p-4 md:com-p-6;
     }
   }
 
@@ -36,10 +36,6 @@
 
     .banner-placeholder {
       @apply com-flex com-flex-col com-items-center com-justify-center com-py-8 com-rounded-xl com-border-2 com-border-dashed com-border-gray-300 com-bg-gray-50 com-cursor-pointer com-transition-all com-duration-200;
-
-      &:hover {
-        @apply com-border-primary-300 com-bg-blue-100;
-      }
 
       .upload-icon {
         @apply com-w-8 com-h-8 com-text-gray-400 com-mb-2;
