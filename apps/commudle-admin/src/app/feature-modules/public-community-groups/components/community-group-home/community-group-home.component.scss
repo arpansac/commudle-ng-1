@@ -53,11 +53,19 @@
         .links {
           @apply com-flex md:com-flex-row com-flex-col md:com-justify-between com-items-start com-w-full com-gap-3;
 
+          .counts {
+            @apply com-flex com-flex-wrap com-items-center com-gap-3;
+          }
+
           .member-count {
-            @apply com-m-0 com-text-gray-500 com-text-sm;
+            @apply com-flex com-m-0 com-text-gray-500 com-text-sm;
 
             a {
-              @apply com-text-gray-500 com-no-underline com-inline-flex com-items-center com-gap-2;
+              @apply com-text-gray-500 com-no-underline com-inline-flex com-items-center com-gap-1;
+            }
+
+            .hackathon-icon {
+              @apply com-w-4 com-h-4;
             }
           }
         }

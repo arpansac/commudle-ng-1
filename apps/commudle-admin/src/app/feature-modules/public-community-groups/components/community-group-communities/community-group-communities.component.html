@@ -1,37 +1,51 @@
-<com-card>
-  <com-card-header>
-    <h6 class="section-title"><fa-icon [icon]="faUsers"></fa-icon> Communities</h6>
-  </com-card-header>
-  <com-card-body>
-    <div
-      *appBreakpoints="'>lg'"
-      (scrolled)="getCommunities()"
-      [infiniteScrollDisabled]="communities.length >= total"
-      appInfiniteScroll
-    >
-      <div class="communities-cards">
-        <div *ngFor="let community of communities" class="community-card">
-          <commudle-featured-community-card-medium
-            [community]="community"
-            [showDescription]="true"
-          ></commudle-featured-community-card-medium>
+<div class="two-column-layout medium">
+  <div class="main-column">
+    <com-card>
+      <com-card-header>
+        <h6 class="section-title"><fa-icon [icon]="faUsers"></fa-icon> Communities</h6>
+      </com-card-header>
+      <com-card-body>
+        <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+        <div *ngIf="!isLoading" class="communities-cards">
+          <div *ngFor="let community of communities" class="community-card">
+            <commudle-featured-community-card-medium
+              [community]="community"
+              [showDescription]="true"
+            ></commudle-featured-community-card-medium>
+          </div>
         </div>
-      </div>
-      <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+        <app-pagination
+          *ngIf="total > 0"
+          [count]="count"
+          [current]="page"
+          [total]="total"
+          (goTo)="onPageChange($event)"
+          (next)="onPageChange($event)"
+          (previous)="onPageChange($event)"
+        ></app-pagination>
+      </com-card-body>
+    </com-card>
+  </div>
+
+  <div class="right-column">
+    <div *ngIf="upcomingHackathons?.length > 0" class="upcoming-hackathons">
+      <commudle-upcoming-hackathons></commudle-upcoming-hackathons>
     </div>
-    <div *appBreakpoints="'<=lg'">
-      <div class="communities-cards">
-        <div *ngFor="let community of communities" class="community-card">
-          <commudle-featured-community-card-medium
-            [community]="community"
-            [showDescription]="true"
-          ></commudle-featured-community-card-medium>
-        </div>
-      </div>
-      <app-loading-spinner *ngIf="isLoading" class="com-mt-4"></app-loading-spinner>
-      <button (click)="getCommunities()" *ngIf="pageInfo?.has_next_page" fullWidth ghost nbButton>
-        Load More Communities
-      </button>
+    <div class="speakers-upcoming">
+      <commudle-public-home-list-speakers-upcoming
+        [parentType]="EDbModels.COMMUNITY_GROUP"
+      ></commudle-public-home-list-speakers-upcoming>
     </div>
-  </com-card-body>
-</com-card>
+    <div class="recent-tech">
+      <commudle-public-home-list-events-tech-sessions
+        [communityGroupId]="communityGroup?.id"
+      ></commudle-public-home-list-events-tech-sessions>
+    </div>
+    <div class="speakers">
+      <commudle-public-home-list-events-speakers
+        [parentType]="'communities'"
+        [communityGroupId]="communityGroup?.id"
+      ></commudle-public-home-list-events-speakers>
+    </div>
+  </div>
+</div>

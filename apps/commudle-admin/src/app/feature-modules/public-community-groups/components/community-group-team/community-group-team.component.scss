@@ -19,7 +19,17 @@
     @apply com-p-4;
 
     .members {
-      @apply com-grid com-grid-cols-1 md:com-grid-cols-4 com-gap-4;
+      @apply com-grid com-grid-cols-1 md:com-grid-cols-3 com-gap-4;
     }
   }
+}
+
+.main-column {
+  @apply com-m-0 md:com-mr-4;
+}
+
+.speakers-upcoming,
+.recent-tech,
+.speakers {
+  @apply com-m-0 com-mt-4;
 }

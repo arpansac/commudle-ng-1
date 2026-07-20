@@ -17,4 +17,6 @@ export interface ICommunityGroup {
   kommunities_count?: number;
   community_channels_count?: number;
   community_count_limit?: number;
+  events_count?: number;
+  hackathons_count?: number;
 }

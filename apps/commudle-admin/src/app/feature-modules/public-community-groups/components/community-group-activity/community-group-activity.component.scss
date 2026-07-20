@@ -7,7 +7,7 @@
 }
 
 .communities-cards {
-  @apply com-flex com-flex-wrap com-gap-4 com-overflow-auto;
+  @apply com-flex com-flex-wrap com-gap-4 com-overflow-auto com-mb-5;
 
   @screen lg {
     @apply com-grid com-grid-cols-3 com-overflow-x-auto com-gap-4;
@@ -78,6 +78,22 @@ com-card {
   @apply com-m-0 com-mt-4;
 }
 
+.upcoming-hackathons {
+  @apply com-m-0 com-mt-4;
+
+  .heading {
+    @apply com-mb-3;
+
+    .title {
+      @apply com-m-0 com-text-sm com-font-semibold com-text-Yankees-Blue;
+    }
+  }
+
+  .upcoming-hackathons-list {
+    @apply com-flex com-flex-col com-gap-3;
+  }
+}
+
 .upcoming-events-card,
 .channel-card-header,
 .communities-card-header,
@@ -87,4 +103,12 @@ com-card {
 
 .right-column {
   @apply md:com-bg-transparent com-bg-white md:com-pb-0 com-pb-4;
+}
+
+.hackathon-image {
+  @apply com-flex com-h-4 com-w-4;
+
+  img {
+    @apply com-h-full com-w-full;
+  }
 }

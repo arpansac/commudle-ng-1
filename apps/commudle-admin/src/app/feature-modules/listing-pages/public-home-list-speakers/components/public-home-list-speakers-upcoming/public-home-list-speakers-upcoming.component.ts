@@ -26,7 +26,7 @@ export class PublicHomeListSpeakersUpcomingComponent implements OnInit {
   pageInfo: IPageInfo;
   total: number;
   limit = 5;
-  page_info: IPageInfo;
+  page = 1;
   eventForSchema = [];
   EEventType = EEventType;
 
@@ -63,14 +63,13 @@ export class PublicHomeListSpeakersUpcomingComponent implements OnInit {
 
   getCommunityGroupEvents() {
     this.showSpinner = true;
-    this.communityGroupsService
-      .pEvents(this.communityGroup.slug, this.limit, this.page_info?.end_cursor, 'future')
-      .subscribe((data) => {
-        this.upcomingEvents = this.upcomingEvents.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
-        this.page_info = data.page_info;
-        this.showSpinner = false;
-        this.setSchema();
-      });
+    this.communityGroupsService.pEvents(this.communityGroup.slug, this.page, this.limit, 'future').subscribe((data) => {
+      this.upcomingEvents = this.upcomingEvents.concat(data.values);
+      this.total = data.total;
+      this.page = data.page;
+      this.showSpinner = false;
+      this.setSchema();
+    });
   }
 
   setSchema() {

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IPageInfo, IUser } from '@commudle/shared-models';
+import { EDbModels, IPageInfo, IUser } from '@commudle/shared-models';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from 'apps/shared-services/seo.service';
@@ -22,6 +22,7 @@ export class CommunityGroupTeamComponent implements OnInit, OnDestroy {
   limit = 8;
   isLoading = true;
   faUserGroup = faUserGroup;
+  EDbModels = EDbModels;
 
   constructor(
     private activatedRoute: ActivatedRoute,

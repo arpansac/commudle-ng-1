@@ -11,7 +11,7 @@
               <img
                 class="logo"
                 alt="{{ communityGroup.name }}"
-                src="{{ communityGroup.logo.i350 }}"
+                src="{{ communityGroup.logo?.i350 }}"
                 title="{{ communityGroup.name }}"
               />
             </div>
@@ -30,12 +30,36 @@
                 {{ communityGroup.mini_description }}
               </p>
               <div class="links">
-                <p class="member-count">
-                  <a [routerLink]="['/orgs', communityGroup.slug, 'communities']">
-                    <fa-icon [icon]="faUserGroup"></fa-icon>
-                    {{ communityGroup.member_count }} Members
-                  </a>
-                </p>
+                <div class="counts">
+                  <p class="member-count">
+                    <a [routerLink]="['/orgs', communityGroup.slug, 'communities']">
+                      <fa-icon [icon]="faUserGroup"></fa-icon>
+                      {{ communityGroup.member_count }} Members
+                    </a>
+                  </p>
+                  <p *ngIf="communityGroup.kommunities_count" class="member-count">
+                    <a [routerLink]="['/orgs', communityGroup.slug, 'communities']">
+                      <fa-icon [icon]="faBuilding"></fa-icon>
+                      {{ communityGroup.kommunities_count }} Communities
+                    </a>
+                  </p>
+                  <p *ngIf="communityGroup.events_count" class="member-count">
+                    <a [routerLink]="['/orgs', communityGroup.slug, 'events']">
+                      <fa-icon [icon]="faCalendarDays"></fa-icon>
+                      {{ communityGroup.events_count }} Events
+                    </a>
+                  </p>
+                  <p *ngIf="communityGroup.hackathons_count" class="member-count">
+                    <a [routerLink]="['/orgs', communityGroup.slug]">
+                      <img
+                        [src]="environment.base_url + '/icons/hackathon-icon-gray.svg'"
+                        alt="Hackathon Icon"
+                        class="hackathon-icon"
+                      />
+                      {{ communityGroup.hackathons_count }} Hackathons
+                    </a>
+                  </p>
+                </div>
                 <div *ngIf="isOrganizer">
                   <a
                     nbButton
@@ -55,19 +79,14 @@
         <div #stickySentinel class="sticky-sentinel"></div>
         <div class="menu-items-footer menu-items-footer-sticky" [ngClass]="{ 'sticky-active': isMenuSticky }">
           <div class="menu-items d-flex">
-            <a [routerLink]="['/orgs', communityGroup.slug, 'about']" class="d-flex" routerLinkActive="active">
-              <fa-icon [icon]="faCircleInfo"></fa-icon>
-              <span class="title">About</span>
-            </a>
-
             <a
               [routerLinkActiveOptions]="{ exact: true }"
               [routerLink]="['/orgs', communityGroup.slug]"
               class="com-flex"
               routerLinkActive="active"
             >
-              <fa-icon [icon]="faArrowTrendUp"></fa-icon>
-              <span class="title">Activity</span>
+              <fa-icon [icon]="faCircleInfo"></fa-icon>
+              <span class="title">Overview</span>
             </a>
 
             <a [routerLink]="['/orgs', communityGroup.slug, 'communities']" class="d-flex" routerLinkActive="active">
@@ -77,6 +96,9 @@
             <a [routerLink]="['/orgs', communityGroup.slug, 'events']" class="d-flex" routerLinkActive="active">
               <fa-icon [icon]="faCalendarWeek"></fa-icon>
               <span class="title">Events</span>
+            </a>
+            <a [routerLink]="['/orgs', communityGroup.slug, 'hackathons']" class="d-flex" routerLinkActive="active">
+              <span class="title">Hackathons</span>
             </a>
             <a [routerLink]="['/orgs', communityGroup.slug, 'channels']" class="d-flex" routerLinkActive="active">
               <fa-icon [icon]="faHashtag"></fa-icon>

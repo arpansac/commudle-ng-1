@@ -1,6 +1,12 @@
-.events-card {
-  @apply com-m-0 com-mt-4;
+.two-column-layout {
+  @apply com-mt-4;
+}
 
+.main-column {
+  @apply com-m-0 md:com-mr-4;
+}
+
+.events-card {
   com-card-header {
     @apply com-px-4 com-py-2 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
     background: linear-gradient(135deg, #f7f7f8 0%, #ffffff 50%, #f7f7f8 100%);
@@ -21,7 +27,7 @@
 }
 
 .upcoming-event-cards-list {
-  @apply com-grid com-gap-4;
+  @apply com-grid com-gap-4 com-mb-5;
 
   &.single-event {
     @apply com-grid-cols-1;
@@ -33,5 +39,19 @@
 }
 
 .past-events-card-list {
-  @apply com-grid com-grid-cols-1 md:com-grid-cols-3 com-gap-4;
+  @apply com-grid com-grid-cols-1 md:com-grid-cols-3 com-gap-4 com-mb-5;
+}
+
+.speakers-upcoming,
+.recent-tech,
+.speakers {
+  @apply com-m-0 com-my-4;
+}
+
+.upcoming-hackathons {
+  @apply md:com-m-0 md:com-mt-4 com-mt-4;
+}
+
+.right-column {
+  @apply md:com-bg-transparent com-bg-white;
 }

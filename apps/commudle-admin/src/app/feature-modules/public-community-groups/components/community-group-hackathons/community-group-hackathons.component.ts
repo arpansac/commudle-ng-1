@@ -1,27 +1,25 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { EDbModels, IHackathon } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { IEvent } from 'apps/shared-models/event.model';
-import { SeoService } from 'apps/shared-services/seo.service';
-import { Subscription } from 'rxjs';
-import { EDbModels, IHackathon } from '@commudle/shared-models';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-community-group-events',
-  templateUrl: './community-group-events.component.html',
-  styleUrls: ['./community-group-events.component.scss'],
+  selector: 'commudle-community-group-hackathons',
+  templateUrl: './community-group-hackathons.component.html',
+  styleUrls: ['./community-group-hackathons.component.scss'],
   standalone: false,
 })
-export class CommunityGroupEventsComponent implements OnInit, OnDestroy {
+export class CommunityGroupHackathonsComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;
-  EDbModels = EDbModels;
   upcomingHackathons: IHackathon[] = [];
-  pastEvents: IEvent[] = [];
-  upcomingEvents: IEvent[] = [];
+  pastHackathons: IHackathon[] = [];
   subscriptions: Subscription[] = [];
   faCalendarDays = faCalendarDays;
+  EDbModels = EDbModels;
 
   // Upcoming pagination
   upcomingPage = 1;
@@ -62,9 +60,8 @@ export class CommunityGroupEventsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((data) => {
         this.communityGroup = data.community_group;
-        this.getUpcomingEvents();
-        this.getPastEvents();
         this.getUpcomingHackathons();
+        this.getPastHackathons();
         this.setMeta();
       }),
     );
@@ -74,13 +71,13 @@ export class CommunityGroupEventsComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  getUpcomingEvents() {
+  getUpcomingHackathons() {
     this.isLoadingUpcoming = true;
     this.subscriptions.push(
       this.communityGroupsService
-        .pEvents(this.communityGroup.slug, this.upcomingPage, this.upcomingCount, 'future')
+        .pHackathons(this.communityGroup.slug, this.upcomingPage, this.upcomingCount, 'future')
         .subscribe((data) => {
-          this.upcomingEvents = data.values;
+          this.upcomingHackathons = data.values;
           this.upcomingTotal = data.total;
           this.upcomingPage = data.page;
           this.upcomingCount = data.count;
@@ -89,13 +86,13 @@ export class CommunityGroupEventsComponent implements OnInit, OnDestroy {
     );
   }
 
-  getPastEvents() {
+  getPastHackathons() {
     this.isLoadingPast = true;
     this.subscriptions.push(
       this.communityGroupsService
-        .pEvents(this.communityGroup.slug, this.pastPage, this.pastCount, 'past')
+        .pHackathons(this.communityGroup.slug, this.pastPage, this.pastCount, 'past')
         .subscribe((data) => {
-          this.pastEvents = data.values;
+          this.pastHackathons = data.values;
           this.pastTotal = data.total;
           this.pastPage = data.page;
           this.pastCount = data.count;
@@ -111,7 +108,7 @@ export class CommunityGroupEventsComponent implements OnInit, OnDestroy {
       queryParams: { upcoming_page: this.upcomingPage, past_page: this.pastPage },
       queryParamsHandling: 'merge',
     });
-    this.getUpcomingEvents();
+    this.getUpcomingHackathons();
   }
 
   onPastPageChange(page: number) {
@@ -121,22 +118,14 @@ export class CommunityGroupEventsComponent implements OnInit, OnDestroy {
       queryParams: { upcoming_page: this.upcomingPage, past_page: this.pastPage },
       queryParamsHandling: 'merge',
     });
-    this.getPastEvents();
+    this.getPastHackathons();
   }
 
   setMeta() {
     this.seoService.setTags(
-      `Events | ${this.communityGroup.name}`,
+      `Hackathons | ${this.communityGroup.name}`,
       this.communityGroup.mini_description,
       this.communityGroup.logo.i350,
-    );
-  }
-
-  getUpcomingHackathons() {
-    this.subscriptions.push(
-      this.communityGroupsService.pHackathons(this.communityGroup.id, 1, 5, 'future').subscribe((data) => {
-        this.upcomingHackathons = data.values;
-      }),
     );
   }
 }

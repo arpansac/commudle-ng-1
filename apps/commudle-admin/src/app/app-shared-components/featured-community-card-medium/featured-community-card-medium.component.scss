@@ -1,5 +1,5 @@
 .featured-community-card {
-  @apply com-flex com-flex-col com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-flex-shrink-0 com-overflow-hidden com-bg-white com-w-full com-h-[290px];
+  @apply com-flex com-flex-col com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-flex-shrink-0 com-overflow-hidden com-bg-white com-w-full;
 
   a {
     @apply com-no-underline;
@@ -29,7 +29,7 @@
     }
 
     .featured-community-about {
-      @apply com-p-3 com-pb-0 com-h-[174px] com-relative;
+      @apply com-p-3 com-pb-0 com-h-[160px] com-relative;
 
       .featured-community-name {
         @apply com-m-0 com-text-sm com-font-medium com-text-Yankees-Blue com-line-clamp-1;
@@ -70,7 +70,7 @@
       }
 
       .featured-community-tags {
-        @apply com-h-8 com-mx-0 com-my-3 com-overflow-hidden;
+        @apply com-h-8 com-mx-0 com-my-3 com-flex com-flex-nowrap com-overflow-hidden;
       }
     }
   }
