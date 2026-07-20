@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EDbModels, IHackathon } from '@commudle/shared-models';
+import { EDbModels } from '@commudle/shared-models';
+import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { SeoService } from '@commudle/shared-services';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';

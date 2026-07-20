@@ -11,5 +11,5 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 })
 export class UserProfileComponent {
   @Input() currentUser: ICurrentUser;
-  @Input() addBackgroundColor: true;
+  @Input() addBackgroundColor = true;
 }
