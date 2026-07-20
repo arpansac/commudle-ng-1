@@ -14,7 +14,7 @@
               <!-- Banner Image -->
               <div class="banner-upload-section">
                 <div *ngIf="uploadedHeaderImage" class="banner-preview">
-                  <img [src]="uploadedHeaderImage" alt="Event Banner" class="banner-image" />
+                  <commudle-banner-image [headerImagePath]="uploadedHeaderImage"></commudle-banner-image>
                   <button type="button" class="banner-remove" (click)="removeHeaderImage()">✕</button>
                 </div>
                 <label *ngIf="!uploadedHeaderImage" class="banner-placeholder">
@@ -58,12 +58,10 @@
                     <span class="date-label">Start</span>
                     <div class="date-time-inputs">
                       <div class="input-cell">
-                        <span class="input-hint">📅</span>
-                        <input type="date" formControlName="start_date" nbInput class="form-input date-input" />
+                        <input type="date" formControlName="start_date" class="date-input" />
                       </div>
                       <div class="input-cell">
-                        <span class="input-hint">🕐</span>
-                        <input type="time" formControlName="start_time_pick" nbInput class="form-input time-input" />
+                        <input type="time" formControlName="start_time_pick" class="time-input" />
                       </div>
                     </div>
                   </div>
@@ -71,12 +69,10 @@
                     <span class="date-label">End</span>
                     <div class="date-time-inputs">
                       <div class="input-cell">
-                        <span class="input-hint">📅</span>
-                        <input type="date" formControlName="end_date" nbInput class="form-input date-input" />
+                        <input type="date" formControlName="end_date" class="date-input" />
                       </div>
                       <div class="input-cell">
-                        <span class="input-hint">🕐</span>
-                        <input type="time" formControlName="end_time_pick" nbInput class="form-input time-input" />
+                        <input type="time" formControlName="end_time_pick" class="time-input" />
                       </div>
                     </div>
                   </div>

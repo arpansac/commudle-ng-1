@@ -4,12 +4,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EEventType } from '@commudle/shared-models';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
+import { DataFormsService } from 'apps/commudle-admin/src/app/services/data_forms.service';
+import { DataFormEntitiesService } from 'apps/commudle-admin/src/app/services/data-form-entities.service';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { IEvent } from 'apps/shared-models/event.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 import * as moment from 'moment';
 import * as momentTimezone from 'moment-timezone';
+import { Visibility } from 'apps/shared-models/data_form_entity.model';
 
 @Component({
   selector: 'app-create-event',
@@ -48,6 +51,7 @@ export class CreateEventComponent implements OnInit {
 
   uploadedHeaderImageFile: File;
   uploadedHeaderImage: string | ArrayBuffer;
+  visibilityOptions = Visibility;
 
   tinyMCE = {
     height: 300,
@@ -88,6 +92,8 @@ export class CreateEventComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private eventsService: EventsService,
     private eventDataFormEntityGroupsService: EventDataFormEntityGroupsService,
+    private dataFormsService: DataFormsService,
+    private dataFormEntitiesService: DataFormEntitiesService,
     private toastLogService: LibToastLogService,
     private router: Router,
     private seoService: SeoService,
@@ -266,9 +272,38 @@ export class CreateEventComponent implements OnInit {
       work_experience_months: false,
       education: false,
       phone: false,
+      twitter: false,
+      linkedin: false,
+      dribbble: false,
+      youtube: false,
+      medium: false,
+      behance: false,
+      gitlab: false,
+      github: false,
+      facebook: false,
+      tshirt_size: false,
+      experience_level: false,
+      user_domain: false,
     };
-    this.eventDataFormEntityGroupsService
-      .createEventDataFormEntityGroup(eventId, 'Attendee Registration', 2, null, userDetails)
-      .subscribe();
+
+    const newFormData = {
+      name: 'Attendee Registration',
+      description: '',
+      questions: [],
+    };
+
+    this.dataFormsService.createDataForm(newFormData, this.community.id, 'Kommunity').subscribe((data) => {
+      if (data) {
+        this.eventDataFormEntityGroupsService
+          .createEventDataFormEntityGroup(eventId, 'Attendee Registration', 1, data.id, userDetails)
+          .subscribe((edfeg) => {
+            if (edfeg) {
+              this.dataFormEntitiesService
+                .updateVisibilityStatus(this.visibilityOptions.OPEN, edfeg.data_form_entity.id)
+                .subscribe();
+            }
+          });
+      }
+    });
   }
 }

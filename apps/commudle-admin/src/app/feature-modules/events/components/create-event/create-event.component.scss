@@ -25,10 +25,6 @@
     .banner-preview {
       @apply com-relative com-rounded-xl com-overflow-hidden;
 
-      .banner-image {
-        @apply com-w-full com-h-[180px] com-object-cover com-rounded-xl;
-      }
-
       .banner-remove {
         @apply com-absolute com-top-2 com-right-2 com-w-7 com-h-7 com-rounded-full com-bg-white com-border com-border-solid com-border-Bright-Gray com-flex com-items-center com-justify-center com-cursor-pointer com-text-sm com-text-gray-600 com-shadow-sm;
 
@@ -101,11 +97,7 @@
           @apply com-flex com-flex-1 com-gap-2;
 
           .input-cell {
-            @apply com-flex com-items-center com-gap-1.5 com-flex-1 com-bg-white com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-px-3 com-py-2;
-
-            .input-hint {
-              @apply com-text-sm com-shrink-0;
-            }
+            @apply com-flex com-items-center com-flex-1 com-bg-white com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-px-3 com-py-2;
 
             input {
               @apply com-border-0 com-bg-transparent com-m-0 com-p-0 com-text-sm com-text-Yankees-Blue com-w-full com-outline-none;
