@@ -1,10 +1,24 @@
 <section class="event-details">
   <div class="event-name-share">
     <h1 class="event-name">{{ event.name }}</h1>
-    <button nbButton size="small" status="info" (click)="copyTextToClipboard()">
+    <button nbButton size="tiny" status="info" (click)="copyTextToClipboard()">
       <fa-icon [icon]="icons.faShare"></fa-icon>
       &nbsp;Share
     </button>
+    <a
+      *ngIf="isEventLive"
+      [routerLink]="['/admin', 'communities', community.slug, 'event-dashboard', event.slug, 'scan-entry-pass']"
+      target="_blank"
+      class="checkin-banner"
+      nbButton
+      fullWidth
+      status="success"
+      size="tiny"
+      shape="round"
+    >
+      <span class="checkin-dot"></span>
+      LIVE
+    </a>
   </div>
   <div *appBreakpoints="'<=md'" class="com-flex com-gap-4 com-flex-wrap">
     <div class="com-flex com-justify-between com-w-full">
@@ -121,19 +135,13 @@
               <div class="icon">
                 <fa-icon [icon]="icons.faHandshakeSimple"></fa-icon>
               </div>
-              <div *ngIf="sidebarExpanded" class="heading">Collaborations</div>
+              <div *ngIf="sidebarExpanded" class="heading">Sponsors & Collabs</div>
             </a>
             <a [routerLink]="['volunteers']" [routerLinkActive]="'active'" class="action-button">
               <div class="icon">
                 <fa-icon [icon]="icons.faUsers"></fa-icon>
               </div>
               <div *ngIf="sidebarExpanded" class="heading">Team</div>
-            </a>
-            <a [routerLink]="['sponsors']" [routerLinkActive]="'active'" class="action-button">
-              <div class="icon">
-                <fa-icon [icon]="icons.faSackDollar"></fa-icon>
-              </div>
-              <div *ngIf="sidebarExpanded" class="heading">Sponsors</div>
             </a>
             <a (click)="sendEmails()" class="action-button">
               <div class="icon">
@@ -243,19 +251,13 @@
               <div class="icon">
                 <nb-icon icon="pricetags-outline"></nb-icon>
               </div>
-              <div class="heading">Collaborations</div>
+              <div class="heading">Sponsors & Collabs</div>
             </a>
             <a [routerLink]="['volunteers']" [routerLinkActive]="'active'" class="action-button">
               <div class="icon">
                 <nb-icon icon="headphones-outline"></nb-icon>
               </div>
               <div class="heading">Team</div>
-            </a>
-            <a [routerLink]="['sponsors']" [routerLinkActive]="'active'" class="action-button">
-              <div class="icon">
-                <nb-icon icon="briefcase-outline"></nb-icon>
-              </div>
-              <div class="heading">Sponsors</div>
             </a>
             <a [routerLink]="['emails']" [routerLinkActive]="'active'" class="action-button">
               <div class="icon">

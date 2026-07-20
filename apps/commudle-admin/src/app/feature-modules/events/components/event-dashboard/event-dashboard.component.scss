@@ -2,7 +2,27 @@
   @apply com-flex com-flex-col com-items-start com-p-4 com-gap-2 com-bg-white com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
 
   .event-name {
-    @apply com-m-0 com-text-3xl;
+    @apply com-m-0 com-flex com-flex-shrink-0 com-text-3xl;
+  }
+
+  .checkin-banner {
+    @apply com-flex com-items-center com-w-max com-rounded-full com-gap-2 com-text-sm com-font-semibold com-leading-[0px] com-no-underline;
+
+    .checkin-dot {
+      @apply com-w-2 com-h-2 com-rounded-full com-bg-white;
+      animation: pulse-dot 1.5s infinite;
+    }
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
   }
 }
 
@@ -133,5 +153,5 @@ a {
 }
 
 .event-name-share {
-  @apply com-flex com-flex-row com-gap-5;
+  @apply com-flex com-flex-row com-items-center com-gap-5;
 }

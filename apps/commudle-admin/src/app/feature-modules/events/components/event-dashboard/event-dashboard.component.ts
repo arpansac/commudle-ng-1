@@ -36,10 +36,10 @@ import { EventDataFormEntityGroupsStore } from 'apps/commudle-admin/src/app/feat
 import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
 
 @Component({
-    selector: 'app-event-dashboard',
-    templateUrl: './event-dashboard.component.html',
-    styleUrls: ['./event-dashboard.component.scss'],
-    standalone: false
+  selector: 'app-event-dashboard',
+  templateUrl: './event-dashboard.component.html',
+  styleUrls: ['./event-dashboard.component.scss'],
+  standalone: false,
 })
 export class EventDashboardComponent implements OnInit, OnDestroy {
   event: IEvent;
@@ -74,6 +74,14 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
   sidebarExpanded = true;
 
   subscriptions: Subscription[] = [];
+
+  get isEventLive(): boolean {
+    if (!this.event?.start_time || !this.event?.end_time) {
+      return false;
+    }
+    const now = moment();
+    return now.isBetween(moment(this.event.start_time), moment(this.event.end_time));
+  }
 
   constructor(
     private activatedRoute: ActivatedRoute,
