@@ -20,12 +20,12 @@
 
   <div class="stats-grid" *ngIf="!isLoading && userProfileDetails">
     <!-- Profile Visits - only own profile -->
-    <div class="stat-card" *ngIf="currentUser?.id === user?.id">
+    <div class="stat-card" *ngIf="currentUser?.id === user?.id && profileViews">
       <div class="stat-icon icon-purple">
         <fa-icon [icon]="faEye"></fa-icon>
       </div>
       <div class="stat-info">
-        <span class="stat-count">{{ profileViews.overall?.ninety_days }}</span>
+        <span class="stat-count">{{ profileViews?.overall?.ninety_days }}</span>
         <span class="stat-label">Profile Visits</span>
       </div>
     </div>

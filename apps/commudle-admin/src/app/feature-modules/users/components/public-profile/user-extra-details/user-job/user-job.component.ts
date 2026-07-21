@@ -28,11 +28,11 @@ import { environment } from '@commudle/shared-environments';
 import { RecaptchaComponent } from 'ng-recaptcha-2';
 
 @Component({
-    selector: 'app-user-job',
-    templateUrl: './user-job.component.html',
-    styleUrls: ['./user-job.component.scss'],
-    providers: [EnumFormatPipe],
-    standalone: false
+  selector: 'app-user-job',
+  templateUrl: './user-job.component.html',
+  styleUrls: ['./user-job.component.scss'],
+  providers: [EnumFormatPipe],
+  standalone: false,
 })
 export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: IUser;
@@ -124,7 +124,15 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
-    // TODO optimize this
+    this.subscriptions.push(
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data)),
+    );
+
+    this.userProfileManagerService.user$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
+      this.hiring = data.is_employer;
+      this.userProfileMenuService.addMenuItem('jobs', this.hiring);
+    });
+
     this.route.fragment.subscribe((fragment) => {
       if (fragment === 'jobs' && this.route.snapshot.queryParams['hiring'] === 'true') {
         setTimeout(() => {
@@ -147,21 +155,13 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.subscriptions.push(
-      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data)),
-    );
-
-    if (changes.user) {
+    if (changes.user && changes.user.currentValue?.id !== changes.user.previousValue?.id) {
       this.jobs = [];
       if (this.page_info) {
         this.page_info.end_cursor = '';
       }
       this.getJobs();
     }
-    this.userProfileManagerService.user$.subscribe((data) => {
-      this.hiring = data.is_employer;
-      this.userProfileMenuService.addMenuItem('jobs', this.hiring);
-    });
   }
 
   ngOnDestroy(): void {
@@ -190,7 +190,7 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
       this.jobService.getJob(id).subscribe((data) => {
         this.job = data;
         this.job.tags.forEach((tag) => this.tags.push(tag.name));
-        // @ts-ignore
+        // @ts-expect-error - patching form with job model which has extra fields
         this.jobForm.patchValue(this.job);
         this.jobForm.controls['tags'].setValue('');
       }),
@@ -206,10 +206,10 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
     this.formSubmitLoading = true;
-    // @ts-ignore
+    // @ts-expect-error - setting tags array to form control expecting string
     this.jobForm.controls['tags'].setValue(this.tags);
     this.subscriptions.push(
-      // @ts-ignore
+      // @ts-expect-error - form value type mismatch with service param
       this.jobService.createJob(this.jobForm.value).subscribe(
         (data) => {
           this.nbToastrService.success('Job created successfully', 'Success');
@@ -226,7 +226,7 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
           });
           this.recaptchaToken = null;
         },
-        (err) => {
+        () => {
           this.formSubmitLoading = false;
           this.recaptchaToken = null;
           this.recaptchaError = 'Submission failed. Please try again.';
@@ -265,10 +265,10 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
 
   updateJob() {
     this.formSubmitLoading = true;
-    // @ts-ignore
+    // @ts-expect-error - setting tags array to form control expecting string
     this.jobForm.controls['tags'].setValue(this.tags);
     this.subscriptions.push(
-      // @ts-ignore
+      // @ts-expect-error - form value type mismatch with service param
       this.jobService.updateJob(this.job.id, this.jobForm.value).subscribe((data) => {
         this.nbToastrService.success('Job updated successfully', 'Success');
         this.onCloseDialog();
