@@ -190,7 +190,6 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
       this.jobService.getJob(id).subscribe((data) => {
         this.job = data;
         this.job.tags.forEach((tag) => this.tags.push(tag.name));
-        // @ts-expect-error - patching form with job model which has extra fields
         this.jobForm.patchValue(this.job);
         this.jobForm.controls['tags'].setValue('');
       }),
@@ -206,10 +205,8 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
     this.formSubmitLoading = true;
-    // @ts-expect-error - setting tags array to form control expecting string
     this.jobForm.controls['tags'].setValue(this.tags);
     this.subscriptions.push(
-      // @ts-expect-error - form value type mismatch with service param
       this.jobService.createJob(this.jobForm.value).subscribe(
         (data) => {
           this.nbToastrService.success('Job created successfully', 'Success');
@@ -265,10 +262,8 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
 
   updateJob() {
     this.formSubmitLoading = true;
-    // @ts-expect-error - setting tags array to form control expecting string
     this.jobForm.controls['tags'].setValue(this.tags);
     this.subscriptions.push(
-      // @ts-expect-error - form value type mismatch with service param
       this.jobService.updateJob(this.job.id, this.jobForm.value).subscribe((data) => {
         this.nbToastrService.success('Job updated successfully', 'Success');
         this.onCloseDialog();
