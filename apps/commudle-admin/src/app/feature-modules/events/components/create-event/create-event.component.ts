@@ -201,11 +201,9 @@ export class CreateEventComponent implements OnInit {
     this.startDate = this.eventForm.get('event').get('start_date').value;
     const startTimePick = this.eventForm.get('event').get('start_time_pick').value;
     const selectedTimezone = this.eventForm.get('event').get('timezone').value;
-    this.startHour = Number.parseInt(startTimePick.split(':')[0]);
-    this.startMinute = Number.parseInt(startTimePick.split(':')[1]);
 
-    if (this.startDate !== '' && this.startHour !== '' && this.startMinute !== '') {
-      this.startTime = moment.tz(this.startDate, selectedTimezone).toDate();
+    if (this.startDate !== '' && startTimePick !== '') {
+      this.startTime = moment.tz(`${this.startDate}T${startTimePick}`, selectedTimezone).toDate();
       return true;
     }
     return false;
@@ -215,10 +213,9 @@ export class CreateEventComponent implements OnInit {
     this.endDate = this.eventForm.get('event').get('end_date').value;
     const endTimePick = this.eventForm.get('event').get('end_time_pick').value;
     const selectedTimezone = this.eventForm.get('event').get('timezone').value;
-    this.endHour = Number.parseInt(endTimePick.split(':')[0]);
-    this.endMinute = Number.parseInt(endTimePick.split(':')[1]);
-    if (this.endDate !== '' && this.endHour !== '' && this.endMinute !== '') {
-      this.endTime = moment.tz(this.endDate, selectedTimezone).toDate();
+
+    if (this.endDate !== '' && endTimePick !== '') {
+      this.endTime = moment.tz(`${this.endDate}T${endTimePick}`, selectedTimezone).toDate();
       return true;
     }
     return false;
