@@ -42,7 +42,7 @@
 
     <com-card-body class="cf-body">
       <div *ngIf="isSubmitting" class="cf-submitting-overlay">
-        <commudle-loading-spinner></commudle-loading-spinner>
+        <app-loading-spinner></app-loading-spinner>
         <span class="cf-submitting-label">Creating your community…</span>
       </div>
       <form [formGroup]="communityForm" class="cf-form">
