@@ -1,12 +1,12 @@
-<div class="base-layout medium">
+<div class="base-layout thin">
   <div class="container">
     <div class="one-column-layout">
       <div class="back-button">
         <commudle-back-button text="Back to events list"></commudle-back-button>
       </div>
 
-      <nb-card class="form-card">
-        <nb-card-body>
+      <com-card class="form-card">
+        <com-card-body>
           <h3 class="page-title">Create an Event for {{ community.name }}</h3>
 
           <form [formGroup]="eventForm" class="event-create-form">
@@ -14,7 +14,10 @@
               <!-- Banner Image -->
               <div class="banner-upload-section">
                 <div *ngIf="uploadedHeaderImage" class="banner-preview">
-                  <commudle-banner-image [headerImagePath]="uploadedHeaderImage"></commudle-banner-image>
+                  <commudle-banner-image
+                    [headerImagePath]="uploadedHeaderImage"
+                    [aspectRatio]="'4/1'"
+                  ></commudle-banner-image>
                   <button type="button" class="banner-remove" (click)="removeHeaderImage()">✕</button>
                 </div>
                 <label *ngIf="!uploadedHeaderImage" class="banner-placeholder">
@@ -36,7 +39,16 @@
 
               <div class="form-group">
                 <label>Name <span class="required">*</span></label>
-                <input formControlName="name" fullWidth nbInput type="text" class="form-input" />
+                <input
+                  formControlName="name"
+                  fullWidth
+                  nbInput
+                  size="large"
+                  type="text"
+                  class="form-input name-input"
+                  placeholder="Event Name"
+                  autofocus
+                />
                 <commudle-alert
                   *ngIf="
                     eventForm['controls'].event['controls'].name.touched &&
@@ -57,29 +69,48 @@
                   <div class="date-time-group">
                     <span class="date-label">Start</span>
                     <div class="date-time-inputs">
-                      <div class="input-cell">
-                        <input type="date" formControlName="start_date" class="date-input" />
+                      <div class="input-cell" (click)="startDateInput.showPicker()">
+                        <span class="date-display">{{ formatDate(eventForm.get('event.start_date').value) }}</span>
+                        <input
+                          #startDateInput
+                          type="date"
+                          formControlName="start_date"
+                          class="date-input hidden-input"
+                        />
                       </div>
-                      <div class="input-cell">
-                        <input type="time" formControlName="start_time_pick" class="time-input" />
+                      <div class="input-cell" (click)="startTimeInput.showPicker()">
+                        <span class="time-display">{{ formatTime(eventForm.get('event.start_time_pick').value) }}</span>
+                        <input
+                          #startTimeInput
+                          type="time"
+                          formControlName="start_time_pick"
+                          class="time-input hidden-input"
+                        />
                       </div>
                     </div>
                   </div>
                   <div class="date-time-group">
                     <span class="date-label">End</span>
                     <div class="date-time-inputs">
-                      <div class="input-cell">
-                        <input type="date" formControlName="end_date" class="date-input" />
+                      <div class="input-cell" (click)="endDateInput.showPicker()">
+                        <span class="date-display">{{ formatDate(eventForm.get('event.end_date').value) }}</span>
+                        <input #endDateInput type="date" formControlName="end_date" class="date-input hidden-input" />
                       </div>
-                      <div class="input-cell">
-                        <input type="time" formControlName="end_time_pick" class="time-input" />
+                      <div class="input-cell" (click)="endTimeInput.showPicker()">
+                        <span class="time-display">{{ formatTime(eventForm.get('event.end_time_pick').value) }}</span>
+                        <input
+                          #endTimeInput
+                          type="time"
+                          formControlName="end_time_pick"
+                          class="time-input hidden-input"
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="timezone-field">
                   <span class="tz-icon">🌐</span>
-                  <nb-select formControlName="timezone" placeholder="Timezone" size="small" status="basic">
+                  <nb-select formControlName="timezone" placeholder="Timezone" size="medium">
                     <nb-option *ngFor="let tz of allTimeZones" [value]="tz">
                       {{ tz }}
                     </nb-option>
@@ -142,6 +173,7 @@
                     [editable]="true"
                     [fontColor]="'com-text-tYankees-Blue'"
                     [tags]="tags"
+                    [minTagLimit]="false"
                   ></app-tag>
                 </div>
               </div>
@@ -179,29 +211,31 @@
               <button
                 [disabled]="!eventForm.valid || isFormSubmitting || isPublishing"
                 [nbSpinner]="isFormSubmitting"
-                nbButton
+                comButton
                 status="basic"
                 type="button"
                 (click)="createEvent(false)"
                 class="submit-button"
+                shape="semi-round"
               >
                 Save Draft
               </button>
               <button
                 [disabled]="!eventForm.valid || isFormSubmitting || isPublishing"
                 [nbSpinner]="isPublishing"
-                nbButton
+                comButton
                 status="info"
                 type="button"
                 (click)="createEvent(true)"
                 class="submit-button"
+                shape="semi-round"
               >
                 Publish
               </button>
             </div>
           </form>
-        </nb-card-body>
-      </nb-card>
+        </com-card-body>
+      </com-card>
     </div>
   </div>
 </div>

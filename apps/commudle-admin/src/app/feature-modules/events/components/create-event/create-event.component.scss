@@ -5,9 +5,13 @@
 
   .form-card {
     @apply com-m-0;
+    background: transparent !important;
 
-    nb-card-body {
-      @apply com-p-4 md:com-p-6;
+    com-card-body {
+      @apply com-p-4 md:com-p-6 com-rounded-10;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
   }
 
@@ -35,7 +39,7 @@
     }
 
     .banner-placeholder {
-      @apply com-flex com-flex-col com-items-center com-justify-center com-py-8 com-rounded-xl com-border-2 com-border-dashed com-border-gray-300 com-bg-gray-50 com-cursor-pointer com-transition-all com-duration-200;
+      @apply com-flex com-flex-col com-items-center com-justify-center com-py-12 com-rounded-xl com-border-2 com-border-dashed com-border-gray-300 com-bg-gray-50 com-cursor-pointer com-transition-all com-duration-200;
 
       .upload-icon {
         @apply com-w-8 com-h-8 com-text-gray-400 com-mb-2;
@@ -67,7 +71,15 @@
     }
 
     .form-input {
-      @apply com-rounded-lg;
+      @apply com-rounded-lg com-bg-white;
+    }
+
+    .name-input {
+      @apply com-py-3 com-text-base;
+
+      &::placeholder {
+        @apply com-text-gray-400;
+      }
     }
   }
 
@@ -76,7 +88,7 @@
   }
 
   .date-timezone-row {
-    @apply com-flex com-flex-col com-gap-3 com-mb-4 com-p-4 com-bg-gray-50 com-rounded-xl com-border com-border-solid com-border-Bright-Gray;
+    @apply com-flex com-flex-col com-gap-3 com-mb-4 com-p-4 com-bg-gray-50 com-rounded-xl com-border com-border-solid com-border-Bright-Gray com-bg-white;
     @apply lg:com-flex-row;
 
     .date-fields {
@@ -85,18 +97,31 @@
       .date-time-group {
         @apply com-flex com-items-center com-gap-3;
 
-        .date-label {
-          @apply com-text-xs com-font-semibold com-text-gray-500 com-uppercase com-w-10 com-shrink-0;
+        .date-dot-label {
+          @apply com-w-12 com-shrink-0;
+
+          .dot {
+            @apply com-hidden;
+          }
+
+          .label-text {
+            @apply com-text-sm com-font-medium com-text-gray-600;
+          }
         }
 
         .date-time-inputs {
           @apply com-flex com-flex-1 com-gap-2;
 
           .input-cell {
-            @apply com-flex com-items-center com-flex-1 com-bg-white com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-px-3 com-py-2;
+            @apply com-flex com-items-center com-flex-1 com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-px-4 com-py-2 com-cursor-pointer com-relative;
 
-            input {
-              @apply com-border-0 com-bg-transparent com-m-0 com-p-0 com-text-sm com-text-Yankees-Blue com-w-full com-outline-none;
+            .date-display,
+            .time-display {
+              @apply com-text-sm com-font-normal com-text-Yankees-Blue;
+            }
+
+            .hidden-input {
+              @apply com-absolute com-inset-0 com-opacity-0 com-cursor-pointer com-w-full com-h-full com-m-0 com-p-0;
             }
           }
         }
@@ -108,7 +133,7 @@
       @apply lg:com-pt-0 lg:com-border-t-0 lg:com-border-l lg:com-pl-4 lg:com-self-center;
 
       .tz-icon {
-        @apply com-text-sm;
+        @apply com-text-base;
       }
 
       nb-select {
@@ -121,14 +146,22 @@
     @apply com-flex com-gap-3 com-mt-1;
 
     .event-type-option {
-      @apply com-flex com-items-center com-gap-2 com-p-2 com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-cursor-pointer com-transition-all com-duration-200 com-m-0;
+      @apply com-flex com-items-center com-gap-2 com-p-2 com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-cursor-pointer com-transition-all com-duration-200 com-m-0 com-bg-white;
 
       &:hover {
         @apply com-border-primary-300 com-bg-primary-100;
+
+        .type-label {
+          @apply com-text-tYankees-Blue;
+        }
       }
 
       &.selected {
         @apply com-border-primary-500 com-bg-primary-100;
+
+        .type-label {
+          @apply com-text-tYankees-Blue;
+        }
       }
 
       .radio-input {
@@ -147,13 +180,17 @@
 
   .tag-container {
     @apply com-mt-1;
+
+    ::ng-deep .tag-list {
+      @apply com-bg-white;
+    }
   }
 
   .registration-toggle {
     @apply com-mb-4;
 
     .toggle-row {
-      @apply com-flex com-items-center com-justify-between com-p-3 com-bg-gray-50 com-rounded-lg com-border com-border-solid com-border-Bright-Gray;
+      @apply com-flex com-items-center com-justify-between com-p-3 com-bg-gray-50 com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-bg-white;
 
       .toggle-content {
         @apply com-flex com-flex-col;
@@ -196,4 +233,12 @@
       @apply com-text-sm com-font-medium com-rounded-lg;
     }
   }
+}
+
+nb-select {
+  @apply com-bg-white #{!important};
+}
+
+.date-label {
+  @apply com-w-8;
 }

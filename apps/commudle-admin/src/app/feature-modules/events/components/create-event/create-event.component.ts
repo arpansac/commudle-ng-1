@@ -98,14 +98,18 @@ export class CreateEventComponent implements OnInit {
     private router: Router,
     private seoService: SeoService,
   ) {
+    const now = moment();
+    const startRounded = now.clone().add(1, 'hour').startOf('hour');
+    const endRounded = startRounded.clone().add(1, 'hour');
+
     this.eventForm = this.fb.group({
       event: this.fb.group({
         name: ['', Validators.required],
         description: ['', Validators.required],
-        start_date: [''],
-        end_date: [''],
-        start_time_pick: [''],
-        end_time_pick: [''],
+        start_date: [startRounded.format('YYYY-MM-DD')],
+        end_date: [endRounded.format('YYYY-MM-DD')],
+        start_time_pick: [startRounded.format('HH:mm')],
+        end_time_pick: [endRounded.format('HH:mm')],
         timezone: [momentTimezone.tz.guess(), Validators.required],
         event_type: ['', Validators.required],
       }),
@@ -218,6 +222,16 @@ export class CreateEventComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  formatDate(dateStr: string): string {
+    if (!dateStr) return 'Pick date';
+    return moment(dateStr).format('ddd, MMM D');
+  }
+
+  formatTime(timeStr: string): string {
+    if (!timeStr) return 'Time';
+    return moment(timeStr, 'HH:mm').format('hh:mm A');
   }
 
   onTagAdd(value: string) {
