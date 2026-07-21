@@ -10,7 +10,8 @@ import { IPagination } from 'apps/shared-models/pagination.model';
 import { ICommunityChannel } from 'apps/shared-models/community-channel.model';
 import { IEvent } from 'apps/shared-models/event.model';
 import { IUsers } from 'apps/shared-models/users.model';
-import { ICommunity, IHackathon, IPaginationCount, IUser } from '@commudle/shared-models';
+import { ICommunity, IPaginationCount, IUser } from '@commudle/shared-models';
+import { IHackathon } from 'apps/shared-models/hackathon.model';
 
 @Injectable({
   providedIn: 'root',

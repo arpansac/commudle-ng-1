@@ -8,7 +8,8 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 import { ICommunity } from 'apps/shared-models/community.model';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { IEvent } from 'apps/shared-models/event.model';
-import { EDbModels, IHackathon } from '@commudle/shared-models';
+import { EDbModels } from '@commudle/shared-models';
+import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { environment } from '@commudle/shared-environments';
 

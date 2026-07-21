@@ -14,6 +14,8 @@ export interface IPurchaseOrder {
   payment_gateway_fee: number;
   currency: string;
   tax_amount: number;
+  tax_name?: string;
+  tax_rate?: number;
   orderable_type: EDbModels;
   orderable_id: number;
   discount_code_id: number;

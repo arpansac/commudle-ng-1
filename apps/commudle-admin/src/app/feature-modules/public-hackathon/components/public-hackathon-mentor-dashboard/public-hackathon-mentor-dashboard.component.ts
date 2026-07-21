@@ -72,7 +72,10 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
   @ViewChild('removeBookingDialog') removeBookingDialog: TemplateRef<any>;
 
   meetingLocation = '';
-  expandedUpdates: { [key: number]: boolean } = {};
+  expandedUpdates: { [key: string]: boolean } = {};
+  showScoreDetailsMap: { [key: number]: boolean } = {};
+  showUpdatesMap: { [key: number]: boolean } = {};
+  showEvaluatorsMap: { [key: number]: boolean } = {};
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -315,7 +318,7 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
     }
   }
 
-  toggleUpdateExpansion(updateId: number): void {
+  toggleUpdateExpansion(updateId: number | string): void {
     this.expandedUpdates[updateId] = !this.expandedUpdates[updateId];
   }
 
