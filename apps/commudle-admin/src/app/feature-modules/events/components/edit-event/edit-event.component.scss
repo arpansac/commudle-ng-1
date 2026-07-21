@@ -4,19 +4,19 @@
   }
 
   .back-button {
-    @apply com-mt-6 com-mb-4;
+    @apply com-mt-4 com-mb-3;
   }
 
-  .card-container {
-    @apply com-m-0 md:com-min-w-[50vw];
-  }
+  .form-card {
+    @apply com-m-0;
 
-  nb-card-body {
-    @apply md:com-p-6 com-px-4 com-pt-6 com-pb-4 com-rounded-10;
+    com-card-body {
+      @apply com-p-4 md:com-p-6 com-rounded-10;
+    }
   }
 
   .page-title {
-    @apply com-text-3xl com-font-bold com-text-Yankees-Blue com-m-0 com-mb-7;
+    @apply com-text-xl com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-5;
   }
 
   .info-alert {
@@ -32,10 +32,10 @@
   }
 
   .form-group {
-    @apply com-mb-6;
+    @apply com-mb-4;
 
     label {
-      @apply com-block com-text-sm com-font-medium com-text-Yankees-Blue com-mb-3;
+      @apply com-block com-text-sm com-font-medium com-text-Yankees-Blue com-mb-1.5;
 
       .required {
         @apply com-text-Infra-Red;
@@ -45,21 +45,116 @@
     .form-input {
       @apply com-rounded-lg;
     }
+
+    .name-input {
+      @apply com-py-3 com-text-base;
+
+      &::placeholder {
+        @apply com-text-gray-400;
+      }
+    }
   }
 
-  .radio-group {
-    @apply com-flex com-flex-col com-gap-3;
+  .timing-alert {
+    @apply com-mb-4;
+  }
 
-    .radio-option {
-      @apply com-flex com-items-center com-gap-2;
+  .date-timezone-row {
+    @apply com-flex com-flex-col com-gap-3 com-mb-4 com-p-4 com-bg-gray-50 com-rounded-xl com-border com-border-solid com-border-Bright-Gray;
+    @apply lg:com-flex-row lg:com-items-center;
+
+    .date-fields {
+      @apply com-flex com-flex-col com-gap-3 com-flex-1;
+
+      .date-time-group {
+        @apply com-flex com-items-center com-gap-3;
+
+        .date-dot-label {
+          @apply com-w-8 com-shrink-0;
+
+          .label-text {
+            @apply com-text-sm com-font-medium com-text-gray-600;
+          }
+        }
+
+        .date-time-inputs {
+          @apply com-flex com-flex-1 com-gap-2;
+
+          .input-cell {
+            @apply com-flex com-items-center com-flex-1 com-bg-white com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-px-4 com-py-3 com-cursor-pointer com-relative;
+
+            .date-display,
+            .time-display {
+              @apply com-text-sm com-font-normal com-text-Yankees-Blue;
+            }
+
+            .hidden-input {
+              @apply com-absolute com-inset-0 com-opacity-0 com-cursor-pointer com-w-full com-h-full com-m-0 com-p-0;
+            }
+          }
+        }
+      }
+    }
+
+    .timezone-field {
+      @apply com-flex com-items-center com-gap-2 com-pt-3 com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+      @apply lg:com-pt-0 lg:com-border-t-0 lg:com-border-l lg:com-pl-4;
+
+      .tz-icon {
+        @apply com-text-base;
+      }
+
+      nb-select {
+        @apply com-min-w-[150px];
+
+        ::ng-deep .select-button {
+          @apply com-p-4;
+        }
+      }
+    }
+  }
+
+  .event-type-options {
+    @apply com-flex com-gap-3 com-mt-1;
+
+    .event-type-option {
+      @apply com-flex com-items-center com-gap-2 com-p-2 com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-cursor-pointer com-transition-all com-duration-200 com-m-0 com-bg-white;
+
+      &:hover {
+        @apply com-border-primary-300 com-bg-primary-100;
+
+        .type-label {
+          @apply com-text-tYankees-Blue;
+        }
+      }
+
+      &.selected {
+        @apply com-border-primary-500 com-bg-primary-100;
+
+        .type-label {
+          @apply com-text-tYankees-Blue;
+        }
+      }
 
       .radio-input {
-        @apply com-w-4 com-h-4 com-text-primary-500 com-border-gray-300 focus:com-ring-2 focus:com-ring-primary-500;
+        @apply com-hidden;
       }
 
-      .radio-label {
-        @apply com-text-sm com-font-medium com-text-gray-700 com-m-0 com-cursor-pointer;
+      .type-emoji {
+        @apply com-text-base;
       }
+
+      .type-label {
+        @apply com-text-sm com-font-medium com-text-Yankees-Blue;
+      }
+    }
+  }
+
+  .tag-container {
+    @apply com-mt-1;
+
+    ::ng-deep .tag-list {
+      @apply com-bg-white;
     }
   }
 
@@ -72,23 +167,18 @@
   }
 
   .form-actions {
-    @apply com-mt-6 com-pt-6 com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+    @apply com-mt-5 com-pt-4 com-border-0 com-border-t com-border-solid com-border-Bright-Gray com-flex com-gap-3 com-justify-end;
 
     .submit-button {
-      @apply com-text-base com-font-medium com-rounded-lg;
+      @apply com-text-sm com-font-medium com-rounded-lg;
     }
   }
 }
 
-.timing-alert {
-  @apply com-mb-6;
-}
-
-.date-timezone-row {
-  @apply com-flex com-flex-col com-gap-4 com-mb-6;
-  @apply md:com-flex-row;
-
-  .form-group {
-    @apply com-flex-1 com-mb-0;
+nb-select {
+  ::ng-deep {
+    .select-button {
+      @apply com-p-4;
+    }
   }
 }
