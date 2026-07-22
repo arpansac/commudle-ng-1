@@ -24,7 +24,7 @@
   }
 
   .past-events {
-    @apply com-flex com-flex-col com-mx-auto com-my-0;
+    @apply com-flex com-flex-col com-my-0;
 
     .heading {
       fa-icon {
@@ -33,7 +33,7 @@
     }
 
     .past-events-container {
-      @apply com-flex com-flex-row com-flex-wrap md:com-gap-4 com-gap-0;
+      @apply com-flex com-flex-row com-flex-wrap md:com-gap-4 com-gap-0 com-justify-start;
 
       .past-event-card-wrapper {
         @apply com-w-full md:com-w-[390px] com-border-0 md:com-border-b-0 com-border-b com-border-solid com-border-Bright-Gray com-py-3 md:com-py-0;
@@ -54,6 +54,7 @@ app-loading-spinner {
 .heading-btn-past {
   @apply com-flex com-justify-center com-items-center com-bg-[#f7f9fc] com-rounded-lg com-mr-4;
 }
+
 fa-icon {
   @apply com-text-2xl com-text-gray-800;
 }
@@ -64,6 +65,7 @@ fa-icon {
     opacity: 0.45;
     transform: scale(0.95);
   }
+
   50% {
     opacity: 1;
     transform: scale(1.1);
@@ -85,6 +87,7 @@ fa-icon {
     border-radius: 50%;
     pointer-events: none;
   }
+
   &::before {
     width: 260px;
     height: 260px;
@@ -93,6 +96,7 @@ fa-icon {
     right: -40px;
     filter: blur(2px);
   }
+
   &::after {
     width: 160px;
     height: 120px;
@@ -104,6 +108,7 @@ fa-icon {
 
   .upcoming-events-container {
     @apply com-flex com-flex-row com-flex-wrap com-gap-4;
+
     .upcoming-event-card-wrapper {
       @apply com-w-full com-p-4 com-rounded-10;
 
