@@ -81,6 +81,12 @@ export class NewFormAttachGroupsComponent {
       this.communityDataForms = communityDataForms;
     }
     this.dialogRef = this.nbDialogBox.open(this.formAttachDialogBoxTemplate);
+    setTimeout(() => {
+      const nameInput = document.querySelector('.form-attach-dialog input[formcontrolname="name"]') as HTMLInputElement;
+      if (nameInput) {
+        nameInput.focus();
+      }
+    }, 100);
   }
 
   getValueOrUpdateEdfeg() {

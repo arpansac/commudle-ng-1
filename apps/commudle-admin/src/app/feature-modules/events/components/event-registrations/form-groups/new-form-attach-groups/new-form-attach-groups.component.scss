@@ -4,17 +4,22 @@
 
 .registration-types {
   @apply com-grid lg:com-grid-cols-4 md:com-grid-cols-3 com-grid-cols-1 com-gap-4;
+
   .registration-type {
     @apply com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-w-full com-h-12 com-text-center hover:com-border-Ultramarine-Blue hover:com-bg-[#3366FF1A] hover:com-cursor-pointer com-flex com-justify-center com-items-center;
+
     &.active {
       @apply com-border-Ultramarine-Blue com-bg-[#3366FF1A];
+
       span {
         @apply com-text-base com-font-medium com-text-Yankees-Blue;
       }
     }
+
     > div {
       @apply com-flex com-items-center com-justify-center com-gap-1;
     }
+
     span {
       @apply com-text-base com-font-medium com-text-Yankees-Blue;
     }
@@ -22,18 +27,20 @@
 }
 
 .form-attach-dialog {
-  @apply com-max-h-[90dvh] com-w-full md:com-w-[60dvw];
-  nb-card-header {
-    @apply com-flex com-justify-between com-items-center;
+  @apply com-max-h-[90dvh] com-m-0 com-w-full md:com-w-[60dvw];
 
-    span {
-      @apply com-text-lg com-font-medium com-text-Yankees-Blue;
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center com-p-4;
+
+    h1 {
+      @apply com-m-0 com-text-lg com-font-medium com-text-Yankees-Blue;
     }
   }
 
   nb-card-body {
-    @apply com-p-6 com-pt-0;
+    @apply com-p-5;
   }
+
   input {
     @apply com-text-gray-500 com-bg-Ghost-White com-rounded-lg;
   }
@@ -43,26 +50,32 @@
   }
 
   .question-heading {
-    @apply com-text-black com-text-base com-font-medium;
+    @apply com-text-sm com-font-medium com-text-Yankees-Blue;
 
     span {
-      @apply com-text-sm com-font-normal com-text-gray-500 com-ml-3;
+      @apply com-text-xs com-font-normal com-text-gray-500 com-ml-2;
     }
   }
 
   .select {
-    @apply com-flex com-items-center com-gap-1 com-px-4 com-py-2 com-rounded-lg com-cursor-pointer com-bg-Ghost-White com-border com-border-solid com-border-Bright-Gray com-w-full com-mb-2;
+    @apply com-flex com-items-center com-gap-1 com-px-3 com-py-2 com-rounded-lg com-cursor-pointer com-bg-Ghost-White com-border com-border-solid com-border-Bright-Gray com-w-full;
+
     select {
       @apply com-bg-Ghost-White com-text-sm com-text-gray-500 com-cursor-pointer com-border-0 com-w-full;
     }
   }
+
+  nb-card-footer {
+    @apply com-p-4;
+  }
 }
+
 .disabled {
   @apply com-pointer-events-none com-cursor-not-allowed com-text-[#A6A6A6] hover:com-bg-[#F6F9FC] #{!important};
 }
 
 .question-spacing {
-  @apply com-pt-8 com-pb-4;
+  @apply com-pt-4 com-pb-2;
 }
 
 .required-question {
