@@ -3,8 +3,8 @@
     <commudle-back-button text="Back"></commudle-back-button>
   </div>
 
-  <nb-card class="card-container" [ngClass]="{ 'com-rounded-t-none': type === 'clone' }">
-    <nb-card-body>
+  <com-card class="form-card" [ngClass]="{ 'com-rounded-t-none': type === 'clone' }">
+    <com-card-body>
       <h3 *ngIf="type === 'Save'" class="page-title">Edit Event</h3>
 
       <nb-alert status="info" *ngIf="event && !event.editable && type === 'Save'" class="info-alert">
@@ -16,15 +16,15 @@
       <form class="event-edit-form" [formGroup]="eventForm" (ngSubmit)="type === 'Save' ? updateEvent() : cloneEvent()">
         <div formGroupName="event">
           <div class="form-group">
-            <label for="name"> Name <span class="required">*</span> </label>
+            <label>Name <span class="required">*</span></label>
             <input
-              id="name"
-              type="text"
-              nbInput
-              fullWidth
               formControlName="name"
-              [disabled]="true"
-              class="form-input"
+              fullWidth
+              nbInput
+              size="large"
+              type="text"
+              class="form-input name-input"
+              placeholder="Event Name"
             />
             <commudle-alert
               *ngIf="
@@ -42,71 +42,67 @@
           </div>
 
           <div class="date-timezone-row">
-            <div class="form-group">
-              <label for="start_date">Start Date</label>
-              <input
-                id="start_date"
-                nbInput
-                type="datetime-local"
-                placeholder="Pick a date"
-                formControlName="start_date"
-                fullWidth
-                class="form-input"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="end_date">End Date</label>
-              <input
-                id="end_date"
-                nbInput
-                type="datetime-local"
-                placeholder="Pick a date"
-                formControlName="end_date"
-                fullWidth
-                class="form-input"
-              />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="timezone">Timezone</label>
-            <nb-select
-              id="timezone"
-              placeholder="Select Timezone"
-              formControlName="timezone"
-              status="primary"
-              size="large"
-              hero
-              class="form-select"
-            >
-              <nb-option *ngFor="let tz of allTimeZones" [value]="tz">
-                {{ tz }}
-              </nb-option>
-            </nb-select>
-            <commudle-alert
-              *ngIf="
-                eventForm['controls'].event['controls'].timezone.touched &&
-                eventForm['controls'].event['controls'].timezone.invalid &&
-                eventForm['controls'].event['controls'].timezone.errors.required
-              "
-              [error]="true"
-              [errorMessage]="'Required Field'"
-            ></commudle-alert>
-          </div>
-          <div class="form-group">
-            <label> Event Type <span class="required">*</span> </label>
-            <div class="radio-group">
-              <div *ngFor="let type of EEventType | keyvalue" class="radio-option">
-                <input
-                  [id]="type.key"
-                  [value]="type.value"
-                  formControlName="event_type"
-                  type="radio"
-                  class="radio-input"
-                />
-                <label [for]="type.key" class="radio-label">{{ type.value | titlecase }}</label>
+            <div class="date-fields">
+              <div class="date-time-group">
+                <div class="date-dot-label">
+                  <span class="label-text">Start</span>
+                </div>
+                <div class="date-time-inputs">
+                  <div class="input-cell" (click)="startDateInput.showPicker()">
+                    <span class="date-display">{{ formatDate(eventForm.get('event.start_date').value) }}</span>
+                    <input #startDateInput type="date" formControlName="start_date" class="hidden-input" />
+                  </div>
+                  <div class="input-cell" (click)="startTimeInput.showPicker()">
+                    <span class="time-display">{{ formatTime(eventForm.get('event.start_time_pick').value) }}</span>
+                    <input #startTimeInput type="time" formControlName="start_time_pick" class="hidden-input" />
+                  </div>
+                </div>
               </div>
+              <div class="date-time-group">
+                <div class="date-dot-label">
+                  <span class="label-text">End</span>
+                </div>
+                <div class="date-time-inputs">
+                  <div class="input-cell" (click)="endDateInput.showPicker()">
+                    <span class="date-display">{{ formatDate(eventForm.get('event.end_date').value) }}</span>
+                    <input #endDateInput type="date" formControlName="end_date" class="hidden-input" />
+                  </div>
+                  <div class="input-cell" (click)="endTimeInput.showPicker()">
+                    <span class="time-display">{{ formatTime(eventForm.get('event.end_time_pick').value) }}</span>
+                    <input #endTimeInput type="time" formControlName="end_time_pick" class="hidden-input" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="timezone-field">
+              <span class="tz-icon">🌐</span>
+              <nb-select formControlName="timezone" placeholder="Timezone" size="small" status="basic">
+                <nb-option *ngFor="let tz of allTimeZones" [value]="tz">
+                  {{ tz }}
+                </nb-option>
+              </nb-select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Event Type <span class="required">*</span></label>
+            <div class="event-type-options">
+              <label
+                class="event-type-option"
+                [class.selected]="eventForm.get('event.event_type').value === EEventType.ONLINE"
+              >
+                <input [value]="EEventType.ONLINE" formControlName="event_type" type="radio" class="radio-input" />
+                <span class="type-emoji">💻</span>
+                <span class="type-label">Online</span>
+              </label>
+              <label
+                class="event-type-option"
+                [class.selected]="eventForm.get('event.event_type').value === EEventType.OFFLINE"
+              >
+                <input [value]="EEventType.OFFLINE" formControlName="event_type" type="radio" class="radio-input" />
+                <span class="type-emoji">📍</span>
+                <span class="type-label">In Person</span>
+              </label>
             </div>
             <commudle-alert
               *ngIf="
@@ -120,7 +116,7 @@
           </div>
 
           <div class="form-group">
-            <label> Description <span class="required">*</span> </label>
+            <label>Description <span class="required">*</span></label>
             <commudle-alert
               *ngIf="
                 eventForm['controls'].event['controls'].description.touched &&
@@ -130,33 +126,27 @@
               [error]="true"
               [errorMessage]="'Required Field'"
             ></commudle-alert>
-            <div class="editor-container">
-              <editor
-                formControlName="description"
-                apiKey="e34vgv7ocd6ttka8t6qcd07g7lifas1y9lyve8ze1013nefs"
-                [init]="tinyMCE"
-              >
-              </editor>
-            </div>
+            <editor formControlName="description" [init]="tinyMCE"></editor>
           </div>
 
           <div class="form-group">
-            <label> Tags <span class="required">*</span> </label>
+            <label>Tags</label>
             <div class="tag-container">
               <app-tag
                 (tagAdd)="onTagAdd($event)"
                 (tagDelete)="onTagDelete($event)"
                 [editable]="true"
                 [tags]="tags"
-                [minimumTags]="minimumTags"
+                [minTagLimit]="false"
                 [backgroundColor]="'com-bg-tAnti-Flash'"
+                [shape]="'semi-round'"
                 [fontColor]="'com-text-tYankees-Blue'"
               ></app-tag>
             </div>
           </div>
 
           <div class="form-group" *ngIf="type === 'clone'">
-            <label> Which other fields do you want to clone? <span class="required">*</span> </label>
+            <label>Which other fields do you want to clone? <span class="required">*</span></label>
             <div class="clone-fields-checkboxes">
               <nb-checkbox [(ngModel)]="bannerImage" [ngModelOptions]="{ standalone: true }" status="basic"
                 >Banner Image</nb-checkbox
@@ -177,18 +167,20 @@
         <div class="form-actions">
           <button
             *ngIf="event && (type === 'clone' || (type === 'Save' && event.editable))"
-            [disabled]="tags.length < 3 || submitIsInProcess"
-            type="submit"
-            nbButton
+            [disabled]="submitIsInProcess"
+            type="button"
+            (click)="type === 'Save' ? updateEvent() : cloneEvent()"
             fullWidth
-            status="info"
             [nbSpinner]="submitIsInProcess"
+            comButton
+            status="info"
+            shape="semi-round"
             class="submit-button"
           >
-            {{ type }}
+            {{ type === 'Save' ? 'Save Changes' : 'Clone' }}
           </button>
         </div>
       </form>
-    </nb-card-body>
-  </nb-card>
+    </com-card-body>
+  </com-card>
 </div>

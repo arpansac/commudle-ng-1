@@ -85,7 +85,7 @@ import { EventCheckedInListComponent } from './components/event-checked-in-list/
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
 import { BadgeComponent } from 'apps/shared-components/badge/badge.component';
 import { DataTableComponent } from '../../app-shared-components/data-table/data-table.component';
-import { CommudleButtonModule } from '@commudle/commudle-theme';
+import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 
 @NgModule({
   declarations: [
@@ -143,6 +143,7 @@ import { CommudleButtonModule } from '@commudle/commudle-theme';
     SharedComponentsModule,
     SharedPipesModule,
     CommudleButtonModule,
+    CommudleCardModule,
 
     // External
     FontAwesomeModule,

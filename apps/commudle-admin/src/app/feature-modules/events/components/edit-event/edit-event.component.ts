@@ -152,11 +152,13 @@ export class EditEventComponent implements OnInit {
     });
 
     if (this.event.start_time) {
-      const sDate = moment.tz(this.event.start_time, this.event.timezone).format('YYYY-MM-DDTHH:mm');
-      const eDate = moment.tz(this.event.end_time, this.event.timezone).format('YYYY-MM-DDTHH:mm');
+      const startMoment = moment.tz(this.event.start_time, this.event.timezone);
+      const endMoment = moment.tz(this.event.end_time, this.event.timezone);
       this.eventForm.get('event').patchValue({
-        start_date: sDate,
-        end_date: eDate,
+        start_date: startMoment.format('YYYY-MM-DD'),
+        start_time_pick: startMoment.format('HH:mm'),
+        end_date: endMoment.format('YYYY-MM-DD'),
+        end_time_pick: endMoment.format('HH:mm'),
       });
     }
   }
@@ -194,14 +196,10 @@ export class EditEventComponent implements OnInit {
 
   setStartDateTime() {
     this.startDate = this.eventForm.get('event').get('start_date').value;
-
     const startTimePick = this.eventForm.get('event').get('start_time_pick').value;
-    this.startHour = Number.parseInt(startTimePick.split(':')[0]);
-    this.startMinute = Number.parseInt(startTimePick.split(':')[1]);
 
-    if (this.startDate !== '' && this.startHour !== '' && this.startMinute !== '' && this.startDate !== null) {
-      this.startTime = moment.tz(this.startDate, this.event.timezone).toDate();
-
+    if (this.startDate && startTimePick && this.startDate !== '') {
+      this.startTime = moment.tz(`${this.startDate}T${startTimePick}`, this.event.timezone).toDate();
       return true;
     }
     this.startTime = null;
@@ -211,15 +209,23 @@ export class EditEventComponent implements OnInit {
   setEndDateTime() {
     this.endDate = this.eventForm.get('event').get('end_date').value;
     const endTimePick = this.eventForm.get('event').get('end_time_pick').value;
-    this.endHour = Number.parseInt(endTimePick.split(':')[0]);
-    this.endMinute = Number.parseInt(endTimePick.split(':')[1]);
 
-    if (this.endDate !== '' && this.endHour !== '' && this.endMinute !== '' && this.endDate !== null) {
-      this.endTime = moment.tz(this.endDate, this.event.timezone).toDate();
+    if (this.endDate && endTimePick && this.endDate !== '') {
+      this.endTime = moment.tz(`${this.endDate}T${endTimePick}`, this.event.timezone).toDate();
       return true;
     }
     this.endTime = null;
     return false;
+  }
+
+  formatDate(dateStr: string): string {
+    if (!dateStr) return 'Pick date';
+    return moment(dateStr).format('ddd, MMM D');
+  }
+
+  formatTime(timeStr: string): string {
+    if (!timeStr) return 'Time';
+    return moment(timeStr, 'HH:mm').format('hh:mm A');
   }
 
   onTagAdd(value: string) {
