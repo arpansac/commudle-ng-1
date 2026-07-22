@@ -54,13 +54,23 @@ export class RazorpayService {
     });
   }
 
-  createOrFindOrder(orderDetails, parentOrder): Observable<IRazorpayOrder> {
+  createOrFindOrder(
+    orderDetails,
+    parentOrder,
+    options: { trial_verification?: boolean } = {},
+  ): Observable<IRazorpayOrder> {
     let params = new HttpParams();
     if (parentOrder.eto_id) {
       params = params.set('eto_id', parentOrder.eto_id);
     }
     if (parentOrder.po_id) {
       params = params.set('po_id', parentOrder.po_id);
+    }
+    // Auth-only mode for the subscription trial's card-verification order.
+    // Backend overrides the amount to ProductPrice#trial_verification_amount
+    // and sets payment_capture: 0.
+    if (options.trial_verification) {
+      params = params.set('trial_verification', 'true');
     }
     return this.http.post<IRazorpayOrder>(
       this.baseApiService.getRoute(API_ROUTES.RAZORPAY.FIND_OR_CREATE_ORDER),

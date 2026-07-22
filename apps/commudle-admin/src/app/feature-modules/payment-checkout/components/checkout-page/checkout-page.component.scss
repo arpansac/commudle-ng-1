@@ -8,13 +8,13 @@
 
 /* Checkout banner */
 .checkout-banner {
-  @apply com-mb-4 com-mx-2 com-p-5 com-bg-white;
+  @apply com-mb-6 com-mx-2 com-p-5 com-bg-white;
   @apply com-border com-border-solid com-border-Bright-Gray com-shadow-sm;
   @apply sm:com-p-6;
 
   .banner-main {
-    @apply com-flex com-flex-col com-gap-2 com-pb-5 com-mb-5;
-    @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+    @apply com-flex com-flex-col com-gap-2;
+    /* @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray; */
 
     .banner-top-row {
       @apply com-flex com-items-center com-justify-between com-gap-3;

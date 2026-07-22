@@ -39,6 +39,7 @@ import {
   RazorpayService,
   SeoService,
   ToastrService,
+  UserSubscriptionService,
   countries_details,
   ConfettiService,
 } from '@commudle/shared-services';
@@ -112,7 +113,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
    * Small refundable card-verification charge applied by the payment provider (Razorpay)
    * when starting a trialed subscription, to validate the card. It is refunded immediately.
    */
-  readonly cardVerificationCharge = 0.5;
+  readonly cardVerificationCharge = 1;
 
   private destroy$ = new Subject<void>();
   private dialogRef?: NbDialogRef<unknown>;
@@ -125,6 +126,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     private authWatchService: AuthService,
     private purchaseOrderService: PurchaseOrderService,
     private razorpayService: RazorpayService,
+    private userSubscriptionService: UserSubscriptionService,
     private toastrService: ToastrService,
     private dialogService: NbDialogService,
     private discountCodesService: DiscountCodesService,
@@ -423,6 +425,122 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         contact_phone: '',
       },
     };
+  }
+
+  /**
+   * Trial CTA on the checkout page. Two-step flow to verify the user's card
+   * without actually charging them:
+   *   1. Create an auth-only Razorpay Order for a nominal amount (₹2 / $1) via
+   *      `create_trial_verification_order`.
+   *   2. Open the Razorpay Checkout modal so the user completes 2FA on that
+   *      order — funds are held, not captured.
+   *   3. Send the razorpay payment/order/signature to `start_trial`. The
+   *      backend verifies the signature, creates the UserSubscription, and
+   *      refunds the hold. If the refund itself fails Razorpay auto-voids it
+   *      after 5 days — the user still gets the trial.
+   */
+  StartTrial(): void {
+    if (!this.productPrice?.id) {
+      this.toastrService.errorDialog('Invalid product price');
+      return;
+    }
+    if (!this.hasTrial) {
+      this.toastrService.errorDialog('Trial is not available for this plan');
+      return;
+    }
+
+    if (!this.purchaseOrder?.id) {
+      this.toastrService.errorDialog('Invalid purchase order');
+      return;
+    }
+
+    this.isLoadingPayment = true;
+    // Reuse the existing razorpay/find_or_create_order endpoint with the
+    // `trial_verification` flag so the PO's razorpay_order becomes an auth-only
+    // ₹2 / $1 order. Server picks the amount from the plan's currency.
+    this.razorpayService
+      .createOrFindOrder({}, { po_id: this.purchaseOrder.id }, { trial_verification: true })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (order: IRazorpayOrder) => this.openTrialVerificationCheckout(order),
+        error: (err) => {
+          this.isLoadingPayment = false;
+          this.toastrService.errorDialog(err?.error?.message || 'Could not start the trial. Please try again.');
+        },
+      });
+  }
+
+  /**
+   * Opens Razorpay Checkout for the auth-only trial-verification order.
+   * On success, posts the signature to `start_trial` to provision the trial.
+   */
+  private openTrialVerificationCheckout(order: IRazorpayOrder): void {
+    const priceId = this.productPrice?.id;
+    if (!priceId) {
+      this.isLoadingPayment = false;
+      this.toastrService.errorDialog('Invalid product price');
+      return;
+    }
+    const trialDaysLabel = this.trialDays > 0 ? `${this.trialDays}-day free trial` : 'free trial';
+
+    const options = {
+      key: environment.razorpay_key,
+      order_id: order.rzp_order_id,
+      amount: String(order.amount),
+      currency: order.currency,
+      name: this.productPrice?.product_name || 'Commudle',
+      description: `Card verification for ${trialDaysLabel}`,
+      handler: (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => {
+        this.openLoadingDialog();
+        this.userSubscriptionService
+          .startTrial(priceId, {
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_signature: response.razorpay_signature,
+            po_id: this.purchaseOrder?.id,
+          })
+          .pipe(
+            takeUntil(this.destroy$),
+            finalize(() => {
+              this.isLoadingPayment = false;
+              this.closeLoadingDialog();
+            }),
+          )
+          .subscribe({
+            next: () => {
+              this.paymentPaid = true;
+              this.celebratePurchase();
+              this.toastrService.successDialog(
+                this.trialDays > 0
+                  ? `Your ${this.trialDays}-day free trial has started`
+                  : 'Your free trial has started',
+              );
+              this.router.navigate(['/subscriptions']);
+            },
+            error: (err) => {
+              this.toastrService.errorDialog(err?.error?.message || 'Could not start the trial. Please try again.');
+            },
+          });
+      },
+      prefill: {
+        name: this.currentUser?.name || '',
+        email: this.currentUser?.email || '',
+        contact: this.currentUser?.phone || '',
+      },
+      modal: {
+        escape: false,
+        ondismiss: () => {
+          this.isLoadingPayment = false;
+        },
+      },
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.on('payment.failed', (response: { error: { description: string } }) => {
+      this.isLoadingPayment = false;
+      this.toastrService.errorDialog(`Card verification failed: ${response.error.description}`);
+    });
+    rzp.open();
   }
 
   Pay(): void {
@@ -840,7 +958,9 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   private updateTotalPrice(): void {
-    if (!this.purchaseOrder?.amount_to_be_paid) return;
+    // `amount_to_be_paid` can legitimately be 0 (100% discount), so `!value`
+    // wrongly bailed out. Use an explicit null/undefined check instead.
+    if (this.purchaseOrder?.amount_to_be_paid == null) return;
 
     const discountAmount = this.discountCodeApplied ? this.finalDiscountAmount / 100 : 0;
     const basePrice = (this.purchaseOrder.price / 100) * this.quantity * this.subscriptionMonths;
@@ -909,16 +1029,18 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     return this.discountCodeApplied ? this.finalDiscountAmount / 100 : 0;
   }
 
-  // Trials no longer flow through checkout — user starts a trial from the pricing
-  // page (start_trial API), and the checkout page is only reached for a real payment
-  // (fresh purchase, renewal, or prorated add-on). Kept as a getter so the template's
-  // trial UI blocks are naturally hidden without a template surgery pass.
+  // Trial checkout: the pricing page routes to the checkout URL with ?with_trial=1
+  // when the user hit "Start N-day free trial". The checkout page then shows a
+  // "Start trial" CTA (no Razorpay). Clicking it hits POST /user_subscriptions/start_trial
+  // and routes to /subscriptions. See StartTrial() below.
   get hasTrial(): boolean {
-    return false;
+    return (
+      !!this.productPrice?.trial_enabled && (this.productPrice?.trial_period_days || 0) > 0 && !this.isProratedAddon
+    );
   }
 
   get trialDays(): number {
-    return 0;
+    return this.productPrice?.trial_period_days || 0;
   }
 
   get isProratedAddon(): boolean {

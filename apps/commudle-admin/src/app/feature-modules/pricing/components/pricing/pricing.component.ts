@@ -142,7 +142,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   createPurchaseOrderForPrice(gtmPushEventName: string, planType: string, withTrial?: boolean) {
     this.gtmDataLayerPush(gtmPushEventName);
-    let productUuid;
+    let productUuid: string | undefined;
 
     switch (planType) {
       case 'startup': {
@@ -155,6 +155,8 @@ export class PricingComponent implements OnInit, OnDestroy {
       }
     }
 
+    if (!productUuid) return;
+
     // Show loading dialog
     this.isFullPageLoading = true;
     const dialogRef = this.nbDialogService.open(this.loadingTemplate, {
@@ -166,36 +168,34 @@ export class PricingComponent implements OnInit, OnDestroy {
     });
 
     this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
-      if (user) {
-        if (productUuid) {
-          this.productPriceService.createPurchaseOrder(productUuid).subscribe(
-            (response: IPurchaseOrder) => {
-              this.gtm.dataLayerPushEvent('community-subscription-po-created', {
-                com_purchase_order: response.uuid,
-                com_purchase_order_quantity: response.quantity,
-                com_purchase_order_subscription_months: response.notes.subscription_months,
-              });
-              this.isFullPageLoading = false;
-              if (response && response.uuid) {
-                if (this.isBrowser) {
-                  /* Append ?with_trial=1 or ?with_trial=0 so the checkout page knows
-                     whether the user deliberately chose a trial or a direct purchase. */
-                  const trialParam = withTrial === undefined ? '' : `?with_trial=${withTrial ? '1' : '0'}`;
-                  window.location.href = `/checkout/${response.uuid}${trialParam}`;
-                }
-              }
-            },
-            (error) => {
-              this.isFullPageLoading = false;
-              console.error('Error creating purchase order:', error);
-            },
-          );
-        }
-      } else {
+      if (!user) {
         this.isFullPageLoading = false;
         dialogRef.close();
         this.errorHandler.handleError(401, 'Login to apply');
+        return;
       }
+
+      // Both trial and paid CTAs route to the checkout page. Trial mode swaps the
+      // pay button for a "Start trial" CTA that hits the start_trial API — no
+      // Razorpay call. The `?with_trial=1` query param carries the intent through.
+      this.productPriceService.createPurchaseOrder(productUuid).subscribe(
+        (response: IPurchaseOrder) => {
+          this.gtm.dataLayerPushEvent('community-subscription-po-created', {
+            com_purchase_order: response.uuid,
+            com_purchase_order_quantity: response.quantity,
+            com_purchase_order_subscription_months: response.notes.subscription_months,
+          });
+          this.isFullPageLoading = false;
+          if (response && response.uuid && this.isBrowser) {
+            const trialParam = withTrial === true ? '?with_trial=1' : '';
+            window.location.href = `/checkout/${response.uuid}${trialParam}`;
+          }
+        },
+        (error) => {
+          this.isFullPageLoading = false;
+          console.error('Error creating purchase order:', error);
+        },
+      );
     });
   }
 

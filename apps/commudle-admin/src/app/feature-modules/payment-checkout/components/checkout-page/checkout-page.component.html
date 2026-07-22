@@ -34,14 +34,14 @@
 
         <!-- Regular purchase banner -->
         <ng-container *ngIf="!paymentPaid && !isProratedAddon">
-          <p class="banner-eyebrow" *ngIf="productPrice">
+          <!-- <p class="banner-eyebrow" *ngIf="productPrice">
             {{ productPrice.product_name }}
             <span *ngIf="productPrice.plan_name"> · {{ productPrice.plan_name }}</span>
-          </p>
+          </p> -->
           <h1 class="banner-title">Complete your purchase</h1>
-          <p class="banner-subtitle">
+          <!-- <p class="banner-subtitle">
             {{ productPrice?.description || 'Review your order and pay securely to get started right away.' }}
-          </p>
+          </p> -->
         </ng-container>
       </div>
 
@@ -79,7 +79,7 @@
       </div>
 
       <!-- Regular purchase feature highlights -->
-      <div class="banner-features" *ngIf="!isProratedAddon">
+      <!-- <div class="banner-features" *ngIf="!isProratedAddon">
         <div class="feature">
           <span class="feature-icon">
             <fa-icon [icon]="icons.faTag"></fa-icon>
@@ -109,7 +109,7 @@
             <span class="feature-desc">Dedicated payments support</span>
           </div>
         </div>
-      </div>
+      </div> -->
     </com-card>
 
     <div class="two-column-layout medium">
@@ -480,12 +480,12 @@
                   <span class="heading">Billing</span>
                   <span class="value">
                     {{ productPrice.billing_cycle | titlecase }}
-                    <span class="billing-cycle-note" *ngIf="productPrice.billing_cycle === 'yearly'"
+                    <!-- <span class="billing-cycle-note" *ngIf="productPrice.billing_cycle === 'yearly'"
                       >· billed once a year</span
                     >
                     <span class="billing-cycle-note" *ngIf="productPrice.billing_cycle === 'monthly'"
                       >· billed monthly</span
-                    >
+                    > -->
                   </span>
                 </div>
 
@@ -599,7 +599,6 @@
                 <span class="trial-summary">
                   {{ trialDays }}-day free trial ·
                   <strong>{{ cardVerificationCharge | currency : purchaseOrder.currency }}</strong> verification charge
-                  (refunded immediately)
                 </span>
               </div>
 
@@ -620,7 +619,7 @@
                 </span>
               </div>
               <p class="trial-billing-note" *ngIf="hasTrial && withTrial">
-                Refundable card verification, returned immediately. Then
+                Refundable card verification. Then
                 {{ totalPrice | currency : purchaseOrder.currency }} after your {{ trialDays }}-day trial.
               </p>
 
@@ -629,9 +628,16 @@
                 You can cancel your subscription anytime.
               </p>
 
-              <!-- Pay Button -->
+              <!-- Pay / Start Trial button -->
               <div class="pay-button-wrapper" *ngIf="!paymentPaid">
-                <button nbButton status="primary" fullWidth size="large" (click)="Pay()" [disabled]="isLoadingPayment">
+                <button
+                  nbButton
+                  status="primary"
+                  fullWidth
+                  size="large"
+                  (click)="hasTrial && withTrial ? StartTrial() : Pay()"
+                  [disabled]="isLoadingPayment"
+                >
                   <fa-icon [icon]="icons.faLock"></fa-icon>
                   <ng-container *ngIf="isProratedAddon"
                     >Pay {{ purchaseOrder.amount_to_be_paid / 100 | currency : purchaseOrder.currency }}</ng-container

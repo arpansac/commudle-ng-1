@@ -77,13 +77,28 @@ export class UserSubscriptionService {
   }
 
   /**
-   * Start a free trial for a subscription plan. Creates a UserSubscription active for
-   * the plan's trial_period_days with no PurchaseOrder and no Razorpay call. When the
-   * trial nears end the user should renew to pay via a one-time order.
+   * Provision a free trial after the card verification auth has completed.
+   * The frontend obtains the auth-only Razorpay Order for the trial verification
+   * via `RazorpayService.createOrFindOrder(...)` with the `po_id`, opens Razorpay
+   * Checkout, and passes the resulting signature + `po_id` here so the backend
+   * can verify the signature, create the UserSubscription linked to the PO
+   * (with proper quota / metadata / etc.), and refund the hold.
    */
-  startTrial(productPriceId: number): Observable<IUserSubscription> {
+  startTrial(
+    productPriceId: number,
+    verification: {
+      razorpay_payment_id: string;
+      razorpay_order_id: string;
+      razorpay_signature: string;
+      po_id?: number;
+    },
+  ): Observable<IUserSubscription> {
     return this.http.post<IUserSubscription>(this.baseApiService.getRoute(API_ROUTES.USER_SUBSCRIPTIONS.START_TRIAL), {
       product_price_id: productPriceId,
+      po_id: verification.po_id,
+      razorpay_payment_id: verification.razorpay_payment_id,
+      razorpay_order_id: verification.razorpay_order_id,
+      razorpay_signature: verification.razorpay_signature,
     });
   }
 
