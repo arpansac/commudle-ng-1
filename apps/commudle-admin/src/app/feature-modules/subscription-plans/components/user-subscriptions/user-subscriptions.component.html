@@ -102,7 +102,10 @@
               <span class="status-pill status-failed" *ngIf="sub.status === 'payment_failed'">
                 <span class="status-dot"></span>Payment Failed
               </span>
-              <!-- Context menu (Add more communities / Cancel) -->
+              <!-- Context menu (Add more communities / Cancel).
+                   Rendered only when subMenuItemsMap has non-empty items for
+                   this subscription — this guarantees Nebular's [nbContextMenu]
+                   input is always a valid non-empty array. -->
               <button
                 type="button"
                 nbButton
@@ -110,10 +113,10 @@
                 size="small"
                 shape="round"
                 class="sub-menu-trigger"
-                *ngIf="showSubContextMenu(sub)"
-                [nbContextMenu]="getSubMenuItems(sub)"
-                [nbContextMenuTag]="'sub-menu-' + sub.id"
-                nbContextMenuTrigger="click"
+                *ngIf="subMenuItemsMap[sub.id]?.length"
+                (click)="setContextSubscription(sub)"
+                [nbContextMenu]="subMenuItemsMap[sub.id]"
+                nbContextMenuTag="subscription-context-menu"
                 aria-label="More actions"
               >
                 <nb-icon icon="more-vertical-outline"></nb-icon>

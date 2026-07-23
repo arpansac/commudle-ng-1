@@ -27,6 +27,18 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
   addTarget: IUserSubscription | null = null;
   extraCommunities = 1;
 
+  /**
+   * Pre-computed context-menu items per subscription id. Filled after
+   * `fetchSubscriptions` and referenced from the template via
+   * `subMenuItemsMap[sub.id]`. Building this map once (instead of returning a
+   * fresh array from a template method on every change-detection tick) keeps
+   * Nebular's `[nbContextMenu]` binding stable — otherwise clicks silently no-op.
+   */
+  subMenuItemsMap: Record<number, NbMenuItem[]> = {};
+
+  /** Subscription the user last opened the context menu against. Set on kebab click. */
+  activeContextSubscription: IUserSubscription | null = null;
+
   @ViewChild('cancelDialog') cancelDialog: TemplateRef<unknown>;
   @ViewChild('addCommunitiesDialog') addCommunitiesDialog: TemplateRef<unknown>;
 
@@ -58,49 +70,69 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Route Nebular context-menu clicks to the right action on the right subscription.
-   * Each subscription card uses tag `sub-menu-<id>` and each item carries an `action`
-   * discriminator in item.data.
+   * Route Nebular context-menu clicks to the right action on the currently
+   * active subscription (set via `setContextSubscription` on kebab click).
+   * Matches the working pattern used by `AdminHackathonComponent`: filter by
+   * a static tag, then `switch (item.title)`.
    */
   private setupContextMenuListener(): void {
     this.nbMenuService
       .onItemClick()
       .pipe(
-        filter(({ tag }) => !!tag && tag.startsWith('sub-menu-')),
+        filter(({ tag }) => tag === 'subscription-context-menu'),
         takeUntil(this.destroy$),
       )
-      .subscribe(({ tag, item }) => {
-        const subId = Number(tag.replace('sub-menu-', ''));
-        const sub = this.subscriptions.find((s) => s.id === subId);
-        if (!sub || !item?.data?.action) return;
-        if (item.data.action === 'add-more') {
-          this.openAddCommunitiesDialog(sub);
-        } else if (item.data.action === 'cancel') {
-          this.cancelPlan(sub);
+      .subscribe(({ item }) => {
+        const sub = this.activeContextSubscription;
+        if (!sub) return;
+        switch (item.title) {
+          case 'Add more communities':
+            this.openAddCommunitiesDialog(sub);
+            break;
+          case 'Cancel subscription':
+            this.cancelPlan(sub);
+            break;
         }
       });
   }
 
   /**
-   * Build the Nebular context-menu items for a subscription card. Items are filtered
-   * by availability so a subscription with only one applicable action shows just that
-   * one, and the trigger itself is hidden entirely by `showSubContextMenu` when none apply.
+   * Called on kebab click to track which subscription the menu is opening for.
+   * The items array is already populated in `rebuildSubMenuItemsMap` so we
+   * just note the active subscription for the click listener to dispatch on.
    */
-  getSubMenuItems(subscription: IUserSubscription): NbMenuItem[] {
+  setContextSubscription(sub: IUserSubscription): void {
+    this.activeContextSubscription = sub;
+  }
+
+  /**
+   * Rebuild the menu items map for the current subscriptions. Called after
+   * every mutation of `this.subscriptions` so Nebular's `[nbContextMenu]`
+   * binding is never `undefined` — Nebular's `validateItems` throws with
+   * "List of menu items expected" when the input is not an array.
+   */
+  private rebuildSubMenuItemsMap(): void {
+    const map: Record<number, NbMenuItem[]> = {};
+    for (const sub of this.subscriptions) {
+      map[sub.id] = this.buildSubMenuItemsFor(sub);
+    }
+    this.subMenuItemsMap = map;
+  }
+
+  /**
+   * Build the Nebular context-menu items available for a single subscription.
+   * Simple `{ title, icon }` shape — dispatch happens on `item.title` in
+   * `setupContextMenuListener` to match the working hackathon pattern.
+   * Always returns an array (never undefined) so the `[nbContextMenu]` input
+   * never violates Nebular's array check even for subs with no actions.
+   */
+  private buildSubMenuItemsFor(subscription: IUserSubscription): NbMenuItem[] {
     const items: NbMenuItem[] = [];
     if (this.canAddMoreCommunities(subscription)) {
-      items.push({
-        title: 'Add more communities',
-        icon: 'plus-outline',
-        data: { action: 'add-more' },
-      });
+      items.push({ title: 'Add more communities', icon: 'plus-outline' });
     }
     if (this.canCancelSub(subscription)) {
-      items.push({
-        title: 'Cancel subscription',
-        icon: 'close-circle-outline',
-        data: { action: 'cancel' },
-      });
+      items.push({ title: 'Cancel subscription', icon: 'close-circle-outline' });
     }
     return items;
   }
@@ -320,6 +352,7 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
           const idx = this.subscriptions.findIndex((s) => s.id === updated.id);
           if (idx !== -1) {
             this.subscriptions = [...this.subscriptions.slice(0, idx), updated, ...this.subscriptions.slice(idx + 1)];
+            this.rebuildSubMenuItemsMap();
           }
           this.cancelTarget = null;
           ref.close();
@@ -365,6 +398,7 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res) => {
           this.subscriptions = res.values;
+          this.rebuildSubMenuItemsMap();
           this.total = res.total;
           this.page = res.page;
           this.isLoading = false;

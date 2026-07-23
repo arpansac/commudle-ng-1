@@ -10,6 +10,8 @@ export interface IPurchaseOrder {
   uuid: string;
   application_fee_amount: number;
   amount_to_be_paid: number;
+  /** Stamped on the PO when it transitions to `paid`. Format: `CMDLE/26-27/001`. */
+  invoice_number?: string;
   price: number;
   payment_gateway_fee: number;
   currency: string;
@@ -35,6 +37,17 @@ export interface IPurchaseOrder {
     prorated_addon?: string;
     extra_communities?: string;
     user_subscription_id?: string;
+    /**
+     * GST breakdown for Indian orders. Business rule:
+     * - Buyer in Delhi → `igst` (single 18% line).
+     * - Buyer in any other Indian state → `cgst_sgst` (9% + 9% split).
+     * Amounts are in paise, matching `tax_amount` and `amount_to_be_paid`.
+     * Consumed by the checkout order summary to render per-component rows.
+     */
+    tax_breakdown?: {
+      kind: 'cgst_sgst' | 'igst';
+      components: { name: string; rate: number; amount: number }[];
+    };
   };
   total_amount: number;
 }

@@ -19,11 +19,13 @@ export interface Address {
   address: string;
   pin_code: string;
   company_name: string;
-  /** Business contact person's full name — collected in the checkout billing form. */
+  /** State / region — required when the billing country is India, empty otherwise. */
+  state?: string;
+  /** Billing contact person's full name — collected in the checkout billing form. */
   contact_person_name?: string;
-  /** Business contact email — collected in the checkout billing form. */
+  /** Billing contact email — collected in the checkout billing form. */
   contact_email?: string;
-  /** Business contact phone — collected in the checkout billing form. */
+  /** Billing contact phone — collected in the checkout billing form. */
   contact_phone?: string;
 }
 

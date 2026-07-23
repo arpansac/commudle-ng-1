@@ -33,6 +33,7 @@ export * from './lib/user-engagement-records.service';
 export * from './lib/emailer-preview.service';
 export * from './lib/product-price.service';
 export * from './lib/user-subscription.service';
+export * from './lib/finance-dashboard.service';
 export * from './lib/add-to-calender.service';
 export * from './lib/forum.service';
 export * from './lib/forums.store';

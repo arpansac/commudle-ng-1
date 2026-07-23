@@ -1161,6 +1161,12 @@ export const API_ROUTES = {
     CREATE_PURCHASE_ORDER: 'api/v2/product_prices/create_purchase_order', //POST
   },
 
+  FINANCE_DASHBOARD: {
+    PURCHASE_ORDERS: 'api/v2/finance_dashboard/purchase_orders', //GET
+    SEND_INVOICE: 'api/v2/finance_dashboard/send_invoice', //POST — takes purchase_order_uuid as a query param
+    PREVIEW_INVOICE: 'api/v2/finance_dashboard/preview_invoice', //GET — takes purchase_order_uuid as a query param, returns PDF blob
+  },
+
   USER_SUBSCRIPTIONS: {
     INDEX: 'api/v2/user_subscriptions', //GET
     SHOW: 'api/v2/user_subscriptions/show', //GET
