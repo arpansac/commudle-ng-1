@@ -40,11 +40,11 @@
   }
 
   .sponsor-tier {
-    @apply com-mb-8 com-min-w-0 last:com-mb-0;
+    @apply com-mb-6 com-min-w-0 last:com-mb-0;
   }
 
   .sponsor-tier-header {
-    @apply com-mb-3 com-flex com-w-full com-items-center com-gap-2;
+    @apply com-mb-2 com-flex com-w-full com-items-center com-gap-2;
   }
 
   .sponsor-tier-dot {
@@ -52,7 +52,7 @@
   }
 
   .sponsor-tier-heading {
-    @apply com-text-sm com-font-semibold com-uppercase com-tracking-wider;
+    @apply com-text-sm com-font-semibold com-uppercase;
   }
 
   .sponsor-tier-count {
@@ -119,10 +119,22 @@
     &--cols-2 {
       @apply com-grid-cols-1 md:com-grid-cols-2;
     }
+
+    &--cols-3 {
+      @apply com-grid-cols-1 md:com-grid-cols-3;
+    }
+
+    &--cols-4 {
+      @apply com-grid-cols-1 md:com-grid-cols-4;
+    }
+
+    &--horizontal {
+      @apply com-flex com-flex-row com-flex-wrap com-w-full com-gap-3;
+    }
   }
 
   .sponsor-strip {
-    @apply com-relative com-isolate com-overflow-hidden com-grid com-grid-cols-2 com-items-center com-gap-4 com-rounded-xl com-border com-border-solid com-border-Bright-Gray com-bg-white com-p-3 com-no-underline;
+    @apply com-relative com-isolate com-overflow-hidden com-flex com-gap-4 com-rounded-xl com-border com-border-solid com-border-Bright-Gray com-bg-white com-p-3 com-no-underline;
     @apply com-shadow-[0_2px_12px_rgb(15_23_42/0.06)];
     @apply com-origin-center com-duration-200 com-ease-out;
     @apply hover:com-scale-[1.01] hover:com-shadow-[0_4px_16px_rgb(15_23_42/0.08)];
@@ -187,17 +199,8 @@
     }
   }
 
-  .sponsor-strip:not(.sponsor-strip--tier-1) {
-    @apply com-grid-cols-3;
-  }
-
   .sponsor-strip-logo-wrap {
-    @apply com-flex com-w-full com-flex-shrink-0 com-items-center com-justify-center com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-p-2 com-bg-tWhite com-col-span-1 com-aspect-[2/1];
-  }
-
-  .sponsor-strip--tier-1 .sponsor-strip-logo-wrap,
-  .sponsor-strip--tier-2 .sponsor-strip-logo-wrap {
-    @apply com-aspect-[3/1];
+    @apply com-flex com-flex-shrink-0 com-items-center com-justify-center com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-p-2 com-bg-tWhite com-aspect-[1/1];
   }
 
   .sponsor-strip-logo {
@@ -205,15 +208,11 @@
   }
 
   .sponsor-strip-text {
-    @apply com-flex com-min-w-0 com-flex-1 com-flex-col com-gap-0.5 com-col-span-1;
-  }
-
-  .sponsor-strip:not(.sponsor-strip--tier-1) .sponsor-strip-text {
-    @apply com-col-span-2;
+    @apply com-flex com-min-w-0 com-flex-1 com-flex-col com-gap-0.5;
   }
 
   .sponsor-strip-name {
-    @apply com-m-0 com-text-sm com-font-semibold com-text-Yankees-Blue com-w-max;
+    @apply com-m-0 com-text-Yankees-Blue com-w-full com-line-clamp-1;
     @apply com-transition-all com-duration-300 com-ease-out;
 
     &:hover {
@@ -222,16 +221,105 @@
     }
   }
 
-  .sponsor-strip--tier-1 .sponsor-strip-name {
-    @apply com-text-base;
+  // Tier 1: grid-1, horizontal, logo 100x100, name 2xl font-medium
+  .sponsor-strip--tier-1 {
+    @apply com-flex com-flex-row com-items-center com-p-4 com-gap-4;
+
+    .sponsor-strip-logo-wrap {
+      @apply com-w-[100px] com-h-[100px] com-rounded-lg com-p-6px;
+    }
+
+    .sponsor-strip-name {
+      @apply com-text-xl com-font-medium com-w-full com-line-clamp-1;
+    }
+
+    .sponsor-strip-description {
+      @apply com-text-base com-line-clamp-1;
+    }
+  }
+
+  // Tier 2: grid-2, horizontal, logo 80x80, name xl font-medium
+  .sponsor-strip--tier-2 {
+    @apply com-flex com-flex-row com-items-center com-p-4 com-gap-3;
+
+    .sponsor-strip-logo-wrap {
+      @apply com-w-20 com-h-20 com-rounded-lg com-p-6px;
+    }
+
+    .sponsor-strip-name {
+      @apply com-text-lg com-font-medium com-w-full com-line-clamp-1;
+    }
+
+    .sponsor-strip-description {
+      @apply com-text-sm com-line-clamp-1;
+    }
+  }
+
+  // Tier 3: grid-3, vertical, logo 60x60, name lg font-medium
+  .sponsor-strip--tier-3 {
+    @apply com-flex md:com-flex-col com-flex-row com-items-center com-p-4 com-gap-3;
+
+    .sponsor-strip-logo-wrap {
+      @apply com-w-[60px] com-h-[60px] com-mx-auto com-rounded-lg com-p-6px;
+    }
+
+    .sponsor-strip-text {
+      @apply md:com-items-center com-items-start;
+    }
+
+    .sponsor-strip-name {
+      @apply com-text-base com-font-medium com-w-full com-line-clamp-1;
+    }
+
+    .sponsor-strip-description {
+      @apply com-text-xs com-line-clamp-1;
+    }
+  }
+
+  // Tier 4: grid-4, vertical, logo 40x40, name base font-medium
+  .sponsor-strip--tier-4 {
+    @apply com-flex md:com-flex-col com-flex-row com-items-center com-p-4 com-gap-2;
+
+    .sponsor-strip-logo-wrap {
+      @apply com-w-10 com-h-10 com-mx-auto com-rounded-lg com-p-6px;
+    }
+
+    .sponsor-strip-name {
+      @apply com-text-sm com-font-medium com-w-full com-line-clamp-1;
+    }
+
+    .sponsor-strip-text {
+      @apply md:com-items-center com-items-start;
+    }
+
+    .sponsor-strip-description {
+      @apply com-text-xs com-line-clamp-1;
+    }
+  }
+
+  // Tier 5: horizontal inline, logo 20x20, name sm font-medium
+  .sponsor-strip--tier-5 {
+    @apply com-flex com-flex-row com-items-center com-gap-2 com-p-4 com-rounded-lg com-w-full;
+
+    .sponsor-strip-logo-wrap {
+      @apply com-w-8 com-h-8 com-rounded-lg com-p-6px com-shrink-0;
+    }
+
+    .sponsor-strip-text {
+      @apply com-items-start;
+    }
+
+    .sponsor-strip-name {
+      @apply com-text-xs com-font-medium com-w-full com-line-clamp-1;
+    }
+
+    .sponsor-strip-description {
+      @apply com-text-xs com-line-clamp-1;
+    }
   }
 
   .sponsor-strip-description {
-    @apply com-m-0 com-text-xs com-font-normal com-text-gray-500 com-line-clamp-2;
-  }
-
-  .sponsor-strip--tier-1 .sponsor-strip-description {
-    @apply com-text-sm com-text-gray-500;
+    @apply com-m-0 com-font-normal com-text-gray-500;
   }
 
   commudle-discussion {

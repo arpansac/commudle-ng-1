@@ -30,17 +30,23 @@
         <div
           class="sponsor-tier-strips"
           [ngClass]="{
-            'sponsor-tier-strips--cols-1': eventSponsorGrouped.value?.[0]?.tier_priority <= 2,
-            'sponsor-tier-strips--cols-2': eventSponsorGrouped.value?.[0]?.tier_priority >= 3
+            'sponsor-tier-strips--cols-1': eventSponsorGrouped.value?.[0]?.tier_priority === 1,
+            'sponsor-tier-strips--cols-2': eventSponsorGrouped.value?.[0]?.tier_priority === 2,
+            'sponsor-tier-strips--cols-3': eventSponsorGrouped.value?.[0]?.tier_priority === 3,
+            'sponsor-tier-strips--cols-4': eventSponsorGrouped.value?.[0]?.tier_priority === 4,
+            'sponsor-tier-strips--horizontal': eventSponsorGrouped.value?.[0]?.tier_priority >= 5
           }"
         >
           <a
             *ngFor="let eventSponsor of eventSponsorGrouped.value || []"
-            [href]="eventSponsor.sponsor.link ? eventSponsor.sponsor.link : null"
+            [attr.href]="eventSponsor.sponsor.link || null"
             target="_blank"
             class="sponsor-strip"
             [class.sponsor-strip--tier-1]="eventSponsor.tier_priority === 1"
             [class.sponsor-strip--tier-2]="eventSponsor.tier_priority === 2"
+            [class.sponsor-strip--tier-3]="eventSponsor.tier_priority === 3"
+            [class.sponsor-strip--tier-4]="eventSponsor.tier_priority === 4"
+            [class.sponsor-strip--tier-5]="eventSponsor.tier_priority >= 5"
             [ngClass]="{ 'sponsor-strip--no-link': !eventSponsor.sponsor.link }"
             [style.--sponsor-logo-gradient]="sponsorLogoTints[eventSponsor.id]?.gradient"
             (mouseenter)="onSponsorStripGradientEnter($event)"
