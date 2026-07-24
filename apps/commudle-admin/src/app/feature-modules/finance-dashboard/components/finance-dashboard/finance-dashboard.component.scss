@@ -126,6 +126,38 @@
     &.fd-status-full_refund {
       @apply com-bg-Infra-Red com-text-white;
     }
+
+    &.fd-status-cancelled {
+      @apply com-bg-Infra-Red com-text-white;
+    }
+
+    &.fd-status-inline {
+      @apply com-ml-2 com-text-xs;
+    }
+  }
+
+  .fd-cancel-dialog {
+    @apply com-w-full com-max-w-lg;
+  }
+
+  .fd-cancel-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+
+  .fd-cancel-body {
+    @apply com-flex com-flex-col com-gap-3 com-text-sm;
+  }
+
+  .fd-cancel-reason {
+    @apply com-flex com-flex-col com-gap-1;
+
+    label {
+      @apply com-text-xs com-font-medium com-text-Cadet-Grey;
+    }
+  }
+
+  .fd-cancel-actions {
+    @apply com-flex com-justify-end com-gap-2;
   }
 
   .fd-actions {

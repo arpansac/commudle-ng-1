@@ -1,7 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { IPurchaseOrder } from '@commudle/shared-models';
-import { FinanceDashboardService, SeoService, ToastrService } from '@commudle/shared-services';
-import { faReceipt, faSearch, faSpinner, faPaperPlane, faCircleCheck, faEye } from '@fortawesome/free-solid-svg-icons';
+import { AuthService, FinanceDashboardService, SeoService, ToastrService } from '@commudle/shared-services';
+import { NbDialogRef, NbDialogService } from '@commudle/theme';
+import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
+import {
+  faReceipt,
+  faSearch,
+  faSpinner,
+  faPaperPlane,
+  faCircleCheck,
+  faEye,
+  faBan,
+} from '@fortawesome/free-solid-svg-icons';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 
 @Component({
@@ -30,6 +40,17 @@ export class FinanceDashboardComponent implements OnInit, OnDestroy {
   justSent = new Set<string>();
   /** UUIDs currently loading a preview — used to disable the preview button. */
   previewing = new Set<string>();
+  /** UUIDs currently mid-cancel — used to disable the cancel button. */
+  cancelling = new Set<string>();
+
+  /** True when the signed-in user has SYSTEM_ADMINISTRATOR — cancel button gate. */
+  isSystemAdmin = false;
+
+  /** PO staged for cancellation while the confirm dialog is open. */
+  cancelTarget: IPurchaseOrder | null = null;
+  cancelReason = '';
+
+  @ViewChild('cancelInvoiceDialog') cancelInvoiceDialog!: TemplateRef<unknown>;
 
   readonly icons = {
     faReceipt,
@@ -38,6 +59,7 @@ export class FinanceDashboardComponent implements OnInit, OnDestroy {
     faPaperPlane,
     faCircleCheck,
     faEye,
+    faBan,
   };
 
   private destroy$ = new Subject<void>();
@@ -46,6 +68,8 @@ export class FinanceDashboardComponent implements OnInit, OnDestroy {
     private financeDashboardService: FinanceDashboardService,
     private toastrService: ToastrService,
     private seoService: SeoService,
+    private authService: AuthService,
+    private dialogService: NbDialogService,
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +81,11 @@ export class FinanceDashboardComponent implements OnInit, OnDestroy {
     this.query$.pipe(debounceTime(400), distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(() => {
       this.page = 1;
       this.fetchPurchaseOrders();
+    });
+
+    // Cancel button visibility — SYS_ADMIN only, matching the backend guard.
+    this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
+      this.isSystemAdmin = !!user?.user_roles?.includes(EUserRoles.SYSTEM_ADMINISTRATOR);
     });
   }
 
@@ -135,6 +164,56 @@ export class FinanceDashboardComponent implements OnInit, OnDestroy {
         error: (err) => {
           this.sending.delete(po.uuid);
           this.toastrService.errorDialog(err?.error?.message || 'Failed to send the invoice email.');
+        },
+      });
+  }
+
+  /** True when the invoice document has been voided by an admin. */
+  isInvoiceCancelled(po: IPurchaseOrder): boolean {
+    return po.invoice_metadata?.invoice_status === 'cancelled';
+  }
+
+  /** SYS_ADMIN sees "Cancel invoice" only when the PO is paid and not already cancelled. */
+  canCancelInvoice(po: IPurchaseOrder): boolean {
+    return this.isSystemAdmin && po.status === 'paid' && !this.isInvoiceCancelled(po);
+  }
+
+  /** Opens the confirm dialog. Reason input starts blank each time. */
+  openCancelDialog(po: IPurchaseOrder): void {
+    if (!this.canCancelInvoice(po)) return;
+    this.cancelTarget = po;
+    this.cancelReason = '';
+    this.dialogService.open(this.cancelInvoiceDialog, { closeOnBackdropClick: false });
+  }
+
+  /** Confirmed from the dialog — POSTs to the backend and refreshes the row. */
+  confirmCancelInvoice(ref: NbDialogRef<unknown>): void {
+    const target = this.cancelTarget;
+    if (!target?.uuid || this.cancelling.has(target.uuid)) return;
+
+    this.cancelling.add(target.uuid);
+    this.financeDashboardService
+      .cancelInvoice(target.uuid, this.cancelReason)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (updated) => {
+          this.cancelling.delete(target.uuid);
+          const idx = this.purchaseOrders.findIndex((p) => p.uuid === updated.uuid);
+          if (idx !== -1) {
+            this.purchaseOrders = [
+              ...this.purchaseOrders.slice(0, idx),
+              updated,
+              ...this.purchaseOrders.slice(idx + 1),
+            ];
+          }
+          this.cancelTarget = null;
+          this.cancelReason = '';
+          ref.close();
+          this.toastrService.successDialog(`Invoice ${updated.invoice_number || ''} cancelled.`);
+        },
+        error: (err) => {
+          this.cancelling.delete(target.uuid);
+          this.toastrService.errorDialog(err?.error?.message || 'Failed to cancel the invoice.');
         },
       });
   }

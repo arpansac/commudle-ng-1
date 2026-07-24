@@ -212,209 +212,181 @@
               *ngIf="purchaseOrder.status !== EPurchaseOrderStatus.PAID"
               [formGroup]="contactInfoForm"
             >
-              <!-- Personal billing summary (default) -->
-              <div class="personal-billing" *ngIf="!isBusinessBilling">
-                <div class="personal-details">
-                  <div class="name">{{ currentUser?.name | titlecase }}</div>
-                  <span class="email">{{ currentUser?.email }}</span>
-                  <span class="phone" *ngIf="currentUser?.phone">{{ currentUser.phone }}</span>
-                </div>
-                <fa-icon class="verified" [icon]="icons.faCircleCheck"></fa-icon>
-              </div>
-
-              <!-- Business toggle -->
-              <div
-                class="business-toggle-box"
-                (click)="contactInfoForm.get('isBusiness')?.setValue(!isBusinessBilling)"
-              >
-                <nb-checkbox formControlName="isBusiness"></nb-checkbox>
-                <div>
-                  <p class="toggle-label">Purchasing for a business?</p>
-                  <p class="toggle-sub">Add company details to receive a GST invoice</p>
-                </div>
-              </div>
-
-              <!-- Business details -->
-              <div class="business-fields" *ngIf="isBusinessBilling">
-                <commudle-alert
-                  [info]="true"
-                  message="Add your company details so we can generate a proper invoice for your business"
-                ></commudle-alert>
-
-                <!-- Country -->
+              <!--
+                Two-column responsive grid on ≥sm screens, single column on mobile.
+                Field order matches natural tab flow: Name → Email → Phone →
+                Country → State/PIN → Address → GSTIN.
+              -->
+              <div class="business-fields">
+                <!-- Full Name (own row, full width) -->
                 <div class="form-field">
-                  <label for="country">Country <span class="required">*</span></label>
-                  <div class="native-select">
-                    <select id="country" formControlName="country">
-                      <option value="" disabled>Select country</option>
-                      <option *ngFor="let country of countries" [value]="country.code">{{ country.name }}</option>
-                    </select>
-                  </div>
+                  <label for="name">Full Name <span class="required">*</span></label>
+                  <input nbInput fullWidth id="name" formControlName="name" placeholder="Enter your full name" />
                   <commudle-alert
-                    [error]="!!(contactInfoForm.get('country')?.invalid && contactInfoForm.get('country')?.touched)"
-                    errorMessage="Country is required"
+                    [error]="!!(contactInfoForm.get('name')?.invalid && contactInfoForm.get('name')?.touched)"
+                    errorMessage="Full name is required"
                   >
                   </commudle-alert>
                 </div>
 
-                <!-- Company Name -->
+                <!-- Company Name (own row, full width, optional) -->
                 <div class="form-field">
-                  <label for="companyName">Company Name <span class="required">*</span></label>
+                  <label for="companyName">Company Name <span class="optional">(optional)</span></label>
                   <input
                     nbInput
                     fullWidth
                     id="companyName"
                     formControlName="companyName"
-                    placeholder="Enter company name"
+                    placeholder="Company name for invoice"
                   />
-                  <commudle-alert
-                    [error]="
-                      !!(contactInfoForm.get('companyName')?.invalid && contactInfoForm.get('companyName')?.touched)
-                    "
-                    errorMessage="Company name is required"
-                  >
-                  </commudle-alert>
                 </div>
 
-                <!-- Company Address -->
+                <!-- Row: Email | Phone -->
+                <div class="form-row">
+                  <div class="form-field">
+                    <label for="email">Email <span class="required">*</span></label>
+                    <input
+                      nbInput
+                      fullWidth
+                      id="email"
+                      type="email"
+                      formControlName="email"
+                      placeholder="Enter email"
+                    />
+                    <commudle-alert
+                      *ngIf="
+                        contactInfoForm.get('email')?.touched && contactInfoForm.get('email')?.errors?.['required']
+                      "
+                      [error]="true"
+                      errorMessage="Email is required"
+                    >
+                    </commudle-alert>
+                    <commudle-alert
+                      *ngIf="contactInfoForm.get('email')?.touched && contactInfoForm.get('email')?.errors?.['email']"
+                      [error]="true"
+                      errorMessage="Enter a valid email address"
+                    >
+                    </commudle-alert>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="phone">Phone <span class="required">*</span></label>
+                    <input
+                      nbInput
+                      fullWidth
+                      id="phone"
+                      type="tel"
+                      formControlName="phone"
+                      placeholder="Enter phone number"
+                    />
+                    <commudle-alert
+                      [error]="!!(contactInfoForm.get('phone')?.invalid && contactInfoForm.get('phone')?.touched)"
+                      errorMessage="Phone number is required"
+                    >
+                    </commudle-alert>
+                  </div>
+                </div>
+
+                <!--
+                  Row: Country | (State for India) OR Country | PIN/Zip (rest of world).
+                  Keeps the row balanced whether or not the state field applies.
+                -->
+                <div class="form-row">
+                  <div class="form-field">
+                    <label for="country">Country <span class="required">*</span></label>
+                    <div class="native-select">
+                      <select id="country" formControlName="country">
+                        <option value="" disabled>Select country</option>
+                        <option *ngFor="let country of countries" [value]="country.code">{{ country.name }}</option>
+                      </select>
+                    </div>
+                    <commudle-alert
+                      [error]="!!(contactInfoForm.get('country')?.invalid && contactInfoForm.get('country')?.touched)"
+                      errorMessage="Country is required"
+                    >
+                    </commudle-alert>
+                  </div>
+
+                  <div class="form-field" *ngIf="isIndiaSelected; else zipInCountryRow">
+                    <label for="state">State <span class="required">*</span></label>
+                    <div class="native-select">
+                      <select id="state" formControlName="state">
+                        <option value="" disabled>Select state</option>
+                        <option *ngFor="let s of indianStates" [value]="s.name">{{ s.name }}</option>
+                      </select>
+                    </div>
+                    <commudle-alert
+                      [error]="!!(contactInfoForm.get('state')?.invalid && contactInfoForm.get('state')?.touched)"
+                      errorMessage="State is required"
+                    >
+                    </commudle-alert>
+                  </div>
+                  <ng-template #zipInCountryRow>
+                    <div class="form-field">
+                      <label for="pinCode">Zip Code <span class="required">*</span></label>
+                      <input nbInput fullWidth id="pinCode" formControlName="pinCode" placeholder="Enter zip code" />
+                      <commudle-alert
+                        [error]="!!(contactInfoForm.get('pinCode')?.invalid && contactInfoForm.get('pinCode')?.touched)"
+                        errorMessage="Zip code is required"
+                      >
+                      </commudle-alert>
+                    </div>
+                  </ng-template>
+                </div>
+
+                <!--
+                  Row: PIN Code (India only, since non-India PIN sat next to
+                  Country above). Address then spans both columns below.
+                -->
+                <div class="form-row" *ngIf="isIndiaSelected">
+                  <div class="form-field">
+                    <label for="pinCode">Pin Code <span class="required">*</span></label>
+                    <input nbInput fullWidth id="pinCode" formControlName="pinCode" placeholder="Enter pin code" />
+                    <commudle-alert
+                      [error]="!!(contactInfoForm.get('pinCode')?.invalid && contactInfoForm.get('pinCode')?.touched)"
+                      errorMessage="Pin code is required"
+                    >
+                    </commudle-alert>
+                  </div>
+                  <div class="form-field-spacer"></div>
+                </div>
+
+                <!-- Row: Address (textarea, full width) -->
                 <div class="form-field">
-                  <label for="companyAddress">Company Address <span class="required">*</span></label>
+                  <label for="address">Address <span class="required">*</span></label>
                   <textarea
                     nbInput
                     fullWidth
-                    id="companyAddress"
-                    formControlName="companyAddress"
-                    placeholder="Enter company address"
+                    id="address"
+                    formControlName="address"
+                    placeholder="Enter company or business address if purchasing for a business"
                     rows="3"
                   ></textarea>
                   <commudle-alert
-                    [error]="
-                      !!(
-                        contactInfoForm.get('companyAddress')?.invalid && contactInfoForm.get('companyAddress')?.touched
-                      )
-                    "
-                    errorMessage="Company address is required"
+                    [error]="!!(contactInfoForm.get('address')?.invalid && contactInfoForm.get('address')?.touched)"
+                    errorMessage="Address is required"
                   >
                   </commudle-alert>
                 </div>
 
-                <!-- Pin Code -->
-                <div class="form-field">
-                  <label for="pinCode">Pin Code <span class="required">*</span></label>
-                  <input nbInput fullWidth id="pinCode" formControlName="pinCode" placeholder="Enter pin code" />
-                  <commudle-alert
-                    [error]="!!(contactInfoForm.get('pinCode')?.invalid && contactInfoForm.get('pinCode')?.touched)"
-                    errorMessage="Pin code is required"
+                <!-- Row: GSTIN registration (India only) -->
+                <ng-container *ngIf="isIndiaSelected">
+                  <div
+                    class="business-toggle-box"
+                    (click)="contactInfoForm.get('isGstRegistered')?.setValue(!isGstRegistered)"
                   >
-                  </commudle-alert>
-                </div>
+                    <nb-checkbox formControlName="isGstRegistered"></nb-checkbox>
+                    <div>
+                      <p class="toggle-label">Are you registered for GSTIN?</p>
+                      <p class="toggle-sub">Add your GSTIN to receive a GST invoice</p>
+                    </div>
+                  </div>
 
-                <!-- PAN Card (required for business) -->
-                <div class="form-field">
-                  <label for="panCard">PAN Card <span class="required">*</span></label>
-                  <input nbInput fullWidth id="panCard" formControlName="panCard" placeholder="Enter PAN card number" />
-                  <commudle-alert
-                    [error]="!!(contactInfoForm.get('panCard')?.invalid && contactInfoForm.get('panCard')?.touched)"
-                    errorMessage="PAN card is required"
-                  >
-                  </commudle-alert>
-                </div>
-
-                <!-- GST Number (India only) -->
-                <div class="form-field" *ngIf="isIndiaSelected">
-                  <label for="gst">GST Number <span class="optional">(optional)</span></label>
-                  <input
-                    nbInput
-                    fullWidth
-                    id="gst"
-                    formControlName="gst"
-                    placeholder="Enter GST number if applicable"
-                  />
-                  <commudle-alert
-                    [info]="true"
-                    message="Add your GST number and we'll share a GST invoice with you"
-                  ></commudle-alert>
-                </div>
-
-                <!-- Company Contact Person Name (prefilled from user profile) -->
-                <div class="form-field">
-                  <label for="companyContactPersonName">
-                    Company Contact Person Full Name <span class="required">*</span>
-                  </label>
-                  <input
-                    nbInput
-                    fullWidth
-                    id="companyContactPersonName"
-                    formControlName="companyContactPersonName"
-                    placeholder="Enter contact person's full name"
-                  />
-                  <commudle-alert
-                    [error]="
-                      !!(
-                        contactInfoForm.get('companyContactPersonName')?.invalid &&
-                        contactInfoForm.get('companyContactPersonName')?.touched
-                      )
-                    "
-                    errorMessage="Contact person name is required"
-                  >
-                  </commudle-alert>
-                </div>
-
-                <!-- Company Contact Email -->
-                <div class="form-field">
-                  <label for="companyContactEmail">Company Contact Email <span class="required">*</span></label>
-                  <input
-                    nbInput
-                    fullWidth
-                    id="companyContactEmail"
-                    type="email"
-                    formControlName="companyContactEmail"
-                    placeholder="Enter contact email"
-                  />
-                  <commudle-alert
-                    *ngIf="
-                      contactInfoForm.get('companyContactEmail')?.touched &&
-                      contactInfoForm.get('companyContactEmail')?.errors?.['required']
-                    "
-                    [error]="true"
-                    errorMessage="Contact email is required"
-                  >
-                  </commudle-alert>
-                  <commudle-alert
-                    *ngIf="
-                      contactInfoForm.get('companyContactEmail')?.touched &&
-                      contactInfoForm.get('companyContactEmail')?.errors?.['email']
-                    "
-                    [error]="true"
-                    errorMessage="Enter a valid email address"
-                  >
-                  </commudle-alert>
-                </div>
-
-                <!-- Company Contact Phone -->
-                <div class="form-field">
-                  <label for="companyContactPhone">
-                    Company Contact Phone Number <span class="required">*</span>
-                  </label>
-                  <input
-                    nbInput
-                    fullWidth
-                    id="companyContactPhone"
-                    type="tel"
-                    formControlName="companyContactPhone"
-                    placeholder="Enter contact phone number"
-                  />
-                  <commudle-alert
-                    [error]="
-                      !!(
-                        contactInfoForm.get('companyContactPhone')?.invalid &&
-                        contactInfoForm.get('companyContactPhone')?.touched
-                      )
-                    "
-                    errorMessage="Contact phone number is required"
-                  >
-                  </commudle-alert>
-                </div>
+                  <div class="form-field" *ngIf="isGstRegistered">
+                    <label for="gst">GSTIN <span class="optional">(optional)</span></label>
+                    <input nbInput fullWidth id="gst" formControlName="gst" placeholder="Enter your GSTIN" />
+                  </div>
+                </ng-container>
               </div>
             </div>
 
@@ -423,20 +395,32 @@
                 <span class="heading">Billed to</span>
                 <span class="value">{{ purchaseOrder.contact_info.address?.company_name | titlecase }}</span>
               </div>
+              <div class="detail-row" *ngIf="purchaseOrder.contact_info.email">
+                <span class="heading">Email</span>
+                <span class="value">{{ purchaseOrder.contact_info.email }}</span>
+              </div>
+              <div class="detail-row" *ngIf="purchaseOrder.contact_info.phone_number">
+                <span class="heading">Phone</span>
+                <span class="value">{{ purchaseOrder.contact_info.phone_number }}</span>
+              </div>
               <div class="detail-row" *ngIf="purchaseOrder.contact_info.address?.address">
                 <span class="heading">Address</span>
                 <span class="value">{{ purchaseOrder.contact_info.address?.address }}</span>
               </div>
+              <div class="detail-row" *ngIf="purchaseOrder.contact_info.address?.state">
+                <span class="heading">State</span>
+                <span class="value">{{ purchaseOrder.contact_info.address?.state }}</span>
+              </div>
               <div class="detail-row" *ngIf="purchaseOrder.contact_info.address?.pin_code">
-                <span class="heading">Pin Code</span>
+                <span class="heading">Pin Code / Zip Code</span>
                 <span class="value">{{ purchaseOrder.contact_info.address?.pin_code }}</span>
               </div>
-              <div class="detail-row" *ngIf="purchaseOrder.contact_info.tax_info?.pan_card">
-                <span class="heading">PAN Card</span>
-                <span class="value">{{ purchaseOrder.contact_info.tax_info?.pan_card }}</span>
+              <div class="detail-row" *ngIf="purchaseOrder.contact_info.country_code">
+                <span class="heading">Country</span>
+                <span class="value">{{ purchaseOrder.contact_info.country_code }}</span>
               </div>
               <div class="detail-row" *ngIf="purchaseOrder.contact_info.tax_info?.gst">
-                <span class="heading">GST Number</span>
+                <span class="heading">GSTIN</span>
                 <span class="value">{{ purchaseOrder.contact_info.tax_info?.gst }}</span>
               </div>
             </div>
@@ -543,9 +527,13 @@
                   <span class="value">-{{ discountValue | currency : purchaseOrder.currency }}</span>
                 </div>
 
-                <!-- Tax (charged on one-time orders; included in the total below) -->
+                <!-- Tax (charged on one-time orders; included in the total below).
+                     Shows the total rate (e.g. "Tax (18%)"). CGST/SGST/IGST
+                     split is only rendered on the invoice PDF. -->
                 <div class="summary-row tax-row" *ngIf="purchaseOrder.tax_amount">
-                  <span class="heading">Tax</span>
+                  <span class="heading">
+                    Tax<ng-container *ngIf="purchaseOrder.tax_rate"> ({{ purchaseOrder.tax_rate }}%)</ng-container>
+                  </span>
                   <span class="value">{{ purchaseOrder.tax_amount / 100 | currency : purchaseOrder.currency }}</span>
                 </div>
               </div>

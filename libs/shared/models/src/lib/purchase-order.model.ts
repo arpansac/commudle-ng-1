@@ -10,8 +10,20 @@ export interface IPurchaseOrder {
   uuid: string;
   application_fee_amount: number;
   amount_to_be_paid: number;
-  /** Stamped on the PO when it transitions to `paid`. Format: `CMDLE/26-27/001`. */
+  /** Stamped on the PO when it transitions to `paid`. Format: `CMDLE-SYS/26-27/001`. */
   invoice_number?: string;
+  /**
+   * Invoice document lifecycle. `status: 'cancelled'` means the document has
+   * been voided by a sys admin. When absent (or `status: 'active'`) the invoice
+   * is still valid. The PDF renders a cancelled watermark when voided.
+   */
+  invoice_metadata?: {
+    invoice_status?: 'active' | 'cancelled';
+    invoice_cancelled_at?: string;
+    invoice_cancellation_reason?: string;
+    invoice_cancelled_by_id?: number | string;
+  };
+  invoice_cancelled_by?: { id: number; name: string; email: string } | null;
   price: number;
   payment_gateway_fee: number;
   currency: string;

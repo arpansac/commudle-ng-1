@@ -61,4 +61,18 @@ export class PurchaseOrderService {
       { purchase_order_uuid: purchaseOrderUuid },
     );
   }
+
+  /**
+   * Owner-only self-service: enqueue an invoice email for the given paid PO.
+   * The backend uses the buyer's contact_info email (or user email) as the
+   * recipient — no need to pass one from the client.
+   */
+  sendInvoice(purchaseOrderUuid: string): Observable<{ queued: boolean; invoice_number: string; sent_to: string }> {
+    const params = new HttpParams().set('purchase_order_uuid', purchaseOrderUuid);
+    return this.http.post<{ queued: boolean; invoice_number: string; sent_to: string }>(
+      this.baseApiService.getRoute(API_ROUTES.PURCHASE_ORDER.SEND_INVOICE),
+      {},
+      { params },
+    );
+  }
 }

@@ -82,6 +82,13 @@
                   </td>
                   <td>
                     <span class="fd-status" [ngClass]="'fd-status-' + po.status">{{ po.status }}</span>
+                    <span
+                      class="fd-status fd-status-cancelled fd-status-inline"
+                      *ngIf="isInvoiceCancelled(po)"
+                      nbTooltip="Invoice voided by an admin"
+                    >
+                      Invoice cancelled
+                    </span>
                   </td>
                   <td class="fd-muted">
                     {{ po.created_at | date : 'MMM d, y' }}
@@ -104,6 +111,7 @@
                       <fa-icon *ngIf="!previewing.has(po.uuid)" [icon]="icons.faEye"></fa-icon>
                       Preview
                     </button>
+                    &nbsp;
                     <button
                       nbButton
                       size="tiny"
@@ -129,6 +137,21 @@
                       <span *ngIf="justSent.has(po.uuid)">Sent</span>
                       <span *ngIf="!justSent.has(po.uuid)">Email invoice</span>
                     </button>
+                    &nbsp;
+                    <button
+                      *ngIf="canCancelInvoice(po)"
+                      nbButton
+                      size="tiny"
+                      status="danger"
+                      shape="round"
+                      outline
+                      [disabled]="cancelling.has(po.uuid)"
+                      [nbTooltip]="'Void this invoice (system admin only)'"
+                      (click)="openCancelDialog(po)"
+                    >
+                      <fa-icon [icon]="icons.faBan"></fa-icon>
+                      Cancel invoice
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -151,3 +174,63 @@
     </div>
   </div>
 </div>
+
+<!-- Cancel invoice confirmation dialog. SYS_ADMIN only — the button that
+     opens this is gated behind `canCancelInvoice(po)`. -->
+<ng-template #cancelInvoiceDialog let-ref="dialogRef">
+  <nb-card class="fd-cancel-dialog">
+    <nb-card-header class="fd-cancel-header">
+      <span>Cancel invoice?</span>
+      <button
+        ghost
+        nbButton
+        size="small"
+        shape="round"
+        (click)="ref.close()"
+        [disabled]="cancelTarget?.uuid && cancelling.has(cancelTarget.uuid)"
+      >
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body class="fd-cancel-body">
+      <p>
+        This will void invoice <strong>{{ cancelTarget?.invoice_number }}</strong> for
+        <strong>{{ cancelTarget?.user?.name }}</strong
+        >. The row and invoice number stay, but the PDF will render as cancelled and the buyer's book copy becomes
+        unusable for GST filings. This can't be undone.
+      </p>
+      <div class="fd-cancel-reason">
+        <label for="fd-cancel-reason">Reason (optional)</label>
+        <textarea
+          id="fd-cancel-reason"
+          nbInput
+          fullWidth
+          rows="3"
+          [(ngModel)]="cancelReason"
+          placeholder="e.g. Issued in error, duplicate of CMDLE-SYS/26-27/031"
+          [disabled]="cancelTarget?.uuid && cancelling.has(cancelTarget.uuid)"
+        ></textarea>
+      </div>
+    </nb-card-body>
+    <nb-card-footer class="fd-cancel-actions">
+      <button
+        nbButton
+        status="basic"
+        shape="semi-round"
+        (click)="ref.close()"
+        [disabled]="cancelTarget?.uuid && cancelling.has(cancelTarget.uuid)"
+      >
+        Keep invoice
+      </button>
+      <button
+        nbButton
+        status="danger"
+        shape="semi-round"
+        (click)="confirmCancelInvoice(ref)"
+        [disabled]="cancelTarget?.uuid && cancelling.has(cancelTarget.uuid)"
+      >
+        {{ cancelTarget?.uuid && cancelling.has(cancelTarget.uuid) ? 'Cancelling...' : 'Yes, cancel invoice' }}
+      </button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

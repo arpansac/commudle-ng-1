@@ -70,12 +70,49 @@
             <p class="td-secondary">{{ order.currency }}</p>
           </td>
 
-          <!-- Status -->
+          <!-- Status pill + row action (Pay now for unpaid, Email invoice for paid). -->
           <td>
-            <span class="ph-status" [ngClass]="getStatusClass(order.status)">
-              <span class="ph-dot"></span>
-              {{ order.status | titlecase }}
-            </span>
+            <div class="ph-status-cell">
+              <span class="ph-status" [ngClass]="getStatusClass(order.status)">
+                <span class="ph-dot"></span>
+                {{ order.status | titlecase }}
+              </span>
+
+              <!-- Pay now: only for unpaid POs with a checkout uuid. -->
+              <a
+                *ngIf="order.status === 'unpaid' && order.uuid"
+                [routerLink]="['/checkout', order.uuid]"
+                class="ph-action-btn"
+                nbButton
+                size="tiny"
+                status="primary"
+                shape="semi-round"
+              >
+                <nb-icon icon="credit-card-outline"></nb-icon>
+                Pay now
+              </a>
+
+              <!-- Email invoice: only for paid POs. -->
+              <button
+                *ngIf="order.status === 'paid' && order.uuid"
+                type="button"
+                class="ph-action-btn"
+                nbButton
+                size="tiny"
+                status="basic"
+                shape="semi-round"
+                [disabled]="sending.has(order.uuid)"
+                (click)="sendInvoice(order)"
+              >
+                <nb-icon *ngIf="sending.has(order.uuid)" icon="loader-outline"></nb-icon>
+                <nb-icon
+                  *ngIf="!sending.has(order.uuid) && justSent.has(order.uuid)"
+                  icon="checkmark-outline"
+                ></nb-icon>
+                <nb-icon *ngIf="!sending.has(order.uuid) && !justSent.has(order.uuid)" icon="email-outline"></nb-icon>
+                {{ justSent.has(order.uuid) ? 'Sent' : 'Email invoice' }}
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>

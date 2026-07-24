@@ -57,4 +57,18 @@ export class FinanceDashboardService {
       responseType: 'blob',
     });
   }
+
+  /**
+   * SYS_ADMIN-only action that voids the invoice document. Row + invoice
+   * number are preserved for audit; the PDF renders a cancelled watermark
+   * on subsequent previews. Returns the updated PurchaseOrder.
+   */
+  cancelInvoice(purchaseOrderUuid: string, reason?: string): Observable<IPurchaseOrder> {
+    const params = new HttpParams().set('purchase_order_uuid', purchaseOrderUuid);
+    return this.http.post<IPurchaseOrder>(
+      this.baseApiService.getRoute(API_ROUTES.FINANCE_DASHBOARD.CANCEL_INVOICE),
+      reason ? { reason } : {},
+      { params },
+    );
+  }
 }

@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   NbButtonModule,
   NbCardModule,
+  NbDialogModule,
   NbIconModule,
   NbInputModule,
   NbSpinnerModule,
@@ -30,6 +31,7 @@ import { FinanceDashboardRoutingModule } from './finance-dashboard-routing.modul
     NbInputModule,
     NbSpinnerModule,
     NbTooltipModule,
+    NbDialogModule.forChild(),
     SharedPipesModule,
     SharedComponentsModule,
     FinanceDashboardRoutingModule,

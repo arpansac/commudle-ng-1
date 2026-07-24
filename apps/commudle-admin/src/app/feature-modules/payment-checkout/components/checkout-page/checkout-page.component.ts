@@ -41,6 +41,7 @@ import {
   ToastrService,
   UserSubscriptionService,
   countries_details,
+  indian_states,
   ConfettiService,
 } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
@@ -82,6 +83,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   trialLocked: boolean | undefined = undefined;
 
   readonly countries = countries_details;
+  readonly indianStates = indian_states;
 
   discountCode = '';
   discountCodeApplied = false;
@@ -140,18 +142,21 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   private initCheckoutForm(): FormGroup {
+    // Billing details form — always collected on checkout. Values are stored in
+    // contact_info (country_code + address JSONB + tax_info JSONB) on save.
     return this.fb.group({
-      isBusiness: [false],
-      country: [''],
+      name: ['', Validators.required],
+      // Optional — when set, becomes the invoice "Billed to" name; otherwise
+      // we fall back to the personal name so the invoice never renders blank.
       companyName: [''],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', Validators.required],
+      country: ['', Validators.required],
+      state: [''],
+      address: ['', Validators.required],
+      pinCode: ['', Validators.required],
+      isGstRegistered: [false],
       gst: [''],
-      panCard: [''],
-      companyAddress: [''],
-      pinCode: [''],
-      // Company contact person details — stored in contact_info.address JSONB on save.
-      companyContactPersonName: [''],
-      companyContactEmail: ['', [Validators.email]],
-      companyContactPhone: [''],
     });
   }
 
@@ -235,29 +240,36 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   private prefillContactForm(contactInfo: IContactInfo): void {
     if (!contactInfo) return;
 
-    // Treat an order with a saved address / pin / GST as a business billing
-    const hasBusinessInfo = !!(
-      contactInfo.address?.address ||
-      contactInfo.address?.pin_code ||
-      contactInfo.tax_info?.gst ||
-      contactInfo.tax_info?.pan_card
-    );
+    // Email/phone canonical location is the top level of contact_info. Fall
+    // back to old address.contact_email / address.contact_phone for legacy
+    // orders, then to the current user's profile as a last resort.
+    const legacyEmail = (contactInfo.address as { contact_email?: string })?.contact_email;
+    const legacyPhone = (contactInfo.address as { contact_phone?: string })?.contact_phone;
+
+    const personName =
+      contactInfo.address?.contact_person_name || contactInfo.address?.company_name || this.currentUser?.name || '';
+
+    // Backwards compat: older records stored the personal name inside
+    // `address.company_name` when there was no separate company field. Only
+    // prefill Company Name when it clearly differs from the personal name so
+    // the user doesn't see their own name duplicated in the Company field.
+    const savedCompanyName = contactInfo.address?.company_name || '';
+    const companyName = savedCompanyName && savedCompanyName !== personName ? savedCompanyName : '';
 
     this.contactInfoForm.patchValue({
-      isBusiness: hasBusinessInfo,
+      name: personName,
+      companyName,
+      email: contactInfo.email || legacyEmail || this.currentUser?.email || '',
+      phone: contactInfo.phone_number?.toString() || legacyPhone || this.currentUser?.phone || '',
       country: contactInfo.country_code || this.getUserCountryCode(),
-      companyName: contactInfo.address?.company_name || '',
-      gst: contactInfo.tax_info?.gst || '',
-      panCard: contactInfo.tax_info?.pan_card || '',
-      companyAddress: contactInfo.address?.address || '',
+      state: contactInfo.address?.state || '',
+      address: contactInfo.address?.address || '',
       pinCode: contactInfo.address?.pin_code || '',
-      // Prefill contact person name from the saved value, else from the current user.
-      companyContactPersonName: contactInfo.address?.contact_person_name || this.currentUser?.name || '',
-      companyContactEmail: contactInfo.address?.contact_email || '',
-      companyContactPhone: contactInfo.address?.contact_phone || '',
+      isGstRegistered: !!contactInfo.tax_info?.gst,
+      gst: contactInfo.tax_info?.gst || '',
     });
 
-    this.updateBillingValidators(hasBusinessInfo);
+    this.updateBillingValidators();
   }
 
   private handleOrderStatus(lastSegment: string): void {
@@ -279,34 +291,42 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   private fetchCurrentUser(): void {
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
       this.currentUser = user;
-      // Default the billing country to the user's current country if not already set
-      if (user && !this.contactInfoForm.get('country')?.value) {
-        this.contactInfoForm.patchValue({ country: this.getUserCountryCode() }, { emitEvent: false });
+      if (!user) return;
+
+      // Prefill name / email / phone from profile only if the fields are still
+      // empty (avoids clobbering values the user has already edited or the ones
+      // restored from an existing contact_info).
+      const patch: Record<string, unknown> = {};
+      if (!this.contactInfoForm.get('name')?.value) patch['name'] = user.name || '';
+      if (!this.contactInfoForm.get('email')?.value) patch['email'] = user.email || '';
+      if (!this.contactInfoForm.get('phone')?.value) patch['phone'] = user.phone || '';
+      if (!this.contactInfoForm.get('country')?.value) patch['country'] = this.getUserCountryCode();
+      if (Object.keys(patch).length) {
+        this.contactInfoForm.patchValue(patch, { emitEvent: false });
       }
       // Once the billing country is known, sync tax into the displayed order total.
-      if (user) this.refreshOrderTotals();
+      this.refreshOrderTotals();
     });
   }
 
   private setupBillingTypeListener(): void {
-    // Apply the correct validators for the default (personal) billing type
-    this.updateBillingValidators(false);
+    this.updateBillingValidators();
 
+    // State is required only for India — re-run validator setup when the
+    // country changes so the "state is required" validator toggles correctly.
+    // Country changes also affect the tax total, so refresh the order.
     this.contactInfoForm
-      .get('isBusiness')
+      .get('country')
       ?.valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe((isBusiness: boolean) => {
-        if (isBusiness && !this.contactInfoForm.get('country')?.value) {
-          this.contactInfoForm.patchValue({ country: this.getUserCountryCode() }, { emitEvent: false });
-        }
-        this.updateBillingValidators(isBusiness);
-        // Billing type changes which country is used for tax, so refresh the order total.
+      .subscribe(() => {
+        this.updateBillingValidators();
         this.refreshOrderTotals();
       });
 
-    // Recompute tax (and the displayed total) when the billing country changes.
+    // State drives the GST split (CGST+SGST vs IGST) — refresh totals so the
+    // stored breakdown matches the new selection.
     this.contactInfoForm
-      .get('country')
+      .get('state')
       ?.valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(() => this.refreshOrderTotals());
   }
@@ -322,36 +342,16 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  private updateBillingValidators(isBusiness: boolean): void {
-    const businessFields = [
-      'companyName',
-      'companyAddress',
-      'pinCode',
-      'country',
-      'panCard',
-      'companyContactPersonName',
-      'companyContactEmail',
-      'companyContactPhone',
-    ];
-    businessFields.forEach((field) => {
-      const control = this.contactInfoForm.get(field);
-      if (isBusiness) {
-        // Email keeps its format validator on top of required.
-        if (field === 'companyContactEmail') {
-          control?.setValidators([Validators.required, Validators.email]);
-        } else {
-          control?.setValidators(Validators.required);
-        }
-      } else {
-        // Restore email format validator when leaving business mode; strip required.
-        if (field === 'companyContactEmail') {
-          control?.setValidators([Validators.email]);
-        } else {
-          control?.clearValidators();
-        }
-      }
-      control?.updateValueAndValidity({ emitEvent: false });
-    });
+  // State is required only when the billing country is India. Everything else
+  // has its required validator declared at form init.
+  private updateBillingValidators(): void {
+    const stateCtrl = this.contactInfoForm.get('state');
+    if (this.isIndiaSelected) {
+      stateCtrl?.setValidators(Validators.required);
+    } else {
+      stateCtrl?.clearValidators();
+    }
+    stateCtrl?.updateValueAndValidity({ emitEvent: false });
   }
 
   private getUserCountryCode(): string {
@@ -365,64 +365,60 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     return 'IN';
   }
 
-  get isBusinessBilling(): boolean {
-    return !!this.contactInfoForm.get('isBusiness')?.value;
-  }
-
   get isIndiaSelected(): boolean {
     return this.contactInfoForm.get('country')?.value === 'IN';
+  }
+
+  get isGstRegistered(): boolean {
+    return !!this.contactInfoForm.get('isGstRegistered')?.value;
   }
 
   // The billing country used to compute tax. Must mirror buildContactInfoPayload so the
   // displayed (tax-inclusive) total matches what is charged at payment time.
   private get billingCountryCode(): string {
-    return this.isBusinessBilling
-      ? this.contactInfoForm.get('country')?.value || this.getUserCountryCode()
-      : this.getUserCountryCode();
+    return this.contactInfoForm.get('country')?.value || this.getUserCountryCode();
   }
 
   private buildContactInfoPayload(): {
     country_code: string;
+    email: string;
+    phone_number: string;
     tax_info: { gst: string; pan_card: string };
     address: {
       address: string;
       company_name: string;
       pin_code: string;
+      state: string;
       contact_person_name: string;
-      contact_email: string;
-      contact_phone: string;
     };
   } {
-    if (this.isBusinessBilling) {
-      const country = this.contactInfoForm.get('country')?.value || this.getUserCountryCode();
-      return {
-        country_code: country,
-        tax_info: {
-          gst: country === 'IN' ? this.contactInfoForm.get('gst')?.value || '' : '',
-          pan_card: this.contactInfoForm.get('panCard')?.value || '',
-        },
-        address: {
-          address: this.contactInfoForm.get('companyAddress')?.value || '',
-          company_name: this.contactInfoForm.get('companyName')?.value || '',
-          pin_code: this.contactInfoForm.get('pinCode')?.value || '',
-          contact_person_name: this.contactInfoForm.get('companyContactPersonName')?.value || '',
-          contact_email: this.contactInfoForm.get('companyContactEmail')?.value || '',
-          contact_phone: this.contactInfoForm.get('companyContactPhone')?.value || '',
-        },
-      };
-    }
+    const country = this.contactInfoForm.get('country')?.value || this.getUserCountryCode();
+    const name = this.contactInfoForm.get('name')?.value || '';
+    const companyNameRaw = (this.contactInfoForm.get('companyName')?.value || '').trim();
+    const isIndia = country === 'IN';
 
-    // Personal billing uses the current user's details
+    // ContactInfo has top-level `email` and `phone_number` columns — those are
+    // the canonical spots for the buyer's contact fields. The invoice PDF and
+    // the paid-state UI read them from the top level. `company_name` on the
+    // address JSONB is kept as the invoice's "Billed to" name — we prefer the
+    // company name when the user provided one, otherwise fall back to the
+    // personal name so the invoice never renders blank.
     return {
-      country_code: this.getUserCountryCode(),
-      tax_info: { gst: '', pan_card: '' },
+      country_code: country,
+      email: this.contactInfoForm.get('email')?.value || '',
+      phone_number: this.contactInfoForm.get('phone')?.value || '',
+      tax_info: {
+        // GST is India-only, optional, and only meaningful if the user confirmed
+        // they're registered for GSTIN. Blank otherwise.
+        gst: isIndia && this.isGstRegistered ? this.contactInfoForm.get('gst')?.value || '' : '',
+        pan_card: '',
+      },
       address: {
-        address: '',
-        company_name: this.currentUser?.name || '',
-        pin_code: '',
-        contact_person_name: this.currentUser?.name || '',
-        contact_email: '',
-        contact_phone: '',
+        address: this.contactInfoForm.get('address')?.value || '',
+        company_name: companyNameRaw || name,
+        pin_code: this.contactInfoForm.get('pinCode')?.value || '',
+        state: isIndia ? this.contactInfoForm.get('state')?.value || '' : '',
+        contact_person_name: name,
       },
     };
   }
@@ -997,6 +993,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         subscription_months: this.subscriptionMonths,
         discount_code: this.discountCode,
         country_code: this.billingCountryCode,
+        state: this.isIndiaSelected ? this.contactInfoForm.get('state')?.value || '' : '',
       })
       .pipe(takeUntil(this.destroy$))
       .subscribe({

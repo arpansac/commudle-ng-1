@@ -213,6 +213,21 @@
       @apply com-flex com-flex-col com-gap-4;
     }
 
+    /* Two-column row on ≥sm screens, single column stack on mobile. Wraps
+       pairs of `.form-field` so related inputs (email/phone, country/state)
+       sit side-by-side and the form doesn't require as much scrolling. */
+    .form-row {
+      @apply com-grid com-grid-cols-1 com-gap-4;
+      @apply sm:com-grid-cols-2;
+    }
+
+    /* Invisible placeholder cell used to keep a single-child row aligned to
+       the left column on ≥sm screens (e.g. PIN Code when State is on its own
+       row above and the second column would otherwise stretch to full width). */
+    .form-field-spacer {
+      @apply com-hidden sm:com-block;
+    }
+
     .form-field {
       @apply com-flex com-flex-col com-gap-1.5;
 

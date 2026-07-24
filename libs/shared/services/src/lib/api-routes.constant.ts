@@ -1146,6 +1146,7 @@ export const API_ROUTES = {
     CONTACT_INFO: 'api/v2/purchase_orders/create_contact_info', //POST
     UPDATE: 'api/v2/purchase_orders', //PUT
     MARK_PAID_FOR_FULLY_DISCOUNTED: 'api/v2/purchase_orders/mark_paid_for_fully_discounted', //PUT
+    SEND_INVOICE: 'api/v2/purchase_orders/send_invoice', //POST — buyer-only, takes purchase_order_uuid as a query param
   },
 
   USER_ENGAGEMENT_RECORDS: {
@@ -1165,6 +1166,7 @@ export const API_ROUTES = {
     PURCHASE_ORDERS: 'api/v2/finance_dashboard/purchase_orders', //GET
     SEND_INVOICE: 'api/v2/finance_dashboard/send_invoice', //POST — takes purchase_order_uuid as a query param
     PREVIEW_INVOICE: 'api/v2/finance_dashboard/preview_invoice', //GET — takes purchase_order_uuid as a query param, returns PDF blob
+    CANCEL_INVOICE: 'api/v2/finance_dashboard/cancel_invoice', //POST — SYS_ADMIN only, takes purchase_order_uuid as a query param + optional { reason }
   },
 
   USER_SUBSCRIPTIONS: {

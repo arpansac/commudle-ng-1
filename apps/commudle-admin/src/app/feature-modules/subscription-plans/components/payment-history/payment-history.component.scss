@@ -94,6 +94,23 @@
         }
       }
     }
+
+    /* Wraps the status pill + row actions (Pay now / Email invoice) in a
+       vertical stack with breathing room between them. */
+    .ph-status-cell {
+      @apply com-flex com-flex-col com-items-start com-gap-2;
+    }
+
+    /* Row actions (Pay now / Email invoice). Compact, aligned left, and
+       consistent regardless of which button renders on the row. */
+    .ph-action-btn {
+      @apply com-inline-flex com-items-center com-gap-1;
+      @apply com-text-xs com-font-semibold com-whitespace-nowrap;
+
+      nb-icon {
+        @apply com-text-sm;
+      }
+    }
   }
 
   .ph-pagination {
