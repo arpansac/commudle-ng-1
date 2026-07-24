@@ -153,23 +153,28 @@
             <div
               class="sponsor-tier-strips"
               [ngClass]="{
-                'sponsor-tier-strips--cols-1': hackathonSponsorGrouped.value?.[0]?.tier_priority <= 2,
-                'sponsor-tier-strips--cols-2': hackathonSponsorGrouped.value?.[0]?.tier_priority >= 3
+                'sponsor-tier-strips--cols-1': hackathonSponsorGrouped.value?.[0]?.tier_priority === 1,
+                'sponsor-tier-strips--cols-2': hackathonSponsorGrouped.value?.[0]?.tier_priority === 2,
+                'sponsor-tier-strips--cols-3': hackathonSponsorGrouped.value?.[0]?.tier_priority === 3,
+                'sponsor-tier-strips--cols-4': hackathonSponsorGrouped.value?.[0]?.tier_priority === 4,
+                'sponsor-tier-strips--horizontal': hackathonSponsorGrouped.value?.[0]?.tier_priority >= 5
               }"
             >
               <a
                 *ngFor="let hackathonSponsor of hackathonSponsorGrouped.value || []"
-                [href]="hackathonSponsor.sponsor.link ? hackathonSponsor.sponsor.link : null"
+                [attr.href]="hackathonSponsor.sponsor.link || null"
                 target="_blank"
                 class="sponsor-strip"
                 [class.sponsor-strip--tier-1]="hackathonSponsor.tier_priority === 1"
                 [class.sponsor-strip--tier-2]="hackathonSponsor.tier_priority === 2"
+                [class.sponsor-strip--tier-3]="hackathonSponsor.tier_priority === 3"
+                [class.sponsor-strip--tier-4]="hackathonSponsor.tier_priority === 4"
+                [class.sponsor-strip--tier-5]="hackathonSponsor.tier_priority >= 5"
                 [ngClass]="{ 'sponsor-strip--no-link': !hackathonSponsor.sponsor.link }"
                 [style.--sponsor-logo-gradient]="sponsorLogoTints[hackathonSponsor.id]?.gradient"
                 (mouseenter)="onSponsorStripGradientEnter($event)"
                 (mousemove)="onSponsorStripGradientMove($event)"
                 (mouseleave)="onSponsorStripGradientLeave($event)"
-                (click)="!hackathonSponsor.sponsor.link && $event.preventDefault()"
               >
                 <span class="sponsor-strip-mouse-gradient" aria-hidden="true"></span>
                 <div class="sponsor-strip-logo-wrap">
