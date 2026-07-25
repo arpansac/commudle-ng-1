@@ -142,6 +142,7 @@
                 status="primary"
                 size="small"
                 shape="round"
+                class="shine-btn"
                 *ngIf="sub.status === 'active' && canCreateKommunity(sub)"
                 (click)="createCommunity(sub)"
               >
@@ -154,12 +155,14 @@
               class="remaining-hint"
               *ngIf="sub.status === 'active' && canCreateKommunity(sub) && effectiveCommunityMax(sub)"
             >
-              {{ getRemaining(sub.kommunities_count, effectiveCommunityMax(sub)) }} slot(s) remaining, you're only
+              {{ getRemaining(sub.kommunities_count, effectiveCommunityMax(sub)) }} communities remaining, you're only
               halfway through what you paid for
             </span>
 
             <!-- Pending warning -->
-            <span class="pending-hint" *ngIf="sub.status === 'pending'"> Complete payment to unlock this slot. </span>
+            <span class="pending-hint" *ngIf="sub.status === 'pending'">
+              Complete payment to unlock this community.
+            </span>
 
             <!-- Community grid -->
             <div class="community-grid" *ngIf="(sub.kommunities?.length || 0) > 0">
@@ -205,6 +208,7 @@
                 status="primary"
                 size="small"
                 shape="round"
+                class="shine-btn"
                 *ngIf="sub.status === 'active' && canCreateCommunityGroup(sub)"
                 (click)="createOrganization(sub)"
               >
@@ -264,7 +268,7 @@
 <ng-template #addCommunitiesDialog let-ref="dialogRef">
   <nb-card class="cancel-dialog">
     <nb-card-header class="cancel-dialog-header">
-      <span>Add more community slots</span>
+      <span>Add more communities</span>
       <button ghost nbButton size="small" shape="round" (click)="ref.close()" [disabled]="isAddingCommunities">
         <nb-icon icon="close"></nb-icon>
       </button>
@@ -272,7 +276,7 @@
     <nb-card-body class="cancel-dialog-body">
       <p class="cancel-dialog-text">
         You'll be charged a prorated amount for the remaining days in your current billing cycle. Starting next cycle,
-        your recurring charge will increase by the new slots.
+        your recurring charge will increase by the new communities.
       </p>
       <div class="quantity-stepper">
         <label><strong>Extra Communities:</strong></label>

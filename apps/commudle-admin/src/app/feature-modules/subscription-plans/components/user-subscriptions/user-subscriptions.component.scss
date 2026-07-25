@@ -271,6 +271,34 @@
         @apply com-text-xs com-font-medium com-px-2.5 com-py-1 com-rounded-full;
         @apply com-bg-Bright-Gray-opacity-30 com-text-Cadet-Grey;
       }
+
+      // Shine sweep on the "+ Create New Community" CTA to draw attention to it
+      .shine-btn {
+        @apply com-relative com-overflow-hidden;
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -75%;
+          width: 50%;
+          height: 100%;
+          background: linear-gradient(
+            120deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.6) 50%,
+            rgba(255, 255, 255, 0) 100%
+          );
+          transform: skewX(-20deg);
+          animation: shine-sweep 2.8s ease-in-out infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          &::after {
+            animation: none;
+          }
+        }
+      }
     }
 
     .remaining-hint {
@@ -349,6 +377,18 @@
   // ── Pagination ────────────────────────────────────────────
   .pagination-wrapper {
     @apply com-pt-4;
+  }
+}
+
+@keyframes shine-sweep {
+  0% {
+    left: -75%;
+  }
+  50% {
+    left: 125%;
+  }
+  100% {
+    left: 125%;
   }
 }
 
