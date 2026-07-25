@@ -71,13 +71,24 @@ footer {
     ul {
       li {
         @apply com-mb-2;
+
         a {
           @apply com-text-sm com-text-gray-500 hover:com-text-primary-500;
         }
+
         .nested-list {
           @apply com-mt-2;
         }
       }
+    }
+  }
+
+  .footer-badges {
+    @apply com-flex com-flex-wrap com-items-center com-gap-4 com-mt-8;
+
+    img,
+    .tiny-startup {
+      @apply com-h-[52px] com-w-[145px];
     }
   }
 
@@ -135,6 +146,7 @@ footer {
 
   a {
     @apply com-relative;
+
     app-badge {
       @apply com-right-[-52px];
     }
