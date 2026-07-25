@@ -21,11 +21,7 @@
               <app-loading-spinner></app-loading-spinner>
             </div>
             <div class="event-card-list">
-              <commudle-event-card
-                *ngFor="let event of events"
-                [event]="event"
-                [horizontalScroll]="true"
-              ></commudle-event-card>
+              <commudle-event-card *ngFor="let event of events" [event]="event"></commudle-event-card>
             </div>
           </com-card-body>
         </com-card>

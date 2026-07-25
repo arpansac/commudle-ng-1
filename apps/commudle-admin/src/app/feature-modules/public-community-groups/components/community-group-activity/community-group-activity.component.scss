@@ -53,7 +53,11 @@ com-card {
 }
 
 .event-card-list {
-  @apply com-flex com-gap-8 md:com-gap-4 md:com-grid md:com-grid-cols-3;
+  @apply com-flex com-flex-col md:com-gap-4 com-gap-3 md:com-grid md:com-grid-cols-3;
+
+  commudle-event-card {
+    @apply com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-overflow-hidden com-p-3;
+  }
 }
 
 .channels-cards-list {
