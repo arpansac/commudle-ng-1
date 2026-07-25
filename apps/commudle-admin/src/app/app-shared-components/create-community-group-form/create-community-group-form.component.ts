@@ -166,7 +166,7 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
       next: (communityGroup: ICommunityGroup) => {
         this.isSubmitting = false;
         this.createdCommunityGroup = communityGroup;
-        this.confettiService.celebrate();
+        this.confettiService.celebrateCreation();
       },
       error: () => {
         this.isSubmitting = false;

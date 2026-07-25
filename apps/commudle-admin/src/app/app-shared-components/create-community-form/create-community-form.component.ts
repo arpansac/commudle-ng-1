@@ -197,7 +197,7 @@ export class CreateCommunityFormComponent implements OnInit, AfterViewInit, OnDe
       next: (community: ICommunity) => {
         this.isSubmitting = false;
         this.createdCommunity = community;
-        this.confettiService.celebrate();
+        this.confettiService.celebrateCreation();
       },
       error: () => {
         this.isSubmitting = false;

@@ -61,4 +61,43 @@ export class ConfettiService {
     };
     requestAnimationFrame(frame);
   }
+
+  /**
+   * Fireworks-style celebration for a new Community / Organisation being created.
+   * Visually distinct from `celebrate()` (used on the generic checkout success
+   * screen): staggered star bursts from random points across the top of the
+   * screen instead of a single center burst + side cannons.
+   */
+  celebrateCreation(durationMs = 2200): void {
+    if (!this.isBrowser) return;
+
+    const colors = ['#3366ff', '#7c4dff', '#00d68f', '#ffaa00', '#ffffff'];
+
+    const end = Date.now() + durationMs;
+
+    const burst = () => {
+      confetti({
+        particleCount: 40,
+        startVelocity: 35,
+        spread: 360,
+        ticks: 80,
+        gravity: 0.9,
+        decay: 0.92,
+        scalar: 1.1,
+        shapes: ['star'],
+        colors,
+        origin: {
+          x: Math.random() * 0.8 + 0.1,
+          y: Math.random() * 0.3,
+        },
+        zIndex: 100000,
+      });
+
+      if (Date.now() < end) {
+        setTimeout(burst, 350);
+      }
+    };
+
+    burst();
+  }
 }
