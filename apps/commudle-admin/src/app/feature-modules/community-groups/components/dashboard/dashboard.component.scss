@@ -15,7 +15,7 @@
 }
 
 .sidebar {
-  @apply com-sticky com-top-16 com-h-[calc(100vh-4rem)] com-flex-shrink-0 com-flex com-flex-col com-overflow-hidden;
+  @apply com-sticky com-top-navbar-desktop com-h-[calc(100vh-52px)] com-flex-shrink-0 com-flex com-flex-col com-overflow-hidden;
 }
 
 a {
@@ -109,6 +109,6 @@ a {
   @apply com-flex-1 com-min-w-0;
 
   .router {
-    @apply com-w-full com-max-w-screen-xl com-mx-auto;
+    @apply com-w-full com-max-w-screen-xl com-mx-auto com-mt-4;
   }
 }

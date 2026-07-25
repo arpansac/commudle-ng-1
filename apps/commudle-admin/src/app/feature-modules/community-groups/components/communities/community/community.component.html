@@ -9,15 +9,15 @@
       <p class="page-subtitle">
         Manage every community under <strong>{{ communityGroup.name }}</strong>
       </p>
-      <div class="header-quota" *ngIf="communityGroup.community_count_limit">
+      <!-- <div class="header-quota" *ngIf="communityGroup.community_count_limit">
         <span
           class="quota-count"
           [class.quota-full]="communities && communities.length >= communityGroup.community_count_limit"
         >
           {{ communities?.length || 0 }} / {{ communityGroup.community_count_limit }}
         </span>
-        <span class="quota-label">slots used</span>
-      </div>
+        <span class="quota-label">communities used</span>
+      </div> -->
     </div>
 
     <div class="header-actions">
@@ -48,7 +48,7 @@
         (click)="openAddCommunitiesDialog()"
       >
         <nb-icon icon="plus-circle-outline"></nb-icon>
-        Add more slots
+        Add more communities
       </button>
     </div>
   </header>
@@ -65,137 +65,112 @@
     <p class="empty-desc">Create your first community under this organization to get started.</p>
   </div>
 
-  <!-- Community grid -->
-  <div class="community-grid" *ngIf="!isLoading && communities && communities.length > 0">
-    <article class="community-card" *ngFor="let community of communities">
-      <!-- Card header: name + upcoming events -->
-      <div class="card-header">
-        <div class="community-meta">
-          <a class="community-name" [routerLink]="['/communities', community.slug]" target="_blank">
-            {{ community.name }}
-            <nb-icon icon="external-link-outline"></nb-icon>
-          </a>
-          <span class="community-slug" *ngIf="community.location">
-            <nb-icon icon="pin-outline"></nb-icon>
-            {{ community.location }}
-          </span>
-        </div>
-      </div>
+  <!-- Community table -->
+  <div class="community-table-container" *ngIf="!isLoading && communities && communities.length > 0">
+    <div class="table-wrapper">
+      <table class="community-table">
+        <thead>
+          <tr class="table-header">
+            <th>Community</th>
+            <th>Members</th>
+            <th>Events</th>
+            <th>Channels</th>
+            <th>Upcoming events</th>
+            <th>Email visibility</th>
+            <th>Payments</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="community-row" *ngFor="let community of communities">
+            <td>
+              <div class="community-meta">
+                <a class="community-name" [routerLink]="['/communities', community.slug]" target="_blank">
+                  {{ community.name }}
+                  <nb-icon icon="external-link-outline"></nb-icon>
+                </a>
+                <span class="community-slug" *ngIf="community.location">
+                  <nb-icon icon="pin-outline"></nb-icon>
+                  {{ community.location }}
+                </span>
+              </div>
+            </td>
 
-      <!-- Stats row -->
-      <div class="card-stats">
-        <div class="stat">
-          <span class="stat-icon"><nb-icon icon="people-outline"></nb-icon></span>
-          <div class="stat-text">
-            <span class="stat-value">{{ community.members_count || 0 }}</span>
-            <span class="stat-label">Members</span>
-          </div>
-        </div>
+            <td class="stat-cell">{{ community.members_count || 0 }}</td>
+            <td class="stat-cell">{{ community.completed_events_count || 0 }}</td>
+            <td class="stat-cell">{{ community.community_channels_count || 0 }}</td>
 
-        <div class="stat">
-          <span class="stat-icon"><nb-icon icon="calendar-outline"></nb-icon></span>
-          <div class="stat-text">
-            <span class="stat-value">{{ community.completed_events_count || 0 }}</span>
-            <span class="stat-label">Events</span>
-          </div>
-        </div>
+            <td class="events-cell">
+              <ul class="event-list" *ngIf="community.upcoming_events?.length">
+                <li *ngFor="let event of community.upcoming_events">
+                  <a [routerLink]="['/communities', community.slug, 'events', event.id]" target="_blank">
+                    {{ event.name }}
+                    <nb-icon icon="external-link-outline"></nb-icon>
+                  </a>
+                </li>
+              </ul>
+              <span class="no-events" *ngIf="!community.upcoming_events?.length">No upcoming events</span>
+            </td>
 
-        <div class="stat">
-          <span class="stat-icon"><nb-icon icon="hash-outline"></nb-icon></span>
-          <div class="stat-text">
-            <span class="stat-value">{{ community.community_channels_count || 0 }}</span>
-            <span class="stat-label">Channels</span>
-          </div>
-        </div>
-      </div>
+            <td>
+              <nb-toggle
+                (click)="toggleEmailVisibility(community.id)"
+                status="basic"
+                [(checked)]="community.emails_visible"
+              ></nb-toggle>
+            </td>
 
-      <!-- Upcoming events -->
-      <div class="card-section" *ngIf="community.upcoming_events?.length">
-        <p class="section-label">
-          <nb-icon icon="clock-outline"></nb-icon>
-          Upcoming events
-        </p>
-        <ul class="event-list">
-          <li *ngFor="let event of community.upcoming_events">
-            <a [routerLink]="['/communities', community.slug, 'events', event.id]" target="_blank">
-              {{ event.name }}
-              <nb-icon icon="external-link-outline"></nb-icon>
-            </a>
-          </li>
-        </ul>
-      </div>
+            <td>
+              <nb-toggle
+                (click)="togglePaymentEnable(community.id)"
+                status="basic"
+                [(checked)]="community.payments_enabled"
+              ></nb-toggle>
+            </td>
 
-      <p class="no-events" *ngIf="!community.upcoming_events?.length">
-        <nb-icon icon="clock-outline"></nb-icon>
-        No upcoming events
-      </p>
-
-      <!-- Toggles -->
-      <div class="card-toggles">
-        <div class="toggle-row">
-          <div class="toggle-info">
-            <span class="toggle-label">Email visibility</span>
-            <span class="toggle-desc">Let members see each other's emails</span>
-          </div>
-          <nb-toggle
-            (click)="toggleEmailVisibility(community.id)"
-            status="basic"
-            [(checked)]="community.emails_visible"
-          ></nb-toggle>
-        </div>
-
-        <div class="toggle-row">
-          <div class="toggle-info">
-            <span class="toggle-label">Payments</span>
-            <span class="toggle-desc">Accept paid registrations and tickets</span>
-          </div>
-          <nb-toggle
-            (click)="togglePaymentEnable(community.id)"
-            status="basic"
-            [(checked)]="community.payments_enabled"
-          ></nb-toggle>
-        </div>
-      </div>
-
-      <!-- Quick actions -->
-      <div class="card-actions">
-        <a
-          [routerLink]="['/admin', 'communities', community.id]"
-          nbButton
-          status="primary"
-          size="small"
-          shape="semi-round"
-          target="_blank"
-        >
-          <nb-icon icon="settings-2-outline"></nb-icon>
-          Dashboard
-        </a>
-        <a
-          [routerLink]="['/communities', community.id]"
-          nbButton
-          status="basic"
-          size="small"
-          shape="semi-round"
-          outline
-          target="_blank"
-        >
-          <nb-icon icon="eye-outline"></nb-icon>
-          Public
-        </a>
-        <a
-          [routerLink]="['/admin', 'communities', community.id, 'stats']"
-          nbButton
-          status="success"
-          size="small"
-          shape="semi-round"
-          outline
-          target="_blank"
-        >
-          <nb-icon icon="bar-chart-outline"></nb-icon>
-          Stats
-        </a>
-      </div>
-    </article>
+            <td>
+              <div class="community-actions">
+                <a
+                  [routerLink]="['/admin', 'communities', community.id]"
+                  nbButton
+                  status="primary"
+                  size="small"
+                  shape="semi-round"
+                  target="_blank"
+                >
+                  <nb-icon icon="settings-2-outline"></nb-icon>
+                  Dashboard
+                </a>
+                <a
+                  [routerLink]="['/communities', community.id]"
+                  nbButton
+                  status="basic"
+                  size="small"
+                  shape="semi-round"
+                  outline
+                  target="_blank"
+                >
+                  <nb-icon icon="eye-outline"></nb-icon>
+                  Public
+                </a>
+                <a
+                  [routerLink]="['/admin', 'communities', community.id, 'stats']"
+                  nbButton
+                  status="success"
+                  size="small"
+                  shape="semi-round"
+                  outline
+                  target="_blank"
+                >
+                  <nb-icon icon="bar-chart-outline"></nb-icon>
+                  Stats
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <!-- Pagination -->
@@ -215,7 +190,7 @@
 <ng-template #addCommunitiesDialog let-ref="dialogRef">
   <nb-card class="add-communities-dialog">
     <nb-card-header class="dialog-header">
-      <span>Add more community slots</span>
+      <span>Add more communities</span>
       <button ghost nbButton size="small" shape="round" (click)="ref.close()" [disabled]="isAddingCommunities">
         <nb-icon icon="close"></nb-icon>
       </button>
@@ -223,7 +198,7 @@
     <nb-card-body class="dialog-body">
       <p class="dialog-text">
         You'll be charged a prorated amount for the remaining days in your current billing cycle. Starting next cycle,
-        your recurring charge will increase by the new slots.
+        your recurring charge will increase by the new communities.
       </p>
       <div class="quantity-stepper">
         <label>Extra communities</label>

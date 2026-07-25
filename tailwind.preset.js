@@ -168,7 +168,7 @@ module.exports = {
         '95vw': '95vw',
         '100vw': '100vw',
         '90dvh': '90dvh',
-        'navbar-desktop': '68px',
+        'navbar-desktop': '52px',
         '90dvh': '90dvh',
       },
       borderWidth: {
