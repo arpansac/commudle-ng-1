@@ -462,6 +462,14 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Validate billing details — required for invoicing and contact info
+    // even on a trial (the card verification still needs a saved contact_info).
+    if (this.contactInfoForm.invalid) {
+      this.contactInfoForm.markAllAsTouched();
+      this.toastrService.errorDialog('Please fill all the required fields');
+      return;
+    }
+
     this.isLoadingPayment = true;
     // Reuse the existing razorpay/find_or_create_order endpoint with the
     // `trial_verification` flag so the PO's razorpay_order becomes an auth-only

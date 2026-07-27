@@ -318,9 +318,16 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
     });
   }
 
-  /** Whether the "Add more communities" action is available on this subscription. */
+  /** Whether the "Add more communities" action is available on this subscription.
+   * Only applicable for community plans (can_create_kommunity), not org plans.
+   * Hidden when subscription is active-but-cancellation-scheduled or not active. */
   canAddMoreCommunities(subscription: IUserSubscription): boolean {
-    return subscription.status === 'active' && !!this.effectiveCommunityMax(subscription);
+    return (
+      subscription.status === 'active' &&
+      !subscription.cancellation_requested_at &&
+      !!subscription.product_price?.can_create_kommunity &&
+      !!this.effectiveCommunityMax(subscription)
+    );
   }
 
   /** Whether the "Cancel subscription" action is available on this subscription. */
