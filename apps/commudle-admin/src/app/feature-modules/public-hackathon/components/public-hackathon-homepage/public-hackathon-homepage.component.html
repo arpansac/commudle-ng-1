@@ -18,9 +18,16 @@
         </div>
         <div class="hackathon-header-banner" *ngIf="hackathon.banner_image" appTilt [maxTilt]="8" [scale]="1.02">
           <commudle-banner-image
+            *appBreakpoints="'>md'"
             [name]="hackathon.name"
             [headerImagePath]="hackathon.banner_image.url"
             [aspectRatio]="'2/1'"
+          ></commudle-banner-image>
+          <commudle-banner-image
+            *appBreakpoints="'<=md'"
+            [name]="hackathon.name"
+            [headerImagePath]="hackathon.banner_image.url"
+            [aspectRatio]="'3/1'"
           ></commudle-banner-image>
         </div>
       </div>
@@ -126,7 +133,7 @@
                 <span class="title">Prizes</span>
               </a>
             </div>
-            <div *ngIf="hackathon.winners_count > 0">
+            <div>
               <a class="d-flex" [routerLink]="['winners']" routerLinkActive="active">
                 <fa-icon [icon]="icons.faTrophy"></fa-icon>
                 <span class="title">Winners</span>

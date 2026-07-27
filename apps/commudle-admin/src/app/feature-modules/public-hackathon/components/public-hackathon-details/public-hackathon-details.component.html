@@ -237,6 +237,26 @@
   </div>
 
   <div class="right-column">
+    <com-card *ngIf="userTeamDetails && userTeamDetails.length > 0">
+      <com-card-header>Registration Status</com-card-header>
+      <com-card-body>
+        <div class="status-info">
+          <div class="status-badge">{{ userTeamDetails[0].registration_status | capitalizeAndRemoveUnderscore }}</div>
+        </div>
+        <div *ngIf="userTeamDetails[0].round" class="round-card com-pt-2">
+          <div class="name">{{ userTeamDetails[0].round.name }}</div>
+          <div class="date">{{ moment(userTeamDetails[0].round.date).format('DD MMM YYYY') }}</div>
+        </div>
+        <a
+          *ngIf="hackathon.application_start_date && hackathon.application_end_date && isRegistrationOpen"
+          [routerLink]="['/communities', community.slug, 'hackathons', hackathon.slug, 'fill-form', hrgId]"
+          class="edit-link"
+        >
+          <button comButton [shape]="'semi-round'" status="primary" size="small" fullWidth>Edit Registration</button>
+        </a>
+      </com-card-body>
+    </com-card>
+
     <div class="hackathon-details">
       <commudle-public-hackathon-details-mini-card
         [hackathon]="hackathon"
@@ -264,26 +284,6 @@
             <div class="date">{{ moment(round.date).format('DD MMM YYYY') }}</div>
           </div>
         </div>
-      </com-card-body>
-    </com-card>
-
-    <com-card *ngIf="userTeamDetails && userTeamDetails.length > 0">
-      <com-card-header>Registration Status</com-card-header>
-      <com-card-body>
-        <div class="status-info">
-          <div class="status-badge">{{ userTeamDetails[0].registration_status | capitalizeAndRemoveUnderscore }}</div>
-        </div>
-        <div *ngIf="userTeamDetails[0].round" class="round-card">
-          <div class="name">{{ userTeamDetails[0].round.name }}</div>
-          <div class="date">{{ moment(userTeamDetails[0].round.date).format('DD MMM YYYY') }}</div>
-        </div>
-        <a
-          *ngIf="hackathon.application_start_date && hackathon.application_end_date && isRegistrationOpen"
-          [routerLink]="['/communities', community.slug, 'hackathons', hackathon.slug, 'fill-form', hrgId]"
-          class="edit-link"
-        >
-          <button comButton [shape]="'semi-round'" status="primary" size="small" fullWidth>Edit Registration</button>
-        </a>
       </com-card-body>
     </com-card>
 
