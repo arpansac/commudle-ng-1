@@ -235,8 +235,17 @@
                 </span>
                 <div class="community-info">
                   <span class="community-name">{{ cg.name }}</span>
-                  <span class="community-meta" *ngIf="cg.kommunities_count">
-                    {{ cg.kommunities_count }} {{ cg.kommunities_count === 1 ? 'community' : 'communities' }}
+                  <span
+                    class="community-meta"
+                    *ngIf="cg.kommunities_count !== null && cg.kommunities_count !== undefined"
+                    [title]="
+                      cg.kommunities_count +
+                      ' of ' +
+                      (cg.community_count_limit ?? '∞') +
+                      ' communities created in this organization'
+                    "
+                  >
+                    {{ cg.kommunities_count }}/{{ cg.community_count_limit ?? '∞' }} Communities
                   </span>
                 </div>
               </a>

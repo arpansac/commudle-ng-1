@@ -267,6 +267,12 @@
                       errorMessage="Enter a valid email address"
                     >
                     </commudle-alert>
+                    <commudle-alert
+                      *ngIf="contactInfoForm.get('email')?.touched && contactInfoForm.get('email')?.errors?.['pattern']"
+                      [error]="true"
+                      errorMessage="Enter a valid email address"
+                    >
+                    </commudle-alert>
                   </div>
 
                   <div class="form-field">
@@ -280,8 +286,15 @@
                       placeholder="Enter phone number"
                     />
                     <commudle-alert
-                      [error]="!!(contactInfoForm.get('phone')?.invalid && contactInfoForm.get('phone')?.touched)"
+                      *ngIf="contactInfoForm.get('phone')?.touched && contactInfoForm.get('phone')?.errors?.['required']"
+                      [error]="true"
                       errorMessage="Phone number is required"
+                    >
+                    </commudle-alert>
+                    <commudle-alert
+                      *ngIf="contactInfoForm.get('phone')?.touched && contactInfoForm.get('phone')?.errors?.['pattern']"
+                      [error]="true"
+                      errorMessage="Enter a valid phone number (7–15 digits)"
                     >
                     </commudle-alert>
                   </div>
@@ -326,8 +339,15 @@
                       <label for="pinCode">Zip Code <span class="required">*</span></label>
                       <input nbInput fullWidth id="pinCode" formControlName="pinCode" placeholder="Enter zip code" />
                       <commudle-alert
-                        [error]="!!(contactInfoForm.get('pinCode')?.invalid && contactInfoForm.get('pinCode')?.touched)"
+                        *ngIf="contactInfoForm.get('pinCode')?.touched && contactInfoForm.get('pinCode')?.errors?.['required']"
+                        [error]="true"
                         errorMessage="Zip code is required"
+                      >
+                      </commudle-alert>
+                      <commudle-alert
+                        *ngIf="contactInfoForm.get('pinCode')?.touched && contactInfoForm.get('pinCode')?.errors?.['pattern']"
+                        [error]="true"
+                        errorMessage="Enter a valid zip code"
                       >
                       </commudle-alert>
                     </div>
@@ -343,8 +363,15 @@
                     <label for="pinCode">Pin Code <span class="required">*</span></label>
                     <input nbInput fullWidth id="pinCode" formControlName="pinCode" placeholder="Enter pin code" />
                     <commudle-alert
-                      [error]="!!(contactInfoForm.get('pinCode')?.invalid && contactInfoForm.get('pinCode')?.touched)"
+                      *ngIf="contactInfoForm.get('pinCode')?.touched && contactInfoForm.get('pinCode')?.errors?.['required']"
+                      [error]="true"
                       errorMessage="Pin code is required"
+                    >
+                    </commudle-alert>
+                    <commudle-alert
+                      *ngIf="contactInfoForm.get('pinCode')?.touched && contactInfoForm.get('pinCode')?.errors?.['pattern']"
+                      [error]="true"
+                      errorMessage="Enter a valid 6-digit pin code"
                     >
                     </commudle-alert>
                   </div>
@@ -371,16 +398,13 @@
 
                 <!-- Row: GSTIN registration (India only) -->
                 <ng-container *ngIf="isIndiaSelected">
-                  <div
-                    class="business-toggle-box"
-                    (click)="contactInfoForm.get('isGstRegistered')?.setValue(!isGstRegistered)"
-                  >
+                  <label class="business-toggle-box">
                     <nb-checkbox formControlName="isGstRegistered"></nb-checkbox>
                     <div>
                       <p class="toggle-label">Are you registered for GSTIN?</p>
                       <p class="toggle-sub">Add your GSTIN to receive a GST invoice</p>
                     </div>
-                  </div>
+                  </label>
 
                   <div class="form-field" *ngIf="isGstRegistered">
                     <label for="gst">GSTIN <span class="optional">(optional)</span></label>

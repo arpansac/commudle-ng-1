@@ -153,12 +153,14 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       // Optional — when set, becomes the invoice "Billed to" name; otherwise
       // we fall back to the personal name so the invoice never renders blank.
       companyName: [''],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)]],
+      // 7–15 digits, optional leading +, spaces and hyphens allowed between groups
+      phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9 +]{7,15}$/)]],
       country: ['', Validators.required],
       state: [''],
       address: ['', Validators.required],
-      pinCode: ['', Validators.required],
+      // 4–10 alphanumeric characters (covers Indian PIN, US ZIP, UK postcodes etc.)
+      pinCode: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9 ]{4,10}$/)]],
       isGstRegistered: [false],
       gst: [''],
     });
@@ -983,11 +985,16 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
             this.updatePurchaseOrder();
             if (callback) callback(true);
           } else {
+            // Code exists but can't be applied — expired or usage limit reached
+            this.toastrService.errorDialog('This discount code has expired or reached its usage limit.');
             this.removePromoCode();
             if (callback) callback(false);
           }
         },
-        error: () => {
+        error: (err) => {
+          // Non-2xx response — code doesn't exist or is otherwise invalid
+          const message = err?.error?.message || err?.error?.error || 'Invalid discount code.';
+          this.toastrService.errorDialog(message);
           this.removePromoCode();
           if (callback) callback(false);
         },
