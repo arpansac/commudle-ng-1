@@ -269,9 +269,27 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
       // TODO: show plan picker when multiple eligible
       return;
     }
-    this.dialogService.open(CreateCommunityFormComponent, {
+    const ref = this.dialogService.open(CreateCommunityFormComponent, {
       context: { subscriptionId: target.id },
       closeOnBackdropClick: false,
+    });
+    ref.onClose.pipe(takeUntil(this.destroy$)).subscribe((community) => {
+      if (!community) return;
+      // Update only the affected subscription card in-place — no full reload needed.
+      const idx = this.subscriptions.findIndex((s) => s.id === target.id);
+      if (idx !== -1) {
+        const sub = this.subscriptions[idx];
+        this.subscriptions = [
+          ...this.subscriptions.slice(0, idx),
+          {
+            ...sub,
+            kommunities: [...(sub.kommunities || []), community],
+            kommunities_count: (sub.kommunities_count || 0) + 1,
+          },
+          ...this.subscriptions.slice(idx + 1),
+        ];
+        this.rebuildSubMenuItemsMap();
+      }
     });
   }
 
@@ -280,9 +298,27 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
     if (eligible.length === 0) return;
     const target = subscription ?? (eligible.length === 1 ? eligible[0] : null);
     if (!target) return;
-    this.dialogService.open(CreateCommunityGroupFormComponent, {
+    const ref = this.dialogService.open(CreateCommunityGroupFormComponent, {
       context: { subscriptionId: target.id },
       closeOnBackdropClick: false,
+    });
+    ref.onClose.pipe(takeUntil(this.destroy$)).subscribe((communityGroup) => {
+      if (!communityGroup) return;
+      // Update only the affected subscription card in-place — no full reload needed.
+      const idx = this.subscriptions.findIndex((s) => s.id === target.id);
+      if (idx !== -1) {
+        const sub = this.subscriptions[idx];
+        this.subscriptions = [
+          ...this.subscriptions.slice(0, idx),
+          {
+            ...sub,
+            community_groups: [...(sub.community_groups || []), communityGroup],
+            community_groups_count: (sub.community_groups_count || 0) + 1,
+          },
+          ...this.subscriptions.slice(idx + 1),
+        ];
+        this.rebuildSubMenuItemsMap();
+      }
     });
   }
 

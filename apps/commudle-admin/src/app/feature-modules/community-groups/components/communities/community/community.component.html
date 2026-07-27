@@ -21,13 +21,11 @@
     </div>
 
     <div class="header-actions">
-      <a
+      <button
         nbButton
         status="primary"
         shape="semi-round"
-        [routerLink]="['/admin/communities/new']"
-        [queryParams]="{ community_group_id: communityGroup.slug }"
-        target="_blank"
+        (click)="openCreateCommunityDialog()"
         [disabled]="
           !!communities &&
           (communityGroup.community_count_limit ?? 0) > 0 &&
@@ -36,7 +34,7 @@
       >
         <nb-icon icon="plus-outline"></nb-icon>
         New community
-      </a>
+      </button>
 
       <button
         *ngIf="communityGroup.user_subscription_id"

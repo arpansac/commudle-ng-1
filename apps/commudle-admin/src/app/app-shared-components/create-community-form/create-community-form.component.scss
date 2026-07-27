@@ -175,7 +175,11 @@
 }
 
 .cf-success {
-  @apply com-flex com-flex-col com-items-center com-text-center com-gap-3 com-py-8 com-px-6;
+  @apply com-relative com-flex com-flex-col com-items-center com-text-center com-gap-3 com-py-8 com-px-6;
+
+  .cf-success-header {
+    @apply com-absolute com-top-3 com-right-3;
+  }
 
   .cf-success-icon {
     @apply com-flex com-items-center com-justify-center com-w-16 com-h-16 com-rounded-full com-bg-green-50;

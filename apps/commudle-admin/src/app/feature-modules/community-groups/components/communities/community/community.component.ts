@@ -8,6 +8,7 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { ToastrService, UserSubscriptionService } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { Subscription } from 'rxjs';
+import { CreateCommunityFormComponent } from 'apps/commudle-admin/src/app/app-shared-components/create-community-form/create-community-form.component';
 
 @Component({
   selector: 'commudle-community',
@@ -90,6 +91,21 @@ export class CommunityComponent implements OnInit, OnDestroy {
   openAddCommunitiesDialog(): void {
     this.extraCommunities = 1;
     this.dialogService.open(this.addCommunitiesDialog, { closeOnBackdropClick: !this.isAddingCommunities });
+  }
+
+  openCreateCommunityDialog(): void {
+    const ref = this.dialogService.open(CreateCommunityFormComponent, {
+      context: {
+        subscriptionId: this.communityGroup.user_subscription_id,
+        communityGroupSlug: this.communityGroup.slug,
+      },
+      closeOnBackdropClick: false,
+    });
+    ref.onClose.subscribe((community: ICommunity) => {
+      if (community) {
+        this.getCommunities();
+      }
+    });
   }
 
   confirmAddCommunities(ref: NbDialogRef<unknown>): void {

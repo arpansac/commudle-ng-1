@@ -1,6 +1,11 @@
 <com-card class="create-community-form">
   <!-- Success state -->
   <com-card-body *ngIf="createdCommunity" class="cf-success">
+    <div class="cf-success-header">
+      <button nbButton ghost size="small" shape="round" (click)="close()">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </div>
     <div class="cf-success-icon">
       <nb-icon icon="checkmark-circle-2"></nb-icon>
     </div>
@@ -16,13 +21,6 @@
       <button nbButton status="primary" outline shape="semi-round" (click)="goToPublicPage()">
         <nb-icon icon="globe-2-outline"></nb-icon> View Public Page
       </button>
-    </div>
-
-    <div class="cf-success-secondary">
-      <button nbButton ghost size="small" (click)="createAnother()">
-        <nb-icon icon="plus-outline"></nb-icon> Create another
-      </button>
-      <button nbButton ghost size="small" (click)="close()">Close</button>
     </div>
   </com-card-body>
 
@@ -274,14 +272,7 @@
           status="primary"
           shape="semi-round"
           type="button"
-          [disabled]="
-            communityForm.invalid ||
-            isSubmitting ||
-            !logoPreview ||
-            slugCheckState === 'taken' ||
-            slugCheckState === 'checking' ||
-            slugCheckState === 'idle'
-          "
+          [disabled]="isSubmitting || slugCheckState === 'taken' || slugCheckState === 'checking'"
           (click)="createCommunity()"
         >
           <nb-icon *ngIf="isSubmitting" icon="loader" class="cf-spinning"></nb-icon>

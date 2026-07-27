@@ -34,6 +34,7 @@
                   <th>Valid Until</th>
                   <th>Applied</th>
                   <th>Used</th>
+                  <th>Total Limit</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -57,6 +58,7 @@
                   </td>
                   <td>{{ code.discount_applied_count }}</td>
                   <td>{{ code.discount_used_count }}</td>
+                  <td>{{ code.max_redemptions ?? '∞' }}</td>
                   <td class="actions-cell">
                     <button
                       nbButton

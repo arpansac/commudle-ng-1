@@ -46,11 +46,11 @@ export class DiscountCodeFormComponent implements OnInit {
 
   /** Preset options for the per-user usage cap. `null` means unlimited (lifetime). */
   readonly usagePresets: { label: string; value: number | null }[] = [
-    { label: 'Unlimited (applies on every renewal)', value: null },
-    { label: 'One-time per customer', value: 1 },
-    { label: '3 uses per customer', value: 3 },
-    { label: '5 uses per customer', value: 5 },
-    { label: '10 uses per customer', value: 10 },
+    { label: 'Unlimited', value: null },
+    { label: '1 time total', value: 1 },
+    { label: '3 times total', value: 3 },
+    { label: '5 times total', value: 5 },
+    { label: '10 times total', value: 10 },
     { label: 'Custom…', value: -1 },
   ];
 
@@ -67,8 +67,8 @@ export class DiscountCodeFormComponent implements OnInit {
       max_limit: [{ value: null, disabled: true }],
       min_users_count: [null, [Validators.min(0)]],
       max_users_count: [null, [Validators.min(1)]],
-      max_applications_per_user: [null], // null = unlimited (lifetime)
-      usage_preset: [null], // UI-only control that drives max_applications_per_user
+      max_redemptions: [null],
+      usage_preset: [null],
       expires_at: [null],
     });
 
@@ -76,14 +76,11 @@ export class DiscountCodeFormComponent implements OnInit {
     this.discountCodeForm.get('usage_preset')?.valueChanges.subscribe((preset) => {
       if (preset === -1) {
         this.showCustomUsageInput = true;
-        // don't reset max_applications_per_user — let the admin type
       } else {
         this.showCustomUsageInput = false;
-        this.discountCodeForm.get('max_applications_per_user')?.setValue(preset, { emitEvent: false });
+        this.discountCodeForm.get('max_redemptions')?.setValue(preset, { emitEvent: false });
       }
     });
-
-    // Add conditional validation for max_limit
     this.discountCodeForm.get('is_limited')?.valueChanges.subscribe((isLimited) => {
       const maxLimitControl = this.discountCodeForm.get('max_limit');
 
@@ -119,15 +116,13 @@ export class DiscountCodeFormComponent implements OnInit {
   patchFormValues(): void {
     if (!this.discountCode) return;
 
-    // Format date for datetime-local input
     let expiryDate = null;
     if (this.discountCode.expires_at) {
       const date = new Date(this.discountCode.expires_at);
       expiryDate = this.formatDateForInput(date);
     }
 
-    // Map the saved value back onto a preset if it matches one; otherwise mark as Custom.
-    const savedCap = this.discountCode.max_applications_per_user ?? null;
+    const savedCap = this.discountCode.max_redemptions ?? null;
     const matchedPreset = this.usagePresets.find((p) => p.value === savedCap);
     const usagePreset = matchedPreset ? matchedPreset.value : -1;
     this.showCustomUsageInput = usagePreset === -1;
@@ -143,7 +138,7 @@ export class DiscountCodeFormComponent implements OnInit {
       max_limit: this.discountCode.max_limit,
       min_users_count: this.discountCode.min_users_count,
       max_users_count: this.discountCode.max_users_count,
-      max_applications_per_user: savedCap,
+      max_redemptions: savedCap,
       usage_preset: usagePreset,
       expires_at: expiryDate,
     });
@@ -169,14 +164,10 @@ export class DiscountCodeFormComponent implements OnInit {
       discountValueControl.setValue(discountValueControl.value * 100);
     }
 
-    // Strip the UI-only preset control before sending, and normalize an empty custom
-    // input to null (= unlimited) rather than an empty string. The service signature
-    // types the payload as IDiscountCode (all fields required) but the backend accepts
-    // a partial — cast through unknown to satisfy the strict signature.
     const raw = { ...this.discountCodeForm.value } as Record<string, unknown>;
     delete raw.usage_preset;
-    if (raw.max_applications_per_user === '' || raw.max_applications_per_user === undefined) {
-      raw.max_applications_per_user = null;
+    if (raw.max_redemptions === '' || raw.max_redemptions === undefined) {
+      raw.max_redemptions = null;
     }
     const payload = raw as unknown as IDiscountCode;
 

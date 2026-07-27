@@ -34,12 +34,13 @@ import { ICommunity } from '@commudle/shared-models';
 })
 export class CreateCommunityFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() subscriptionId: number;
+  /** When set, the created community is automatically linked to this community group. */
+  @Input() communityGroupSlug: string | null = null;
 
   @ViewChild('autocompleteInput') autocompleteInput: ElementRef;
 
   communityForm: FormGroup;
   isSubmitting = false;
-  /** Flipped on the first submit attempt so the "logo required" error only shows once the user has actually tried to save. */
   submitAttempted = false;
   isSlugEdited = false;
   slugCheckState: 'idle' | 'checking' | 'available' | 'taken' = 'idle';
@@ -85,7 +86,7 @@ export class CreateCommunityFormComponent implements OnInit, AfterViewInit, OnDe
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
       slug: ['', [Validators.required, Validators.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)]],
       contact_email: ['', [Validators.required, Validators.email]],
-      mini_description: ['', [Validators.required, Validators.maxLength(200)]],
+      mini_description: ['', [Validators.required, Validators.maxLength(500)]],
       about: ['', [Validators.required, Validators.minLength(100)]],
       location: [''],
       website: [''],
@@ -133,7 +134,6 @@ export class CreateCommunityFormComponent implements OnInit, AfterViewInit, OnDe
   }
 
   private initAutocomplete(): void {
-    // Google Maps may not be loaded in every context; fail gracefully to a plain input.
     if (!this.autocompleteInput?.nativeElement || typeof google === 'undefined') return;
     this.googlePlacesAutocompleteService.initAutocomplete(this.autocompleteInput.nativeElement);
     this.googlePlacesAutocompleteService.placeChanged.pipe(takeUntil(this.destroy$)).subscribe((place) => {
@@ -174,8 +174,27 @@ export class CreateCommunityFormComponent implements OnInit, AfterViewInit, OnDe
 
   createCommunity(): void {
     this.submitAttempted = true;
-    if (this.communityForm.invalid || this.slugCheckState === 'taken' || this.slugCheckState === 'checking') {
-      this.communityForm.markAllAsTouched();
+    this.communityForm.markAllAsTouched();
+
+    if (this.communityForm.invalid || !this.logoFile) {
+      return;
+    }
+
+    if (this.slugCheckState === 'taken') {
+      return;
+    }
+
+    if (this.slugCheckState === 'checking') {
+      this.toastrService.warningDialog('Please wait while we check the slug availability.');
+      return;
+    }
+
+    if (this.slugCheckState === 'idle') {
+      const slug = this.communityForm.get('slug')?.value;
+      if (slug) {
+        this.checkSlugAvailability(slug);
+        this.toastrService.warningDialog('Verifying slug availability, please try again in a moment.');
+      }
       return;
     }
 
@@ -193,16 +212,19 @@ export class CreateCommunityFormComponent implements OnInit, AfterViewInit, OnDe
     if (this.bannerFile) formData.append('community[banner_image]', this.bannerFile);
     this.tags.forEach((tag) => formData.append('community[tags][]', tag));
 
-    this.communitiesService.createWithSubscription(formData, this.subscriptionId).subscribe({
-      next: (community: ICommunity) => {
-        this.isSubmitting = false;
-        this.createdCommunity = community;
-        this.confettiService.celebrateCreation();
-      },
-      error: () => {
-        this.isSubmitting = false;
-      },
-    });
+    this.communitiesService
+      .createWithSubscription(formData, this.subscriptionId, this.communityGroupSlug ?? undefined)
+      .subscribe({
+        next: (community: ICommunity) => {
+          this.isSubmitting = false;
+          this.createdCommunity = community;
+          this.confettiService.celebrateCreation();
+        },
+        error: (err) => {
+          this.isSubmitting = false;
+          this.toastrService.errorDialog(err?.error?.message || 'Failed to create community. Please try again.');
+        },
+      });
   }
 
   goToAdminPage(): void {
