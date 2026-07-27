@@ -16,10 +16,10 @@
   }
 
   com-card-body {
-    @apply com-p-4;
+    @apply com-p-3 lg:com-p-4;
 
     .members {
-      @apply com-grid com-grid-cols-1 md:com-grid-cols-3 com-gap-4;
+      @apply com-grid com-grid-cols-2 md:com-grid-cols-3 com-gap-2 lg:com-gap-4;
     }
   }
 }

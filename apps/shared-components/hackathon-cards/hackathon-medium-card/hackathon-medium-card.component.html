@@ -25,9 +25,9 @@
                 Completed
                 <nb-icon icon="checkmark-circle-2" nbTooltip="Completed" status="success" class="com-m-auto"></nb-icon>
               </div>
-              <div *ngIf="hackathon.number_of_participants > 0" class="interested-members">
+              <div *ngIf="hackathon.interested_members_count > 0" class="interested-members">
                 <app-badge
-                  [text]="hackathon.number_of_participants"
+                  [text]="hackathon.interested_members_count"
                   [fontColor]="'com-text-tAuro-Metal-Saurus'"
                   [nbIcon]="'people-outline'"
                   [fontSize]="'small'"
