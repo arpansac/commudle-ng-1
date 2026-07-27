@@ -39,6 +39,19 @@ export class PurchaseOrderService {
     });
   }
 
+  /**
+   * Updates the buyer's contact info for a PO that already has one saved.
+   * `createContactInfo` can only run once (unique parent_id/parent_type on
+   * ContactInfo) — any edits made after the first save (e.g. adding a GSTIN)
+   * must go through this instead, or they're silently dropped on Pay.
+   */
+  updateContactInfo(purchaseOrderUuid: string, formData): Observable<IContactInfo> {
+    return this.http.put<IContactInfo>(this.baseApiService.getRoute(API_ROUTES.PURCHASE_ORDER.UPDATE_CONTACT_INFO), {
+      contact_info: formData,
+      purchase_order_uuid: purchaseOrderUuid,
+    });
+  }
+
   updatePurchaseOrder(
     purchaseOrderUuid: string,
     data: {

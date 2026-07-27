@@ -538,8 +538,8 @@
                 </div>
               </div>
 
-              <!-- Promo Code -->
-              <div class="promo-code" *ngIf="!paymentPaid">
+              <!-- Promo Code (not applicable when checking out for a free trial) -->
+              <div class="promo-code" *ngIf="!paymentPaid && !(hasTrial && withTrial)">
                 <label class="promo-label">
                   <fa-icon [icon]="icons.faTag"></fa-icon>
                   Have a discount code?
@@ -579,6 +579,11 @@
                   <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
                   Code applied successfully
                 </p>
+              </div>
+
+              <!-- Trial ineligible notice (already had/have a subscription for this plan) -->
+              <div class="trial-ineligible-notice" *ngIf="trialIneligibleReason && !paymentPaid">
+                <commudle-alert [warning]="trialIneligibleReason"></commudle-alert>
               </div>
 
               <!-- Free trial option -->
@@ -624,7 +629,7 @@
                   fullWidth
                   size="large"
                   (click)="hasTrial && withTrial ? StartTrial() : Pay()"
-                  [disabled]="isLoadingPayment"
+                  [disabled]="isLoadingPayment || isCheckingTrialEligibility"
                 >
                   <fa-icon [icon]="icons.faLock"></fa-icon>
                   <ng-container *ngIf="isProratedAddon"
@@ -654,7 +659,10 @@
             <commudle-alert [info]="true">
               <div infoContent>
                 For any technical support please reach out to
-                <a href="mailto:payments_support@commudle.com">payments_support&#64;commudle.com</a>
+                <a href="mailto:payments_support@commudle.com">payments_support&#64;commudle.com</a>. Read our
+                <a href="https://www.commudle.com/policies/refund-cancellation-policy" target="_blank" rel="noopener">
+                  refund &amp; cancellation policy</a
+                >.
               </div>
             </commudle-alert>
           </div>

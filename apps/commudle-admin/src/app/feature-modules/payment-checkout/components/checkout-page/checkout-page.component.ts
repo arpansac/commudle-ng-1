@@ -81,6 +81,10 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
    *  false = user came from "Buy now" on pricing page — trial is locked OFF.
    *  undefined = user landed on checkout without explicit intent — show the checkbox. */
   trialLocked: boolean | undefined = undefined;
+  /** true while checking upfront whether the user is eligible to start a trial for this plan. */
+  isCheckingTrialEligibility = false;
+  /** Set when `checkTrialEligibility` finds the user ineligible — shown in an info box instead of a toast. */
+  trialIneligibleReason: string | null = null;
 
   readonly countries = countries_details;
   readonly indianStates = indian_states;
@@ -303,6 +307,12 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       if (!this.contactInfoForm.get('country')?.value) patch['country'] = this.getUserCountryCode();
       if (Object.keys(patch).length) {
         this.contactInfoForm.patchValue(patch, { emitEvent: false });
+        // patchValue with emitEvent: false skips the country valueChanges listener
+        // (set up in setupBillingTypeListener) that normally toggles the "state is
+        // required" validator. Without this, prefilling country as India here would
+        // leave `state` without a required validator, letting an empty state dropdown
+        // through on submit.
+        this.updateBillingValidators();
       }
       // Once the billing country is known, sync tax into the displayed order total.
       this.refreshOrderTotals();
@@ -440,7 +450,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       this.toastrService.errorDialog('Invalid product price');
       return;
     }
-    if (!this.hasTrial) {
+    if (!this.hasTrial || !this.withTrial) {
       this.toastrService.errorDialog('Trial is not available for this plan');
       return;
     }
@@ -578,11 +588,12 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     this.isLoadingPayment = true;
 
     if (this.purchaseOrder.orderable_type === EDbModels.PRODUCT_PRICE) {
-      if (this.purchaseOrder.contact_info) {
-        this.createRazorpayOrder(this.purchaseOrder.id);
-      } else {
-        this.createOrUpdateContactInfo();
-      }
+      // Always persist the current form state — contact info can only be
+      // *created* once (unique parent_id/parent_type), so if it already exists
+      // this must go through the update endpoint instead of being skipped.
+      // Skipping it here previously meant any edits made after the first save
+      // (e.g. adding a GSTIN) were silently dropped when paying.
+      this.createOrUpdateContactInfo();
     } else {
       this.createRazorpayOrder(this.purchaseOrder.id);
     }
@@ -592,9 +603,11 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     if (!this.purchaseOrder?.uuid) return;
 
     const contactInfo = this.buildContactInfoPayload();
+    const save$ = this.purchaseOrder.contact_info
+      ? this.purchaseOrderService.updateContactInfo(this.purchaseOrder.uuid, contactInfo)
+      : this.purchaseOrderService.createContactInfo(this.purchaseOrder.uuid, contactInfo);
 
-    this.purchaseOrderService
-      .createContactInfo(this.purchaseOrder.uuid, contactInfo)
+    save$
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => {
@@ -851,6 +864,41 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     }
     // trialLocked true/false was already applied in ngOnInit from the query param.
     this.updateTotalPrice();
+
+    // Check trial eligibility upfront — before the user pays the $1 card
+    // verification charge — instead of only finding out via start_trial's
+    // error response after they've already paid.
+    if (this.withTrial && productPrice.id) {
+      this.checkTrialEligibility(productPrice.id);
+    }
+  }
+
+  /**
+   * Verifies the user can actually start a trial for this plan (no existing
+   * non-expired subscription for it) before they pay the card verification
+   * charge. If ineligible, falls back to a regular (non-trial) checkout and
+   * lets them know why, instead of silently blocking them.
+   */
+  private checkTrialEligibility(productPriceId: number): void {
+    this.isCheckingTrialEligibility = true;
+    this.userSubscriptionService
+      .checkTrialEligibility(productPriceId)
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => (this.isCheckingTrialEligibility = false)),
+      )
+      .subscribe({
+        next: (res) => {
+          if (!res.eligible) {
+            this.withTrial = false;
+            this.trialIneligibleReason =
+              res.reason || 'Trial is not available for this plan. You can still subscribe at the regular price.';
+            this.toastrService.warningDialog(this.trialIneligibleReason);
+          }
+        },
+        // Fail open — if the eligibility check itself errors, don't block checkout.
+        // The backend enforces the same rule again in start_trial as a safety net.
+      });
   }
 
   increaseMonths(): void {
@@ -900,7 +948,13 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   applyDiscountCode(): void {
-    if (!this.discountCode || !this.totalPrice) {
+    // Don't gate on `totalPrice` — it legitimately becomes 0 once a 100%
+    // discount is applied, and this method is re-run on every billing detail
+    // change (via refreshOrderTotals) to keep the discount in sync. Gating on
+    // it wrongly showed "Please enter a valid discount code" for an already
+    // applied 100%-off code. The real prerequisite is just having a code and
+    // a loaded purchase order (read from in validateDiscountCode).
+    if (!this.discountCode || !this.purchaseOrder) {
       this.toastrService.warningDialog('Please enter a valid discount code');
       return;
     }

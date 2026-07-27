@@ -1144,6 +1144,7 @@ export const API_ROUTES = {
     SHOW: 'api/v2/purchase_orders/show', //GET
     INDEX_BY_ORDERABLE_TYPE: 'api/v2/purchase_orders/index_by_orderable_type', //GET
     CONTACT_INFO: 'api/v2/purchase_orders/create_contact_info', //POST
+    UPDATE_CONTACT_INFO: 'api/v2/purchase_orders/update_contact_info', //PUT
     UPDATE: 'api/v2/purchase_orders', //PUT
     MARK_PAID_FOR_FULLY_DISCOUNTED: 'api/v2/purchase_orders/mark_paid_for_fully_discounted', //PUT
     SEND_INVOICE: 'api/v2/purchase_orders/send_invoice', //POST — buyer-only, takes purchase_order_uuid as a query param
@@ -1174,6 +1175,7 @@ export const API_ROUTES = {
     SHOW: 'api/v2/user_subscriptions/show', //GET
     CREATE: 'api/v2/user_subscriptions', //POST
     STATS: 'api/v2/user_subscriptions/stats', //GET
+    TRIAL_ELIGIBILITY: 'api/v2/user_subscriptions/trial_eligibility', //GET — takes product_price_id query param
     PAYMENT_HISTORY: 'api/v2/user_subscriptions/payment_history', //GET
     CANCEL: 'api/v2/user_subscriptions/cancel', //POST
     ADD_COMMUNITIES: 'api/v2/user_subscriptions/add_communities', //POST

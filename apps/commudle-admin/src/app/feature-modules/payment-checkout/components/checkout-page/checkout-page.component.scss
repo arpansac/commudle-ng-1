@@ -404,6 +404,10 @@
       }
     }
 
+    .trial-ineligible-notice {
+      @apply com-mx-4 com-my-3;
+    }
+
     .trial-option {
       @apply com-flex com-items-center com-gap-2 com-mx-4 com-my-3 com-px-3 com-py-2 com-rounded-lg;
       @apply com-bg-primary-100 com-border com-border-solid com-border-primary-200;

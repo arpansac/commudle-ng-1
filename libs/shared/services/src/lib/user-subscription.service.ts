@@ -77,6 +77,21 @@ export class UserSubscriptionService {
   }
 
   /**
+   * Checks upfront whether the current user can start a trial for the given
+   * plan — before they pay the $1 card verification charge. Mirrors the same
+   * rule enforced server-side in `startTrial` (one non-expired subscription
+   * per plan), so an ineligible user can be told immediately on checkout
+   * instead of after paying the verification charge.
+   */
+  checkTrialEligibility(productPriceId: number): Observable<{ eligible: boolean; reason?: string }> {
+    const params = new HttpParams().set('product_price_id', productPriceId);
+    return this.http.get<{ eligible: boolean; reason?: string }>(
+      this.baseApiService.getRoute(API_ROUTES.USER_SUBSCRIPTIONS.TRIAL_ELIGIBILITY),
+      { params },
+    );
+  }
+
+  /**
    * Provision a free trial after the card verification auth has completed.
    * The frontend obtains the auth-only Razorpay Order for the trial verification
    * via `RazorpayService.createOrFindOrder(...)` with the `po_id`, opens Razorpay
