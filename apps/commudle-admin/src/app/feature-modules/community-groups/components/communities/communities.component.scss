@@ -8,7 +8,7 @@
 
 // ── Themed org header ──
 .cg-header {
-  @apply com-relative com-flex com-flex-col com-gap-4 com-p-6 com-rounded-2xl com-text-white com-overflow-hidden;
+  @apply com-relative com-flex com-flex-col com-gap-4 com-p-6 com-rounded-md com-text-white com-overflow-hidden;
   @apply sm:com-flex-row sm:com-items-center sm:com-justify-between;
 
   .cg-identity {
@@ -51,5 +51,5 @@
 
 // ── Section tabs ──
 .cg-tabs {
-  @apply com-bg-white com-rounded-2xl com-shadow-sm com-overflow-x-auto com-p-4;
+  @apply com-bg-white com-rounded-lg com-shadow-sm com-overflow-x-auto com-p-4;
 }

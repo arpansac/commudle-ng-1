@@ -69,10 +69,15 @@ export class UserSubscriptionService {
     });
   }
 
-  addCommunities(userSubscriptionId: number, extraCommunities: number): Observable<IPurchaseOrder> {
+  addCommunities(
+    userSubscriptionId: number,
+    extraCommunities: number,
+    communityGroupId?: number,
+  ): Observable<IPurchaseOrder> {
     return this.http.post<IPurchaseOrder>(this.baseApiService.getRoute(API_ROUTES.USER_SUBSCRIPTIONS.ADD_COMMUNITIES), {
       user_subscription_id: userSubscriptionId,
       extra_communities: extraCommunities,
+      ...(communityGroupId ? { community_group_id: communityGroupId } : {}),
     });
   }
 

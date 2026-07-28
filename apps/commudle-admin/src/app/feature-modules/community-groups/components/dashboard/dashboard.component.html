@@ -63,7 +63,11 @@
         </div>
         <div *ngIf="sidebarExpanded" class="community-info">
           <span class="community-name">{{ communityGroup.name }}</span>
-          <app-subscription-plan-badge [subscriptionId]="groupSubscriptionId"></app-subscription-plan-badge>
+          <app-subscription-plan-badge
+            [subscriptionId]="groupSubscriptionId"
+            [kommunitiesCount]="communityGroup.kommunities_count"
+            [communityCountLimit]="communityGroup.community_count_limit"
+          ></app-subscription-plan-badge>
         </div>
       </div>
     </commudle-sidebar>

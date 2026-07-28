@@ -114,7 +114,7 @@ export class CommunityComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(
       this.userSubscriptionService
-        .addCommunities(this.communityGroup.user_subscription_id, this.extraCommunities)
+        .addCommunities(this.communityGroup.user_subscription_id, this.extraCommunities, this.communityGroup.id)
         .subscribe({
           next: (po) => {
             this.isAddingCommunities = false;

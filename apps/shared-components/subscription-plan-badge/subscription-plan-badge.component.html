@@ -45,6 +45,12 @@
           <span class="spb-info-label">{{ subscription.status === 'active' ? 'Renews' : 'Ended' }}</span>
           <span class="spb-info-value">{{ subscription.ends_at | date : 'd MMM yyyy' }}</span>
         </div>
+
+        <!-- Communities used / limit -->
+        <div class="spb-info-item" *ngIf="communityCountLimit">
+          <span class="spb-info-label">Communities</span>
+          <span class="spb-info-value">{{ kommunitiesCount || 0 }} / {{ communityCountLimit }}</span>
+        </div>
       </div>
 
       <!-- Expired / cancelled notice -->

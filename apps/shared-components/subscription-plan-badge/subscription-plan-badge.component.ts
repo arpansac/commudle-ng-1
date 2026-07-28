@@ -12,6 +12,9 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class SubscriptionPlanBadgeComponent implements OnInit, OnDestroy {
   @Input() subscriptionId: number;
+  /** Optional: if provided, shows a "Communities" row in the plan dialog. */
+  @Input() kommunitiesCount: number | null = null;
+  @Input() communityCountLimit: number | null = null;
   @ViewChild('planDialog') planDialog: TemplateRef<any>;
 
   subscription: IUserSubscription | null = null;

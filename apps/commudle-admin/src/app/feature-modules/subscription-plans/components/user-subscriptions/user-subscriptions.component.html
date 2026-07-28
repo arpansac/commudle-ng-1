@@ -155,8 +155,8 @@
               class="remaining-hint"
               *ngIf="sub.status === 'active' && canCreateKommunity(sub) && effectiveCommunityMax(sub)"
             >
-              {{ getRemaining(sub.kommunities_count, effectiveCommunityMax(sub)) }} communities remaining, you're only
-              halfway through what you paid for
+              You have {{ getRemaining(sub.kommunities_count, effectiveCommunityMax(sub)) }} community/communities to be
+              created. Get the best of your subscription, create them now!
             </span>
 
             <!-- Pending warning -->

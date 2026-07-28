@@ -9,15 +9,15 @@
       <p class="page-subtitle">
         Manage every community under <strong>{{ communityGroup.name }}</strong>
       </p>
-      <!-- <div class="header-quota" *ngIf="communityGroup.community_count_limit">
+      <div class="header-quota" *ngIf="communityGroup.community_count_limit">
         <span
           class="quota-count"
-          [class.quota-full]="communities && communities.length >= communityGroup.community_count_limit"
+          [class.quota-full]="communityGroup.kommunities_count >= communityGroup.community_count_limit"
         >
-          {{ communities?.length || 0 }} / {{ communityGroup.community_count_limit }}
+          {{ communityGroup.kommunities_count || 0 }} / {{ communityGroup.community_count_limit }}
         </span>
-        <span class="quota-label">communities used</span>
-      </div> -->
+        <span class="quota-label">communities created</span>
+      </div>
     </div>
 
     <div class="header-actions">
@@ -198,8 +198,16 @@
         You'll be charged a prorated amount for the remaining days in your current billing cycle. Starting next cycle,
         your recurring charge will increase by the new communities.
       </p>
+      <p class="dialog-current-plan" *ngIf="communityGroup.community_count_limit">
+        <nb-icon icon="info-outline"></nb-icon>
+        Current plan:
+        <strong
+          >{{ communityGroup.kommunities_count || 0 }} / {{ communityGroup.community_count_limit }} communities</strong
+        >
+        used
+      </p>
       <div class="quantity-stepper">
-        <label>Extra communities</label>
+        <label>Communities</label>
         <div class="stepper-controls">
           <button
             nbButton
