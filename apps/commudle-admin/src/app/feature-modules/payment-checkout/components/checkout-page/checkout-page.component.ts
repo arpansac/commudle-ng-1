@@ -418,7 +418,9 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     return {
       country_code: country,
       email: this.contactInfoForm.get('email')?.value || '',
-      phone_number: this.contactInfoForm.get('phone')?.value || '',
+      // Strip non-digits so the value fits the bigint phone_number column —
+      // removes +, spaces, hyphens that the user may have typed or prefilled.
+      phone_number: (this.contactInfoForm.get('phone')?.value || '').replace(/\D/g, ''),
       tax_info: {
         // GST is India-only, optional, and only meaningful if the user confirmed
         // they're registered for GSTIN. Blank otherwise.
@@ -471,19 +473,40 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     }
 
     this.isLoadingPayment = true;
-    // Reuse the existing razorpay/find_or_create_order endpoint with the
-    // `trial_verification` flag so the PO's razorpay_order becomes an auth-only
-    // ₹2 / $1 order. Server picks the amount from the plan's currency.
-    this.razorpayService
-      .createOrFindOrder({}, { po_id: this.purchaseOrder.id }, { trial_verification: true })
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (order: IRazorpayOrder) => this.openTrialVerificationCheckout(order),
-        error: (err) => {
-          this.isLoadingPayment = false;
-          this.toastrService.errorDialog(err?.error?.message || 'Could not start the trial. Please try again.');
-        },
-      });
+    // Save contact info first (same as Pay flow) before opening Razorpay.
+    this.saveContactInfoThenStartTrial();
+  }
+
+  private saveContactInfoThenStartTrial(): void {
+    if (!this.purchaseOrder?.uuid) {
+      this.isLoadingPayment = false;
+      return;
+    }
+
+    const contactInfo = this.buildContactInfoPayload();
+    const save$ = this.purchaseOrder.contact_info
+      ? this.purchaseOrderService.updateContactInfo(this.purchaseOrder.uuid, contactInfo)
+      : this.purchaseOrderService.createContactInfo(this.purchaseOrder.uuid, contactInfo);
+
+    save$.pipe(takeUntil(this.destroy$)).subscribe({
+      next: () => {
+        // Contact info saved — now create the trial verification Razorpay order.
+        this.razorpayService
+          .createOrFindOrder({}, { po_id: this.purchaseOrder.id }, { trial_verification: true })
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (order: IRazorpayOrder) => this.openTrialVerificationCheckout(order),
+            error: (err) => {
+              this.isLoadingPayment = false;
+              this.toastrService.errorDialog(err?.error?.message || 'Could not start the trial. Please try again.');
+            },
+          });
+      },
+      error: (err) => {
+        this.isLoadingPayment = false;
+        this.toastrService.errorDialog(err?.error?.message || 'Failed to save contact information. Please try again.');
+      },
+    });
   }
 
   /**
@@ -547,6 +570,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         escape: false,
         ondismiss: () => {
           this.isLoadingPayment = false;
+          this.dialogService.open(this.paymentErrorDialog, { closeOnBackdropClick: false });
         },
       },
     };

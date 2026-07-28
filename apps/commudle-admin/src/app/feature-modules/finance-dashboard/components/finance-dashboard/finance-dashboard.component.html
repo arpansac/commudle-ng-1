@@ -94,64 +94,69 @@
                     {{ po.created_at | date : 'MMM d, y' }}
                   </td>
                   <td class="fd-actions">
-                    <button
-                      nbButton
-                      size="tiny"
-                      status="basic"
-                      shape="round"
-                      [disabled]="po.status !== 'paid' || previewing.has(po.uuid)"
-                      [nbTooltip]="
-                        po.status !== 'paid'
-                          ? 'Invoice preview is only available for paid POs'
-                          : 'Open invoice PDF in a new tab'
-                      "
-                      (click)="previewInvoice(po)"
-                    >
-                      <fa-icon *ngIf="previewing.has(po.uuid)" [icon]="icons.faSpinner" class="fa-spin"></fa-icon>
-                      <fa-icon *ngIf="!previewing.has(po.uuid)" [icon]="icons.faEye"></fa-icon>
-                      Preview
-                    </button>
-                    &nbsp;
-                    <button
-                      nbButton
-                      size="tiny"
-                      status="primary"
-                      shape="round"
-                      [disabled]="po.status !== 'paid' || sending.has(po.uuid)"
-                      [nbTooltip]="
-                        po.status !== 'paid'
-                          ? 'Invoice email is only available for paid POs'
-                          : 'Email invoice PDF to buyer'
-                      "
-                      (click)="sendInvoice(po)"
-                    >
-                      <fa-icon *ngIf="sending.has(po.uuid)" [icon]="icons.faSpinner" class="fa-spin"></fa-icon>
-                      <fa-icon
-                        *ngIf="!sending.has(po.uuid) && justSent.has(po.uuid)"
-                        [icon]="icons.faCircleCheck"
-                      ></fa-icon>
-                      <fa-icon
-                        *ngIf="!sending.has(po.uuid) && !justSent.has(po.uuid)"
-                        [icon]="icons.faPaperPlane"
-                      ></fa-icon>
-                      <span *ngIf="justSent.has(po.uuid)">Sent</span>
-                      <span *ngIf="!justSent.has(po.uuid)">Email invoice</span>
-                    </button>
-                    &nbsp;
-                    <button
-                      *ngIf="canCancelInvoice(po)"
-                      nbButton
-                      size="tiny"
-                      status="danger"
-                      shape="round"
-                      outline
-                      [disabled]="cancelling.has(po.uuid)"
-                      [nbTooltip]="'Void this invoice (system admin only)'"
-                      (click)="openCancelDialog(po)"
-                    >
-                      <fa-icon [icon]="icons.faBan"></fa-icon>
-                      Cancel invoice
-                    </button>
+                    <ng-container *ngIf="po.invoice_number; else noInvoice">
+                      <button
+                        nbButton
+                        size="tiny"
+                        status="basic"
+                        shape="round"
+                        [disabled]="po.status !== 'paid' || previewing.has(po.uuid)"
+                        [nbTooltip]="
+                          po.status !== 'paid'
+                            ? 'Invoice preview is only available for paid POs'
+                            : 'Open invoice PDF in a new tab'
+                        "
+                        (click)="previewInvoice(po)"
+                      >
+                        <fa-icon *ngIf="previewing.has(po.uuid)" [icon]="icons.faSpinner" class="fa-spin"></fa-icon>
+                        <fa-icon *ngIf="!previewing.has(po.uuid)" [icon]="icons.faEye"></fa-icon>
+                        Preview
+                      </button>
+                      &nbsp;
+                      <button
+                        nbButton
+                        size="tiny"
+                        status="primary"
+                        shape="round"
+                        [disabled]="po.status !== 'paid' || sending.has(po.uuid)"
+                        [nbTooltip]="
+                          po.status !== 'paid'
+                            ? 'Invoice email is only available for paid POs'
+                            : 'Email invoice PDF to buyer'
+                        "
+                        (click)="sendInvoice(po)"
+                      >
+                        <fa-icon *ngIf="sending.has(po.uuid)" [icon]="icons.faSpinner" class="fa-spin"></fa-icon>
+                        <fa-icon
+                          *ngIf="!sending.has(po.uuid) && justSent.has(po.uuid)"
+                          [icon]="icons.faCircleCheck"
+                        ></fa-icon>
+                        <fa-icon
+                          *ngIf="!sending.has(po.uuid) && !justSent.has(po.uuid)"
+                          [icon]="icons.faPaperPlane"
+                        ></fa-icon>
+                        <span *ngIf="justSent.has(po.uuid)">Sent</span>
+                        <span *ngIf="!justSent.has(po.uuid)">Email invoice</span>
+                      </button>
+                      &nbsp;
+                      <button
+                        *ngIf="canCancelInvoice(po)"
+                        nbButton
+                        size="tiny"
+                        status="danger"
+                        shape="round"
+                        outline
+                        [disabled]="cancelling.has(po.uuid)"
+                        [nbTooltip]="'Void this invoice (system admin only)'"
+                        (click)="openCancelDialog(po)"
+                      >
+                        <fa-icon [icon]="icons.faBan"></fa-icon>
+                        Cancel invoice
+                      </button>
+                    </ng-container>
+                    <ng-template #noInvoice>
+                      <span class="fd-muted">No invoice</span>
+                    </ng-template>
                   </td>
                 </tr>
               </tbody>

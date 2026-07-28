@@ -15,12 +15,27 @@
     </p>
 
     <div class="cf-success-actions">
-      <button nbButton status="primary" shape="semi-round" (click)="goToAdminPage()">
+      <a
+        nbButton
+        status="primary"
+        shape="semi-round"
+        [routerLink]="['/admin/communities', createdCommunity.slug]"
+        target="_blank"
+        (click)="close()"
+      >
         <nb-icon icon="settings-2-outline"></nb-icon> Go to Admin Panel
-      </button>
-      <button nbButton status="primary" outline shape="semi-round" (click)="goToPublicPage()">
+      </a>
+      <a
+        nbButton
+        status="primary"
+        outline
+        shape="semi-round"
+        [routerLink]="['/communities', createdCommunity.slug]"
+        target="_blank"
+        (click)="close()"
+      >
         <nb-icon icon="globe-2-outline"></nb-icon> View Public Page
-      </button>
+      </a>
     </div>
   </com-card-body>
 
