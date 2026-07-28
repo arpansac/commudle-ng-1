@@ -20,27 +20,23 @@
       LIVE
     </a>
   </div>
-  <div *appBreakpoints="'<=md'" class="com-flex com-gap-4 com-flex-wrap">
-    <div class="com-flex com-justify-between com-w-full">
+  <div *appBreakpoints="'<=md'" class="com-flex com-flex-col com-gap-2 com-w-full">
+    <div class="com-flex com-flex-wrap com-gap-2 com-w-full">
       <a
         [routerLink]="['/communities', community.slug, 'events', event.slug]"
         nbButton
-        size="small"
+        size="tiny"
         status="info"
         target="_blank"
       >
         Public Event Page
         <nb-icon icon="external-link"></nb-icon>
       </a>
-      <a [routerLink]="['stats']" nbButton size="small" status="success" target="_blank" class="com-w-1/2">
+      <a [routerLink]="['stats']" nbButton size="tiny" status="success" target="_blank" class="com-w-1/2">
         <nb-icon icon="trending-up-outline"></nb-icon>
         Stats<sup>new</sup> &nbsp;
         <nb-icon icon="external-link"></nb-icon>
       </a>
-      <button nbButton size="small" status="info" outline (click)="copyTextToClipboard()">
-        <fa-icon [icon]="icons.faShare"></fa-icon>
-        &nbsp;Share
-      </button>
     </div>
     <a
       [routerLink]="['/communities', community.slug, 'events', event.slug, 'attended-members']"

@@ -1,8 +1,8 @@
 .event-details {
-  @apply com-flex com-flex-col com-items-start com-p-4 com-gap-2 com-bg-white com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+  @apply com-flex com-flex-col com-items-start com-p-3 md:com-p-4 com-gap-2 com-bg-white com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
 
   .event-name {
-    @apply com-m-0 com-flex com-flex-shrink-0 com-text-3xl;
+    @apply com-m-0 com-text-lg md:com-text-3xl com-min-w-0;
   }
 
   .checkin-banner {
@@ -153,5 +153,5 @@ a {
 }
 
 .event-name-share {
-  @apply com-flex com-flex-row com-items-center com-gap-5;
+  @apply com-flex com-flex-col md:com-flex-row com-items-start md:com-items-center com-gap-2 md:com-gap-5 com-w-full;
 }
