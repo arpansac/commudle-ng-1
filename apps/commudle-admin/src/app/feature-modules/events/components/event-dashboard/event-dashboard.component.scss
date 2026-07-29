@@ -3,6 +3,10 @@
 
   .event-name {
     @apply com-m-0 com-text-lg md:com-text-3xl com-min-w-0;
+
+    .share-inline-btn {
+      @apply com-ml-2 com-translate-y-0 md:com-translate-y-[-2px];
+    }
   }
 
   .checkin-banner {
@@ -153,5 +157,17 @@ a {
 }
 
 .event-name-share {
-  @apply com-flex com-flex-col md:com-flex-row com-items-start md:com-items-center com-gap-2 md:com-gap-5 com-w-full;
+  @apply com-flex com-flex-row com-items-start com-gap-2 com-w-full;
+
+  .event-name {
+    @apply com-flex-1 com-min-w-0;
+  }
+}
+
+.container-public-page-stats-btn {
+  @apply com-flex com-flex-wrap com-gap-2 com-w-full;
+}
+
+.mobile-header-action-btns {
+  @apply com-flex com-flex-col com-gap-2 com-w-full;
 }

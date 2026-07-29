@@ -1,10 +1,12 @@
 <section class="event-details">
   <div class="event-name-share">
-    <h1 class="event-name">{{ event.name }}</h1>
-    <button nbButton size="tiny" status="info" (click)="copyTextToClipboard()">
-      <fa-icon [icon]="icons.faShare"></fa-icon>
-      &nbsp;Share
-    </button>
+    <h1 class="event-name">
+      {{ event.name }}
+      <button nbButton size="tiny" status="info" (click)="copyTextToClipboard()" class="share-inline-btn">
+        <fa-icon [icon]="icons.faShare"></fa-icon>
+        &nbsp;Share
+      </button>
+    </h1>
     <a
       *ngIf="isEventLive"
       [routerLink]="['/admin', 'communities', community.slug, 'event-dashboard', event.slug, 'scan-entry-pass']"
@@ -20,8 +22,8 @@
       LIVE
     </a>
   </div>
-  <div *appBreakpoints="'<=md'" class="com-flex com-flex-col com-gap-2 com-w-full">
-    <div class="com-flex com-flex-wrap com-gap-2 com-w-full">
+  <div *appBreakpoints="'<=md'" class="mobile-header-action-btns">
+    <div class="container-public-page-stats-btn">
       <a
         [routerLink]="['/communities', community.slug, 'events', event.slug]"
         nbButton
