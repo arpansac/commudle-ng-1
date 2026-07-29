@@ -4,6 +4,9 @@
     <commudle-user-features-stats *appBreakpoints="'<=md'" [user]="user"></commudle-user-features-stats>
   </div>
 
+  <!-- 7. Badges (mobile) -->
+  <app-user-badges *appBreakpoints="'<=md'" [user]="user"></app-user-badges>
+
   <!-- 2. About -->
   <app-user-basic-social [user]="user"></app-user-basic-social>
 
@@ -26,9 +29,6 @@
     [showCommunities]="false"
   ></app-user-contributions>
   <commudle-user-hackathon-speaker-judge-mentor [user]="user"></commudle-user-hackathon-speaker-judge-mentor>
-
-  <!-- 7. Badges (mobile) -->
-  <app-user-badges *appBreakpoints="'<=md'" [user]="user"></app-user-badges>
 
   <!-- 8. Labs -->
   <app-user-contributions
