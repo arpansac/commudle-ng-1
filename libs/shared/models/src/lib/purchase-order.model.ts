@@ -49,6 +49,14 @@ export interface IPurchaseOrder {
     prorated_addon?: string;
     extra_communities?: string;
     user_subscription_id?: string;
+    /** Set to 'bank_transfer' when the buyer requests an invoice + bank payment. */
+    payment_method?: string;
+    /** ISO-8601 timestamp when the buyer submitted the bank transfer request. */
+    bank_transfer_requested_at?: string;
+    /** Transaction/reference number entered by the admin when marking as paid. */
+    bank_transfer_reference?: string;
+    /** ISO-8601 timestamp when an admin marked the bank transfer as paid. */
+    bank_transfer_paid_at?: string;
     /**
      * GST breakdown for Indian orders. Business rule:
      * - Buyer in Delhi → `igst` (single 18% line).
@@ -62,10 +70,13 @@ export interface IPurchaseOrder {
     };
   };
   total_amount: number;
+  /** Backend-controlled threshold above which bank transfer is required instead of Razorpay. */
+  bank_transfer_threshold_usd?: number;
 }
 
 export enum EPurchaseOrderStatus {
   UNPAID = 'unpaid',
+  INVOICE_REQUESTED = 'invoice_requested',
   PAID = 'paid',
   PARTIAL_REFUND = 'partial_refund',
   FULL_REFUND = 'full_refund',

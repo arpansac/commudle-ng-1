@@ -121,6 +121,17 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
    */
   readonly cardVerificationCharge = 1;
 
+  /**
+   * Threshold read from the purchase order (set by the backend constant
+   * PurchaseOrder::BANK_TRANSFER_THRESHOLD_USD). Falls back to the local
+   * value only if the PO hasn't loaded yet — the PO value is always authoritative.
+   */
+  readonly bankTransferThreshold = 4500; // fallback only; real value comes from purchaseOrder
+
+  get effectiveBankTransferThreshold(): number {
+    return this.purchaseOrder?.bank_transfer_threshold_usd ?? this.bankTransferThreshold;
+  }
+
   private destroy$ = new Subject<void>();
   private dialogRef?: NbDialogRef<unknown>;
   private readonly isBrowser: boolean;
@@ -289,6 +300,10 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       ) {
         this.router.navigate(['/subscriptions']);
       }
+    } else if (this.purchaseOrder.status === EPurchaseOrderStatus.INVOICE_REQUESTED) {
+      // Bank transfer requested — show the success state on refresh without
+      // redirecting (PO stays in this status until admin marks it paid).
+      this.paymentPaid = true;
     } else if (lastSegment === 'complete') {
       this.router.navigate(['checkout', this.purchaseOrder.uuid]);
     }
@@ -581,6 +596,75 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       this.toastrService.errorDialog(`Card verification failed: ${response.error.description}`);
     });
     rzp.open();
+  }
+
+  /**
+   * True when the order total meets the bank-transfer threshold and the
+   * user is NOT on a trial flow (trial has its own $1 card verification).
+   * When true, the Pay button is hidden and replaced by "Request Invoice".
+   */
+  get isBankTransfer(): boolean {
+    return (
+      !this.isProratedAddon &&
+      !(this.hasTrial && this.withTrial) &&
+      this.totalPrice >= this.effectiveBankTransferThreshold
+    );
+  }
+
+  /**
+   * Saves contact info then marks the PO as a bank-transfer request.
+   * Sys admins are emailed automatically by the backend worker.
+   */
+  RequestInvoice(): void {
+    if (!this.purchaseOrder?.uuid) {
+      this.toastrService.errorDialog('Invalid purchase order');
+      return;
+    }
+
+    if (this.purchaseOrder.orderable_type === EDbModels.PRODUCT_PRICE) {
+      if (this.contactInfoForm.invalid) {
+        this.contactInfoForm.markAllAsTouched();
+        this.toastrService.errorDialog('Please fill all the required fields');
+        return;
+      }
+    }
+
+    this.isLoadingPayment = true;
+    const contactInfo = this.buildContactInfoPayload();
+    const save$ = this.purchaseOrder.contact_info
+      ? this.purchaseOrderService.updateContactInfo(this.purchaseOrder.uuid, contactInfo)
+      : this.purchaseOrderService.createContactInfo(this.purchaseOrder.uuid, contactInfo);
+
+    save$.pipe(takeUntil(this.destroy$)).subscribe({
+      next: () => {
+        this.purchaseOrderService
+          .requestInvoice(this.purchaseOrder.uuid)
+          .pipe(
+            takeUntil(this.destroy$),
+            finalize(() => (this.isLoadingPayment = false)),
+          )
+          .subscribe({
+            next: (updatedPo) => {
+              // Update the PO in-place so the banner reads "Invoice requested 📄"
+              // not "Order confirmed 🎉" (status is now 'invoice_requested').
+              this.purchaseOrder = { ...this.purchaseOrder, ...updatedPo };
+              this.paymentPaid = true;
+              this.toastrService.successDialog(
+                'Invoice request sent! Our team will share bank details within 24 hours.',
+              );
+            },
+            error: (err) => {
+              this.toastrService.errorDialog(
+                err?.error?.message || 'Could not send the invoice request. Please try again.',
+              );
+            },
+          });
+      },
+      error: (err) => {
+        this.isLoadingPayment = false;
+        this.toastrService.errorDialog(err?.error?.message || 'Failed to save contact information.');
+      },
+    });
   }
 
   Pay(): void {

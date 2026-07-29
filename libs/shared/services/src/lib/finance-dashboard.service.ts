@@ -15,13 +15,21 @@ export class FinanceDashboardService {
 
   /** Paginated list of POs, filterable by status / orderable_type / free-text q. */
   getPurchaseOrders(
-    filters: { page?: number; count?: number; status?: string; orderable_type?: string; q?: string } = {},
+    filters: {
+      page?: number;
+      count?: number;
+      status?: string;
+      orderable_type?: string;
+      q?: string;
+      payment_method?: string;
+    } = {},
   ): Observable<IPaginationCount<IPurchaseOrder>> {
     let params = new HttpParams().set('page', String(filters.page ?? 1)).set('count', String(filters.count ?? 20));
 
     if (filters.status) params = params.set('status', filters.status);
     if (filters.orderable_type) params = params.set('orderable_type', filters.orderable_type);
     if (filters.q) params = params.set('q', filters.q);
+    if (filters.payment_method) params = params.set('payment_method', filters.payment_method);
 
     return this.http.get<IPaginationCount<IPurchaseOrder>>(
       this.baseApiService.getRoute(API_ROUTES.FINANCE_DASHBOARD.PURCHASE_ORDERS),
@@ -56,6 +64,19 @@ export class FinanceDashboardService {
       params,
       responseType: 'blob',
     });
+  }
+
+  /**
+   * SYS_ADMIN / FINANCE_ADMIN: marks a bank-transfer PO as paid and triggers
+   * the same activation side effects as a Razorpay payment.
+   */
+  markPaidBankTransfer(purchaseOrderUuid: string, reference?: string): Observable<IPurchaseOrder> {
+    const params = new HttpParams().set('purchase_order_uuid', purchaseOrderUuid);
+    return this.http.post<IPurchaseOrder>(
+      this.baseApiService.getRoute(API_ROUTES.FINANCE_DASHBOARD.MARK_PAID_BANK_TRANSFER),
+      reference ? { reference } : {},
+      { params },
+    );
   }
 
   /**

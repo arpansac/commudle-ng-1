@@ -68,6 +68,20 @@ export class PurchaseOrderService {
     });
   }
 
+  /**
+   * Owner-only: marks a high-value PO as awaiting bank transfer and notifies
+   * sys admins. Should only be called when totalPrice >= BANK_TRANSFER_THRESHOLD.
+   * Contact info must be saved before calling this.
+   */
+  requestInvoice(purchaseOrderUuid: string): Observable<IPurchaseOrder> {
+    const params = new HttpParams().set('purchase_order_uuid', purchaseOrderUuid);
+    return this.http.post<IPurchaseOrder>(
+      this.baseApiService.getRoute(API_ROUTES.PURCHASE_ORDER.REQUEST_INVOICE),
+      {},
+      { params },
+    );
+  }
+
   markPaidForFullyDiscounted(purchaseOrderUuid: string): Observable<IPurchaseOrder> {
     return this.http.put<IPurchaseOrder>(
       this.baseApiService.getRoute(API_ROUTES.PURCHASE_ORDER.MARK_PAID_FOR_FULLY_DISCOUNTED),

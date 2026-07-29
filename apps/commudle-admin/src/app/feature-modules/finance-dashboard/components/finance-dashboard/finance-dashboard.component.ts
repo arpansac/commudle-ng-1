@@ -11,6 +11,7 @@ import {
   faCircleCheck,
   faEye,
   faBan,
+  faMoneyBillTransfer,
 } from '@fortawesome/free-solid-svg-icons';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 
@@ -28,9 +29,8 @@ export class FinanceDashboardComponent implements OnInit, OnDestroy {
   count = 20;
   total = 0;
 
-  // Default the status filter to `paid` so the dashboard opens on completed
-  // purchases (which is the only status invoice actions apply to anyway).
-  status = 'paid';
+  // Default to all statuses so bank-transfer requests (unpaid) are immediately visible.
+  status = '';
   query = '';
   private query$ = new Subject<string>();
 
@@ -42,6 +42,10 @@ export class FinanceDashboardComponent implements OnInit, OnDestroy {
   previewing = new Set<string>();
   /** UUIDs currently mid-cancel — used to disable the cancel button. */
   cancelling = new Set<string>();
+  /** UUIDs currently being marked as paid (bank transfer) — used to disable the button. */
+  markingPaid = new Set<string>();
+  /** Reference number typed per row before marking paid — keyed by PO uuid. */
+  referenceMap: Record<string, string> = {};
 
   /** True when the signed-in user has SYSTEM_ADMINISTRATOR — cancel button gate. */
   isSystemAdmin = false;
@@ -60,6 +64,7 @@ export class FinanceDashboardComponent implements OnInit, OnDestroy {
     faCircleCheck,
     faEye,
     faBan,
+    faMoneyBillTransfer,
   };
 
   private destroy$ = new Subject<void>();
@@ -164,6 +169,42 @@ export class FinanceDashboardComponent implements OnInit, OnDestroy {
         error: (err) => {
           this.sending.delete(po.uuid);
           this.toastrService.errorDialog(err?.error?.message || 'Failed to send the invoice email.');
+        },
+      });
+  }
+
+  /** True when this PO was requested as a bank transfer (not yet paid). */
+  isBankTransferPending(po: IPurchaseOrder): boolean {
+    return (
+      po.notes?.payment_method === 'bank_transfer' && (po.status === 'unpaid' || po.status === 'invoice_requested')
+    );
+  }
+
+  /** Admin marks a bank-transfer PO as paid → activates subscription/org/etc. */
+  markPaidBankTransfer(po: IPurchaseOrder): void {
+    if (!po.uuid || this.markingPaid.has(po.uuid)) return;
+    const reference = (this.referenceMap[po.uuid] || '').trim();
+    this.markingPaid.add(po.uuid);
+    this.financeDashboardService
+      .markPaidBankTransfer(po.uuid, reference || undefined)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (updated) => {
+          this.markingPaid.delete(po.uuid);
+          delete this.referenceMap[po.uuid];
+          const idx = this.purchaseOrders.findIndex((p) => p.uuid === updated.uuid);
+          if (idx !== -1) {
+            this.purchaseOrders = [
+              ...this.purchaseOrders.slice(0, idx),
+              updated,
+              ...this.purchaseOrders.slice(idx + 1),
+            ];
+          }
+          this.toastrService.successDialog('Order marked as paid — subscription/plan activated.');
+        },
+        error: (err) => {
+          this.markingPaid.delete(po.uuid);
+          this.toastrService.errorDialog(err?.error?.message || 'Failed to mark order as paid.');
         },
       });
   }

@@ -109,6 +109,14 @@
 
   .fd-tag {
     @apply com-inline-block com-px-2 com-py-0.5 com-rounded com-bg-primary-100 com-text-primary-600 com-text-xs com-font-medium;
+
+    &.fd-tag-bank-transfer {
+      @apply com-bg-yellow-100 com-text-yellow-700;
+    }
+  }
+
+  .fd-ref-input {
+    @apply com-w-36;
   }
 
   .fd-status {

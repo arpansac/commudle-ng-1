@@ -9,7 +9,9 @@
                 <fa-icon [icon]="icons.faReceipt"></fa-icon>
                 Finance dashboard
               </h4>
-              <p class="fd-subtitle">All purchase orders. Email invoice PDFs to buyers.</p>
+              <p class="fd-subtitle">
+                All purchase orders. Email invoice PDFs to buyers. Mark bank transfer requests as paid.
+              </p>
             </div>
             <div class="fd-count">
               <span class="fd-count-value">{{ total }}</span>
@@ -35,6 +37,7 @@
 
             <select class="fd-status-select" [ngModel]="status" (ngModelChange)="onStatusChange($event)">
               <option value="">All statuses</option>
+              <option value="invoice_requested">Invoice Requested (Bank Transfer)</option>
               <option value="paid">Paid</option>
               <option value="unpaid">Unpaid</option>
               <option value="partial_refund">Partial refund</option>
@@ -155,7 +158,33 @@
                       </button>
                     </ng-container>
                     <ng-template #noInvoice>
-                      <span class="fd-muted">No invoice</span>
+                      <!-- Bank transfer awaiting payment: show reference input + Mark Paid button -->
+                      <ng-container *ngIf="isBankTransferPending(po)">
+                        <span class="fd-tag fd-tag-bank-transfer">Bank Transfer</span>
+                        &nbsp;
+                        <input
+                          nbInput
+                          size="tiny"
+                          [(ngModel)]="referenceMap[po.uuid]"
+                          placeholder="Transaction / ref ID"
+                          class="fd-ref-input"
+                        />
+                        &nbsp;
+                        <button
+                          nbButton
+                          size="tiny"
+                          status="success"
+                          shape="round"
+                          [disabled]="markingPaid.has(po.uuid)"
+                          [nbTooltip]="'Mark as paid — activates the subscription/plan'"
+                          (click)="markPaidBankTransfer(po)"
+                        >
+                          <fa-icon *ngIf="markingPaid.has(po.uuid)" [icon]="icons.faSpinner" class="fa-spin"></fa-icon>
+                          <fa-icon *ngIf="!markingPaid.has(po.uuid)" [icon]="icons.faMoneyBillTransfer"></fa-icon>
+                          Mark Paid
+                        </button>
+                      </ng-container>
+                      <span class="fd-muted" *ngIf="!isBankTransferPending(po)">No invoice</span>
                     </ng-template>
                   </td>
                 </tr>

@@ -13,10 +13,20 @@
           </span>
         </div>
         <ng-container *ngIf="paymentPaid">
-          <h1 class="banner-title">{{ isProratedAddon ? 'Communities added 🎉' : 'Order confirmed 🎉' }}</h1>
+          <h1 class="banner-title">
+            {{
+              purchaseOrder?.status === 'invoice_requested'
+                ? 'Invoice requested 📄'
+                : isProratedAddon
+                ? 'Communities added 🎉'
+                : 'Order confirmed 🎉'
+            }}
+          </h1>
           <p class="banner-subtitle">
             {{
-              isProratedAddon
+              purchaseOrder?.status === 'invoice_requested'
+                ? 'Our team will send you bank details within 24 hours. Your plan will be activated once payment is confirmed.'
+                : isProratedAddon
                 ? 'Your new community slots are ready. You can start creating them now.'
                 : 'Your payment was processed successfully. A confirmation is on its way to your inbox.'
             }}
@@ -463,11 +473,19 @@
             <com-card-body>
               <p class="currency-note">Prices are in {{ purchaseOrder.currency }}</p>
 
-              <!-- Payment Success Message -->
+              <!-- Payment / Invoice Success Message -->
               <div *ngIf="paymentPaid" class="paid-message-container">
                 <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
-                <p class="message">Payment Successful!</p>
-                <p class="sub-message">A confirmation has been sent to your email.</p>
+                <p class="message">
+                  {{ purchaseOrder?.status === 'invoice_requested' ? 'Invoice Requested!' : 'Payment Successful!' }}
+                </p>
+                <p class="sub-message">
+                  {{
+                    purchaseOrder?.status === 'invoice_requested'
+                      ? 'Bank details will be sent to your email within 24 hours.'
+                      : 'A confirmation has been sent to your email.'
+                  }}
+                </p>
               </div>
 
               <div class="summary-body">
@@ -645,35 +663,61 @@
                 You can cancel your subscription anytime.
               </p>
 
-              <!-- Pay / Start Trial button -->
+              <!-- Pay / Start Trial button OR Request Invoice for high-value orders -->
               <div class="pay-button-wrapper" *ngIf="!paymentPaid">
-                <button
-                  nbButton
-                  status="primary"
-                  fullWidth
-                  size="large"
-                  (click)="hasTrial && withTrial ? StartTrial() : Pay()"
-                  [disabled]="isLoadingPayment || isCheckingTrialEligibility"
-                >
-                  <fa-icon [icon]="icons.faLock"></fa-icon>
-                  <ng-container *ngIf="isProratedAddon"
-                    >Pay {{ purchaseOrder.amount_to_be_paid / 100 | currency : purchaseOrder.currency }}</ng-container
+                <!-- Bank transfer: shown when total >= threshold (Pay button hidden) -->
+                <ng-container *ngIf="isBankTransfer">
+                  <commudle-alert [info]="true">
+                    <div infoContent>
+                      Orders above
+                      {{ effectiveBankTransferThreshold | currency : purchaseOrder.currency : 'symbol' : '1.0-0' }}
+                      require bank transfer. Request an invoice and our team will send bank details within 24 hours.
+                    </div>
+                  </commudle-alert>
+                  <button
+                    nbButton
+                    status="primary"
+                    fullWidth
+                    size="large"
+                    class="com-mt-3"
+                    (click)="RequestInvoice()"
+                    [disabled]="isLoadingPayment"
                   >
-                  <ng-container *ngIf="!isProratedAddon && hasTrial && withTrial"
-                    >Start {{ trialDays }}-day free trial</ng-container
+                    <fa-icon [icon]="icons.faReceipt"></fa-icon>
+                    Request Invoice
+                  </button>
+                </ng-container>
+
+                <!-- Normal Razorpay Pay / Start Trial -->
+                <ng-container *ngIf="!isBankTransfer">
+                  <button
+                    nbButton
+                    status="primary"
+                    fullWidth
+                    size="large"
+                    (click)="hasTrial && withTrial ? StartTrial() : Pay()"
+                    [disabled]="isLoadingPayment || isCheckingTrialEligibility"
                   >
-                  <ng-container *ngIf="!isProratedAddon && !(hasTrial && withTrial)">
-                    Pay {{ totalPrice | currency : purchaseOrder.currency }}
-                  </ng-container>
-                </button>
-                <div class="trust-footer">
-                  <span class="trust-footer-item">
-                    <fa-icon [icon]="icons.faShieldHalved"></fa-icon>
-                    Encrypted &amp; secure
-                  </span>
-                  <span class="dot"></span>
-                  <span class="trust-footer-item">Powered by Razorpay</span>
-                </div>
+                    <fa-icon [icon]="icons.faLock"></fa-icon>
+                    <ng-container *ngIf="isProratedAddon"
+                      >Pay {{ purchaseOrder.amount_to_be_paid / 100 | currency : purchaseOrder.currency }}</ng-container
+                    >
+                    <ng-container *ngIf="!isProratedAddon && hasTrial && withTrial"
+                      >Start {{ trialDays }}-day free trial</ng-container
+                    >
+                    <ng-container *ngIf="!isProratedAddon && !(hasTrial && withTrial)">
+                      Pay {{ totalPrice | currency : purchaseOrder.currency }}
+                    </ng-container>
+                  </button>
+                  <div class="trust-footer">
+                    <span class="trust-footer-item">
+                      <fa-icon [icon]="icons.faShieldHalved"></fa-icon>
+                      Encrypted &amp; secure
+                    </span>
+                    <span class="dot"></span>
+                    <span class="trust-footer-item">Powered by Razorpay</span>
+                  </div>
+                </ng-container>
               </div>
             </com-card-body>
           </com-card>

@@ -1145,6 +1145,7 @@ export const API_ROUTES = {
     INDEX_BY_ORDERABLE_TYPE: 'api/v2/purchase_orders/index_by_orderable_type', //GET
     CONTACT_INFO: 'api/v2/purchase_orders/create_contact_info', //POST
     UPDATE_CONTACT_INFO: 'api/v2/purchase_orders/update_contact_info', //PUT
+    REQUEST_INVOICE: 'api/v2/purchase_orders/request_invoice', //POST
     UPDATE: 'api/v2/purchase_orders', //PUT
     MARK_PAID_FOR_FULLY_DISCOUNTED: 'api/v2/purchase_orders/mark_paid_for_fully_discounted', //PUT
     SEND_INVOICE: 'api/v2/purchase_orders/send_invoice', //POST — buyer-only, takes purchase_order_uuid as a query param
@@ -1168,6 +1169,7 @@ export const API_ROUTES = {
     SEND_INVOICE: 'api/v2/finance_dashboard/send_invoice', //POST — takes purchase_order_uuid as a query param
     PREVIEW_INVOICE: 'api/v2/finance_dashboard/preview_invoice', //GET — takes purchase_order_uuid as a query param, returns PDF blob
     CANCEL_INVOICE: 'api/v2/finance_dashboard/cancel_invoice', //POST — SYS_ADMIN only, takes purchase_order_uuid as a query param + optional { reason }
+    MARK_PAID_BANK_TRANSFER: 'api/v2/finance_dashboard/mark_paid_bank_transfer', //POST — admin marks bank-transfer PO as paid
   },
 
   USER_SUBSCRIPTIONS: {
