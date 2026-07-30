@@ -5,7 +5,7 @@
     @apply com-m-0 com-text-lg md:com-text-3xl com-min-w-0;
 
     .share-inline-btn {
-      @apply com-ml-2 com-translate-y-0 md:com-translate-y-[-2px];
+      @apply com-ml-1 com-translate-y-0 md:com-translate-y-[-2px];
     }
   }
 
@@ -165,7 +165,11 @@ a {
 }
 
 .container-public-page-stats-btn {
-  @apply com-flex com-flex-wrap com-gap-2 com-w-full;
+  @apply com-flex com-flex-nowrap com-gap-2 com-w-full;
+
+  a {
+    @apply com-flex-1 com-min-w-0;
+  }
 }
 
 .mobile-header-action-btns {
