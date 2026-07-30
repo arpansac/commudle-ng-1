@@ -1,140 +1,562 @@
+:host {
+  display: block;
+}
+
+.checkout-page {
+  @apply com-py-6;
+}
+
+/* Checkout banner */
+.checkout-banner {
+  @apply com-mb-6 com-mx-2 com-p-5 com-bg-white;
+  @apply com-border com-border-solid com-border-Bright-Gray com-shadow-sm;
+  @apply sm:com-p-6;
+
+  .banner-main {
+    @apply com-flex com-flex-col com-gap-2;
+    /* @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray; */
+
+    .banner-top-row {
+      @apply com-flex com-items-center com-justify-between com-gap-3;
+
+      .banner-greeting {
+        @apply com-text-sm com-font-semibold com-text-gray-500;
+
+        .wave {
+          @apply com-inline-block;
+          transform-origin: 70% 70%;
+          animation: waveHand 2.4s ease-in-out infinite;
+        }
+      }
+    }
+
+    .banner-badge {
+      @apply com-inline-flex com-items-center com-gap-2 com-self-start com-px-3 com-py-1 com-rounded-full;
+      @apply com-bg-green-50 com-text-green-700 com-text-xs com-font-semibold;
+
+      fa-icon {
+        @apply com-text-Caribbean-Green;
+      }
+    }
+
+    .banner-eyebrow {
+      @apply com-text-xs com-font-semibold com-uppercase com-tracking-widest com-text-primary-600 com-m-0 com-mb-1;
+    }
+
+    .banner-title {
+      @apply com-text-2xl com-font-bold com-text-Yankees-Blue com-m-0;
+      @apply sm:com-text-3xl;
+    }
+
+    .banner-subtitle {
+      @apply com-text-sm com-text-Cadet-Grey com-m-0;
+    }
+  }
+
+  .banner-features {
+    @apply com-grid com-grid-cols-1 com-gap-3;
+    @apply sm:com-grid-cols-3;
+
+    .feature {
+      @apply com-flex com-items-center com-gap-3 com-p-3 com-rounded-xl com-bg-gray-50;
+
+      .feature-icon {
+        @apply com-flex com-items-center com-justify-center com-flex-shrink-0 com-w-10 com-h-10 com-rounded-lg com-text-base;
+      }
+
+      &:nth-child(1) .feature-icon {
+        @apply com-bg-purple-100 com-text-purple-600;
+      }
+
+      &:nth-child(2) .feature-icon {
+        @apply com-bg-yellow-100 com-text-yellow-600;
+      }
+
+      &:nth-child(3) .feature-icon {
+        @apply com-bg-green-100 com-text-green-600;
+      }
+
+      .feature-text {
+        @apply com-flex com-flex-col com-min-w-0;
+
+        .feature-title {
+          @apply com-text-sm com-font-semibold com-text-Yankees-Blue;
+        }
+
+        .feature-desc {
+          @apply com-text-xs com-text-gray-500;
+        }
+      }
+    }
+  }
+}
+
+/* Shared card title with icon */
+.card-title {
+  @apply com-flex com-items-center com-justify-start com-gap-3 com-text-base com-font-semibold com-text-Yankees-Blue;
+
+  .card-title-icon {
+    @apply com-flex com-items-center com-justify-center com-w-8 com-h-8 com-rounded-lg;
+    @apply com-bg-gray-100 com-text-gray-600 com-text-sm;
+  }
+}
+
+.order-details-card,
+.company-details-card {
+  @apply com-mb-4 com-mx-2 com-overflow-hidden;
+}
+
+.addon-summary {
+  @apply com-flex com-flex-col com-gap-5;
+
+  .addon-hero {
+    @apply com-flex com-items-center com-gap-4 com-p-4 com-rounded-2xl;
+    @apply com-bg-primary-100 com-border com-border-solid com-border-primary-200;
+
+    .addon-hero-badge {
+      @apply com-flex com-items-center com-justify-center com-flex-shrink-0;
+      @apply com-h-12 com-w-12 com-rounded-xl;
+      @apply com-bg-primary-500 com-text-white com-text-lg;
+    }
+
+    .addon-hero-text {
+      @apply com-flex com-flex-col;
+
+      .addon-hero-title {
+        @apply com-text-base com-font-semibold com-text-Yankees-Blue;
+      }
+
+      .addon-hero-sub {
+        @apply com-text-sm com-text-gray-500;
+      }
+    }
+  }
+
+  .addon-steps {
+    @apply com-flex com-flex-col com-gap-4;
+
+    .addon-step {
+      @apply com-flex com-items-start com-gap-3;
+
+      fa-icon {
+        @apply com-flex-shrink-0 com-mt-0.5 com-text-primary-500;
+      }
+
+      .addon-step-text {
+        @apply com-flex com-flex-col;
+
+        .addon-step-title {
+          @apply com-text-sm com-font-semibold com-text-Yankees-Blue;
+        }
+
+        .addon-step-desc {
+          @apply com-text-xs com-text-gray-500 com-leading-relaxed;
+        }
+      }
+    }
+  }
+}
+
+.company-details-card {
+  com-card-body {
+    @apply com-p-0;
+  }
+
+  .billing-form-container {
+    @apply com-flex com-flex-col com-gap-4 com-p-4;
+
+    .personal-billing {
+      @apply com-flex com-items-center com-gap-3 com-p-3 com-rounded-xl;
+      @apply com-bg-gray-50 com-border com-border-solid com-border-Bright-Gray;
+
+      .personal-details {
+        @apply com-flex com-flex-col com-flex-1 com-min-w-0;
+
+        .name {
+          @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-truncate;
+        }
+
+        .email,
+        .phone {
+          @apply com-text-xs com-text-gray-500 com-truncate;
+        }
+      }
+
+      .verified {
+        @apply com-text-Caribbean-Green com-text-lg;
+      }
+    }
+
+    .business-toggle-box {
+      @apply com-flex com-items-start com-gap-2 com-p-3 com-rounded-xl;
+      @apply com-bg-Bright-Gray-opacity-30 com-border com-border-solid com-border-Bright-Gray;
+      @apply com-cursor-pointer com-transition-colors;
+
+      &:hover {
+        @apply com-border-primary-300;
+      }
+
+      nb-checkbox {
+        @apply com-mt-0.5 com-flex-shrink-0;
+      }
+
+      .toggle-label {
+        @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-m-0;
+      }
+
+      .toggle-sub {
+        @apply com-text-xs com-text-Cadet-Grey com-m-0;
+      }
+    }
+
+    .business-fields {
+      @apply com-flex com-flex-col com-gap-4;
+    }
+
+    /* Two-column row on ≥sm screens, single column stack on mobile. Wraps
+       pairs of `.form-field` so related inputs (email/phone, country/state)
+       sit side-by-side and the form doesn't require as much scrolling. */
+    .form-row {
+      @apply com-grid com-grid-cols-1 com-gap-4;
+      @apply sm:com-grid-cols-2;
+    }
+
+    /* Invisible placeholder cell used to keep a single-child row aligned to
+       the left column on ≥sm screens (e.g. PIN Code when State is on its own
+       row above and the second column would otherwise stretch to full width). */
+    .form-field-spacer {
+      @apply com-hidden sm:com-block;
+    }
+
+    .form-field {
+      @apply com-flex com-flex-col com-gap-1.5;
+
+      label {
+        @apply com-text-sm com-font-medium com-text-Yankees-Blue;
+
+        .required {
+          @apply com-text-Infra-Red;
+        }
+
+        .optional {
+          @apply com-text-xs com-font-normal com-text-gray-400;
+        }
+      }
+
+      .native-select {
+        @apply com-relative com-w-full;
+
+        select {
+          @apply com-w-full com-appearance-none com-px-4 com-py-2 com-pr-10;
+          @apply com-text-sm com-text-Yankees-Blue com-bg-white;
+          @apply com-border com-border-Bright-Gray com-rounded-md;
+          @apply focus:com-outline-none focus:com-border-primary-500 focus:com-ring-1 focus:com-ring-primary-500;
+        }
+
+        &::after {
+          content: '';
+          @apply com-absolute com-right-4 com-top-1/2 com-w-2 com-h-2 com-pointer-events-none;
+          @apply com-border-0 com-border-r com-border-b com-border-solid com-border-Cadet-Grey;
+          transform: translateY(-65%) rotate(45deg);
+        }
+      }
+    }
+  }
+
+  .company-details {
+    @apply com-p-4 com-flex com-flex-col;
+
+    .detail-row {
+      @apply com-flex com-justify-between com-gap-4 com-py-2.5;
+      @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
+      &:last-child {
+        @apply com-border-b-0;
+      }
+
+      .heading {
+        @apply com-text-sm com-text-gray-500;
+      }
+
+      .value {
+        @apply com-text-sm com-font-medium com-text-Yankees-Blue com-text-right;
+      }
+    }
+  }
+}
+
 .payment-details-section {
-  @apply com-sticky com-top-20;
-  nb-card {
-    nb-card-body {
+  @apply com-sticky com-top-20 com-mx-2;
+
+  .summary-card {
+    @apply com-mb-2 com-overflow-hidden;
+
+    com-card-body {
       @apply com-p-0;
-      .paid-message-container {
-        @apply com-flex com-flex-col com-justify-center com-my-6;
-        fa-icon {
-          @apply com-text-5xl com-text-Caribbean-Green com-mx-auto;
-        }
-        .message {
-          @apply com-text-xl com-font-semibold com-text-center;
-        }
+    }
+
+    .currency-note {
+      @apply com-px-4 com-pt-3 com-m-0 com-text-xs com-text-gray-400 com-text-right;
+    }
+
+    .paid-message-container {
+      @apply com-flex com-flex-col com-items-center com-justify-center com-gap-1 com-py-6 com-px-4;
+      @apply com-bg-green-50 com-m-4 com-rounded-xl;
+
+      fa-icon {
+        @apply com-text-5xl com-text-Caribbean-Green;
       }
 
-      .order-summary-message {
-        @apply com-px-4 com-py-2 com-text-base com-italic;
+      .message {
+        @apply com-text-xl com-font-semibold com-text-Yankees-Blue com-m-0;
       }
 
-      .payment-details {
-        @apply com-flex com-justify-between com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-py-2 com-px-4;
-        span {
-          @apply com-text-base com-font-medium;
-        }
+      .sub-message {
+        @apply com-text-sm com-text-gray-500 com-m-0 com-text-center;
+      }
+    }
+
+    .summary-body {
+      @apply com-flex com-flex-col com-px-4 com-pt-4;
+
+      .summary-row {
+        @apply com-flex com-items-center com-justify-between com-gap-4 com-py-2.5;
+        @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
         .heading {
-          @apply com-text-gray-500;
+          @apply com-flex com-items-center com-gap-1.5 com-text-sm com-text-gray-500;
         }
-      }
 
-      .discount-container {
-        @apply com-pt-2 com-pb-4 com-px-4 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+        &.subtotal-row .heading {
+          @apply com-flex-col com-items-start com-gap-0.5;
+
+          .breakdown {
+            @apply com-text-xs com-text-gray-400 com-font-normal;
+          }
+        }
+
         .value {
-          @apply com-flex com-gap-4;
+          @apply com-text-sm com-font-medium com-text-Yankees-Blue;
+
+          .billing-cycle-note {
+            @apply com-text-xs com-text-gray-400 com-font-normal;
+          }
+        }
+
+        &.discount-applied {
+          .heading {
+            @apply com-text-green-700;
+
+            fa-icon {
+              @apply com-text-Caribbean-Green;
+            }
+          }
+
+          .value {
+            @apply com-text-green-700 com-font-semibold;
+          }
         }
       }
 
-      .recipient {
-        .heading {
-          @apply com-px-4 com-py-2 com-text-base com-italic;
-        }
-        .recipient-details {
-          @apply com-gap-2 com-py-2 com-px-4;
-          .name {
-            @apply com-font-semibold;
-          }
-          .email,
-          .phone {
-            @apply com-italic;
-          }
+      .quantity-control {
+        @apply com-flex com-items-center com-gap-1;
+
+        .quantity-value {
+          @apply com-min-w-8 com-text-center com-text-sm com-font-semibold com-text-Yankees-Blue;
         }
       }
 
-      .user-details {
-        @apply com-px-6 com-py-4;
-        form {
-          @apply com-mt-3;
+      .annual-billing-callout {
+        @apply com-flex com-items-center com-gap-2 com-my-2 com-px-3 com-py-2.5 com-rounded-lg;
+        @apply com-bg-primary-100 com-text-primary-700 com-text-xs;
+
+        fa-icon {
+          @apply com-flex-shrink-0 com-text-sm;
         }
-        form > div {
-          @apply com-flex com-flex-col com-gap-3;
+
+        strong {
+          @apply com-font-bold;
         }
-        .add-another-user {
-          @apply com-border-0 com-text-primary-500 com-bg-transparent  com-py-3 com-text-base com-cursor-pointer com-font-semibold;
+      }
+    }
+
+    .promo-code {
+      @apply com-flex com-flex-col com-gap-1.5 com-px-4 com-py-3;
+
+      .promo-label {
+        @apply com-flex com-items-center com-gap-1.5 com-text-xs com-font-normal com-text-gray-500;
+
+        fa-icon {
+          @apply com-text-gray-400 com-text-xs;
+        }
+      }
+
+      .promo-input-row {
+        @apply com-flex com-items-center com-gap-2;
+      }
+
+      .promo-success {
+        @apply com-flex com-items-center com-gap-1.5 com-text-xs com-font-medium com-text-green-700 com-m-0;
+
+        fa-icon {
+          @apply com-text-Caribbean-Green;
+        }
+      }
+    }
+
+    .trial-ineligible-notice {
+      @apply com-mx-4 com-my-3;
+    }
+
+    .trial-option {
+      @apply com-flex com-items-center com-gap-2 com-mx-4 com-my-3 com-px-3 com-py-2 com-rounded-lg;
+      @apply com-bg-primary-100 com-border com-border-solid com-border-primary-200;
+
+      > fa-icon {
+        @apply com-text-primary-500 com-flex-shrink-0;
+      }
+
+      .trial-summary {
+        @apply com-text-xs com-text-primary-700 com-leading-snug;
+
+        strong {
+          @apply com-font-semibold;
+        }
+      }
+    }
+
+    .trial-billing-note {
+      @apply com-px-4 com-pb-2 com-m-0 com-text-xs com-text-gray-500;
+    }
+
+    .cancel-note {
+      @apply com-flex com-items-center com-gap-1.5 com-px-4 com-pb-3 com-m-0 com-text-xs com-text-gray-400;
+
+      fa-icon {
+        @apply com-flex-shrink-0 com-text-gray-400;
+      }
+    }
+
+    .summary-total {
+      @apply com-flex com-items-center com-justify-between com-gap-4 com-px-4 com-py-4;
+      @apply com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+
+      .heading {
+        @apply com-text-base com-font-semibold com-text-Yankees-Blue;
+      }
+
+      .value {
+        @apply com-text-lg com-font-bold com-text-primary-700;
+      }
+    }
+
+    .recipient {
+      @apply com-flex com-flex-col com-gap-1 com-px-4 com-py-4;
+      @apply com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+
+      .recipient-label {
+        @apply com-text-xs com-font-semibold com-uppercase com-tracking-wide com-text-gray-400;
+      }
+
+      .recipient-details {
+        @apply com-flex com-flex-col;
+
+        .name {
+          @apply com-text-sm com-font-semibold com-text-Yankees-Blue;
+        }
+
+        .email,
+        .phone {
+          @apply com-text-sm com-text-gray-500;
+        }
+      }
+    }
+
+    .pay-button-wrapper {
+      @apply com-flex com-flex-col com-gap-3 com-px-4 com-pb-4;
+
+      button {
+        fa-icon {
+          @apply com-mr-2;
+        }
+      }
+
+      .trust-footer {
+        @apply com-flex com-items-center com-justify-center com-gap-2 com-text-xs com-text-gray-400;
+
+        .trust-footer-item {
+          @apply com-inline-flex com-items-center com-gap-1.5;
+        }
+
+        .dot {
+          @apply com-w-1 com-h-1 com-rounded-full com-bg-gray-300;
         }
       }
     }
   }
 
   .info-container {
-    @apply com-my-2 com-px-2;
+    @apply com-my-2;
   }
 }
 
 .payment-error-dialog {
   @apply com-w-96;
-  nb-card-body {
+
+  com-card-body {
     .exclamation-container {
       @apply com-flex com-justify-center com-my-3;
+
       > div {
         @apply com-flex com-bg-red-100 com-p-1 com-px-2 com-rounded-md;
+
         fa-icon {
           @apply com-text-4xl com-text-red-500 com-mx-auto;
         }
       }
     }
+
     .primary-text {
       @apply com-text-sm com-font-semibold;
     }
+
     .reload-button {
       @apply com-text-primary-500 com-cursor-pointer com-p-1;
+
       fa-icon {
         @apply com-mr-2;
       }
     }
+
     .secondary-text {
       @apply com-text-xs com-font-normal com-italic;
     }
   }
 }
 
-.right-column {
-  .company-details-card {
-    @apply com-mb-4;
-    nb-card-body {
-      @apply com-p-0;
-    }
-    .company-form-container {
-      @apply com-my-4 com-px-4;
-      div {
-        @apply com-mb-2;
-        .required {
-          @apply com-text-red-500;
-        }
-      }
-    }
+@keyframes waveHand {
+  0%,
+  60%,
+  100% {
+    transform: rotate(0deg);
+  }
+  10%,
+  30% {
+    transform: rotate(14deg);
+  }
+  20% {
+    transform: rotate(-8deg);
+  }
+  40% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+}
 
-    .company-details {
-      .company-name,
-      .address,
-      .tax-info,
-      .pin-code {
-        @apply com-flex com-justify-between com-py-2 com-px-4;
-        span {
-          @apply com-text-base com-font-medium;
-        }
-        .heading {
-          @apply com-text-gray-500;
-        }
-        .value {
-          @apply com-text-right;
-        }
-      }
-
-      .address,
-      .tax-info,
-      .pin-code {
-        @apply com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
-      }
-    }
+@media (prefers-reduced-motion: reduce) {
+  .checkout-banner .banner-greeting .wave {
+    animation: none;
   }
 }

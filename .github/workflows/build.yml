@@ -1,0 +1,75 @@
+name: Build & Package Angular SSR
+
+# Builds the commudle-admin SSR app the same way `build.sh` does locally
+# (npx nx run commudle-admin:release), which produces a deployable
+# prod-server.zip at the repo root — that zip is what gets uploaded as a
+# downloadable workflow artifact.
+on:
+  push:
+    branches: [release/test]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to bake into the build (libs/shared/environments)'
+        required: false
+        default: production
+        type: choice
+        options:
+          - local
+          - test
+          - staging
+          - production
+
+# Cancel any older in-progress run on the same branch so only the latest
+# push gets packaged.
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # Nx + Angular SSR builds are memory-hungry; the default GH runner
+      # heap size can OOM mid-build without this.
+      NODE_OPTIONS: --max-old-space-size=4096
+      ENV_FILE: libs/shared/environments/src/lib/environments.ts
+      TARGET_ENV: ${{ github.event.inputs.environment || 'production' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Set target environment
+        run: |
+          echo "Baking '${TARGET_ENV}' environment into the build"
+          sed -i "s/export const environment = environments\['.*'\];/export const environment = environments['${TARGET_ENV}'];/" "$ENV_FILE"
+          grep "export const environment" "$ENV_FILE"
+
+      - name: Build & package SSR release
+        run: npx nx run commudle-admin:release
+
+      - name: Verify build artifact
+        run: |
+          if [ ! -f "prod-server.zip" ]; then
+            echo "::error::prod-server.zip was not produced by the release build"
+            exit 1
+          fi
+          ls -lh prod-server.zip
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-server-${{ github.sha }}
+          path: prod-server.zip
+          retention-days: 14
+          if-no-files-found: error

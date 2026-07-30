@@ -47,9 +47,39 @@ arrow_select() {
         echo -e "       ${D}  ${options[$i]}${R}"
       fi
     done
+    echo -e "       ${D}  Press 'q' to quit${R}"
 
     read -rsn1 key
-    if [[ "$key" == $'\x1b' ]]; then
+    if [[ "$key" == "q" || "$key" == "Q" ]]; then
+      tput cnorm 2>/dev/null || true
+      spacer
+      echo -e "       ${RD}┌──────────────────────────────────────────────────┐${R}"
+      echo -e "       ${RD}│${R}  ${YL}⚠  WARNING${R}                                     ${RD}│${R}"
+      echo -e "       ${RD}│${R}                                                  ${RD}│${R}"
+      echo -e "       ${RD}│${R}  This will abort all current operations.         ${RD}│${R}"
+      echo -e "       ${RD}│${R}  Are you sure you want to quit?                  ${RD}│${R}"
+      echo -e "       ${RD}│${R}                                                  ${RD}│${R}"
+      echo -e "       ${RD}│${R}  ${GR}[y]${R} Yes, quit    ${CY}[n]${R} No, continue              ${RD}│${R}"
+      echo -e "       ${RD}└──────────────────────────────────────────────────┘${R}"
+      spacer
+      while true; do
+        read -rsn1 confirm
+        if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+          warn "Aborted by user."
+          exit 0
+        elif [[ "$confirm" == "n" || "$confirm" == "N" ]]; then
+          # Redraw menu
+          tput cuu "$((count + 12))" 2>/dev/null || echo -ne "\033[$((count + 12))A"
+          for ((i=0; i<count+12; i++)); do
+            tput el 2>/dev/null
+            echo ""
+          done
+          tput cuu "$((count + 12))" 2>/dev/null || echo -ne "\033[$((count + 12))A"
+          break
+        fi
+      done
+      continue
+    elif [[ "$key" == $'\x1b' ]]; then
       read -rsn2 key
       case "$key" in
         '[A') ((selected > 0)) && ((selected--)) ;;
@@ -59,7 +89,7 @@ arrow_select() {
       break
     fi
 
-    tput cuu "$count" 2>/dev/null || echo -ne "\033[${count}A"
+    tput cuu "$((count + 1))" 2>/dev/null || echo -ne "\033[$((count + 1))A"
   done
 
   tput cnorm 2>/dev/null || true
@@ -173,7 +203,7 @@ spacer
 echo -e "       ${YL}Use ↑↓ arrows to select, Enter to confirm${R}"
 spacer
 
-arrow_select "Standard (localhost:4200)" "Network (0.0.0.0:4200)" "Custom port"
+arrow_select "Standard (localhost:4200)" "SSR (localhost:4200)" "Network (0.0.0.0:4200)" "Custom port"
 serve_selected="$ARROW_RESULT"
 
 spacer
@@ -183,6 +213,28 @@ case "$serve_selected" in
     serve_host="localhost"
     serve_port="4200"
     serve_cmd="npx nx run commudle-admin:serve"
+    ;;
+  "SSR"*)
+    serve_host="localhost"
+    serve_port="4200"
+    spacer
+    echo -e "       ${YL}Node.js heap size (MB)?${R}"
+    spacer
+    arrow_select "4096 (4GB - default)" "8192 (8GB)" "12288 (12GB)" "Custom"
+    heap_selected="$ARROW_RESULT"
+    spacer
+    case "$heap_selected" in
+      "4096"*) heap_size="4096" ;;
+      "8192"*) heap_size="8192" ;;
+      "12288"*) heap_size="12288" ;;
+      "Custom"*)
+        read -p "$(echo -e "       ${MG}▸${R} Heap size in MB ${D}(default: 4096)${R}: ")" heap_size
+        heap_size=${heap_size:-4096}
+        spacer
+        ;;
+    esac
+    ok "Heap size → ${B}${heap_size}MB${R}"
+    serve_cmd="NODE_OPTIONS=--max-old-space-size=${heap_size} npx nx serve-ssr commudle-admin"
     ;;
   "Network"*)
     serve_host="0.0.0.0"
@@ -223,4 +275,4 @@ spacer
 ok "Starting development server..."
 spacer
 
-$serve_cmd
+eval $serve_cmd

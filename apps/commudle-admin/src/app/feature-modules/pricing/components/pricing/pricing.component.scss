@@ -283,6 +283,49 @@ p {
   @apply com-bg-gradient-to-r com-from-primary-500 com-to-blue-700 com-text-white #{!important};
 }
 
+/* Secondary, de-emphasized trial CTA - subtle text link under the primary Buy now button */
+.trial-btn {
+  @apply com-bg-transparent com-text-Cadet-Grey com-font-normal com-underline #{!important};
+
+  &:hover {
+    @apply com-text-primary-600 #{!important};
+  }
+}
+
+/* Two-button group on trial-enabled plans */
+.plan-cta-group {
+  @apply com-flex com-flex-col com-gap-2 com-w-full;
+}
+
+/* Trial benefits callout shown on trial-enabled plans */
+.trial-highlight {
+  @apply com-mb-4 com-p-4 com-rounded-2xl com-border com-border-solid com-border-primary-200 com-bg-primary-100;
+
+  .trial-highlight-title {
+    @apply com-flex com-items-center com-gap-2 com-m-0 com-mb-3 com-text-sm com-font-semibold com-text-primary-700;
+
+    fa-icon {
+      @apply com-text-primary-500;
+    }
+  }
+
+  .trial-highlight-list {
+    @apply com-m-0 com-p-0 com-flex com-flex-col com-gap-2;
+
+    li {
+      @apply com-flex com-items-center com-gap-2 com-list-none;
+
+      fa-icon {
+        @apply com-text-primary-500 com-flex-shrink-0;
+      }
+
+      span {
+        @apply com-text-xs com-font-medium com-text-primary-700;
+      }
+    }
+  }
+}
+
 .student-section {
   @apply com-flex md:com-mt-20 com-mt-10 md:com-flex-row com-flex-col-reverse com-rounded-[32px] com-shadow-md com-border com-border-solid com-border-Bright-Gray md:com-mx-0 com-mx-4;
 

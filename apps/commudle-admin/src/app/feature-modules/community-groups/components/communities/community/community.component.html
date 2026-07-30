@@ -1,133 +1,249 @@
-<div *ngIf="communityGroup && communities" class="com-mt-4">
-  <button
-    nbButton
-    status="primary"
-    [routerLink]="['/admin/communities/new']"
-    [queryParams]="{ community_group_id: communityGroup.slug }"
-    target="_blank"
-    [disabled]="communityGroup.community_count_limit <= communities.length"
-  >
-    <nb-icon icon="plus"></nb-icon>
-    New Community
-  </button>
-</div>
-<div class="com-my-4" style="overflow-x: auto">
-  <table *ngIf="communities && communities.length > 0">
-    <thead>
-      <tr class="heading">
-        <th class="name">Name</th>
-        <th class="upcoming-events">Upcoming Events</th>
-        <th class="members-count">Members Count</th>
-        <th class="events-count">Events Count</th>
-        <th class="channels-count">Channels Count</th>
-        <th class="links">Links</th>
-        <th class="toggle">Email Visibility</th>
-        <th class="toggle">Payment Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let community of communities">
-        <td valign="top">
-          <a [routerLink]="['/communities', community.slug]" target="_blank">
-            {{ community.name }}
-            <nb-icon icon="external-link"></nb-icon>
-          </a>
-        </td>
-        <td valign="top">
-          <div *ngFor="let event of community.upcoming_events">
-            <a [routerLink]="['/communities', community.slug, 'events', event.id]" target="_blank">
-              {{ event.name }}
-              <nb-icon icon="external-link"></nb-icon>
-            </a>
-          </div>
-          <div *ngIf="community.upcoming_events.length === 0">No Upcoming Events</div>
-        </td>
-        <td valign="top">
-          {{ community.members_count }}
-        </td>
-        <td valign="top">
-          {{ community.completed_events_count }}
-        </td>
-        <td valign="top">
-          {{ community.community_channels_count }}
-        </td>
-        <td valign="top">
-          <div class="">
-            <a
-              [routerLink]="['/admin', 'communities', community.id]"
-              nbButton
-              hero
-              status="info"
-              size="tiny"
-              target="_blank"
-              class="actions"
-            >
-              Dashboard
-              <nb-icon icon="external-link"></nb-icon>
-            </a>
-            <a
-              [routerLink]="['/communities', community.id]"
-              nbButton
-              hero
-              status="info"
-              size="tiny"
-              target="_blank"
-              class="actions"
-            >
-              Public Page
-              <nb-icon icon="external-link"></nb-icon>
-            </a>
-            <a
-              [routerLink]="['/admin', 'communities', community.id, 'stats']"
-              nbButton
-              hero
-              status="success"
-              size="tiny"
-              target="_blank"
-              class="actions"
-            >
-              Stats
-              <nb-icon icon="external-link"></nb-icon>
-            </a>
-          </div>
-        </td>
-        <td valign="top">
-          <div class="">
-            <nb-toggle
-              (click)="toggleEmailVisibility(community.id)"
-              status="basic"
-              [(checked)]="community.emails_visible"
-              labelPosition="right"
-            >
-            </nb-toggle>
-          </div>
-        </td>
-        <td valign="top">
-          <div class="">
-            <nb-toggle
-              (click)="togglePaymentEnable(community.id)"
-              status="basic"
-              [(checked)]="community.payments_enabled"
-              labelPosition="right"
-            >
-            </nb-toggle>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div class="communities-page" *ngIf="communityGroup">
+  <!-- Header: title, quota, actions -->
+  <header class="page-header">
+    <div class="header-info">
+      <h1 class="page-title">
+        <nb-icon icon="globe-outline"></nb-icon>
+        Communities
+      </h1>
+      <p class="page-subtitle">
+        Manage every community under <strong>{{ communityGroup.name }}</strong>
+      </p>
+      <div class="header-quota" *ngIf="communityGroup.community_count_limit">
+        <span
+          class="quota-count"
+          [class.quota-full]="communityGroup.kommunities_count >= communityGroup.community_count_limit"
+        >
+          {{ communityGroup.kommunities_count || 0 }} / {{ communityGroup.community_count_limit }}
+        </span>
+        <span class="quota-label">communities created</span>
+      </div>
+    </div>
 
-  <div *ngIf="isLoading" class="loading">
+    <div class="header-actions">
+      <button
+        nbButton
+        status="primary"
+        shape="semi-round"
+        (click)="openCreateCommunityDialog()"
+        [disabled]="
+          !!communities &&
+          (communityGroup.community_count_limit ?? 0) > 0 &&
+          (communityGroup.community_count_limit ?? 0) <= (communities?.length ?? 0)
+        "
+      >
+        <nb-icon icon="plus-outline"></nb-icon>
+        New community
+      </button>
+
+      <button
+        *ngIf="communityGroup.user_subscription_id"
+        nbButton
+        status="info"
+        outline
+        shape="semi-round"
+        [disabled]="isAddingCommunities"
+        (click)="openAddCommunitiesDialog()"
+      >
+        <nb-icon icon="plus-circle-outline"></nb-icon>
+        Add more communities
+      </button>
+    </div>
+  </header>
+
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="loading-state">
     <app-loading-spinner></app-loading-spinner>
   </div>
-  <br />
+
+  <!-- Empty state -->
+  <div *ngIf="!isLoading && communities && communities.length === 0" class="empty-state">
+    <div class="empty-icon"><nb-icon icon="globe-outline"></nb-icon></div>
+    <h3 class="empty-title">No communities yet</h3>
+    <p class="empty-desc">Create your first community under this organization to get started.</p>
+  </div>
+
+  <!-- Community table -->
+  <div class="community-table-container" *ngIf="!isLoading && communities && communities.length > 0">
+    <div class="table-wrapper">
+      <table class="community-table">
+        <thead>
+          <tr class="table-header">
+            <th>Community</th>
+            <th>Members</th>
+            <th>Events</th>
+            <th>Channels</th>
+            <th>Upcoming events</th>
+            <th>Email visibility</th>
+            <th>Payments</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="community-row" *ngFor="let community of communities">
+            <td>
+              <div class="community-meta">
+                <a class="community-name" [routerLink]="['/communities', community.slug]" target="_blank">
+                  {{ community.name }}
+                  <nb-icon icon="external-link-outline"></nb-icon>
+                </a>
+                <span class="community-slug" *ngIf="community.location">
+                  <nb-icon icon="pin-outline"></nb-icon>
+                  {{ community.location }}
+                </span>
+              </div>
+            </td>
+
+            <td class="stat-cell">{{ community.members_count || 0 }}</td>
+            <td class="stat-cell">{{ community.completed_events_count || 0 }}</td>
+            <td class="stat-cell">{{ community.community_channels_count || 0 }}</td>
+
+            <td class="events-cell">
+              <ul class="event-list" *ngIf="community.upcoming_events?.length">
+                <li *ngFor="let event of community.upcoming_events">
+                  <a [routerLink]="['/communities', community.slug, 'events', event.id]" target="_blank">
+                    {{ event.name }}
+                    <nb-icon icon="external-link-outline"></nb-icon>
+                  </a>
+                </li>
+              </ul>
+              <span class="no-events" *ngIf="!community.upcoming_events?.length">No upcoming events</span>
+            </td>
+
+            <td>
+              <nb-toggle
+                (click)="toggleEmailVisibility(community.id)"
+                status="basic"
+                [(checked)]="community.emails_visible"
+              ></nb-toggle>
+            </td>
+
+            <td>
+              <nb-toggle
+                (click)="togglePaymentEnable(community.id)"
+                status="basic"
+                [(checked)]="community.payments_enabled"
+              ></nb-toggle>
+            </td>
+
+            <td>
+              <div class="community-actions">
+                <a
+                  [routerLink]="['/admin', 'communities', community.id]"
+                  nbButton
+                  status="primary"
+                  size="small"
+                  shape="semi-round"
+                  target="_blank"
+                >
+                  <nb-icon icon="settings-2-outline"></nb-icon>
+                  Dashboard
+                </a>
+                <a
+                  [routerLink]="['/communities', community.id]"
+                  nbButton
+                  status="basic"
+                  size="small"
+                  shape="semi-round"
+                  outline
+                  target="_blank"
+                >
+                  <nb-icon icon="eye-outline"></nb-icon>
+                  Public
+                </a>
+                <a
+                  [routerLink]="['/admin', 'communities', community.id, 'stats']"
+                  nbButton
+                  status="success"
+                  size="small"
+                  shape="semi-round"
+                  outline
+                  target="_blank"
+                >
+                  <nb-icon icon="bar-chart-outline"></nb-icon>
+                  Stats
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Pagination -->
   <app-pagination
+    *ngIf="total > count"
+    class="pagination"
     (goTo)="page = $event; getCommunities()"
     (next)="page = $event; getCommunities()"
     (previous)="page = $event; getCommunities()"
-    *ngIf="total > 0"
     [count]="count"
     [current]="page"
     [total]="total"
   ></app-pagination>
 </div>
+
+<!-- ── Add More Communities dialog ── -->
+<ng-template #addCommunitiesDialog let-ref="dialogRef">
+  <nb-card class="add-communities-dialog">
+    <nb-card-header class="dialog-header">
+      <span>Add more communities</span>
+      <button ghost nbButton size="small" shape="round" (click)="ref.close()" [disabled]="isAddingCommunities">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body class="dialog-body">
+      <p class="dialog-text">
+        You'll be charged a prorated amount for the remaining days in your current billing cycle. Starting next cycle,
+        your recurring charge will increase by the new communities.
+      </p>
+      <p class="dialog-current-plan" *ngIf="communityGroup.community_count_limit">
+        <nb-icon icon="info-outline"></nb-icon>
+        Current plan:
+        <strong
+          >{{ communityGroup.kommunities_count || 0 }} / {{ communityGroup.community_count_limit }} communities</strong
+        >
+        used
+      </p>
+      <div class="quantity-stepper">
+        <label>Communities</label>
+        <div class="stepper-controls">
+          <button
+            nbButton
+            size="tiny"
+            shape="round"
+            (click)="extraCommunities = extraCommunities > 1 ? extraCommunities - 1 : 1"
+            [disabled]="isAddingCommunities || extraCommunities <= 1"
+          >
+            <nb-icon icon="minus-outline"></nb-icon>
+          </button>
+          <span class="stepper-value">{{ extraCommunities }}</span>
+          <button
+            nbButton
+            size="tiny"
+            shape="round"
+            (click)="extraCommunities = extraCommunities + 1"
+            [disabled]="isAddingCommunities"
+          >
+            <nb-icon icon="plus-outline"></nb-icon>
+          </button>
+        </div>
+      </div>
+    </nb-card-body>
+    <nb-card-footer class="dialog-actions">
+      <button nbButton status="basic" shape="semi-round" (click)="ref.close()" [disabled]="isAddingCommunities">
+        Cancel
+      </button>
+      <button
+        nbButton
+        status="primary"
+        shape="semi-round"
+        (click)="confirmAddCommunities(ref)"
+        [disabled]="isAddingCommunities"
+      >
+        {{ isAddingCommunities ? 'Processing...' : 'Proceed to pay' }}
+      </button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

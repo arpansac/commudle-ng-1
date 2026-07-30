@@ -35,10 +35,10 @@ import { Subscription } from 'rxjs';
 import { commudleIcons } from 'apps/commudle-admin/src/assets/store/icons-library';
 
 @Component({
-    selector: 'app-community-control-panel',
-    templateUrl: './community-control-panel.component.html',
-    styleUrls: ['./community-control-panel.component.scss'],
-    standalone: false
+  selector: 'app-community-control-panel',
+  templateUrl: './community-control-panel.component.html',
+  styleUrls: ['./community-control-panel.component.scss'],
+  standalone: false,
 })
 export class CommunityControlPanelComponent implements OnInit, OnDestroy {
   community: ICommunity;
@@ -135,6 +135,7 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
       const communityId = this.activatedRoute.snapshot.params['community_id'];
       this.communitiesService.getCommunityDetails(communityId).subscribe((data) => {
         this.community = data;
+        console.log('🚀 ~ CommunityControlPanelComponent ~ setCommunity ~ this.community:', this.community);
         this.seoService.setTitle(`Admin Dashboard | ${this.community.name}`);
         this.checkOrganizer();
       });

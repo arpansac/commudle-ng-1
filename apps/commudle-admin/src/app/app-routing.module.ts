@@ -231,6 +231,22 @@ const routes: Routes = [
     loadChildren: () => import('./feature-modules/pricing/pricing.module').then((m) => m.PricingModule),
   },
   {
+    path: 'subscriptions',
+    loadChildren: () =>
+      import('./feature-modules/subscription-plans/subscription-plans.module').then((m) => m.SubscriptionPlansModule),
+  },
+  {
+    path: 'finance-dashboard',
+    loadChildren: () =>
+      import('./feature-modules/finance-dashboard/finance-dashboard.module').then((m) => m.FinanceDashboardModule),
+    // Guard also lives inside the feature module's routing, but keeping it here
+    // too gives the app-router-level 401 redirect a chance to run first.
+    canActivate: [RoleGuard],
+    data: {
+      expectedRoles: [EUserRoles.FINANCE_ADMIN, EUserRoles.SYSTEM_ADMINISTRATOR],
+    },
+  },
+  {
     path: 'speaker-resources',
     loadChildren: () =>
       import('./feature-modules/speaker-resources/speaker-resources.module').then((m) => m.SpeakerResourcesModule),

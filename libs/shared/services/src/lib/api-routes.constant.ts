@@ -24,6 +24,7 @@ export const API_ROUTES = {
 
   // communities
   COMMUNITIES: {
+    CHECK_SLUG: 'api/v2/communities/check_slug',
     CREATE: 'api/v2/communities',
     USER_ROLE_COMMUNITIES: 'api/v2/communities/user_role_communities',
     DETAILS: 'api/v2/communities',
@@ -123,6 +124,7 @@ export const API_ROUTES = {
     CREATE: 'api/v2/community_groups',
     UPDATE: 'api/v2/community_groups',
     SHOW: 'api/v2/community_groups/show',
+    CHECK_SLUG: 'api/v2/community_groups/check_slug',
     COMMUNITIES: 'api/v2/community_groups/communities',
     MANAGING_COMMUNITY_GROUPS: 'api/v2/community_groups/get_managing_community_groups',
     EVENTS: 'api/v2/community_groups/events',
@@ -1142,8 +1144,11 @@ export const API_ROUTES = {
     SHOW: 'api/v2/purchase_orders/show', //GET
     INDEX_BY_ORDERABLE_TYPE: 'api/v2/purchase_orders/index_by_orderable_type', //GET
     CONTACT_INFO: 'api/v2/purchase_orders/create_contact_info', //POST
+    UPDATE_CONTACT_INFO: 'api/v2/purchase_orders/update_contact_info', //PUT
+    REQUEST_INVOICE: 'api/v2/purchase_orders/request_invoice', //POST
     UPDATE: 'api/v2/purchase_orders', //PUT
     MARK_PAID_FOR_FULLY_DISCOUNTED: 'api/v2/purchase_orders/mark_paid_for_fully_discounted', //PUT
+    SEND_INVOICE: 'api/v2/purchase_orders/send_invoice', //POST — buyer-only, takes purchase_order_uuid as a query param
   },
 
   USER_ENGAGEMENT_RECORDS: {
@@ -1157,6 +1162,27 @@ export const API_ROUTES = {
     SHOW: 'api/v2/product_prices/show', //GET
     SHOW_BY_ID: 'api/v2/product_prices/show_by_id', //GET
     CREATE_PURCHASE_ORDER: 'api/v2/product_prices/create_purchase_order', //POST
+  },
+
+  FINANCE_DASHBOARD: {
+    PURCHASE_ORDERS: 'api/v2/finance_dashboard/purchase_orders', //GET
+    SEND_INVOICE: 'api/v2/finance_dashboard/send_invoice', //POST — takes purchase_order_uuid as a query param
+    PREVIEW_INVOICE: 'api/v2/finance_dashboard/preview_invoice', //GET — takes purchase_order_uuid as a query param, returns PDF blob
+    CANCEL_INVOICE: 'api/v2/finance_dashboard/cancel_invoice', //POST — SYS_ADMIN only, takes purchase_order_uuid as a query param + optional { reason }
+    MARK_PAID_BANK_TRANSFER: 'api/v2/finance_dashboard/mark_paid_bank_transfer', //POST — admin marks bank-transfer PO as paid
+  },
+
+  USER_SUBSCRIPTIONS: {
+    INDEX: 'api/v2/user_subscriptions', //GET
+    SHOW: 'api/v2/user_subscriptions/show', //GET
+    CREATE: 'api/v2/user_subscriptions', //POST
+    STATS: 'api/v2/user_subscriptions/stats', //GET
+    TRIAL_ELIGIBILITY: 'api/v2/user_subscriptions/trial_eligibility', //GET — takes product_price_id query param
+    PAYMENT_HISTORY: 'api/v2/user_subscriptions/payment_history', //GET
+    CANCEL: 'api/v2/user_subscriptions/cancel', //POST
+    ADD_COMMUNITIES: 'api/v2/user_subscriptions/add_communities', //POST
+    START_TRIAL: 'api/v2/user_subscriptions/start_trial', //POST
+    RENEW: 'api/v2/user_subscriptions/renew', //POST
   },
 
   HACKATHON_TEAM_ROUND_SUBMISSIONS: {

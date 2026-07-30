@@ -1,29 +1,62 @@
 <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
 <div class="product-price-container" *ngIf="productPrice && !isLoading">
-  <!-- Product and Plan Details -->
-  <div class="product-price-details">
-    <h3 class="product-price-name">{{ productPrice.product_name }}</h3>
-    <p class="product-price-plan-name">{{ productPrice.plan_name }}</p>
-    <p class="product-price-description" *ngIf="productPrice.description">{{ productPrice.description }}</p>
+  <!-- Header -->
+  <div class="pp-header">
+    <div class="pp-badges">
+      <div class="pp-plan-badge">{{ productPrice.billing_cycle | titlecase }} Plan</div>
+      <div class="pp-trial-badge" *ngIf="productPrice.trial_enabled && productPrice.trial_period_days && withTrial">
+        {{ productPrice.trial_period_days }}-day free trial
+      </div>
+    </div>
+    <h3 class="pp-product-name">{{ productPrice.product_name }}</h3>
+    <p class="pp-plan-name">{{ productPrice.plan_name }}</p>
+    <p class="pp-description" *ngIf="productPrice.description">{{ productPrice.description }}</p>
   </div>
 
-  <!-- Pricing Details -->
-  <div class="pricing-details">
-    <span class="final-price">{{ productPrice.final_price | currency : productPrice.currency }}</span>
-    <span class="community-text">per community</span>
+  <!-- Pricing -->
+  <div class="pp-pricing">
+    <!-- Annual plan — show per-month equivalent + annual total -->
+    <ng-container *ngIf="productPrice.billing_cycle === 'yearly'">
+      <div class="pp-price-row">
+        <span class="pp-price">{{ productPrice.final_price | currency : productPrice.currency }}</span>
+        <span class="pp-price-label">/mo &nbsp;·&nbsp; billed annually</span>
+      </div>
+      <div class="pp-annual-total">
+        <nb-icon icon="calendar-outline"></nb-icon>
+        <span>
+          Total billed today:
+          <strong>{{ productPrice.final_price * 12 | currency : productPrice.currency }}</strong>
+          for 12 months
+        </span>
+      </div>
+      <div class="pp-saving" *ngIf="hasDiscount">
+        <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+        <span
+          >You save
+          {{ (productPrice.original_price - productPrice.final_price) * 12 | currency : productPrice.currency }} vs
+          monthly billing</span
+        >
+      </div>
+    </ng-container>
 
-    <div class="discount-container" *ngIf="hasDiscount">
-      <span class="original-price">{{ productPrice.original_price | currency : productPrice.currency }}</span>
-      <span class="discount-price" *ngIf="productPrice.discount_percentage">
+    <!-- Monthly plan -->
+    <ng-container *ngIf="productPrice.billing_cycle !== 'yearly'">
+      <div class="pp-price-row">
+        <span class="pp-price">{{ productPrice.final_price | currency : productPrice.currency }}</span>
+        <span class="pp-price-label">/mo &nbsp;·&nbsp; billed monthly</span>
+      </div>
+    </ng-container>
+
+    <!-- Discount badge -->
+    <div class="pp-discount-row" *ngIf="hasDiscount">
+      <span class="pp-original-price">{{ productPrice.original_price | currency : productPrice.currency }}</span>
+      <span class="pp-discount-badge" *ngIf="productPrice.discount_percentage">
         {{ productPrice.discount_percentage }}% OFF
       </span>
-      <span class="discount-price" *ngIf="productPrice.discount_amount"> {{ productPrice.discount_amount }} OFF </span>
     </div>
   </div>
 
-  <!-- Quantity Requirements -->
-  <div class="min-quantity-container">
-    <p class="min-quantity">Minimum quantity: {{ productPrice.min_quantity }}</p>
-  </div>
+  <!-- Per community note -->
+  <p class="pp-per-community">Pricing is per community</p>
 </div>

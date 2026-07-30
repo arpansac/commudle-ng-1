@@ -29,10 +29,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   sidebarExpanded = true;
-  showSideBar = false;
-  isMobileView = false;
+  ESidebarWidth = ESidebarWidth;
+  ESidebarHeading = ESidebarHeading;
+  sidebarEventName = 'communityGroup';
 
-  //font-awesome
   icons = {
     faRightLeft,
     faUsers,
@@ -44,9 +44,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     faHashtag,
     faMessage,
   };
-  ESidebarWidth = ESidebarWidth;
-  ESidebarHeading = ESidebarHeading;
-  sidebarEventName = 'communityGroup';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -56,10 +53,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.checkMobileView();
     this.footerService.changeMiniFooterStatus(false);
-
     this.seoService.noIndex(true);
+
     this.subscriptions.push(
       this.activatedRoute.data.subscribe((data) => {
         this.communityGroup = data.community_group;
@@ -67,27 +63,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }),
     );
 
-    if (this.isMobileView) {
-      this.sidebarService.setSidebarVisibility(this.sidebarEventName, false, true);
-    } else {
-      this.sidebarService.setSidebarVisibility(this.sidebarEventName, true);
-    }
+    this.sidebarService.setSidebarVisibility(this.sidebarEventName, true);
 
-    // eslint-disable-next-line no-prototype-builtins
-    if (this.sidebarService.setSidebar$.hasOwnProperty(this.sidebarEventName)) {
-      this.sidebarService.setSidebar$[this.sidebarEventName].subscribe((data) => {
-        this.sidebarExpanded = data;
-      });
+    if (Object.prototype.hasOwnProperty.call(this.sidebarService.setSidebar$, this.sidebarEventName)) {
+      this.subscriptions.push(
+        this.sidebarService.setSidebar$[this.sidebarEventName].subscribe((data) => {
+          this.sidebarExpanded = data;
+        }),
+      );
     }
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
     this.seoService.noIndex(false);
+    this.footerService.changeMiniFooterStatus(true);
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  checkMobileView() {
-    this.isMobileView = window.innerWidth < 768;
+  get logoUrl(): string {
+    return this.communityGroup?.logo?.url || '';
+  }
+
+  get groupSubscriptionId(): number {
+    return this.communityGroup?.user_subscription_id || 0;
   }
 
   toggleSidebar() {

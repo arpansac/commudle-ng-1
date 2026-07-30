@@ -1,12 +1,13 @@
 <div *ngIf="community" class="header">
   <div class="basic-details">
     <div class="logo-name">
-      <div class="logo">
+      <!-- <div class="logo">
         <img alt="{{ community.name }}" src="{{ community.logo_image_path?.i96 }}" title="{{ community.name }}" />
       </div>
       <h4>
         {{ community.name }}
       </h4>
+      <app-subscription-plan-badge [subscriptionId]="community.user_subscription_id"></app-subscription-plan-badge> -->
     </div>
     <p class="people-logo">
       <nb-icon icon="people-outline"></nb-icon>
@@ -195,6 +196,16 @@
             </div>
             <span *ngIf="sidebarExpanded" class="heading">Community Profile</span>
           </a>
+        </div>
+      </div>
+
+      <div sidebarFooter class="community-identity">
+        <div class="community-logo">
+          <img [src]="community.logo_image_path?.i96" [alt]="community.name" />
+        </div>
+        <div *ngIf="sidebarExpanded" class="community-info">
+          <span class="community-name">{{ community.name }}</span>
+          <app-subscription-plan-badge [subscriptionId]="community.user_subscription_id"></app-subscription-plan-badge>
         </div>
       </div>
     </commudle-sidebar>

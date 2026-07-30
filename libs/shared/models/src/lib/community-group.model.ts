@@ -5,7 +5,7 @@ export interface ICommunityGroup {
   name: string;
   description: string;
   slug: string;
-  is_visible?: boolean;
+  user_subscription_id?: number;
   facebook: string;
   github: string;
   twitter: string;

@@ -1,0 +1,28 @@
+<div
+  class="community-group-badge {{ background }}"
+  [ngClass]="{
+    small: size === 'small',
+    medium: size === 'medium'
+  }"
+>
+  <a [routerLink]="[routeBase, communityGroup.slug]">
+    <div class="logo">
+      <img
+        *ngIf="communityGroup.logo?.url"
+        alt="{{ communityGroup.name }}"
+        src="{{ communityGroup.logo?.url }}"
+        title="{{ communityGroup.name }}"
+      />
+      <span *ngIf="!communityGroup.logo?.url" class="logo-fallback">
+        {{ communityGroup.name?.charAt(0)?.toUpperCase() }}
+      </span>
+    </div>
+    <div>
+      <p class="name {{ textColor }}">{{ communityGroup.name }}</p>
+      <p class="kommunities-count" *ngIf="communityGroup.kommunities_count">
+        {{ communityGroup.kommunities_count }}
+        {{ communityGroup.kommunities_count === 1 ? 'community' : 'communities' }}
+      </p>
+    </div>
+  </a>
+</div>

@@ -1,0 +1,21 @@
+.plans-shell-header {
+  @apply com-flex com-flex-col com-gap-4 sm:com-flex-row sm:com-items-center sm:com-justify-between;
+
+  span {
+    @apply com-text-base com-font-semibold com-text-Yankees-Blue;
+  }
+
+  .tab-nav {
+    @apply com-flex com-gap-1;
+
+    .tab-item {
+      @apply com-px-4 com-py-1.5 com-rounded-full com-text-sm com-font-medium com-no-underline;
+      @apply com-text-gray-500 com-transition-colors com-cursor-pointer;
+      @apply hover:com-bg-gray-100 hover:com-text-gray-700;
+
+      &.tab-active {
+        @apply com-bg-primary-100 com-text-primary-600;
+      }
+    }
+  }
+}

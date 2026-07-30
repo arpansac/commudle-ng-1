@@ -7,10 +7,10 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment';
 
 @Component({
-    selector: 'commudle-discount-code-form',
-    templateUrl: './discount-code-form.component.html',
-    styleUrls: ['./discount-code-form.component.scss'],
-    standalone: false
+  selector: 'commudle-discount-code-form',
+  templateUrl: './discount-code-form.component.html',
+  styleUrls: ['./discount-code-form.component.scss'],
+  standalone: false,
 })
 export class DiscountCodeFormComponent implements OnInit {
   @Input() discountCode?: IDiscountCode;
@@ -44,6 +44,19 @@ export class DiscountCodeFormComponent implements OnInit {
     }
   }
 
+  /** Preset options for the per-user usage cap. `null` means unlimited (lifetime). */
+  readonly usagePresets: { label: string; value: number | null }[] = [
+    { label: 'Unlimited', value: null },
+    { label: '1 time total', value: 1 },
+    { label: '3 times total', value: 3 },
+    { label: '5 times total', value: 5 },
+    { label: '10 times total', value: 10 },
+    { label: 'Custom…', value: -1 },
+  ];
+
+  /** True when the admin picked "Custom…" from the preset dropdown. */
+  showCustomUsageInput = false;
+
   initForm(): void {
     this.discountCodeForm = this.fb.group({
       code: ['', [Validators.required]],
@@ -54,10 +67,20 @@ export class DiscountCodeFormComponent implements OnInit {
       max_limit: [{ value: null, disabled: true }],
       min_users_count: [null, [Validators.min(0)]],
       max_users_count: [null, [Validators.min(1)]],
+      max_redemptions: [null],
+      usage_preset: [null],
       expires_at: [null],
     });
 
-    // Add conditional validation for max_limit
+    // Preset dropdown → set the actual field. Selecting "Custom" reveals a number input.
+    this.discountCodeForm.get('usage_preset')?.valueChanges.subscribe((preset) => {
+      if (preset === -1) {
+        this.showCustomUsageInput = true;
+      } else {
+        this.showCustomUsageInput = false;
+        this.discountCodeForm.get('max_redemptions')?.setValue(preset, { emitEvent: false });
+      }
+    });
     this.discountCodeForm.get('is_limited')?.valueChanges.subscribe((isLimited) => {
       const maxLimitControl = this.discountCodeForm.get('max_limit');
 
@@ -93,12 +116,16 @@ export class DiscountCodeFormComponent implements OnInit {
   patchFormValues(): void {
     if (!this.discountCode) return;
 
-    // Format date for datetime-local input
     let expiryDate = null;
     if (this.discountCode.expires_at) {
       const date = new Date(this.discountCode.expires_at);
       expiryDate = this.formatDateForInput(date);
     }
+
+    const savedCap = this.discountCode.max_redemptions ?? null;
+    const matchedPreset = this.usagePresets.find((p) => p.value === savedCap);
+    const usagePreset = matchedPreset ? matchedPreset.value : -1;
+    this.showCustomUsageInput = usagePreset === -1;
 
     this.discountCodeForm.patchValue({
       code: this.discountCode.code,
@@ -111,6 +138,8 @@ export class DiscountCodeFormComponent implements OnInit {
       max_limit: this.discountCode.max_limit,
       min_users_count: this.discountCode.min_users_count,
       max_users_count: this.discountCode.max_users_count,
+      max_redemptions: savedCap,
+      usage_preset: usagePreset,
       expires_at: expiryDate,
     });
   }
@@ -135,25 +164,32 @@ export class DiscountCodeFormComponent implements OnInit {
       discountValueControl.setValue(discountValueControl.value * 100);
     }
 
+    const raw = { ...this.discountCodeForm.value } as Record<string, unknown>;
+    delete raw.usage_preset;
+    if (raw.max_redemptions === '' || raw.max_redemptions === undefined) {
+      raw.max_redemptions = null;
+    }
+    const payload = raw as unknown as IDiscountCode;
+
     this.isSubmitting = true;
 
     if (this.isEdit && this.discountCode) {
-      this.updateDiscountCode();
+      this.updateDiscountCode(payload);
     } else {
-      this.createDiscountCode();
+      this.createDiscountCode(payload);
     }
   }
 
-  createDiscountCode(): void {
-    this.discountCodesService.createDiscountCode({ discount_code: this.discountCodeForm.value }).subscribe((data) => {
+  createDiscountCode(payload: IDiscountCode): void {
+    this.discountCodesService.createDiscountCode({ discount_code: payload }).subscribe((data) => {
       this.toastrService.successDialog('Discount code created successfully');
       this.dialogRef.close(data);
     });
   }
 
-  updateDiscountCode(): void {
+  updateDiscountCode(payload: IDiscountCode): void {
     this.discountCodesService
-      .updateDiscountCodes({ discount_code: this.discountCodeForm.value }, this.discountCode.id)
+      .updateDiscountCodes({ discount_code: payload }, this.discountCode.id)
       .subscribe((data) => {
         this.toastrService.successDialog('Discount code updated successfully');
         this.dialogRef.close(data);

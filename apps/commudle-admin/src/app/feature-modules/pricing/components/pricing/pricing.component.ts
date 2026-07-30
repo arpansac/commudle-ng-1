@@ -3,7 +3,7 @@ import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, TemplateRef, ViewChi
 import { IFaq, IProductPrice, IPurchaseOrder } from '@commudle/shared-models';
 import { AuthService, GoogleTagManagerService, ProductPriceService, SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
-import { faArrowDown, faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faCircleCheck, faCircleXmark, faGift } from '@fortawesome/free-solid-svg-icons';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
@@ -41,6 +41,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     faCircleCheck,
     faArrowDown,
     faCircleXmark,
+    faGift,
   };
   private destroy$ = new Subject<void>();
   private isBrowser = false;
@@ -139,9 +140,9 @@ export class PricingComponent implements OnInit, OnDestroy {
     });
   }
 
-  createPurchaseOrderForPrice(gtmPushEventName: string, planType: string) {
+  createPurchaseOrderForPrice(gtmPushEventName: string, planType: string, withTrial?: boolean) {
     this.gtmDataLayerPush(gtmPushEventName);
-    let productUuid;
+    let productUuid: string | undefined;
 
     switch (planType) {
       case 'startup': {
@@ -152,12 +153,9 @@ export class PricingComponent implements OnInit, OnDestroy {
         productUuid = this.isMonthly ? this.enterprise.priceDetails[1].uuid : this.enterprise.priceDetails[0].uuid;
         break;
       }
-      // Not needed for now
-      // case 'devrel': {
-      //   productUuid = this.isMonthly ? this.devrel.priceDetails[1].uuid : this.devrel.priceDetails[0].uuid;
-      //   break;
-      // }
     }
+
+    if (!productUuid) return;
 
     // Show loading dialog
     this.isFullPageLoading = true;
@@ -170,33 +168,34 @@ export class PricingComponent implements OnInit, OnDestroy {
     });
 
     this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
-      if (user) {
-        if (productUuid) {
-          this.productPriceService.createPurchaseOrder(productUuid).subscribe(
-            (response: IPurchaseOrder) => {
-              this.gtm.dataLayerPushEvent('community-subscription-po-created', {
-                com_purchase_order: response.uuid,
-                com_purchase_order_quantity: response.quantity,
-                com_purchase_order_subscription_months: response.notes.subscription_months,
-              });
-              this.isFullPageLoading = false;
-              if (response && response.uuid) {
-                if (this.isBrowser) {
-                  window.location.href = `/checkout/${response.uuid}`;
-                }
-              }
-            },
-            (error) => {
-              this.isFullPageLoading = false;
-              console.error('Error creating purchase order:', error);
-            },
-          );
-        }
-      } else {
+      if (!user) {
         this.isFullPageLoading = false;
         dialogRef.close();
         this.errorHandler.handleError(401, 'Login to apply');
+        return;
       }
+
+      // Both trial and paid CTAs route to the checkout page. Trial mode swaps the
+      // pay button for a "Start trial" CTA that hits the start_trial API — no
+      // Razorpay call. The `?with_trial=1` query param carries the intent through.
+      this.productPriceService.createPurchaseOrder(productUuid).subscribe(
+        (response: IPurchaseOrder) => {
+          this.gtm.dataLayerPushEvent('community-subscription-po-created', {
+            com_purchase_order: response.uuid,
+            com_purchase_order_quantity: response.quantity,
+            com_purchase_order_subscription_months: response.notes.subscription_months,
+          });
+          this.isFullPageLoading = false;
+          if (response && response.uuid && this.isBrowser) {
+            const trialParam = withTrial === true ? '?with_trial=1' : '';
+            window.location.href = `/checkout/${response.uuid}${trialParam}`;
+          }
+        },
+        (error) => {
+          this.isFullPageLoading = false;
+          console.error('Error creating purchase order:', error);
+        },
+      );
     });
   }
 
@@ -222,6 +221,8 @@ export class PricingComponent implements OnInit, OnDestroy {
                 productPrice.final_price - productPrice.original_price ? productPrice.final_price : null;
               this[type].priceDetails[index].discount_percentage = productPrice.discount_percentage;
               this[type].priceDetails[index].uuid = productPrice.uuid;
+              this[type].priceDetails[index].trial_enabled = productPrice.trial_enabled;
+              this[type].priceDetails[index].trial_period_days = productPrice.trial_period_days;
             });
         }
       });

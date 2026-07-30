@@ -1,0 +1,79 @@
+<ng-container *ngIf="!isLoading && subscription">
+  <span class="spb-chip" [class.spb-chip-inactive]="subscription.status !== 'active'" (click)="openDialog()">
+    {{ subscription.product_price?.plan_name || 'Pro' }}
+  </span>
+</ng-container>
+
+<!-- Plan detail dialog -->
+<ng-template #planDialog let-ref="dialogRef">
+  <nb-card class="spb-dialog">
+    <nb-card-header>
+      <div class="spb-dialog-header">
+        <div class="spb-dialog-title-row">
+          <nb-icon icon="star" class="spb-dialog-icon"></nb-icon>
+          <div>
+            <h4 class="spb-dialog-title">{{ subscription.product_price?.plan_name }}</h4>
+            <p class="spb-dialog-product">{{ subscription.product_price?.product_name }}</p>
+          </div>
+        </div>
+        <button nbButton ghost size="small" shape="round" (click)="ref.close()">
+          <nb-icon icon="close-outline"></nb-icon>
+        </button>
+      </div>
+    </nb-card-header>
+
+    <nb-card-body>
+      <div class="spb-status-row">
+        <span class="spb-status-pill" [ngClass]="getStatusClass()">
+          <span class="spb-status-dot"></span>
+          {{ subscription.status | titlecase }}
+        </span>
+        <span class="spb-days-chip" *ngIf="subscription.status === 'active' && getDaysLeft() > 0">
+          {{ getDaysLeft() }} days remaining
+        </span>
+      </div>
+
+      <div class="spb-info-grid">
+        <!-- Started -->
+        <div class="spb-info-item">
+          <span class="spb-info-label">Started</span>
+          <span class="spb-info-value">{{ subscription.starts_at | date : 'd MMM yyyy' }}</span>
+        </div>
+
+        <!-- Renews / Ended -->
+        <div class="spb-info-item" *ngIf="subscription.ends_at">
+          <span class="spb-info-label">{{ subscription.status === 'active' ? 'Renews' : 'Ended' }}</span>
+          <span class="spb-info-value">{{ subscription.ends_at | date : 'd MMM yyyy' }}</span>
+        </div>
+
+        <!-- Communities used / limit -->
+        <div class="spb-info-item" *ngIf="communityCountLimit">
+          <span class="spb-info-label">Communities</span>
+          <span class="spb-info-value">{{ kommunitiesCount || 0 }} / {{ communityCountLimit }}</span>
+        </div>
+      </div>
+
+      <!-- Expired / cancelled notice -->
+      <div class="spb-renew-notice" *ngIf="subscription.status === 'expired' || subscription.status === 'cancelled'">
+        <nb-icon icon="alert-triangle-outline"></nb-icon>
+        <span>Your subscription has {{ subscription.status }}. Renew to continue creating communities.</span>
+      </div>
+    </nb-card-body>
+
+    <nb-card-footer>
+      <div class="spb-dialog-footer">
+        <a
+          [routerLink]="['/subscriptions']"
+          nbButton
+          status="primary"
+          size="small"
+          shape="semi-round"
+          (click)="ref.close()"
+        >
+          Manage Subscription
+        </a>
+        <button nbButton ghost size="small" (click)="ref.close()">Close</button>
+      </div>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

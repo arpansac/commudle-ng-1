@@ -101,8 +101,10 @@ export class CommunityGroupFormComponent implements OnInit, OnDestroy {
   }
 
   updateThemeColor(event) {
-    this.communityGroup.theme_color = event.target.value;
     this.themeColor = event.target.value;
+    if (this.communityGroup) {
+      this.communityGroup.theme_color = event.target.value;
+    }
   }
 
   patchFormGroupDetails() {

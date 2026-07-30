@@ -1,221 +1,599 @@
-<div class="base-layout">
+<div class="base-layout checkout-page medium">
   <div class="container">
+    <!-- Checkout Banner -->
+    <com-card class="checkout-banner" *ngIf="purchaseOrder">
+      <div class="banner-main">
+        <div class="banner-top-row">
+          <span class="banner-greeting">
+            Hey {{ (currentUser?.name | titlecase) || 'there' }} <span class="wave">👋</span>
+          </span>
+          <span class="banner-badge">
+            <fa-icon [icon]="icons.faLock"></fa-icon>
+            Secure checkout
+          </span>
+        </div>
+        <ng-container *ngIf="paymentPaid">
+          <h1 class="banner-title">
+            {{
+              purchaseOrder?.status === 'invoice_requested'
+                ? 'Invoice requested 📄'
+                : isProratedAddon
+                ? 'Communities added 🎉'
+                : 'Order confirmed 🎉'
+            }}
+          </h1>
+          <p class="banner-subtitle">
+            {{
+              purchaseOrder?.status === 'invoice_requested'
+                ? 'Our team will send you bank details within 24 hours. Your plan will be activated once payment is confirmed.'
+                : isProratedAddon
+                ? 'Your new community slots are ready. You can start creating them now.'
+                : 'Your payment was processed successfully. A confirmation is on its way to your inbox.'
+            }}
+          </p>
+        </ng-container>
+
+        <!-- Add-on (expand plan) banner -->
+        <ng-container *ngIf="!paymentPaid && isProratedAddon">
+          <p class="banner-eyebrow">Subscription add-on</p>
+          <h1 class="banner-title">Add more communities</h1>
+          <p class="banner-subtitle">
+            You're expanding your current plan. Pay only the prorated amount for the days left in this billing cycle.
+          </p>
+        </ng-container>
+
+        <!-- Regular purchase banner -->
+        <ng-container *ngIf="!paymentPaid && !isProratedAddon">
+          <!-- <p class="banner-eyebrow" *ngIf="productPrice">
+            {{ productPrice.product_name }}
+            <span *ngIf="productPrice.plan_name"> · {{ productPrice.plan_name }}</span>
+          </p> -->
+          <h1 class="banner-title">Complete your purchase</h1>
+          <!-- <p class="banner-subtitle">
+            {{ productPrice?.description || 'Review your order and pay securely to get started right away.' }}
+          </p> -->
+        </ng-container>
+      </div>
+
+      <!-- Add-on feature highlights -->
+      <div class="banner-features" *ngIf="isProratedAddon">
+        <div class="feature">
+          <span class="feature-icon">
+            <fa-icon [icon]="icons.faTag"></fa-icon>
+          </span>
+          <div class="feature-text">
+            <span class="feature-title">Prorated fairly</span>
+            <span class="feature-desc">Only pay for days left in the cycle</span>
+          </div>
+        </div>
+
+        <div class="feature">
+          <span class="feature-icon">
+            <fa-icon [icon]="icons.faBolt"></fa-icon>
+          </span>
+          <div class="feature-text">
+            <span class="feature-title">Instant slots</span>
+            <span class="feature-desc">Unlock right after payment</span>
+          </div>
+        </div>
+
+        <div class="feature">
+          <span class="feature-icon">
+            <fa-icon [icon]="icons.faRotateRight"></fa-icon>
+          </span>
+          <div class="feature-text">
+            <span class="feature-title">Auto-renews</span>
+            <span class="feature-desc">Included from your next cycle</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Regular purchase feature highlights -->
+      <!-- <div class="banner-features" *ngIf="!isProratedAddon">
+        <div class="feature">
+          <span class="feature-icon">
+            <fa-icon [icon]="icons.faTag"></fa-icon>
+          </span>
+          <div class="feature-text">
+            <span class="feature-title">No hidden fees</span>
+            <span class="feature-desc">Pay exactly what you see</span>
+          </div>
+        </div>
+
+        <div class="feature">
+          <span class="feature-icon">
+            <fa-icon [icon]="icons.faBolt"></fa-icon>
+          </span>
+          <div class="feature-text">
+            <span class="feature-title">Instant access</span>
+            <span class="feature-desc">Activated right after payment</span>
+          </div>
+        </div>
+
+        <div class="feature">
+          <span class="feature-icon">
+            <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
+          </span>
+          <div class="feature-text">
+            <span class="feature-title">Help when you need it</span>
+            <span class="feature-desc">Dedicated payments support</span>
+          </div>
+        </div>
+      </div> -->
+    </com-card>
+
     <div class="two-column-layout medium">
       <!-- Left Column - Order Details -->
       <div class="main-column">
         <!-- Campaign Details -->
-        <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.WALLET">
-          <nb-card-body>
+        <com-card *ngIf="purchaseOrder?.orderable_type === EDbModels.WALLET" class="order-details-card">
+          <com-card-header class="card-title">
+            <span class="card-title-icon"><fa-icon [icon]="icons.faBagShopping"></fa-icon></span>
+            <span>What you're buying</span>
+          </com-card-header>
+          <com-card-body>
             <commudle-campaign-details [campaignId]="purchaseOrder.notes.campaign.id"></commudle-campaign-details>
             <commudle-wallet-details [campaignId]="purchaseOrder.notes.campaign.id"></commudle-wallet-details>
-          </nb-card-body>
-        </nb-card>
+          </com-card-body>
+        </com-card>
 
         <!-- Product Price Details -->
-        <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE">
-          <nb-card-body>
+        <com-card
+          *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE && !isProratedAddon"
+          class="order-details-card"
+        >
+          <com-card-header class="card-title">
+            <span class="card-title-icon"><fa-icon [icon]="icons.faBagShopping"></fa-icon></span>
+            <span>What you're buying</span>
+          </com-card-header>
+          <com-card-body>
             <commudle-product-price-details
               [productPriceId]="purchaseOrder.orderable_id"
+              [withTrial]="withTrial"
               (productPriceLoaded)="onProductPriceLoaded($event)"
             ></commudle-product-price-details>
-          </nb-card-body>
-        </nb-card>
+          </com-card-body>
+        </com-card>
+
+        <!-- Prorated Add-on Summary -->
+        <com-card
+          *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE && isProratedAddon"
+          class="order-details-card"
+        >
+          <com-card-header class="card-title">
+            <span class="card-title-icon"><fa-icon [icon]="icons.faLayerGroup"></fa-icon></span>
+            <span>Adding communities to your plan</span>
+          </com-card-header>
+          <com-card-body>
+            <div class="addon-summary">
+              <!-- Hero count -->
+              <div class="addon-hero">
+                <span class="addon-hero-badge">
+                  <fa-icon [icon]="icons.faLayerGroup"></fa-icon>
+                </span>
+                <div class="addon-hero-text">
+                  <span class="addon-hero-title">
+                    {{ purchaseOrder.notes?.extra_communities }} more
+                    {{ +purchaseOrder.notes?.extra_communities === 1 ? 'community' : 'communities' }}
+                  </span>
+                  <span class="addon-hero-sub">Added to your active subscription</span>
+                </div>
+              </div>
+
+              <!-- What happens -->
+              <div class="addon-steps">
+                <div class="addon-step">
+                  <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
+                  <div class="addon-step-text">
+                    <span class="addon-step-title">Prorated for this cycle</span>
+                    <span class="addon-step-desc"
+                      >You only pay for the days remaining in your current billing period.</span
+                    >
+                  </div>
+                </div>
+                <div class="addon-step">
+                  <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
+                  <div class="addon-step-text">
+                    <span class="addon-step-title">Slots unlock instantly</span>
+                    <span class="addon-step-desc">Create your new communities as soon as payment succeeds.</span>
+                  </div>
+                </div>
+                <div class="addon-step">
+                  <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
+                  <div class="addon-step-text">
+                    <span class="addon-step-title">Included from next cycle</span>
+                    <span class="addon-step-desc">Your recurring charge will automatically cover these slots.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </com-card-body>
+        </com-card>
+
+        <!-- Company Details Card -->
+        <com-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE" class="company-details-card">
+          <com-card-header class="card-title">
+            <span class="card-title-icon"><fa-icon [icon]="icons.faBuilding"></fa-icon></span>
+            <span>Billing details</span>
+          </com-card-header>
+          <com-card-body>
+            <div
+              class="billing-form-container"
+              *ngIf="purchaseOrder.status !== EPurchaseOrderStatus.PAID"
+              [formGroup]="contactInfoForm"
+            >
+              <!--
+                Two-column responsive grid on ≥sm screens, single column on mobile.
+                Field order matches natural tab flow: Name → Email → Phone →
+                Country → State/PIN → Address → GSTIN.
+              -->
+              <div class="business-fields">
+                <!-- Full Name (own row, full width) -->
+                <div class="form-field">
+                  <label for="name">Full Name <span class="required">*</span></label>
+                  <input nbInput fullWidth id="name" formControlName="name" placeholder="Enter your full name" />
+                  <commudle-alert
+                    [error]="!!(contactInfoForm.get('name')?.invalid && contactInfoForm.get('name')?.touched)"
+                    errorMessage="Full name is required"
+                  >
+                  </commudle-alert>
+                </div>
+
+                <!-- Company Name (own row, full width, optional) -->
+                <div class="form-field">
+                  <label for="companyName">Company Name <span class="optional">(optional)</span></label>
+                  <input
+                    nbInput
+                    fullWidth
+                    id="companyName"
+                    formControlName="companyName"
+                    placeholder="Company name for invoice"
+                  />
+                </div>
+
+                <!-- Row: Email | Phone -->
+                <div class="form-row">
+                  <div class="form-field">
+                    <label for="email">Email <span class="required">*</span></label>
+                    <input
+                      nbInput
+                      fullWidth
+                      id="email"
+                      type="email"
+                      formControlName="email"
+                      placeholder="Enter email"
+                    />
+                    <commudle-alert
+                      *ngIf="
+                        contactInfoForm.get('email')?.touched && contactInfoForm.get('email')?.errors?.['required']
+                      "
+                      [error]="true"
+                      errorMessage="Email is required"
+                    >
+                    </commudle-alert>
+                    <commudle-alert
+                      *ngIf="contactInfoForm.get('email')?.touched && contactInfoForm.get('email')?.errors?.['email']"
+                      [error]="true"
+                      errorMessage="Enter a valid email address"
+                    >
+                    </commudle-alert>
+                    <commudle-alert
+                      *ngIf="contactInfoForm.get('email')?.touched && contactInfoForm.get('email')?.errors?.['pattern']"
+                      [error]="true"
+                      errorMessage="Enter a valid email address"
+                    >
+                    </commudle-alert>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="phone">Phone <span class="required">*</span></label>
+                    <input
+                      nbInput
+                      fullWidth
+                      id="phone"
+                      type="tel"
+                      formControlName="phone"
+                      placeholder="Enter phone number"
+                    />
+                    <commudle-alert
+                      *ngIf="contactInfoForm.get('phone')?.touched && contactInfoForm.get('phone')?.errors?.['required']"
+                      [error]="true"
+                      errorMessage="Phone number is required"
+                    >
+                    </commudle-alert>
+                    <commudle-alert
+                      *ngIf="contactInfoForm.get('phone')?.touched && contactInfoForm.get('phone')?.errors?.['pattern']"
+                      [error]="true"
+                      errorMessage="Enter a valid phone number (7–15 digits)"
+                    >
+                    </commudle-alert>
+                  </div>
+                </div>
+
+                <!--
+                  Row: Country | (State for India) OR Country | PIN/Zip (rest of world).
+                  Keeps the row balanced whether or not the state field applies.
+                -->
+                <div class="form-row">
+                  <div class="form-field">
+                    <label for="country">Country <span class="required">*</span></label>
+                    <div class="native-select">
+                      <select id="country" formControlName="country">
+                        <option value="" disabled>Select country</option>
+                        <option *ngFor="let country of countries" [value]="country.code">{{ country.name }}</option>
+                      </select>
+                    </div>
+                    <commudle-alert
+                      [error]="!!(contactInfoForm.get('country')?.invalid && contactInfoForm.get('country')?.touched)"
+                      errorMessage="Country is required"
+                    >
+                    </commudle-alert>
+                  </div>
+
+                  <div class="form-field" *ngIf="isIndiaSelected; else zipInCountryRow">
+                    <label for="state">State <span class="required">*</span></label>
+                    <div class="native-select">
+                      <select id="state" formControlName="state">
+                        <option value="" disabled>Select state</option>
+                        <option *ngFor="let s of indianStates" [value]="s.name">{{ s.name }}</option>
+                      </select>
+                    </div>
+                    <commudle-alert
+                      [error]="!!(contactInfoForm.get('state')?.invalid && contactInfoForm.get('state')?.touched)"
+                      errorMessage="State is required"
+                    >
+                    </commudle-alert>
+                  </div>
+                  <ng-template #zipInCountryRow>
+                    <div class="form-field">
+                      <label for="pinCode">Zip Code <span class="required">*</span></label>
+                      <input nbInput fullWidth id="pinCode" formControlName="pinCode" placeholder="Enter zip code" />
+                      <commudle-alert
+                        *ngIf="contactInfoForm.get('pinCode')?.touched && contactInfoForm.get('pinCode')?.errors?.['required']"
+                        [error]="true"
+                        errorMessage="Zip code is required"
+                      >
+                      </commudle-alert>
+                      <commudle-alert
+                        *ngIf="contactInfoForm.get('pinCode')?.touched && contactInfoForm.get('pinCode')?.errors?.['pattern']"
+                        [error]="true"
+                        errorMessage="Enter a valid zip code"
+                      >
+                      </commudle-alert>
+                    </div>
+                  </ng-template>
+                </div>
+
+                <!--
+                  Row: PIN Code (India only, since non-India PIN sat next to
+                  Country above). Address then spans both columns below.
+                -->
+                <div class="form-row" *ngIf="isIndiaSelected">
+                  <div class="form-field">
+                    <label for="pinCode">Pin Code <span class="required">*</span></label>
+                    <input nbInput fullWidth id="pinCode" formControlName="pinCode" placeholder="Enter pin code" />
+                    <commudle-alert
+                      *ngIf="contactInfoForm.get('pinCode')?.touched && contactInfoForm.get('pinCode')?.errors?.['required']"
+                      [error]="true"
+                      errorMessage="Pin code is required"
+                    >
+                    </commudle-alert>
+                    <commudle-alert
+                      *ngIf="contactInfoForm.get('pinCode')?.touched && contactInfoForm.get('pinCode')?.errors?.['pattern']"
+                      [error]="true"
+                      errorMessage="Enter a valid 6-digit pin code"
+                    >
+                    </commudle-alert>
+                  </div>
+                  <div class="form-field-spacer"></div>
+                </div>
+
+                <!-- Row: Address (textarea, full width) -->
+                <div class="form-field">
+                  <label for="address">Address <span class="required">*</span></label>
+                  <textarea
+                    nbInput
+                    fullWidth
+                    id="address"
+                    formControlName="address"
+                    placeholder="Enter company or business address if purchasing for a business"
+                    rows="3"
+                  ></textarea>
+                  <commudle-alert
+                    [error]="!!(contactInfoForm.get('address')?.invalid && contactInfoForm.get('address')?.touched)"
+                    errorMessage="Address is required"
+                  >
+                  </commudle-alert>
+                </div>
+
+                <!-- Row: GSTIN registration (India only) -->
+                <ng-container *ngIf="isIndiaSelected">
+                  <label class="business-toggle-box">
+                    <nb-checkbox formControlName="isGstRegistered"></nb-checkbox>
+                    <div>
+                      <p class="toggle-label">Are you registered for GSTIN?</p>
+                      <p class="toggle-sub">Add your GSTIN to receive a GST invoice</p>
+                    </div>
+                  </label>
+
+                  <div class="form-field" *ngIf="isGstRegistered">
+                    <label for="gst">GSTIN <span class="optional">(optional)</span></label>
+                    <input nbInput fullWidth id="gst" formControlName="gst" placeholder="Enter your GSTIN" />
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <div *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID" class="company-details">
+              <div class="detail-row" *ngIf="purchaseOrder.contact_info.address?.company_name">
+                <span class="heading">Billed to</span>
+                <span class="value">{{ purchaseOrder.contact_info.address?.company_name | titlecase }}</span>
+              </div>
+              <div class="detail-row" *ngIf="purchaseOrder.contact_info.email">
+                <span class="heading">Email</span>
+                <span class="value">{{ purchaseOrder.contact_info.email }}</span>
+              </div>
+              <div class="detail-row" *ngIf="purchaseOrder.contact_info.phone_number">
+                <span class="heading">Phone</span>
+                <span class="value">{{ purchaseOrder.contact_info.phone_number }}</span>
+              </div>
+              <div class="detail-row" *ngIf="purchaseOrder.contact_info.address?.address">
+                <span class="heading">Address</span>
+                <span class="value">{{ purchaseOrder.contact_info.address?.address }}</span>
+              </div>
+              <div class="detail-row" *ngIf="purchaseOrder.contact_info.address?.state">
+                <span class="heading">State</span>
+                <span class="value">{{ purchaseOrder.contact_info.address?.state }}</span>
+              </div>
+              <div class="detail-row" *ngIf="purchaseOrder.contact_info.address?.pin_code">
+                <span class="heading">Pin Code / Zip Code</span>
+                <span class="value">{{ purchaseOrder.contact_info.address?.pin_code }}</span>
+              </div>
+              <div class="detail-row" *ngIf="purchaseOrder.contact_info.country_code">
+                <span class="heading">Country</span>
+                <span class="value">{{ purchaseOrder.contact_info.country_code }}</span>
+              </div>
+              <div class="detail-row" *ngIf="purchaseOrder.contact_info.tax_info?.gst">
+                <span class="heading">GSTIN</span>
+                <span class="value">{{ purchaseOrder.contact_info.tax_info?.gst }}</span>
+              </div>
+            </div>
+          </com-card-body>
+        </com-card>
       </div>
 
       <!-- Right Column - Payment Summary -->
       <div class="right-column">
-        <!-- Company Details Card -->
-        <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE" class="company-details-card">
-          <nb-card-header>
-            <span> Company Details </span>
-          </nb-card-header>
-          <nb-card-body>
-            <form
-              [formGroup]="contactInfoForm"
-              class="company-form-container"
-              *ngIf="purchaseOrder.status !== EPurchaseOrderStatus.PAID"
-            >
-              <commudle-alert
-                [info]="true"
-                message="In case of a business, please add company details, else add personal details if you are purchasing as an individual"
-              ></commudle-alert>
-              <!-- Company Name -->
-              <div>
-                <label for="companyName">Company Name <span class="required"> *</span></label>
-                <input
-                  nbInput
-                  fullWidth
-                  id="companyName"
-                  formControlName="companyName"
-                  placeholder="Enter company name"
-                />
-                <commudle-alert
-                  [error]="contactInfoForm.get('companyName')?.invalid && contactInfoForm.get('companyName')?.touched"
-                  errorMessage="Company name is required"
-                >
-                </commudle-alert>
-              </div>
-
-              <!-- Company Address -->
-              <div>
-                <label for="companyAddress">Company Address <span class="required"> *</span></label>
-                <textarea
-                  nbInput
-                  fullWidth
-                  id="companyAddress"
-                  formControlName="companyAddress"
-                  placeholder="Enter company address"
-                  rows="3"
-                ></textarea>
-                <commudle-alert
-                  [error]="
-                    contactInfoForm.get('companyAddress')?.invalid && contactInfoForm.get('companyAddress')?.touched
-                  "
-                  errorMessage="Company address is required"
-                >
-                </commudle-alert>
-              </div>
-
-              <!-- Pin Code -->
-              <div>
-                <label for="pinCode">Pin Code <span class="required"> *</span></label>
-                <input nbInput fullWidth id="pinCode" formControlName="pinCode" placeholder="Enter pin code" />
-
-                <commudle-alert
-                  [error]="contactInfoForm.get('pinCode')?.invalid && contactInfoForm.get('pinCode')?.touched"
-                  errorMessage="Pin code is required"
-                >
-                </commudle-alert>
-              </div>
-
-              <!-- GST Number -->
-              <div>
-                <label for="gst">GST Number</label>
-                <input nbInput fullWidth id="gst" formControlName="gst" placeholder="Enter GST number if applicable" />
-              </div>
-              <commudle-alert [info]="true" message="This will help us share a GST Invoice with you"></commudle-alert>
-            </form>
-            <div *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID" class="company-details">
-              <div class="company-name">
-                <span class="heading">Company Name</span>
-                <span class="value">
-                  {{ purchaseOrder.contact_info.address?.company_name | titlecase }}
-                </span>
-              </div>
-              <div class="address">
-                <span class="heading">Address</span>
-                <span class="value">
-                  {{ purchaseOrder.contact_info.address?.address }}
-                </span>
-              </div>
-
-              <div class="pin-code">
-                <span class="heading">Pin Code</span>
-                <span class="value">
-                  {{ purchaseOrder.contact_info.address?.pin_code }}
-                </span>
-              </div>
-              <div class="tax-info" *ngIf="purchaseOrder.contact_info.tax_info?.gst">
-                <span class="heading">GST Number</span>
-                <span class="value">
-                  {{ purchaseOrder.contact_info.tax_info?.gst }}
-                </span>
-              </div>
-            </div>
-          </nb-card-body>
-        </nb-card>
-
-        <!-- Payment Summary Card -->
         <div class="payment-details-section" *ngIf="purchaseOrder">
-          <nb-card>
-            <nb-card-header>Payment Summary</nb-card-header>
-            <nb-card-body>
-              <!-- Payment Success Message -->
+          <com-card class="summary-card">
+            <com-card-header class="card-title summary-header">
+              <span class="card-title-icon"><fa-icon [icon]="icons.faReceipt"></fa-icon></span>
+              <span>Order summary</span>
+            </com-card-header>
+            <com-card-body>
+              <p class="currency-note">Prices are in {{ purchaseOrder.currency }}</p>
+
+              <!-- Payment / Invoice Success Message -->
               <div *ngIf="paymentPaid" class="paid-message-container">
                 <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
-                <p class="message">Payment Successful!</p>
+                <p class="message">
+                  {{ purchaseOrder?.status === 'invoice_requested' ? 'Invoice Requested!' : 'Payment Successful!' }}
+                </p>
+                <p class="sub-message">
+                  {{
+                    purchaseOrder?.status === 'invoice_requested'
+                      ? 'Bank details will be sent to your email within 24 hours.'
+                      : 'A confirmation has been sent to your email.'
+                  }}
+                </p>
               </div>
 
-              <!-- Price -->
-              <div class="payment-details">
-                <span class="heading">Price</span>
-                <span class="value">
-                  {{ purchaseOrder.price / 100 | currency : purchaseOrder.currency }}
-                </span>
-              </div>
-
-              <!-- Quantity Selector -->
-              <div class="payment-details" *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE">
-                <span class="heading">Quantity</span>
-                <div class="value com-flex com-items-center" *ngIf="purchaseOrder.status !== EPurchaseOrderStatus.PAID">
-                  <button
-                    nbButton
-                    ghost
-                    size="small"
-                    status="basic"
-                    (click)="decreaseQuantity()"
-                    [disabled]="quantity <= minQuantity"
-                  >
-                    <fa-icon [icon]="icons.faMinus"></fa-icon>
-                  </button>
-                  <span class="com-mx-4 com-font-medium">{{ quantity }}</span>
-                  <button nbButton ghost size="small" status="basic" (click)="increaseQuantity()">
-                    <fa-icon [icon]="icons.faPlus"></fa-icon>
-                  </button>
-                </div>
-                <span class="value" *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID">
-                  {{ purchaseOrder.quantity }}
-                </span>
-              </div>
-
-              <!-- Subscription Duration Selector -->
-              <div
-                class="payment-details"
-                *ngIf="
-                  purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE &&
-                  productPrice?.min_subscription_duration_months
-                "
-              >
-                <span class="heading">Duration (Months)</span>
-                <div class="value com-flex com-items-center" *ngIf="purchaseOrder.status !== EPurchaseOrderStatus.PAID">
-                  <button
-                    nbButton
-                    ghost
-                    size="small"
-                    status="basic"
-                    (click)="decreaseMonths()"
-                    [disabled]="subscriptionMonths <= productPrice.min_subscription_duration_months"
-                  >
-                    <fa-icon [icon]="icons.faMinus"></fa-icon>
-                  </button>
-                  <span class="com-mx-4 com-font-medium">{{ subscriptionMonths }}</span>
-                  <button nbButton ghost size="small" status="basic" (click)="increaseMonths()">
-                    <fa-icon [icon]="icons.faPlus"></fa-icon>
-                  </button>
-                </div>
-                <span class="value" *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID">
-                  {{ productPrice?.min_subscription_duration_months }}
-                </span>
-              </div>
-
-              <div class="payment-details discount-code" *ngIf="discountCodeApplied">
-                <span class="heading">Discount Code</span>
-                <span class="value">
-                  <span *ngIf="purchaseOrder.discount_code || finalDiscountAmount">
-                    {{ finalDiscountAmount / 100 | currency : purchaseOrder.currency }}
+              <div class="summary-body">
+                <!-- Price -->
+                <div class="summary-row" *ngIf="!isProratedAddon">
+                  <span class="heading">Price per community</span>
+                  <span class="value">
+                    {{ purchaseOrder.price / 100 | currency : purchaseOrder.currency }}
+                    <span class="billing-cycle-note" *ngIf="productPrice?.billing_cycle === 'yearly'">/mo</span>
                   </span>
-                </span>
+                </div>
+
+                <!-- Billing cycle -->
+                <div
+                  class="summary-row"
+                  *ngIf="productPrice?.is_subscription_plan && productPrice?.billing_cycle && !isProratedAddon"
+                >
+                  <span class="heading">Billing</span>
+                  <span class="value">
+                    {{ productPrice.billing_cycle | titlecase }}
+                    <!-- <span class="billing-cycle-note" *ngIf="productPrice.billing_cycle === 'yearly'"
+                      >· billed once a year</span
+                    >
+                    <span class="billing-cycle-note" *ngIf="productPrice.billing_cycle === 'monthly'"
+                      >· billed monthly</span
+                    > -->
+                  </span>
+                </div>
+
+                <!-- Quantity Selector -->
+                <div
+                  class="summary-row"
+                  *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE && !isProratedAddon"
+                >
+                  <span class="heading">Number of communities</span>
+                  <div class="quantity-control" *ngIf="purchaseOrder.status !== EPurchaseOrderStatus.PAID">
+                    <button
+                      nbButton
+                      ghost
+                      size="small"
+                      status="basic"
+                      (click)="decreaseQuantity()"
+                      [disabled]="quantity <= minQuantity"
+                    >
+                      <fa-icon [icon]="icons.faMinus"></fa-icon>
+                    </button>
+                    <span class="quantity-value">{{ quantity }}</span>
+                    <button nbButton ghost size="small" status="basic" (click)="increaseQuantity()">
+                      <fa-icon [icon]="icons.faPlus"></fa-icon>
+                    </button>
+                  </div>
+                  <span class="value" *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID">
+                    {{ purchaseOrder.quantity }}
+                  </span>
+                </div>
+
+                <!-- Subtotal -->
+                <div
+                  class="summary-row subtotal-row"
+                  *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE && !isProratedAddon"
+                >
+                  <span class="heading">
+                    Subtotal
+                    <span class="breakdown">
+                      {{ purchaseOrder.price / 100 | currency : purchaseOrder.currency }} × {{ quantity }}
+                      {{ quantity === 1 ? 'community' : 'communities' }}
+                      <ng-container *ngIf="subscriptionMonths">
+                        × {{ subscriptionMonths }} {{ subscriptionMonths === 1 ? 'month' : 'months' }}
+                      </ng-container>
+                    </span>
+                  </span>
+                  <span class="value">{{ subtotal | currency : purchaseOrder.currency }}</span>
+                </div>
+
+                <!-- Applied Discount -->
+                <div class="summary-row discount-applied" *ngIf="discountCodeApplied && discountValue">
+                  <span class="heading">
+                    <fa-icon [icon]="icons.faTag"></fa-icon>
+                    Discount
+                  </span>
+                  <span class="value">-{{ discountValue | currency : purchaseOrder.currency }}</span>
+                </div>
+
+                <!-- Tax (charged on one-time orders; included in the total below).
+                     Shows the total rate (e.g. "Tax (18%)"). CGST/SGST/IGST
+                     split is only rendered on the invoice PDF. -->
+                <div class="summary-row tax-row" *ngIf="purchaseOrder.tax_amount">
+                  <span class="heading">
+                    Tax<ng-container *ngIf="purchaseOrder.tax_rate"> ({{ purchaseOrder.tax_rate }}%)</ng-container>
+                  </span>
+                  <span class="value">{{ purchaseOrder.tax_amount / 100 | currency : purchaseOrder.currency }}</span>
+                </div>
               </div>
 
-              <div class="payment-details" *ngIf="!paymentPaid">
-                <span class="heading">Discount Code</span>
-                <div class="value com-flex com-items-center">
+              <!-- Promo Code (not applicable when checking out for a free trial) -->
+              <div class="promo-code" *ngIf="!paymentPaid && !(hasTrial && withTrial)">
+                <label class="promo-label">
+                  <fa-icon [icon]="icons.faTag"></fa-icon>
+                  Have a discount code?
+                </label>
+                <div class="promo-input-row">
                   <input
                     nbInput
                     fullWidth
+                    fieldSize="small"
                     [(ngModel)]="discountCode"
                     (input)="onDiscountCodeInput($event)"
-                    placeholder="Enter discount code"
+                    placeholder="Enter Discount Code"
                     [disabled]="discountCodeApplied"
                   />
                   <button
@@ -223,7 +601,6 @@
                     nbButton
                     size="small"
                     status="primary"
-                    class="com-ml-2"
                     (click)="applyDiscountCode()"
                     [disabled]="!discountCode || discountCodeApplied"
                   >
@@ -235,55 +612,127 @@
                     size="small"
                     status="danger"
                     outline
-                    class="com-ml-2"
                     (click)="removePromoCode(true)"
                   >
                     Remove
                   </button>
                 </div>
+                <p class="promo-success" *ngIf="discountCodeApplied">
+                  <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
+                  Code applied successfully
+                </p>
               </div>
 
-              <!-- total -->
-              <div class="payment-details">
-                <span class="heading">Total</span>
-                <span class="value com-font-bold">
-                  {{ totalPrice | currency : purchaseOrder.currency }}
+              <!-- Trial ineligible notice (already had/have a subscription for this plan) -->
+              <div class="trial-ineligible-notice" *ngIf="trialIneligibleReason && !paymentPaid">
+                <commudle-alert [warning]="trialIneligibleReason"></commudle-alert>
+              </div>
+
+              <!-- Free trial option -->
+              <div class="trial-option" *ngIf="hasTrial && withTrial && !paymentPaid && !isProratedAddon">
+                <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
+                <span class="trial-summary">
+                  {{ trialDays }}-day free trial ·
+                  <strong>{{ cardVerificationCharge | currency : purchaseOrder.currency }}</strong> verification charge
                 </span>
               </div>
 
-              <div class="recipient">
-                <div class="heading">Recipient</div>
-                <div class="recipient-details">
-                  <div class="name">{{ purchaseOrder.user?.name | titlecase }}</div>
-                  <span class="email">{{ purchaseOrder.user?.email }}</span>
-                  <br *ngIf="purchaseOrder.user?.phone" />
-                  <span class="phone" *ngIf="purchaseOrder.user?.phone">{{ purchaseOrder.user.phone }}</span>
-                </div>
+              <!-- Total -->
+              <div class="summary-total">
+                <span class="heading">{{
+                  isProratedAddon ? 'Due today (prorated)' : hasTrial && withTrial ? 'Due today' : 'Total payable'
+                }}</span>
+                <span class="value">
+                  {{
+                    (isProratedAddon
+                      ? purchaseOrder.amount_to_be_paid / 100
+                      : hasTrial && withTrial
+                      ? cardVerificationCharge
+                      : totalPrice
+                    ) | currency : purchaseOrder.currency
+                  }}
+                </span>
               </div>
-            </nb-card-body>
-          </nb-card>
+              <p class="trial-billing-note" *ngIf="hasTrial && withTrial">
+                Refundable card verification. Then
+                {{ totalPrice | currency : purchaseOrder.currency }} after your {{ trialDays }}-day trial.
+              </p>
 
-          <!-- Support Information -->
+              <p class="cancel-note" *ngIf="productPrice?.is_subscription_plan && !paymentPaid">
+                <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
+                You can cancel your subscription anytime.
+              </p>
+
+              <!-- Pay / Start Trial button OR Request Invoice for high-value orders -->
+              <div class="pay-button-wrapper" *ngIf="!paymentPaid">
+                <!-- Bank transfer: shown when total >= threshold (Pay button hidden) -->
+                <ng-container *ngIf="isBankTransfer">
+                  <commudle-alert [info]="true">
+                    <div infoContent>
+                      Orders above
+                      {{ effectiveBankTransferThreshold | currency : purchaseOrder.currency : 'symbol' : '1.0-0' }}
+                      require bank transfer. Request an invoice and our team will send bank details within 24 hours.
+                    </div>
+                  </commudle-alert>
+                  <button
+                    nbButton
+                    status="primary"
+                    fullWidth
+                    size="large"
+                    class="com-mt-3"
+                    (click)="RequestInvoice()"
+                    [disabled]="isLoadingPayment"
+                  >
+                    <fa-icon [icon]="icons.faReceipt"></fa-icon>
+                    Request Invoice
+                  </button>
+                </ng-container>
+
+                <!-- Normal Razorpay Pay / Start Trial -->
+                <ng-container *ngIf="!isBankTransfer">
+                  <button
+                    nbButton
+                    status="primary"
+                    fullWidth
+                    size="large"
+                    (click)="hasTrial && withTrial ? StartTrial() : Pay()"
+                    [disabled]="isLoadingPayment || isCheckingTrialEligibility"
+                  >
+                    <fa-icon [icon]="icons.faLock"></fa-icon>
+                    <ng-container *ngIf="isProratedAddon"
+                      >Pay {{ purchaseOrder.amount_to_be_paid / 100 | currency : purchaseOrder.currency }}</ng-container
+                    >
+                    <ng-container *ngIf="!isProratedAddon && hasTrial && withTrial"
+                      >Start {{ trialDays }}-day free trial</ng-container
+                    >
+                    <ng-container *ngIf="!isProratedAddon && !(hasTrial && withTrial)">
+                      Pay {{ totalPrice | currency : purchaseOrder.currency }}
+                    </ng-container>
+                  </button>
+                  <div class="trust-footer">
+                    <span class="trust-footer-item">
+                      <fa-icon [icon]="icons.faShieldHalved"></fa-icon>
+                      Encrypted &amp; secure
+                    </span>
+                    <span class="dot"></span>
+                    <span class="trust-footer-item">Powered by Razorpay</span>
+                  </div>
+                </ng-container>
+              </div>
+            </com-card-body>
+          </com-card>
+
+          <!-- Support & Refund Information -->
           <div class="info-container">
             <commudle-alert [info]="true">
               <div infoContent>
                 For any technical support please reach out to
-                <a href="mailto:payments_support@commudle.com">payments_support&#64;commudle.com</a>
+                <a href="mailto:payments_support@commudle.com">payments_support&#64;commudle.com</a>. Read our
+                <a href="https://www.commudle.com/policies/refund-cancellation-policy" target="_blank" rel="noopener">
+                  refund &amp; cancellation policy</a
+                >.
               </div>
             </commudle-alert>
-          </div>
-
-          <!-- Refund Policy -->
-          <div class="info-container">
-            <commudle-alert
-              [info]="true"
-              message="For any refund related queries please reach out to the event organizers, Commudle is not responsible for any refund or disputes between the ticket purchasing party and the ticket seller."
-            ></commudle-alert>
-          </div>
-
-          <!-- Pay Button -->
-          <div class="com-px-2" *ngIf="!paymentPaid">
-            <button nbButton status="primary" fullWidth (click)="Pay()" [disabled]="isLoadingPayment">Pay Now</button>
           </div>
         </div>
       </div>
@@ -293,8 +742,8 @@
 
 <!-- Payment Error Dialog -->
 <ng-template #paymentErrorDialog let-data let-ref="dialogRef">
-  <nb-card class="payment-error-dialog">
-    <nb-card-body>
+  <com-card class="payment-error-dialog">
+    <com-card-body>
       <div class="exclamation-container">
         <div>
           <fa-icon [icon]="icons.faTriangleExclamation"></fa-icon>
@@ -306,8 +755,8 @@
         Refresh to retry payment
       </p>
       <p class="secondary-text">If money was deducted from your account, please reach out to our support</p>
-    </nb-card-body>
-  </nb-card>
+    </com-card-body>
+  </com-card>
 </ng-template>
 
 <!-- Loading Dialog -->
