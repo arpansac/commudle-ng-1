@@ -1,8 +1,12 @@
 .event-details {
-  @apply com-flex com-flex-col com-items-start com-p-4 com-gap-2 com-bg-white com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+  @apply com-flex com-flex-col com-items-start com-p-3 md:com-p-4 com-gap-2 com-bg-white com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
 
   .event-name {
-    @apply com-m-0 com-flex com-flex-shrink-0 com-text-3xl;
+    @apply com-m-0 com-text-lg md:com-text-3xl com-min-w-0;
+
+    .share-inline-btn {
+      @apply com-ml-1 com-translate-y-0 md:com-translate-y-[-2px];
+    }
   }
 
   .checkin-banner {
@@ -153,5 +157,21 @@ a {
 }
 
 .event-name-share {
-  @apply com-flex com-flex-row com-items-center com-gap-5;
+  @apply com-flex com-flex-row com-items-start com-gap-2 com-w-full;
+
+  .event-name {
+    @apply com-flex-1 com-min-w-0;
+  }
+}
+
+.container-public-page-stats-btn {
+  @apply com-flex com-flex-nowrap com-gap-2 com-w-full;
+
+  a {
+    @apply com-flex-1 com-min-w-0;
+  }
+}
+
+.mobile-header-action-btns {
+  @apply com-flex com-flex-col com-gap-2 com-w-full;
 }
