@@ -29,7 +29,7 @@
         <div class="round-description" *ngIf="round.description">
           <span
             #descriptionSpan
-            [innerHTML]="round.description"
+            [innerHTML]="round.description | textToLinks"
             [class.expanded]="isDescriptionExpanded || userTeamDetails?.round?.id === round.id"
           ></span>
           <button

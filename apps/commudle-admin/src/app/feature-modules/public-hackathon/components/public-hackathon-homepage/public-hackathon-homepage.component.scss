@@ -153,7 +153,7 @@
   @apply com-flex com-flex-col md:com-flex-row com-items-center com-border com-border-solid com-border-Bright-Gray com-bg-white;
 
   .hackathon-header-text {
-    @apply md:com-flex-[7] com-flex-[1] com-h-full com-w-full com-min-w-0;
+    @apply md:com-flex-[5] com-flex-[1] com-h-full com-w-full com-min-w-0;
 
     commudle-public-hackathon-details-mini-card {
       @apply com-block;
@@ -161,7 +161,7 @@
   }
 
   .hackathon-header-banner {
-    @apply md:com-flex-[3] com-flex-[1] com-min-w-0 com-flex com-overflow-hidden com-p-4 md:com-p-4 com-p-2 com-w-full;
+    @apply md:com-flex-[5] com-flex-[1] com-min-w-0 com-flex com-overflow-hidden com-p-4 md:com-p-4 com-p-2 com-w-full;
 
     commudle-banner-image {
       @apply com-block com-w-full com-h-full;
