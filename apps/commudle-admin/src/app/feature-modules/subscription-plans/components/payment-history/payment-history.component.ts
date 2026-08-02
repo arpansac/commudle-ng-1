@@ -1,6 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IPurchaseOrder } from '@commudle/shared-models';
-import { AuthService, PurchaseOrderService, ToastrService, UserSubscriptionService } from '@commudle/shared-services';
+import {
+  AuthService,
+  PurchaseOrderService,
+  SeoService,
+  ToastrService,
+  UserSubscriptionService,
+} from '@commudle/shared-services';
 import { Subject, takeUntil, filter } from 'rxjs';
 
 @Component({
@@ -28,9 +34,17 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private purchaseOrderService: PurchaseOrderService,
     private toastrService: ToastrService,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit(): void {
+    this.seoService.setTags(
+      'Payment History | Commudle',
+      'View your billing and payment history for Commudle subscription plans.',
+      'https://commudle.com/assets/images/commudle-logo192.png',
+    );
+    this.seoService.noIndex(true);
+
     this.authService.currentUserVerified$
       .pipe(
         filter((v) => v !== null),
@@ -42,6 +56,7 @@ export class PaymentHistoryComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.seoService.noIndex(false);
     this.destroy$.next();
     this.destroy$.complete();
   }

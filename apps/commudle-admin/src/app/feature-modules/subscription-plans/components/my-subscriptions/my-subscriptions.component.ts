@@ -23,9 +23,9 @@ export class MySubscriptionsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private seoService: SeoService,
     private authService: AuthService,
     private userSubscriptionService: UserSubscriptionService,
+    private seoService: SeoService,
   ) {}
 
   get timeTheme(): { period: string; greeting: string; emoji: string } {
@@ -41,11 +41,6 @@ export class MySubscriptionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.seoService.setTags(
-      'My Subscriptions | Commudle',
-      'Manage your subscriptions and payment history on Commudle.',
-      'https://commudle.com/assets/images/commudle-logo192.png',
-    );
     this.seoService.noIndex(true);
 
     this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((user) => (this.currentUser = user));
