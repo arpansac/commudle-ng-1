@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { CommudleCardModule } from '@commudle/commudle-theme';
+import { CommudleCardModule, CommudleButtonModule } from '@commudle/commudle-theme';
 import {
   NbButtonModule,
   NbCardModule,
@@ -32,6 +32,7 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
     SubscriptionPlansRoutingModule,
     FontAwesomeModule,
     CommudleCardModule,
+    CommudleButtonModule,
     SharedPipesModule,
     SharedComponentsModule,
     NbCardModule,
