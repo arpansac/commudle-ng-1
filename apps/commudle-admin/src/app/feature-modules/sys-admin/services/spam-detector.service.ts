@@ -10,6 +10,17 @@ import { Observable } from 'rxjs';
 export class SpamDetectorService {
   constructor(private http: HttpClient, private apiRoutesService: BaseApiService) {}
 
+  getSpamStats(): Observable<{
+    total: number;
+    spam_count: number;
+    safe_count: number;
+    pending_decision_count: number;
+  }> {
+    return this.http.get<{ total: number; spam_count: number; safe_count: number; pending_decision_count: number }>(
+      this.apiRoutesService.getRoute(API_ROUTES.SPAM_DETECTOR.STATS),
+    );
+  }
+
   getSpamResult(
     page: number,
     count: number,

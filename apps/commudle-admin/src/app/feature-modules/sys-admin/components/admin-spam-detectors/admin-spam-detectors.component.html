@@ -22,7 +22,7 @@
         <fa-icon [icon]="icons.faShieldHalved"></fa-icon>
       </div>
       <div class="stat-info">
-        <span class="stat-value">{{ total }}</span>
+        <span class="stat-value">{{ globalTotal }}</span>
         <span class="stat-label">Total Scanned</span>
       </div>
     </div>
@@ -31,7 +31,7 @@
         <fa-icon [icon]="icons.faTriangleExclamation"></fa-icon>
       </div>
       <div class="stat-info">
-        <span class="stat-value">{{ spamCount }}</span>
+        <span class="stat-value">{{ globalSpamCount }}</span>
         <span class="stat-label">Detected as Spam</span>
       </div>
     </div>
@@ -40,7 +40,7 @@
         <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
       </div>
       <div class="stat-info">
-        <span class="stat-value">{{ safeCount }}</span>
+        <span class="stat-value">{{ globalSafeCount }}</span>
         <span class="stat-label">Marked Safe</span>
       </div>
     </div>
@@ -49,7 +49,7 @@
         <fa-icon [icon]="icons.faGavel"></fa-icon>
       </div>
       <div class="stat-info">
-        <span class="stat-value">{{ pendingDecisionCount }}</span>
+        <span class="stat-value">{{ globalPendingDecisionCount }}</span>
         <span class="stat-label">Pending Decision</span>
       </div>
     </div>
@@ -89,133 +89,274 @@
 
   <!-- Data Table -->
   <div class="table-panel">
-    <table *ngIf="spamDetectors.length > 0">
-      <thead>
-        <tr>
-          <th>Content</th>
-          <th>Author</th>
-          <th>Detection</th>
-          <th>Risk Score</th>
-          <th>Timestamps</th>
-          <th>Admin Decision</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let spamDetector of spamDetectors" [class.row-flagged]="spamDetector.is_spam">
-          <!-- Content -->
-          <td>
-            <div class="content-info">
-              <span class="content-type-chip">{{ spamDetector.content_type }}</span>
-              <span class="content-title">{{ spamDetector.community_build.name }}</span>
-              <span class="content-desc" *ngIf="spamDetector.community_build.description">
-                {{ spamDetector.community_build.description }}
-              </span>
-              <a class="view-btn" [routerLink]="['/builds/', spamDetector.community_build.slug]" target="_blank">
-                <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
-                View Build
-              </a>
+    <!-- Skeleton loader -->
+    <div class="skeleton-wrapper" *ngIf="isLoading">
+      <!-- Desktop skeleton table -->
+      <div class="skeleton-table hidden md:block">
+        <div class="skeleton-header-row">
+          <div class="skeleton-th"></div>
+          <div class="skeleton-th"></div>
+          <div class="skeleton-th"></div>
+          <div class="skeleton-th"></div>
+          <div class="skeleton-th"></div>
+          <div class="skeleton-th"></div>
+        </div>
+        <div class="skeleton-row" *ngFor="let i of [1, 2, 3, 4, 5]">
+          <div class="skeleton-cell">
+            <div class="skeleton-chip"></div>
+            <div class="skeleton-line lg"></div>
+            <div class="skeleton-line sm"></div>
+          </div>
+          <div class="skeleton-cell">
+            <div class="skeleton-avatar"></div>
+            <div class="skeleton-lines">
+              <div class="skeleton-line md"></div>
+              <div class="skeleton-line sm"></div>
             </div>
-          </td>
+          </div>
+          <div class="skeleton-cell"><div class="skeleton-pill"></div></div>
+          <div class="skeleton-cell">
+            <div class="skeleton-bar-track"><div class="skeleton-bar-fill"></div></div>
+            <div class="skeleton-line xs"></div>
+          </div>
+          <div class="skeleton-cell">
+            <div class="skeleton-line sm"></div>
+            <div class="skeleton-line sm"></div>
+          </div>
+          <div class="skeleton-cell"><div class="skeleton-select"></div></div>
+        </div>
+      </div>
+      <!-- Mobile skeleton cards -->
+      <div class="skeleton-cards md:hidden">
+        <div class="skeleton-card" *ngFor="let i of [1, 2, 3]">
+          <div class="skeleton-card-header">
+            <div class="skeleton-chip"></div>
+            <div class="skeleton-pill"></div>
+          </div>
+          <div class="skeleton-card-body">
+            <div class="skeleton-line lg"></div>
+            <div class="skeleton-line md"></div>
+            <div class="skeleton-avatar-row">
+              <div class="skeleton-avatar sm"></div>
+              <div class="skeleton-line sm"></div>
+            </div>
+            <div class="skeleton-bar-track"><div class="skeleton-bar-fill"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-          <!-- Author -->
-          <td>
-            <div class="author-info">
-              <div class="author-avatar">
-                {{ spamDetector.user.name?.charAt(0)?.toUpperCase() }}
-              </div>
-              <div class="author-details">
-                <span class="author-name">{{ spamDetector.user.name }}</span>
-                <span class="author-blocked-chip" *ngIf="spamDetector.user.blocked">
-                  <fa-icon [icon]="icons.faBan"></fa-icon>
-                  Blocked
+    <!-- Desktop table -->
+    <div class="table-scroll-wrapper" *ngIf="!isLoading">
+      <table *ngIf="spamDetectors.length > 0">
+        <thead>
+          <tr>
+            <th>Content</th>
+            <th>Author</th>
+            <th>Detection</th>
+            <th>Risk Score</th>
+            <th>Timestamps</th>
+            <th>Admin Decision</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let spamDetector of spamDetectors" [class.row-flagged]="spamDetector.is_spam">
+            <!-- Content -->
+            <td>
+              <div class="content-info">
+                <span class="content-type-chip">{{ spamDetector.content_type }}</span>
+                <span class="content-title">{{ spamDetector.community_build.name }}</span>
+                <span class="content-desc" *ngIf="spamDetector.community_build.description">
+                  {{ spamDetector.community_build.description }}
                 </span>
-                <a class="view-btn" [routerLink]="['/users/', spamDetector.user.username]" target="_blank">
+                <a class="view-btn" [routerLink]="['/builds/', spamDetector.community_build.slug]" target="_blank">
                   <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
-                  View Profile
+                  View Build
                 </a>
               </div>
-            </div>
-          </td>
+            </td>
 
-          <!-- Detection Status -->
-          <td>
+            <!-- Author -->
+            <td>
+              <div class="author-info">
+                <div class="author-avatar">
+                  {{ spamDetector.user.name?.charAt(0)?.toUpperCase() }}
+                </div>
+                <div class="author-details">
+                  <span class="author-name">{{ spamDetector.user.name }}</span>
+                  <span class="author-blocked-chip" *ngIf="spamDetector.user.blocked">
+                    <fa-icon [icon]="icons.faBan"></fa-icon>
+                    Blocked
+                  </span>
+                  <a class="view-btn" [routerLink]="['/users/', spamDetector.user.username]" target="_blank">
+                    <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
+                    View Profile
+                  </a>
+                </div>
+              </div>
+            </td>
+
+            <!-- Detection Status -->
+            <td>
+              <div
+                class="detection-status"
+                [class.is-spam]="spamDetector.is_spam"
+                [class.is-safe]="!spamDetector.is_spam"
+              >
+                <fa-icon [icon]="spamDetector.is_spam ? icons.faTriangleExclamation : icons.faCircleCheck"></fa-icon>
+                <span>{{ spamDetector.is_spam ? 'Spam Detected' : 'Clean' }}</span>
+              </div>
+            </td>
+
+            <!-- Risk Score -->
+            <td>
+              <div class="score-cell">
+                <div class="score-bar-track">
+                  <div
+                    class="score-bar-fill"
+                    [class.score-critical]="spamDetector.score >= 0.7"
+                    [class.score-warning]="spamDetector.score >= 0.4 && spamDetector.score < 0.7"
+                    [class.score-ok]="spamDetector.score < 0.4"
+                    [style.width.%]="getScorePercent(spamDetector.score)"
+                  ></div>
+                </div>
+                <span
+                  class="score-value"
+                  [class.score-critical-text]="spamDetector.score >= 0.7"
+                  [class.score-warning-text]="spamDetector.score >= 0.4 && spamDetector.score < 0.7"
+                  [class.score-ok-text]="spamDetector.score < 0.4"
+                >
+                  {{ getScorePercent(spamDetector.score) }}%
+                </span>
+              </div>
+            </td>
+
+            <!-- Timestamps -->
+            <td>
+              <div class="timestamps-cell">
+                <div class="timestamp-row">
+                  <span class="timestamp-label">Created</span>
+                  <span class="timestamp-value">{{
+                    moment(spamDetector.created_at).format('MMM D, YYYY · h:mm A')
+                  }}</span>
+                </div>
+                <div class="timestamp-row" *ngIf="spamDetector.request_sent_at">
+                  <span class="timestamp-label">Sent</span>
+                  <span class="timestamp-value">{{
+                    moment(spamDetector.request_sent_at).format('MMM D, YYYY · h:mm A')
+                  }}</span>
+                </div>
+                <div class="timestamp-row" *ngIf="spamDetector.response_received_at">
+                  <span class="timestamp-label">Response</span>
+                  <span class="timestamp-value">{{
+                    moment(spamDetector.response_received_at).format('MMM D, YYYY · h:mm A')
+                  }}</span>
+                </div>
+              </div>
+            </td>
+
+            <!-- Admin Decision -->
+            <td>
+              <select
+                class="decision-dropdown"
+                [class.decision-spam]="spamDetector.is_spam_decision === true"
+                [class.decision-safe]="spamDetector.is_spam_decision === false"
+                [value]="spamDetector.is_spam_decision"
+                (change)="openDialog($any($event.target).value, spamDetector, spamDetectorFormDialog)"
+              >
+                <option value="null" disabled>— Take Action —</option>
+                <option value="true">🚫 Mark as Spam</option>
+                <option value="false">✅ Mark as Safe</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mobile cards -->
+    <div class="mobile-cards" *ngIf="!isLoading && spamDetectors.length > 0">
+      <div
+        class="mobile-card"
+        *ngFor="let spamDetector of spamDetectors"
+        [class.mobile-card-flagged]="spamDetector.is_spam"
+      >
+        <div class="mobile-card-header">
+          <div class="mobile-card-meta">
+            <span class="content-type-chip">{{ spamDetector.content_type }}</span>
             <div
               class="detection-status"
               [class.is-spam]="spamDetector.is_spam"
               [class.is-safe]="!spamDetector.is_spam"
             >
               <fa-icon [icon]="spamDetector.is_spam ? icons.faTriangleExclamation : icons.faCircleCheck"></fa-icon>
-              <span>{{ spamDetector.is_spam ? 'Spam Detected' : 'Clean' }}</span>
+              <span>{{ spamDetector.is_spam ? 'Spam' : 'Clean' }}</span>
             </div>
-          </td>
+          </div>
+          <span
+            class="score-value"
+            [class.score-critical-text]="spamDetector.score >= 0.7"
+            [class.score-warning-text]="spamDetector.score >= 0.4 && spamDetector.score < 0.7"
+            [class.score-ok-text]="spamDetector.score < 0.4"
+          >
+            {{ getScorePercent(spamDetector.score) }}%
+          </span>
+        </div>
 
-          <!-- Risk Score -->
-          <td>
-            <div class="score-cell">
-              <div class="score-bar-track">
-                <div
-                  class="score-bar-fill"
-                  [class.score-critical]="spamDetector.score >= 0.7"
-                  [class.score-warning]="spamDetector.score >= 0.4 && spamDetector.score < 0.7"
-                  [class.score-ok]="spamDetector.score < 0.4"
-                  [style.width.%]="getScorePercent(spamDetector.score)"
-                ></div>
-              </div>
-              <span
-                class="score-value"
-                [class.score-critical-text]="spamDetector.score >= 0.7"
-                [class.score-warning-text]="spamDetector.score >= 0.4 && spamDetector.score < 0.7"
-                [class.score-ok-text]="spamDetector.score < 0.4"
-              >
-                {{ getScorePercent(spamDetector.score) }}%
-              </span>
-            </div>
-          </td>
+        <div class="mobile-card-body">
+          <p class="content-title">{{ spamDetector.community_build.name }}</p>
+          <p class="content-desc" *ngIf="spamDetector.community_build.description">
+            {{ spamDetector.community_build.description }}
+          </p>
 
-          <!-- Timestamps -->
-          <td>
-            <div class="timestamps-cell">
-              <div class="timestamp-row">
-                <span class="timestamp-label">Created</span>
-                <span class="timestamp-value">{{
-                  moment(spamDetector.created_at).format('MMM D, YYYY · h:mm A')
-                }}</span>
-              </div>
-              <div class="timestamp-row" *ngIf="spamDetector.request_sent_at">
-                <span class="timestamp-label">Sent</span>
-                <span class="timestamp-value">{{
-                  moment(spamDetector.request_sent_at).format('MMM D, YYYY · h:mm A')
-                }}</span>
-              </div>
-              <div class="timestamp-row" *ngIf="spamDetector.response_received_at">
-                <span class="timestamp-label">Response</span>
-                <span class="timestamp-value">{{
-                  moment(spamDetector.response_received_at).format('MMM D, YYYY · h:mm A')
-                }}</span>
-              </div>
-            </div>
-          </td>
+          <div class="mobile-author-row">
+            <div class="author-avatar author-avatar-sm">{{ spamDetector.user.name?.charAt(0)?.toUpperCase() }}</div>
+            <span class="author-name">{{ spamDetector.user.name }}</span>
+            <span class="author-blocked-chip" *ngIf="spamDetector.user.blocked">
+              <fa-icon [icon]="icons.faBan"></fa-icon> Blocked
+            </span>
+          </div>
 
-          <!-- Admin Decision -->
-          <td>
-            <select
-              class="decision-dropdown"
-              [class.decision-spam]="spamDetector.is_spam_decision === true"
-              [class.decision-safe]="spamDetector.is_spam_decision === false"
-              [value]="spamDetector.is_spam_decision"
-              (change)="openDialog($any($event.target).value, spamDetector, spamDetectorFormDialog)"
-            >
-              <option value="null" disabled>— Take Action —</option>
-              <option value="true">🚫 Mark as Spam</option>
-              <option value="false">✅ Mark as Safe</option>
-            </select>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          <div class="mobile-links-row">
+            <a class="view-btn" [routerLink]="['/builds/', spamDetector.community_build.slug]" target="_blank">
+              <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon> Build
+            </a>
+            <a class="view-btn" [routerLink]="['/users/', spamDetector.user.username]" target="_blank">
+              <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon> Profile
+            </a>
+          </div>
+
+          <div class="score-bar-track">
+            <div
+              class="score-bar-fill"
+              [class.score-critical]="spamDetector.score >= 0.7"
+              [class.score-warning]="spamDetector.score >= 0.4 && spamDetector.score < 0.7"
+              [class.score-ok]="spamDetector.score < 0.4"
+              [style.width.%]="getScorePercent(spamDetector.score)"
+            ></div>
+          </div>
+
+          <span class="timestamp-value">{{ moment(spamDetector.created_at).format('MMM D, YYYY · h:mm A') }}</span>
+        </div>
+
+        <div class="mobile-card-footer">
+          <select
+            class="decision-dropdown"
+            [class.decision-spam]="spamDetector.is_spam_decision === true"
+            [class.decision-safe]="spamDetector.is_spam_decision === false"
+            [value]="spamDetector.is_spam_decision"
+            (change)="openDialog($any($event.target).value, spamDetector, spamDetectorFormDialog)"
+          >
+            <option value="null" disabled>— Take Action —</option>
+            <option value="true">🚫 Mark as Spam</option>
+            <option value="false">✅ Mark as Safe</option>
+          </select>
+        </div>
+      </div>
+    </div>
 
     <!-- Empty State -->
-    <div class="empty-state" *ngIf="spamDetectors.length === 0">
+    <div class="empty-state" *ngIf="!isLoading && spamDetectors.length === 0">
       <fa-icon [icon]="icons.faShieldHalved"></fa-icon>
       <span class="empty-title">No Records Found</span>
       <span class="empty-desc">Try adjusting your filters or check back later.</span>
@@ -228,6 +369,8 @@
       [current]="page"
       [count]="count"
       [total]="total"
+      [showJumpTo]="true"
+      [showCount]="true"
       (goTo)="page = $event; getSpamDetectorsData()"
       (next)="page = $event; getSpamDetectorsData()"
       (previous)="page = $event; getSpamDetectorsData()"

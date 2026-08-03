@@ -30,6 +30,14 @@ export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
   isSpamDecision: boolean | null = null;
   moment = moment;
 
+  isLoading = false;
+
+  // Global stats (all pages, not just current page)
+  globalTotal = 0;
+  globalSpamCount = 0;
+  globalSafeCount = 0;
+  globalPendingDecisionCount = 0;
+
   icons = {
     faShieldHalved,
     faTriangleExclamation,
@@ -51,8 +59,18 @@ export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.seoService.noIndex(true);
-    this.getSpamDetectorsData();
     this.seoService.setTitle('Spam Detectors | Commudle');
+    this.loadGlobalStats();
+    this.getSpamDetectorsData();
+  }
+
+  private loadGlobalStats(): void {
+    this.spamDetectorService.getSpamStats().subscribe((stats) => {
+      this.globalTotal = stats.total;
+      this.globalSpamCount = stats.spam_count;
+      this.globalSafeCount = stats.safe_count;
+      this.globalPendingDecisionCount = stats.pending_decision_count;
+    });
   }
 
   get spamCount(): number {
@@ -72,6 +90,7 @@ export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
   }
 
   getSpamDetectorsData() {
+    this.isLoading = true;
     this.spamDetectorService
       .getSpamResult(this.page, this.count, this.isSpam, this.isSpamDecision)
       .subscribe((data) => {
@@ -79,6 +98,7 @@ export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
         this.total = data.total;
         this.page = data.page;
         this.count = data.count;
+        this.isLoading = false;
       });
   }
 
