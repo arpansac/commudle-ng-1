@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IUserSubscription } from '@commudle/shared-models';
-import { AuthService, ToastrService, UserSubscriptionService } from '@commudle/shared-services';
+import { AuthService, SeoService, ToastrService, UserSubscriptionService } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService, NbMenuItem, NbMenuService } from '@commudle/theme';
 import { CreateCommunityFormComponent } from 'apps/commudle-admin/src/app/app-shared-components/create-community-form/create-community-form.component';
 import { CreateCommunityGroupFormComponent } from 'apps/commudle-admin/src/app/app-shared-components/create-community-group-form/create-community-group-form.component';
@@ -51,9 +51,17 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
     private dialogService: NbDialogService,
     private toastrService: ToastrService,
     private nbMenuService: NbMenuService,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit(): void {
+    this.seoService.setTags(
+      'My Subscriptions | Commudle',
+      'View and manage your active subscription plans on Commudle.',
+      'https://commudle.com/assets/images/commudle-logo192.png',
+    );
+    this.seoService.noIndex(true);
+
     this.authService.currentUserVerified$
       .pipe(
         filter((verified) => verified !== null),
@@ -138,6 +146,7 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.seoService.noIndex(false);
     this.destroy$.next();
     this.destroy$.complete();
   }
