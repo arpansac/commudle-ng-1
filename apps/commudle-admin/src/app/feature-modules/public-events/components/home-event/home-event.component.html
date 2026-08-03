@@ -230,6 +230,7 @@
               <nb-icon icon="edit-outline"></nb-icon>
             </a>
           </div>
+
           <com-card *ngIf="event.start_time && event.end_time" class="organizer-panel">
             <com-card-body class="event-date-time-container">
               <!-- Countdown Timer -->
@@ -347,6 +348,40 @@
                   Click here to view event session
                 </a>
               </p>
+            </com-card-body>
+          </com-card>
+          <!-- Map Card -->
+          <com-card
+            *ngIf="event.event_locations?.length && event.event_locations[0]?.address"
+            class="map-card organizer-panel"
+          >
+            <com-card-body class="map-card-body">
+              <div class="map-embed">
+                <iframe
+                  [src]="
+                    'https://maps.google.com/maps?q=' + event.event_locations[0].address + '&output=embed'
+                      | safe : 'resourceUrl'
+                  "
+                  width="100%"
+                  height="180"
+                  frameborder="0"
+                  allowfullscreen
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                ></iframe>
+              </div>
+              <div class="map-info">
+                <span class="map-address">{{ event.event_locations[0].name || event.event_locations[0].address }}</span>
+                <a
+                  *ngIf="event.event_locations[0].map_link"
+                  [attr.href]="event.event_locations[0].map_link"
+                  target="_blank"
+                  class="map-link"
+                >
+                  Open in Google Maps
+                  <nb-icon icon="external-link-outline"></nb-icon>
+                </a>
+              </div>
             </com-card-body>
           </com-card>
         </div>

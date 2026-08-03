@@ -345,3 +345,35 @@
 .main-column {
   @apply md:com-mr-6 com-mr-0;
 }
+
+.map-card {
+  .map-card-body {
+    @apply com-p-0;
+  }
+
+  .map-embed {
+    @apply com-w-full com-overflow-hidden com-rounded-t-lg;
+
+    iframe {
+      @apply com-w-full com-block;
+      height: 180px;
+    }
+  }
+
+  .map-info {
+    @apply com-flex com-flex-col com-gap-1.5 com-p-4;
+
+    .map-address {
+      @apply com-text-sm com-font-medium com-text-Yankees-Blue;
+    }
+
+    .map-link {
+      @apply com-inline-flex com-items-center com-gap-1 com-text-xs com-font-medium com-text-primary-500 com-no-underline;
+      @apply hover:com-text-primary-700;
+
+      nb-icon {
+        @apply com-text-xs;
+      }
+    }
+  }
+}
