@@ -1,80 +1,121 @@
-<div class="com-my-4" style="overflow-x: auto">
-  <table *ngIf="events && events.length > 0">
-    <thead>
-      <tr class="heading">
-        <th class="com-w-[350px]">Basic Details</th>
-        <th class="com-w-[150px]">Registrations</th>
-        <th class="com-w-[150px]">Attendees</th>
-        <th class="com-w-[150px]">Status</th>
-        <th class="com-w-[320px]">Links</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let event of events">
-        <td valign="top">
-          <app-community-badge [community]="event.kommunity" size="small"></app-community-badge>
-          <a [routerLink]="['/communities', event.kommunity_id, 'events', event.slug]" target="_blank">
-            {{ event.name }}
-            <nb-icon icon="external-link"></nb-icon>
-          </a>
-          <p class="time" *ngIf="event.start_time">
-            {{ moment(event.start_time).format('MMM Do, YYYY') }} - {{ moment(event.end_time).format('MMM Do, YYYY') }}
-          </p>
-        </td>
-        <td valign="top">{{ event.registrations_count }}</td>
-        <td valign="top">{{ event.attended_members_count }}</td>
-        <td valign="top">{{ event.event_status.name }}</td>
-        <td valign="top">
-          <a
-            [routerLink]="['/admin', 'communities', event.kommunity_id, 'event-dashboard', event.slug]"
-            nbButton
-            hero
-            status="info"
-            size="tiny"
-            target="_blank"
-            class="actions"
-          >
-            Dashboard
-            <nb-icon icon="external-link"></nb-icon>
-          </a>
-          <a
-            [routerLink]="['/communities', event.kommunity_id, 'events', event.slug]"
-            nbButton
-            hero
-            status="info"
-            size="tiny"
-            target="_blank"
-            class="actions"
-          >
-            Public Page
-            <nb-icon icon="external-link"></nb-icon>
-          </a>
-          <a
-            [routerLink]="['/admin', 'communities', event.kommunity_id, 'event-dashboard', event.slug, 'stats']"
-            nbButton
-            hero
-            status="success"
-            size="tiny"
-            target="_blank"
-            class="actions"
-          >
-            Stats
-            <nb-icon icon="external-link"></nb-icon>
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div class="events-page" *ngIf="communityGroup">
+  <!-- Header -->
+  <header class="page-header">
+    <div class="header-info">
+      <h1 class="page-title">
+        <nb-icon icon="calendar-outline"></nb-icon>
+        Events
+      </h1>
+    </div>
+  </header>
 
-  <div *ngIf="isLoading" class="loading">
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="loading-state">
     <app-loading-spinner></app-loading-spinner>
   </div>
-  <br />
+
+  <!-- Empty state -->
+  <div *ngIf="!isLoading && events && events.length === 0" class="empty-state">
+    <div class="empty-icon"><nb-icon icon="calendar-outline"></nb-icon></div>
+    <h3 class="empty-title">No events yet</h3>
+    <p class="empty-desc">Events from your communities will appear here.</p>
+  </div>
+
+  <!-- Events table -->
+  <div class="events-table-container" *ngIf="!isLoading && events && events.length > 0">
+    <div class="table-wrapper">
+      <table class="events-table">
+        <thead>
+          <tr class="table-header">
+            <th>Event</th>
+            <th>Registrations</th>
+            <th>Attendees</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="event-row" *ngFor="let event of events">
+            <td>
+              <div class="event-meta">
+                <a
+                  class="event-name"
+                  [routerLink]="['/communities', event.kommunity_id, 'events', event.slug]"
+                  target="_blank"
+                >
+                  {{ event.name }}<nb-icon icon="external-link-outline"></nb-icon>
+                </a>
+                <app-community-badge [community]="event.kommunity" size="small"></app-community-badge>
+                <span class="event-time" *ngIf="event.start_time">
+                  {{ moment(event.start_time).format('MMM Do, YYYY') }} –
+                  {{
+                    moment(event.end_time).format(
+                      'MMM Do,
+                  YYYY'
+                    )
+                  }}
+                </span>
+              </div>
+            </td>
+
+            <td class="stat-cell">{{ event.registrations_count }}</td>
+            <td class="stat-cell">{{ event.attended_members_count }}</td>
+            <td class="status-cell">
+              <span class="status-badge">{{ event.event_status.name }}</span>
+            </td>
+
+            <td>
+              <div class="event-actions">
+                <a
+                  [routerLink]="['/admin', 'communities', event.kommunity_id, 'event-dashboard', event.slug]"
+                  comButton
+                  status="primary"
+                  size="tiny"
+                  shape="semi-round"
+                  target="_blank"
+                >
+                  <nb-icon icon="settings-2-outline"></nb-icon>
+                  Dashboard
+                </a>
+                <a
+                  [routerLink]="['/communities', event.kommunity_id, 'events', event.slug]"
+                  comButton
+                  status="basic"
+                  size="tiny"
+                  shape="semi-round"
+                  outline
+                  target="_blank"
+                >
+                  <nb-icon icon="eye-outline"></nb-icon>
+                  Public
+                </a>
+                <a
+                  [routerLink]="['/admin', 'communities', event.kommunity_id, 'event-dashboard', event.slug, 'stats']"
+                  comButton
+                  status="success"
+                  size="tiny"
+                  shape="semi-round"
+                  outline
+                  target="_blank"
+                >
+                  <nb-icon icon="bar-chart-outline"></nb-icon>
+                  Stats
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Pagination -->
   <app-pagination
+    *ngIf="total > count"
+    class="pagination"
     (goTo)="page = $event; getEvents()"
     (next)="page = $event; getEvents()"
     (previous)="page = $event; getEvents()"
-    *ngIf="total > 0"
     [count]="count"
     [current]="page"
     [total]="total"

@@ -10,6 +10,7 @@ import {
   NbTagModule,
   NbToggleModule,
 } from '@commudle/theme';
+import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CommunityGroupsRoutingModule } from './community-groups-routing.module';
@@ -75,6 +76,10 @@ import { CommunityChannelsModule } from 'apps/commudle-admin/src/app/feature-mod
     NbRouteTabsetModule,
     NbFormFieldModule,
     NbToggleModule,
+
+    // Commudle Theme
+    CommudleCardModule,
+    CommudleButtonModule,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })

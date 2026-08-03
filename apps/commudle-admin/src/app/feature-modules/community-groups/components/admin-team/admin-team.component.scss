@@ -1,14 +1,103 @@
-.form {
-  @apply com-mb-3;
+.admin-team-page {
+  @apply com-flex com-flex-col com-gap-6 com-pt-4 com-bg-white com-rounded-lg com-p-5;
+
+  .page-header {
+    @apply com-flex com-flex-col md:com-flex-row md:com-items-center md:com-justify-between com-gap-3;
+
+    .header-info {
+      @apply com-flex com-flex-col com-gap-0.5;
+
+      .page-title {
+        @apply com-flex com-items-center com-gap-2 com-m-0 com-text-lg com-font-semibold com-text-Yankees-Blue;
+
+        nb-icon {
+          @apply com-text-primary-500;
+        }
+      }
+
+      .page-subtitle {
+        @apply com-m-0 com-text-xs com-text-Cadet-Grey;
+
+        strong {
+          @apply com-font-medium com-text-Yankees-Blue;
+        }
+      }
+    }
+  }
+
+  .invite-section {
+    .invite-form {
+      @apply com-flex com-flex-col com-gap-2;
+
+      .invite-label {
+        @apply com-text-sm com-font-medium com-text-Yankees-Blue;
+      }
+
+      .invite-controls {
+        @apply com-flex com-flex-wrap com-items-center com-gap-3;
+
+        input {
+          @apply com-max-w-xs;
+        }
+      }
+    }
+  }
+
+  .loading-state,
+  .empty-state {
+    @apply com-flex com-flex-col com-py-12 com-text-center;
+  }
+
+  .empty-state {
+    .empty-icon {
+      @apply com-flex com-items-center com-justify-center com-w-14 com-h-14 com-mb-3 com-rounded-full com-bg-gray-100 com-text-gray-400;
+
+      nb-icon {
+        @apply com-text-2xl;
+      }
+    }
+
+    .empty-title {
+      @apply com-m-0 com-mb-1.5 com-text-base com-font-semibold com-text-Yankees-Blue;
+    }
+
+    .empty-desc {
+      @apply com-m-0 com-text-sm com-text-Cadet-Grey;
+    }
+  }
+
+  .team-list {
+    @apply com-flex com-flex-col;
+
+    .team-member {
+      @apply com-flex com-items-center com-justify-between com-py-2;
+      @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
+      &:last-child {
+        @apply com-border-b-0;
+      }
+
+      .member-actions {
+        @apply com-flex com-items-center com-gap-3 com-flex-shrink-0;
+
+        .action-link {
+          @apply com-text-xs com-font-medium com-cursor-pointer com-no-underline;
+
+          &.resend {
+            @apply com-text-primary-500;
+            @apply hover:com-text-primary-700;
+          }
+
+          &.remove {
+            @apply com-text-Infra-Red;
+            @apply hover:com-text-red-700;
+          }
+        }
+      }
+    }
+  }
 }
 
-.member {
-  @apply com-flex com-items-center com-justify-between com-w-1/2;
-}
-
-.member:not(:last-child) {
-  @apply com-border-0 com-border-b-2 com-border-solid com-border-Bright-Gray;
-}
-.actions {
-  @apply com-w-28;
+app-user-profile-horizontal {
+  @apply com-w-full;
 }

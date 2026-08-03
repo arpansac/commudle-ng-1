@@ -1,30 +1,60 @@
-<nb-card>
-  <nb-card-body>
-    <div class="form">
-      <form (ngSubmit)="inviteCommunityAdmin()" [formGroup]="userRolesUserForm">
-        <p>Add a Teammate</p>
-        <input fieldSize="small" formControlName="email" nbInput placeholder="Enter Email" class="com-mr-4" />
-        <button [disabled]="!userRolesUserForm.valid" nbButton outline size="small" status="primary" type="submit">
+<div class="admin-team-page" *ngIf="communityGroup">
+  <!-- Header -->
+  <header class="page-header">
+    <div class="header-info">
+      <h1 class="page-title">
+        <nb-icon icon="shield-outline"></nb-icon>
+        Admin Team
+      </h1>
+    </div>
+  </header>
+
+  <!-- Invite form -->
+  <div class="invite-section">
+    <form (ngSubmit)="inviteCommunityAdmin()" [formGroup]="userRolesUserForm" class="invite-form">
+      <label class="invite-label">Add a Teammate</label>
+      <div class="invite-controls">
+        <input fieldSize="small" formControlName="email" nbInput placeholder="Enter Email" type="email" />
+        <button
+          [disabled]="!userRolesUserForm.valid"
+          comButton
+          status="primary"
+          size="small"
+          shape="semi-round"
+          type="submit"
+        >
           Send Invitation
         </button>
-      </form>
-    </div>
-    <div *ngIf="isLoading" class="com-w-1/2">
-      <app-skeleton-cards [displayFollowButton]="true"></app-skeleton-cards>
-    </div>
-    <div class="member" *ngFor="let member of team; let i = index">
+      </div>
+    </form>
+  </div>
+
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="loading-state">
+    <app-skeleton-cards [displayFollowButton]="true" [cards]="5"></app-skeleton-cards>
+  </div>
+
+  <!-- Empty state -->
+  <div *ngIf="!isLoading && team.length === 0" class="empty-state">
+    <div class="empty-icon"><nb-icon icon="shield-outline"></nb-icon></div>
+    <h3 class="empty-title">No team members yet</h3>
+    <p class="empty-desc">Invite administrators to help manage this organization.</p>
+  </div>
+
+  <!-- Team list -->
+  <div class="team-list" *ngIf="!isLoading && team.length > 0">
+    <div class="team-member" *ngFor="let member of team; let i = index">
       <app-user-profile-horizontal [user]="member.user" [socialMediaLinks]="true"></app-user-profile-horizontal>
-      <div class="actions">
+      <div class="member-actions">
         <a
-          (click)="resendInvitationMail(member)"
           *ngIf="member.status === EUserRolesUserStatus.INVITED"
-          class="clickable"
+          (click)="resendInvitationMail(member)"
+          class="action-link resend"
         >
           Resend Invite
         </a>
-        <br />
-        <a (click)="remove(i)" class="clickable"> Remove </a>
+        <a (click)="remove(i)" class="action-link remove">Remove</a>
       </div>
     </div>
-  </nb-card-body>
-</nb-card>
+  </div>
+</div>

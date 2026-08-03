@@ -1,76 +1,101 @@
-<nb-card>
-  <nb-card-body>
-    <div class="community-members">
-      <form [formGroup]="searchForm">
-        <div class="name-filter">
-          <nb-form-field>
-            <nb-icon icon="search" nbPrefix></nb-icon>
-            <input
-              fieldSize="small"
-              formControlName="name"
-              fullWidth
-              nbInput
-              placeholder="Search by Name, Tagline or About Me..."
-              type="text"
-            />
-          </nb-form-field>
-        </div>
-      </form>
-      <br />
-      <div>
-        <nb-tag-list>
-          <nb-tag
-            appearance="outline"
-            [text]="options[0]"
-            status="primary"
-            [removable]="speaker ? 'true' : 'false'"
-            [ngClass]="{ activeTag: speaker }"
-            (click)="filterByTags(options[0])"
-          ></nb-tag>
-          <nb-tag
-            appearance="outline"
-            [text]="options[1]"
-            status="primary"
-            [removable]="contentCreator ? 'true' : 'false'"
-            [ngClass]="{ activeTag: contentCreator }"
-            (click)="filterByTags(options[1])"
-          ></nb-tag>
-          <nb-tag
-            appearance="outline"
-            [text]="options[2]"
-            status="primary"
-            [removable]="employer ? 'true' : 'false'"
-            [ngClass]="{ activeTag: employer }"
-            (click)="filterByTags(options[2])"
-          ></nb-tag>
-          <nb-tag
-            appearance="outline"
-            [text]="options[3]"
-            status="primary"
-            [removable]="employee ? 'true' : 'false'"
-            [ngClass]="{ activeTag: employee }"
-            (click)="filterByTags(options[3])"
-          ></nb-tag>
-        </nb-tag-list>
-      </div>
+<div class="members-page" *ngIf="communityGroup">
+  <!-- Header -->
+  <header class="page-header">
+    <div class="header-info">
+      <h1 class="page-title">
+        <nb-icon icon="people-outline"></nb-icon>
+        All Members
+      </h1>
+    </div>
+  </header>
 
-      <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+  <!-- Search & Filters -->
+  <div class="filters-section">
+    <form [formGroup]="searchForm" class="search-form">
+      <nb-form-field>
+        <nb-icon icon="search" nbPrefix></nb-icon>
+        <input
+          fieldSize="small"
+          formControlName="name"
+          fullWidth
+          nbInput
+          placeholder="Search by Name, Tagline or About Me..."
+          type="text"
+        />
+      </nb-form-field>
+    </form>
+    <div class="filter-tags">
+      <nb-tag-list>
+        <nb-tag
+          appearance="outline"
+          [text]="options[0]"
+          status="primary"
+          [removable]="speaker ? 'true' : 'false'"
+          [ngClass]="{ activeTag: speaker }"
+          (click)="filterByTags(options[0])"
+        ></nb-tag>
+        <nb-tag
+          appearance="outline"
+          [text]="options[1]"
+          status="primary"
+          [removable]="contentCreator ? 'true' : 'false'"
+          [ngClass]="{ activeTag: contentCreator }"
+          (click)="filterByTags(options[1])"
+        ></nb-tag>
+        <nb-tag
+          appearance="outline"
+          [text]="options[2]"
+          status="primary"
+          [removable]="employer ? 'true' : 'false'"
+          [ngClass]="{ activeTag: employer }"
+          (click)="filterByTags(options[2])"
+        ></nb-tag>
+        <nb-tag
+          appearance="outline"
+          [text]="options[3]"
+          status="primary"
+          [removable]="employee ? 'true' : 'false'"
+          [ngClass]="{ activeTag: employee }"
+          (click)="filterByTags(options[3])"
+        ></nb-tag>
+      </nb-tag-list>
+    </div>
+  </div>
 
-      <div class="com-my-4" style="overflow-x: auto">
-        <table *ngIf="!isLoading && members.length > 0">
-          <thead>
-            <tr class="heading">
-              <th class="com-w-[350px]">Users</th>
-              <th class="com-w-[200px]">Skills Tag</th>
-              <!-- <th class="com-w-[300px]">Activity Stats</th> -->
-              <th class="com-w-[300px]">Speaker At</th>
-              <th class="com-w-[200px]">Content Creator</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let member of members">
-              <td class="member" valign="top">
-                <div class="com-flex com-flex-row com-gap-4 com-justify-between">
+  <!-- Loading state (initial only) -->
+  <div *ngIf="isLoading && members.length === 0" class="loading-state">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+
+  <!-- Empty state -->
+  <div *ngIf="!isLoading && members.length === 0" class="empty-state">
+    <div class="empty-icon"><nb-icon icon="people-outline"></nb-icon></div>
+    <h3 class="empty-title">No members found</h3>
+    <p class="empty-desc">Try adjusting your search or filters.</p>
+  </div>
+
+  <!-- Members table -->
+  <div class="members-table-container" *ngIf="members.length > 0">
+    <div class="table-wrapper">
+      <table class="members-table">
+        <thead>
+          <tr class="table-header">
+            <th>Users</th>
+            <th>Skills</th>
+            <th>Speaker At</th>
+            <th>Content</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="isLoading" class="loading-row">
+            <td colspan="4">
+              <app-loading-spinner></app-loading-spinner>
+            </td>
+          </tr>
+          <ng-container *ngIf="!isLoading">
+            <tr class="member-row" *ngFor="let member of members">
+              <td>
+                <div class="member-cell">
                   <app-user-profile-card-large
                     [showAbout]="true"
                     [showSocialLinks]="true"
@@ -78,55 +103,73 @@
                   ></app-user-profile-card-large>
                 </div>
               </td>
-              <td valign="top">
-                <nb-tag-list>
-                  <nb-tag
-                    *ngFor="let tag of member.tags"
-                    [text]="tag.name"
-                    appearance="outline"
-                    status="info"
-                    size="tiny"
-                  ></nb-tag>
-                </nb-tag-list>
+              <td>
+                <div class="tags-cell">
+                  <nb-tag-list>
+                    <nb-tag
+                      *ngFor="let tag of member.tags"
+                      [text]="tag.name"
+                      appearance="outline"
+                      status="info"
+                      size="tiny"
+                    ></nb-tag>
+                  </nb-tag-list>
+                </div>
               </td>
-              <!-- activity stats -->
-              <!-- <td  valign="top"></td> -->
-              <td valign="top">
-                <ul *ngFor="let event of member.speaker_events">
-                  <li>
+              <td>
+                <ul class="speaker-list" *ngIf="member.speaker_events?.length">
+                  <li
+                    *ngFor="
+                      let event of member.speaker_events
+                        | slice : 0 : (member.showAllSpeakerEvents ? member.speaker_events.length : 5)
+                    "
+                  >
                     <a [href]="'communities/' + event.kommunity_id + '/events/' + event.id" target="_blank">
                       {{ event.name }}
                     </a>
-                    &#64;
-                    <a [href]="'communities/' + event.kommunity_id" target="_blank">
-                      {{ event.kommunity.name }}
-                    </a>
+                    <span class="speaker-community">
+                      &#64;
+                      <a [href]="'communities/' + event.kommunity_id" target="_blank">{{ event.kommunity.name }}</a>
+                    </span>
                   </li>
                 </ul>
+                <a
+                  *ngIf="member.speaker_events?.length > 5"
+                  class="view-more-link"
+                  (click)="member.showAllSpeakerEvents = !member.showAllSpeakerEvents"
+                >
+                  {{ member.showAllSpeakerEvents ? 'Show less' : 'View all ' + member.speaker_events.length }}
+                </a>
+                <span *ngIf="!member.speaker_events?.length" class="no-data">—</span>
               </td>
-              <td valign="top">
-                <div>
-                  <p *ngIf="member.community_builds_count > 0">Builds: {{ member.community_builds_count }}</p>
-                  <p *ngIf="member.labs_count > 0">Labs: {{ member.labs_count }}</p>
-                  <p *ngIf="member.social_resources_count > 0">Social Resource: {{ member.social_resources_count }}</p>
+              <td>
+                <div class="content-stats">
+                  <span *ngIf="member.community_builds_count > 0">Builds: {{ member.community_builds_count }}</span>
+                  <span *ngIf="member.labs_count > 0">Labs: {{ member.labs_count }}</span>
+                  <span *ngIf="member.social_resources_count > 0">Social: {{ member.social_resources_count }}</span>
+                  <span
+                    *ngIf="!member.community_builds_count && !member.labs_count && !member.social_resources_count"
+                    class="no-data"
+                    >—</span
+                  >
                 </div>
               </td>
             </tr>
-          </tbody>
-        </table>
-
-        <h6 *ngIf="!isLoading && members.length === 0">No Record Found</h6>
-      </div>
-
-      <app-pagination
-        (goTo)="page = $event; getMembers()"
-        (next)="page = $event; getMembers()"
-        (previous)="page = $event; getMembers()"
-        *ngIf="total > 0 && !isLoading"
-        [count]="count"
-        [current]="page"
-        [total]="total"
-      ></app-pagination>
+          </ng-container>
+        </tbody>
+      </table>
     </div>
-  </nb-card-body>
-</nb-card>
+  </div>
+
+  <!-- Pagination -->
+  <app-pagination
+    *ngIf="total > count && !isLoading"
+    class="pagination"
+    (goTo)="page = $event; getMembers()"
+    (next)="page = $event; getMembers()"
+    (previous)="page = $event; getMembers()"
+    [count]="count"
+    [current]="page"
+    [total]="total"
+  ></app-pagination>
+</div>
