@@ -1,17 +1,37 @@
-// Reuse the create-community form design language (cf- classes, media, sections)
 @import '../../../../app-shared-components/create-community-form/create-community-form.component.scss';
 
-.community-group-form {
-  .header {
-    h1 {
-      @apply com-font-light;
+.community-group-form-page {
+  @apply com-flex com-flex-col com-gap-6 com-pt-4 com-bg-white com-rounded-lg com-p-5;
+
+  .page-header {
+    @apply com-flex com-flex-col com-gap-0.5;
+
+    .page-title {
+      @apply com-flex com-items-center com-gap-2 com-m-0 com-text-lg com-font-semibold com-text-Yankees-Blue;
+
+      nb-icon {
+        @apply com-text-primary-500;
+      }
+    }
+
+    .page-subtitle {
+      @apply com-m-0 com-text-xs com-text-Cadet-Grey;
+
+      strong {
+        @apply com-font-medium com-text-Yankees-Blue;
+      }
     }
   }
 
-  // Theme-color banner (no image) with overlapping logo + overlaid colour picker
+  .form-card {
+    @apply com-rounded-lg com-p-0;
+  }
+
+  // Theme-color banner overrides
   .cf-media {
     .cf-banner-theme {
       @apply com-border-none com-cursor-default;
+      aspect-ratio: 1280 / 192;
     }
 
     .cf-theme-picker {
@@ -39,7 +59,27 @@
     }
 
     .cf-logo-meta {
-      @apply com-flex com-flex-col com-gap-1 com-pb-1 com-items-start;
+      @apply com-flex com-flex-col com-gap-1 com-pb-1 com-items-start com-whitespace-nowrap;
+    }
+
+    .cf-logo-row {
+      @apply com-flex com-items-end com-gap-3 com-px-4 -com-mt-[93px] com-relative com-z-10;
+
+      .cf-logo {
+        @apply com-w-[176px] com-h-[176px];
+
+        img {
+          @apply com-w-full com-h-full com-object-contain com-block;
+        }
+      }
     }
   }
+
+  .cf-label {
+    @apply com-font-normal;
+  }
+}
+
+.remove-btn {
+  @apply com-p-0 #{!important};
 }
