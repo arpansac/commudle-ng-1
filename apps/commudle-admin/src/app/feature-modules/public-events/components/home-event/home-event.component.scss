@@ -351,14 +351,8 @@
     @apply com-p-0;
   }
 
-  com-card-header {
-    @apply com-flex com-items-center com-justify-between com-py-3 com-px-4 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
-    background: linear-gradient(135deg, #f7f7f8 0%, #ffffff 50%, #f7f7f8 100%);
-    @apply dark:com-from-[#080808] dark:com-via-[#141414] dark:com-to-[#080808] dark:com-bg-gradient-to-br;
-  }
-
   .map-embed {
-    @apply com-w-full com-overflow-hidden com-rounded-t-none;
+    @apply com-w-full com-overflow-hidden com-rounded-t-lg;
 
     iframe {
       @apply com-w-full com-block;
@@ -367,7 +361,7 @@
   }
 
   .map-info {
-    @apply com-flex com-flex-col com-gap-1.5 com-p-4;
+    @apply com-flex com-flex-col com-gap-1.5 com-p-3;
 
     .map-address {
       @apply com-text-sm com-font-medium com-text-Yankees-Blue;

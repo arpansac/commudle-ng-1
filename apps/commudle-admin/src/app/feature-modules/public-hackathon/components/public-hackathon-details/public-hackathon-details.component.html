@@ -288,7 +288,6 @@
     </com-card>
 
     <com-card *ngIf="hackathon.location_address || hackathon.location_map_link" class="map-card">
-      <com-card-header>Location</com-card-header>
       <com-card-body class="map-card-body">
         <div class="map-embed" *ngIf="hackathon.location_map_link">
           <iframe

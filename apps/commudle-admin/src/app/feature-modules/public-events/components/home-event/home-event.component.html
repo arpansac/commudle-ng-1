@@ -355,7 +355,6 @@
             *ngIf="event.event_locations?.length && event.event_locations[0]?.address"
             class="map-card organizer-panel"
           >
-            <com-card-header>Location</com-card-header>
             <com-card-body class="map-card-body">
               <div class="map-embed" *ngIf="event.event_locations[0].map_link">
                 <iframe
