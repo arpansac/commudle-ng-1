@@ -3,11 +3,173 @@
 }
 
 .empty-state {
-  @apply com-text-center com-text-2xl com-py-16 com-text-gray-500 com-bg-white com-text-base;
+  @apply com-relative com-flex com-flex-col com-items-center com-justify-center com-text-center com-py-16 com-px-6 com-overflow-hidden;
+
+  // Floating particles
+  .particles {
+    @apply com-absolute com-inset-0 com-pointer-events-none;
+
+    .particle {
+      @apply com-absolute com-rounded-full;
+
+      &.particle-1 {
+        @apply com-w-4 com-h-4 com-bg-blue-300;
+        top: 15%;
+        left: 12%;
+        animation: particleFloat 6s ease-in-out infinite;
+      }
+
+      &.particle-2 {
+        @apply com-w-2.5 com-h-2.5 com-bg-blue-200;
+        top: 8%;
+        left: 45%;
+        animation: particleFloat 8s ease-in-out infinite 1s;
+      }
+
+      &.particle-3 {
+        @apply com-w-3.5 com-h-3.5 com-bg-yellow-400;
+        top: 12%;
+        right: 18%;
+        animation: particleFloat 7s ease-in-out infinite 0.5s;
+      }
+
+      &.particle-4 {
+        @apply com-w-2.5 com-h-2.5 com-bg-gray-300;
+        top: 35%;
+        left: 22%;
+        animation: particleFloat 9s ease-in-out infinite 2s;
+      }
+
+      &.particle-5 {
+        @apply com-w-3 com-h-3 com-bg-red-200;
+        top: 30%;
+        right: 30%;
+        animation: particleFloat 7s ease-in-out infinite 1.5s;
+      }
+
+      &.particle-6 {
+        @apply com-w-2.5 com-h-2.5 com-bg-yellow-300;
+        top: 20%;
+        right: 40%;
+        animation: particleFloat 10s ease-in-out infinite 3s;
+      }
+    }
+  }
+
+  // Mystery badge
+  .mystery-badge {
+    @apply com-flex com-items-center com-justify-center com-w-14 com-h-14 com-rounded-full com-mb-4;
+    border: 3px dashed #d1d5db;
+    animation: badgePulse 3s ease-in-out infinite;
+
+    span {
+      @apply com-text-2xl com-font-bold com-text-gray-400;
+    }
+  }
+
+  // Podium blocks
+  .podium-illustration {
+    @apply com-flex com-items-end com-justify-center com-gap-2 com-mb-8;
+
+    .podium-block {
+      @apply com-flex com-items-center com-justify-center com-rounded-xl;
+
+      .podium-rank {
+        @apply com-font-bold;
+      }
+
+      &.podium-gold {
+        @apply com-w-20 com-h-28;
+        background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%);
+        border: 1px solid #fcd34d;
+
+        .podium-rank {
+          @apply com-text-2xl;
+          color: #b45309;
+        }
+      }
+
+      &.podium-silver {
+        @apply com-w-16 com-h-20;
+        background: linear-gradient(180deg, #f3f4f6 0%, #e5e7eb 100%);
+        border: 1px solid #d1d5db;
+
+        .podium-rank {
+          @apply com-text-xl com-text-gray-500;
+        }
+      }
+
+      &.podium-bronze {
+        @apply com-w-16 com-h-16;
+        background: linear-gradient(180deg, #fff7ed 0%, #fed7aa 100%);
+        border: 1px solid #fdba74;
+
+        .podium-rank {
+          @apply com-text-lg;
+          color: #92400e;
+        }
+      }
+    }
+  }
+
+  .empty-title {
+    @apply com-m-0 com-text-xl com-font-bold com-text-Yankees-Blue com-mb-2;
+  }
+
+  .empty-desc {
+    @apply com-m-0 com-text-sm com-text-Cadet-Grey com-max-w-md com-leading-relaxed com-mb-4;
+  }
+
+  .empty-prizes {
+    @apply com-m-0 com-text-xs com-text-gray-400 com-font-medium;
+  }
+}
+
+@keyframes particleFloat {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.7;
+  }
+
+  25% {
+    transform: translateY(-8px) translateX(4px);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(-4px) translateX(-3px);
+    opacity: 0.5;
+  }
+
+  75% {
+    transform: translateY(-10px) translateX(2px);
+    opacity: 0.9;
+  }
+}
+
+@keyframes badgePulse {
+  0%,
+  100% {
+    transform: scale(1);
+    border-color: #d1d5db;
+  }
+
+  50% {
+    transform: scale(1.05);
+    border-color: #9ca3af;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .particles .particle,
+  .mystery-badge {
+    animation: none !important;
+  }
 }
 
 .winners-main {
-  @apply com-bg-white com-rounded-xl com-p-5 com-mt-4;
+  @apply com-bg-white com-rounded-xl com-p-5 com-border com-border-solid com-border-Bright-Gray com-mt-4;
 
   .winners-header {
     @apply com-flex com-items-start com-gap-2 com-mb-5 com-pb-4 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;

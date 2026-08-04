@@ -3,7 +3,7 @@
 }
 
 .main-column {
-  @apply md:com-mr-6 com-bg-white com-rounded-xl com-p-5;
+  @apply com-border com-border-solid com-border-Bright-Gray md:com-mr-6 com-bg-white com-rounded-xl com-p-5;
 
   .loading {
     @apply com-min-h-[50vh] com-w-full com-flex com-items-center com-justify-center;
@@ -166,7 +166,7 @@
 }
 
 .right-column {
-  @apply com-mb-4 md:com-mb-0;
+  @apply com-border com-border-solid com-border-Bright-Gray com-mb-4 md:com-mb-0;
 
   com-card {
     @apply com-mr-0;
