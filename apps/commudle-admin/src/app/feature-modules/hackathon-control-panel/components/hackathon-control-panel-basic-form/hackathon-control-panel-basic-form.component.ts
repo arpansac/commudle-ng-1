@@ -1,5 +1,5 @@
 import { SeoService, ToastrService } from '@commudle/shared-services';
-import { Component, Input, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
@@ -84,6 +84,7 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
     private toastrService: ToastrService,
     private seoService: SeoService,
     private googlePlacesAutocompleteService: GooglePlacesAutocompleteService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     this.hackathonForm = this.fb.group({
       name: ['', Validators.required],
@@ -101,7 +102,12 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
     this.locationForm = this.fb.group({
       name: [''],
       address: ['', Validators.required],
-      map_link: ['', Validators.required],
+      map_link: [
+        '',
+        Validators.pattern(
+          /^(https?:\/\/)?(www\.)?(google\.(com|co\.\w+)\/maps|maps\.google\.(com|co\.\w+)|maps\.app\.goo\.gl|goo\.gl\/maps)\/.+$/i,
+        ),
+      ],
     });
   }
 
@@ -167,6 +173,7 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
     if (place.url) {
       this.locationForm.get('map_link').setValue(place.url);
     }
+    this.changeDetectorRef.detectChanges();
   }
 
   fetchHackathonDetails() {

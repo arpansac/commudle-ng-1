@@ -5,6 +5,7 @@
 
   .event-location {
     @apply com-py-2;
+
     nb-tabset {
       @apply com-overflow-hidden;
 
@@ -13,6 +14,7 @@
           @apply com-overflow-x-scroll com-overflow-y-hidden;
         }
       }
+
       nb-tab {
         @apply com-m-0 com-px-6 com-py-4;
 
@@ -34,6 +36,7 @@
           .edit-location-icon {
             @apply com-mx-2 com-cursor-pointer com-text-base;
           }
+
           .delete-location-icon {
             @apply com-cursor-pointer com-text-base;
           }
@@ -41,6 +44,7 @@
 
         .link-to-map {
           @apply com-mb-2;
+
           a {
             @apply com-no-underline com-text-base com-font-medium com-text-primary-500;
           }
@@ -54,6 +58,7 @@
 
       .event-location-details {
         margin-left: 1rem;
+
         p {
           margin: 0;
           word-wrap: break-word;
@@ -103,6 +108,7 @@
 .confirmation-dialog-box {
   nb-card-header {
     @apply com-flex com-items-center com-justify-between;
+
     .confirmation-heading {
       @apply com-text-base;
     }
@@ -116,5 +122,20 @@
 .delete-buttons {
   button {
     @apply com-min-w-16 com-text-center;
+  }
+}
+
+.map-preview {
+  @apply com-mt-3 com-rounded-lg com-overflow-hidden com-border com-border-solid com-border-Bright-Gray;
+
+  .map-embed {
+    iframe {
+      @apply com-w-full com-block;
+    }
+  }
+
+  .map-preview-link {
+    @apply com-flex com-items-center com-gap-1 com-text-xs com-font-medium com-text-primary-500 com-no-underline com-p-3;
+    @apply hover:com-text-primary-700;
   }
 }

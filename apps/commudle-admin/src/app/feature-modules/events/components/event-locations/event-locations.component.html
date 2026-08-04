@@ -129,7 +129,14 @@
       <div>
         <label fullWidth>
           Address*
-          <textarea formControlName="address" fullWidth nbInput type="text" id="addressInput"></textarea>
+          <textarea
+            formControlName="address"
+            fullWidth
+            nbInput
+            type="text"
+            id="addressInput"
+            (input)="$event.target.value || eventLocationForm.get('location').get('map_link').setValue('')"
+          ></textarea>
         </label>
         <span
           *ngIf="
@@ -143,18 +150,52 @@
       </div>
       <div>
         <label fullWidth>
-          Map Link*
-          <input formControlName="map_link" fullWidth nbInput type="text" />
+          Map Link
+          <input
+            formControlName="map_link"
+            fullWidth
+            nbInput
+            type="text"
+            placeholder="https://maps.google.com/... or https://maps.app.goo.gl/..."
+          />
         </label>
         <span
           *ngIf="
             eventLocationForm['controls'].location['controls'].map_link.touched &&
             eventLocationForm['controls'].location['controls'].map_link.invalid &&
-            eventLocationForm['controls'].location['controls'].map_link.errors.required
+            eventLocationForm['controls'].location['controls'].map_link.errors.pattern
           "
         >
-          <commudle-alert [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
+          <commudle-alert [error]="true" [errorMessage]="'Please enter a valid Google Maps URL'"></commudle-alert>
         </span>
+        <div
+          *ngIf="
+            eventLocationForm['controls'].location['controls'].map_link.value &&
+            !eventLocationForm['controls'].location['controls'].map_link.errors?.pattern
+          "
+          class="map-preview"
+        >
+          <div class="map-embed">
+            <iframe
+              [src]="
+                'https://maps.google.com/maps?q=' +
+                  eventLocationForm['controls'].location['controls'].address.value +
+                  '&output=embed' | safe : 'resourceUrl'
+              "
+              width="100%"
+              height="150"
+              frameborder="0"
+              loading="lazy"
+            ></iframe>
+          </div>
+          <a
+            [href]="eventLocationForm['controls'].location['controls'].map_link.value"
+            target="_blank"
+            class="map-preview-link"
+          >
+            <nb-icon icon="external-link-outline"></nb-icon> Open in Google Maps
+          </a>
+        </div>
       </div>
     </div>
     <div
