@@ -2,7 +2,7 @@
 import { Component, OnInit, OnDestroy, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NbDialogRef, NbDialogService, NbPopoverDirective, NbWindowService } from '@commudle/theme';
+import { NbDialogRef, NbDialogService, NbPopoverDirective } from '@commudle/theme';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import {
   faXmark,
@@ -154,7 +154,6 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
     private dataFormsService: DataFormsService,
     private activatedRoute: ActivatedRoute,
     private dataFormEntityResponseGroupsService: DataFormEntityResponseGroupsService,
-    private windowService: NbWindowService,
     private fb: FormBuilder,
     private toastLogService: ToastrService,
     private appUsersService: AppUsersService,
@@ -517,26 +516,28 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
   }
 
   openRSVPEmailWindow() {
-    this.windowService.open(EmailerComponent, {
-      title: `Send Mails`,
+    this.dialogService.open(EmailerComponent, {
       context: {
         community: this.community,
         event: this.event,
         eventDataFormEntityGroupId: this.eventDataFormEntityGroup.id,
         mailType: EemailTypes.RSVP,
       },
+      closeOnBackdropClick: false,
+      dialogClass: 'emailer-dialog',
     });
   }
 
   openEntryPassEmailWindow() {
-    this.windowService.open(EmailerComponent, {
-      title: `Send Mails`,
+    this.dialogService.open(EmailerComponent, {
       context: {
         community: this.community,
         event: this.event,
         eventDataFormEntityGroupId: this.eventDataFormEntityGroup.id,
         mailType: EemailTypes.ENTRY_PASS,
       },
+      closeOnBackdropClick: false,
+      dialogClass: 'emailer-dialog',
     });
   }
 

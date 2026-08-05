@@ -74,6 +74,7 @@ input {
 .section-heading-anchor:hover .anchor-link {
   @apply com-opacity-100;
 }
+
 .section-heading-anchor .anchor-link {
   @apply com-opacity-0 com-transition-opacity com-duration-200;
 }
@@ -160,6 +161,15 @@ nb-window {
   overflow-y: auto;
 }
 
+.emailer-dialog {
+  @apply com-w-[96vw] md:com-w-[50vw] md:com-min-w-[500px] com-rounded-xl com-bg-white com-p-4 com-overflow-y-auto com-scrollbar-hide;
+  max-height: 92vh !important;
+
+  nb-dialog-container {
+    width: 100%;
+  }
+}
+
 nb-window.full-screen-width {
   width: 100vw;
 }
@@ -183,6 +193,7 @@ nb-window.form-window {
 nb-window.email-preview-window {
   nb-card {
     @apply md:com-w-[600px] com-w-full;
+
     img {
       @apply com-w-full;
     }
@@ -233,6 +244,7 @@ nb-window.email-preview-window {
       cursor: pointer;
       margin: 0 0.5rem;
       text-decoration: none;
+
       // display: flex;
       // flex-direction: column;
       // align-items: center;
@@ -258,6 +270,7 @@ nb-window.email-preview-window {
 
   @media screen and (min-width: 800px) {
     box-shadow: none;
+
     nb-card {
       margin-bottom: 1rem;
 
@@ -358,6 +371,7 @@ nb-option-list.search-autocomplete {
       100% {
         transform: scaleY(0.4);
       }
+
       20% {
         transform: scaleY(1);
       }

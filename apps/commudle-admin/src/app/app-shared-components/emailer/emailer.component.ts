@@ -4,7 +4,7 @@ import { ICommunity } from 'apps/shared-models/community.model';
 import { IEvent } from 'apps/shared-models/event.model';
 import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_enity_group.model';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
-import { NbWindowRef, NbDialogService } from '@commudle/theme';
+import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
 import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
 import { EmailsService } from 'apps/commudle-admin/src/app/services/emails.service';
@@ -17,24 +17,25 @@ import { CustomPageService } from 'apps/commudle-admin/src/app/services/custom-p
 import { EDbModels } from '@commudle/shared-models';
 
 @Component({
-    selector: 'app-emailer',
-    templateUrl: './emailer.component.html',
-    styleUrls: ['./emailer.component.scss'],
-    standalone: false
+  selector: 'app-emailer',
+  templateUrl: './emailer.component.html',
+  styleUrls: ['./emailer.component.scss'],
+  standalone: false,
 })
 export class EmailerComponent implements OnInit, OnDestroy {
   @ViewChild('emailPreview') emailPreview: TemplateRef<any>;
-  showEmailFilters = true;
+  @Input() showEmailFilters = true;
   EemailTypes = EemailTypes;
   previewData: string;
 
-  // external properties received via windowRef
-  community: ICommunity;
-  event: IEvent;
-  eventDataFormEntityGroupId: number;
-  mailType: string;
-  recipientEmail: string;
-  recipientUsername: string;
+  // external properties received via dialogRef context
+  @Input() community: ICommunity;
+  @Input() event: IEvent;
+  @Input() title = 'Send Mails';
+  @Input() eventDataFormEntityGroupId: number;
+  @Input() mailType: string;
+  @Input() recipientEmail: string;
+  @Input() recipientUsername: string;
 
   prefillCompleted = false;
 
@@ -266,7 +267,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
     private toastLogService: LibToastLogService,
     private dialogService: NbDialogService,
     private emailerPreviewService: EmailerPreviewService,
-    protected windowRef: NbWindowRef,
+    protected dialogRef: NbDialogRef<EmailerComponent>,
     private customPageService: CustomPageService,
   ) {
     this.eMailForm = this.fb.group({
@@ -385,7 +386,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   close() {
-    this.windowRef.close();
+    this.dialogRef.close();
   }
 
   toggleEventSpecificEmail($event) {

@@ -1,4 +1,10 @@
-<div class="emailer-component custom-scrollbar">
+<div class="emailer-component">
+  <div class="emailer-dialog-header">
+    <h3>{{ title }}</h3>
+    <button nbButton size="small" shape="round" (click)="close()">
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </div>
   <form [formGroup]="eMailForm">
     <div *ngIf="showEmailFilters" class="filters">
       <div class="filter">
@@ -181,11 +187,12 @@
 </div>
 <ng-template #emailPreview let-ref="dialogRef">
   <nb-card class="template-card">
-    <nb-card-header
-      ><h3>Email Preview</h3>
+    <nb-card-header>
+      <h3>Email Preview</h3>
       <button ghost nbButton size="small" (click)="ref.close()">
-        <nb-icon icon="close"></nb-icon></button
-    ></nb-card-header>
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
     <nb-card-body>
       <p class="sample-preview">This is a preview of your email</p>
       <div class="info-message">

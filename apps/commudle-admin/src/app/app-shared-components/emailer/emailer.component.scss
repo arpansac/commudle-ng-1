@@ -1,5 +1,13 @@
 .emailer-component {
-  @apply md:com-max-h-[65dvh] com-h-full com-overflow-y-auto com-relative;
+  @apply md:com-max-h-[65dvh] com-h-full com-overflow-y-auto com-relative com-scrollbar-hide;
+
+  .emailer-dialog-header {
+    @apply com-flex com-items-center com-justify-between com-mb-3 com-pb-2 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
+    h3 {
+      @apply com-m-0 com-text-base com-font-semibold com-text-Yankees-Blue;
+    }
+  }
 }
 
 .submit-button {
@@ -10,6 +18,7 @@
 
 .fieldset {
   @apply com-mx-0 com-mt-6;
+
   input {
     @apply com-rounded-lg com-mt-3 com-py-3 com-px-4;
 
@@ -17,9 +26,11 @@
       @apply com-text-sm com-font-normal com-text-gray-400;
     }
   }
+
   editor {
     @apply com-mt-3;
   }
+
   nb-radio {
     &::ng-deep {
       span {
