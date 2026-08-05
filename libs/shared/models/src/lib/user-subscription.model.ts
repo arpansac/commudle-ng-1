@@ -20,6 +20,8 @@ export interface IUserSubscription {
   community_groups_count: number;
   created_at: string;
   updated_at: string;
+  is_on_trial: boolean;
+  trial_ends_at?: string;
   product_price?: IProductPrice;
   kommunities?: ICommunity[];
   community_groups?: ICommunityGroup[];

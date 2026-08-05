@@ -1,8 +1,9 @@
-<ng-container *ngIf="!isLoading && subscription">
-  <span class="spb-chip" [class.spb-chip-inactive]="subscription.status !== 'active'" (click)="openDialog()">
+<span *ngIf="!isLoading && subscription" class="spb-trigger" (click)="openDialog()">
+  <span class="spb-chip" [class.spb-chip-inactive]="subscription.status !== 'active'">
     {{ subscription.product_price?.plan_name || 'Pro' }}
   </span>
-</ng-container>
+  <span class="spb-trial-chip" *ngIf="subscription.is_on_trial"> Trial </span>
+</span>
 
 <!-- Plan detail dialog -->
 <ng-template #planDialog let-ref="dialogRef">
@@ -20,6 +21,16 @@
           <nb-icon icon="close-outline"></nb-icon>
         </button>
       </div>
+      <!-- Trial banner -->
+      <div class="spb-trial-banner" *ngIf="subscription.is_on_trial">
+        <nb-icon icon="clock-outline" class="spb-trial-banner-icon"></nb-icon>
+        <span>
+          You're on a free trial
+          <ng-container *ngIf="subscription.trial_ends_at">
+            - ends {{ subscription.trial_ends_at | date : 'd MMM yyyy' }}
+          </ng-container>
+        </span>
+      </div>
     </nb-card-header>
 
     <nb-card-body>
@@ -28,6 +39,7 @@
           <span class="spb-status-dot"></span>
           {{ subscription.status | titlecase }}
         </span>
+        <span class="spb-trial-inline-chip" *ngIf="subscription.is_on_trial">Trial</span>
         <span class="spb-days-chip" *ngIf="subscription.status === 'active' && getDaysLeft() > 0">
           {{ getDaysLeft() }} days remaining
         </span>
