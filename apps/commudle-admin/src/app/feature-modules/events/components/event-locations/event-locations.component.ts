@@ -32,10 +32,10 @@ import { TrackSlotsService } from 'apps/commudle-admin/src/app/services/track_sl
 import * as moment from 'moment';
 
 @Component({
-    selector: 'app-event-locations',
-    templateUrl: './event-locations.component.html',
-    styleUrls: ['./event-locations.component.scss'],
-    standalone: false
+  selector: 'app-event-locations',
+  templateUrl: './event-locations.component.html',
+  styleUrls: ['./event-locations.component.scss'],
+  standalone: false,
 })
 export class EventLocationsComponent implements OnInit {
   @ViewChild('eventLocationFormTemplate') eventLocationFormTemplate: TemplateRef<any>;
@@ -90,7 +90,12 @@ export class EventLocationsComponent implements OnInit {
       location: this.fb.group({
         name: ['', Validators.required],
         address: ['', Validators.required],
-        map_link: ['', Validators.required],
+        map_link: [
+          '',
+          Validators.pattern(
+            /^(https?:\/\/)?(www\.)?(google\.(com|co\.\w+)\/maps|maps\.google\.(com|co\.\w+)|maps\.app\.goo\.gl|goo\.gl\/maps)\/.+$/i,
+          ),
+        ],
       }),
       event_type: [EEventType.OFFLINE_ONLY],
       embedded_video_stream: this.fb.group({
@@ -120,7 +125,14 @@ export class EventLocationsComponent implements OnInit {
       case EEventType.OFFLINE_ONLY: {
         this.eventLocationForm.get('location').get('name').setValidators(Validators.required);
         this.eventLocationForm.get('location').get('address').setValidators(Validators.required);
-        this.eventLocationForm.get('location').get('map_link').setValidators(Validators.required);
+        this.eventLocationForm
+          .get('location')
+          .get('map_link')
+          .setValidators(
+            Validators.pattern(
+              /^(https?:\/\/)?(www\.)?(google\.(com|co\.\w+)\/maps|maps\.google\.(com|co\.\w+)|maps\.app\.goo\.gl|goo\.gl\/maps)\/.+$/i,
+            ),
+          );
         break;
       }
       case EEventType.ONLINE_ONLY: {
@@ -325,6 +337,7 @@ export class EventLocationsComponent implements OnInit {
       .get('address')
       .setValue(place.name + ', ' + place.formatted_address);
     this.eventLocationForm.get('location').get('map_link').setValue(place.url);
+    this.changeDetectorRef.detectChanges();
   }
 
   getEventLocations() {

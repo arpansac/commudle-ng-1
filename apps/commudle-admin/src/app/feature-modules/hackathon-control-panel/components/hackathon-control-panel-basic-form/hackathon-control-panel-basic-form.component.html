@@ -266,6 +266,7 @@
                 nbInput
                 placeholder="Search for a location..."
                 type="text"
+                (input)="$event.target.value || locationForm.get('map_link').setValue('')"
               />
             </label>
             <commudle-alert
@@ -281,18 +282,44 @@
 
           <div>
             <label fullWidth>
-              Map Link*
-              <input formControlName="map_link" fullWidth nbInput placeholder="Map Link" type="text" />
+              Map Link
+              <input
+                formControlName="map_link"
+                fullWidth
+                nbInput
+                placeholder="https://maps.google.com/... or https://maps.app.goo.gl/..."
+                type="text"
+              />
             </label>
             <commudle-alert
               *ngIf="
                 locationForm.get('map_link').invalid &&
-                locationForm.get('map_link').hasError('required') &&
+                locationForm.get('map_link').hasError('pattern') &&
                 locationForm.get('map_link').touched
               "
               [error]="true"
-              errorMessage="Field is required"
+              errorMessage="Please enter a valid Google Maps URL"
             ></commudle-alert>
+            <div
+              *ngIf="locationForm.get('map_link').value && !locationForm.get('map_link').errors?.pattern"
+              class="map-preview"
+            >
+              <div class="map-embed">
+                <iframe
+                  [src]="
+                    'https://maps.google.com/maps?q=' + locationForm.get('address').value + '&output=embed'
+                      | safe : 'resourceUrl'
+                  "
+                  width="100%"
+                  height="150"
+                  frameborder="0"
+                  loading="lazy"
+                ></iframe>
+              </div>
+              <a [href]="locationForm.get('map_link').value" target="_blank" class="map-preview-link">
+                <nb-icon icon="external-link-outline"></nb-icon> Open in Google Maps
+              </a>
+            </div>
           </div>
         </form>
       </div>
