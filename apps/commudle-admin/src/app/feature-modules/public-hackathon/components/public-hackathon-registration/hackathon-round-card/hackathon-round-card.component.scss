@@ -143,7 +143,7 @@
   }
 
   .actions {
-    @apply com-flex-shrink-0 com-flex com-flex-col com-items-end com-gap-2;
+    @apply com-flex-shrink-0 com-flex com-flex-col md:com-items-end com-items-start com-gap-2;
   }
 
   .round-status {
@@ -215,5 +215,5 @@
 }
 
 .round-content-actions {
-  @apply com-flex com-flex-row com-gap-2 com-items-start;
+  @apply com-flex md:com-flex-row com-flex-col-reverse com-gap-2 com-items-start;
 }
