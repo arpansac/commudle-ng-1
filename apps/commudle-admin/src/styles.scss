@@ -162,7 +162,7 @@ nb-window {
 }
 
 .emailer-dialog {
-  @apply com-w-[96vw] md:com-w-[50vw] md:com-min-w-[500px] com-rounded-xl com-bg-white com-p-4 com-overflow-y-auto com-scrollbar-hide;
+  @apply com-w-[96vw] md:com-w-[50vw] md:com-min-w-[500px] com-rounded-xl com-bg-white com-overflow-y-auto com-scrollbar-hide;
   max-height: 92vh !important;
 
   nb-dialog-container {
