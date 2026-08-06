@@ -25,7 +25,7 @@ import { NavigatorShareService } from 'apps/shared-services/navigator-share.serv
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
-import { NbWindowService } from '@commudle/theme';
+import { NbDialogService } from '@commudle/theme';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
 import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
@@ -89,7 +89,7 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
     private navigatorShareService: NavigatorShareService,
     private libToastLogService: LibToastLogService,
     private clipboard: Clipboard,
-    private windowService: NbWindowService,
+    private dialogService: NbDialogService,
     private footerService: FooterService,
     public sidebarService: SidebarService,
     private eventDataFormEntityGroupsService: EventDataFormEntityGroupsService,
@@ -152,14 +152,14 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
   }
 
   sendEmails() {
-    this.windowService.open(EmailerComponent, {
-      title: `Send Mails`,
+    this.dialogService.open(EmailerComponent, {
       context: {
         community: this.community,
         event: this.event,
-
         mailType: EemailTypes.RSVP,
       },
+      closeOnBackdropClick: false,
+      dialogClass: 'emailer-dialog',
     });
   }
 

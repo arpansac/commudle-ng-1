@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ColumnMode } from '@commudle/ngx-datatable';
-import { NbWindowService } from '@commudle/theme';
+import { NbDialogService, NbWindowService } from '@commudle/theme';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { EventSimpleRegistrationsService } from 'apps/commudle-admin/src/app/services/event-simple-registrations.service';
@@ -17,10 +17,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { debounceTime, switchMap } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-user-event-registrations',
-    templateUrl: './user-event-registrations.component.html',
-    styleUrls: ['./user-event-registrations.component.scss'],
-    standalone: false
+  selector: 'app-user-event-registrations',
+  templateUrl: './user-event-registrations.component.html',
+  styleUrls: ['./user-event-registrations.component.scss'],
+  standalone: false,
 })
 export class UserEventRegistrationsComponent implements OnInit {
   @ViewChild('confirmStatusChange', { read: TemplateRef }) confirmStatusChange: TemplateRef<HTMLElement>;
@@ -57,6 +57,7 @@ export class UserEventRegistrationsComponent implements OnInit {
     private eventSimpleRegistrationsService: EventSimpleRegistrationsService,
     private toastLogService: LibToastLogService,
     private windowService: NbWindowService,
+    private dialogService: NbDialogService,
     private appUsersService: AppUsersService,
   ) {
     this.searchForm = this.fb.group({
@@ -156,14 +157,15 @@ export class UserEventRegistrationsComponent implements OnInit {
   }
 
   openEntryPassEmailWindow() {
-    this.windowService.open(EmailerComponent, {
-      title: `Send Entry Pass All Confirmed`,
+    this.dialogService.open(EmailerComponent, {
       context: {
         community: this.community,
         event: this.event,
-        // eventDataFormEntityGroupId: this.eventDataFormEntityGroup.id,
         mailType: EemailTypes.ENTRY_PASS,
+        title: `Send Entry Pass All Confirmed`,
       },
+      closeOnBackdropClick: false,
+      dialogClass: 'emailer-dialog',
     });
   }
 

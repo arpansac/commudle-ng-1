@@ -14,6 +14,7 @@ import {
   NbCardModule,
   NbCheckboxModule,
   NbDatepickerModule,
+  NbDialogModule,
   NbFormFieldModule,
   NbIconModule,
   NbInputModule,
@@ -161,6 +162,7 @@ import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-the
     //Nebular
     NbButtonModule,
     NbCardModule,
+    NbDialogModule.forChild(),
     NbInputModule,
     NbSelectModule,
     NbCheckboxModule,
