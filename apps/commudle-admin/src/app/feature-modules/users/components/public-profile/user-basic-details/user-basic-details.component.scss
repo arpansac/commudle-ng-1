@@ -251,20 +251,13 @@ p {
 
 app-share-button {
   @apply com-p-0;
-
-  ::ng-deep .shr-btn {
-    width: 34px;
-    min-width: 34px;
-    height: 34px;
-    padding: 0;
-    border-radius: 50%;
-  }
 }
-
 .qr-button {
-  width: 34px;
-  min-width: 34px;
-  height: 34px;
-  padding: 0;
+  @apply com-inline-flex
+         com-items-center
+         com-justify-center
+         com-p-0;
+
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
 }
