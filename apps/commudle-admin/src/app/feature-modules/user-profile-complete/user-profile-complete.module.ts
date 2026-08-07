@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NbButtonModule, NbCardModule, NbInputModule } from '@commudle/theme';
+import { UserProfileCompleteStepOneComponent } from 'apps/commudle-admin/src/app/feature-modules/user-profile-complete/components/user-profile-complete-step-one/user-profile-complete-step-one.component';
 import { UserProfileCompleteStepTwoComponent } from 'apps/commudle-admin/src/app/feature-modules/user-profile-complete/components/user-profile-complete-step-two/user-profile-complete-step-two.component';
 import { UserProfileCompleteStepThreeComponent } from 'apps/commudle-admin/src/app/feature-modules/user-profile-complete/components/user-profile-complete-step-three/user-profile-complete-step-three.component';
 import { UserProfileCompleteRoutingModule } from 'apps/commudle-admin/src/app/feature-modules/user-profile-complete/user-profile-complete-routing.module';
@@ -15,7 +16,11 @@ import { EventMiniCardComponent } from 'apps/commudle-admin/src/app/app-shared-c
 import { FeaturedCommunitiesCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/featured-communities-card/featured-communities-card.component';
 
 @NgModule({
-  declarations: [UserProfileCompleteStepTwoComponent, UserProfileCompleteStepThreeComponent],
+  declarations: [
+    UserProfileCompleteStepOneComponent,
+    UserProfileCompleteStepTwoComponent,
+    UserProfileCompleteStepThreeComponent,
+  ],
   imports: [
     CommonModule,
     NbCardModule,
