@@ -21,7 +21,7 @@ p {
       }
 
       .edit-icon {
-        @apply com-text-xs com-font-semibold com-bg-transparent;
+        @apply com-text-xs com-font-semibold com-bg-transparent com-h-8;
 
         fa-icon {
           @apply com-mr-1;
