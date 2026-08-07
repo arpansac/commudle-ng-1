@@ -19,6 +19,11 @@
       .profile-navbar-menu-option {
         @apply com-flex com-items-center com-gap-2 com-text-xs com-font-medium com-h-fit com-m-0 com-px-2 com-py-2 com-cursor-pointer com-no-underline com-whitespace-nowrap md:com-text-sm md:com-py-0;
         cursor: pointer;
+
+        &:hover {
+          @apply com-bg-blue-50;
+          transition: background-color 0.2s ease;
+        }
       }
 
       .active {
