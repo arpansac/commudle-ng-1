@@ -3,22 +3,52 @@
     <nb-card-header class="d-flex align-items-center justify-content-space-between">
       <div class="navigation-buttons">
         <a [routerLink]="['goals-and-skills']" routerLinkActive="active">
-          <div class="profile-navbar-menu-option">Goals & Skills</div>
+          <div class="profile-navbar-menu-option">
+            <div class="nav-icon">
+              <nb-icon icon="award-outline"></nb-icon>
+            </div>
+            <span>Goals & Skills</span>
+          </div>
         </a>
         <a [routerLink]="['basic-details']" routerLinkActive="active">
-          <div class="profile-navbar-menu-option">Basic Details</div>
+          <div class="profile-navbar-menu-option">
+            <div class="nav-icon">
+              <nb-icon icon="person-outline"></nb-icon>
+            </div>
+            <span>Basic Details</span>
+          </div>
         </a>
         <a [routerLink]="['email-preferences']" routerLinkActive="active">
-          <div class="profile-navbar-menu-option">Email Preferences</div>
+          <div class="profile-navbar-menu-option">
+            <div class="nav-icon">
+              <nb-icon icon="email-outline"></nb-icon>
+            </div>
+            <span>Email Preferences</span>
+          </div>
         </a>
         <a [routerLink]="['communication-preferences']" routerLinkActive="active">
-          <div class="profile-navbar-menu-option">Communication Preferences</div>
+          <div class="profile-navbar-menu-option">
+            <div class="nav-icon">
+              <nb-icon icon="message-circle-outline"></nb-icon>
+            </div>
+            <span>Communication Preferences</span>
+          </div>
         </a>
         <a [routerLink]="['cookie-preferences']" routerLinkActive="active">
-          <div class="profile-navbar-menu-option">Cookie Preferences</div>
+          <div class="profile-navbar-menu-option">
+            <div class="nav-icon">
+              <nb-icon icon="settings-2-outline"></nb-icon>
+            </div>
+            <span>Cookie Preferences</span>
+          </div>
         </a>
         <a [routerLink]="['account-management']" routerLinkActive="active">
-          <div class="profile-navbar-menu-option">Account Management</div>
+          <div class="profile-navbar-menu-option">
+            <div class="nav-icon">
+              <nb-icon icon="settings-outline"></nb-icon>
+            </div>
+            <span>Account Management</span>
+          </div>
         </a>
       </div>
       <button (click)="ref.close()" ghost nbButton size="small">
