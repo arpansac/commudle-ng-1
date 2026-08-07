@@ -135,7 +135,7 @@
             nbInput
             type="text"
             id="addressInput"
-            (input)="$event.target.value || eventLocationForm.get('location').get('map_link').setValue('')"
+            (input)="$any($event.target).value || eventLocationForm.get('location').get('map_link').setValue('')"
           ></textarea>
         </label>
         <span
