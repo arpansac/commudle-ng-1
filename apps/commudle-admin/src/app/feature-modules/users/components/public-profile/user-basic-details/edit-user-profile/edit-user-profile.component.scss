@@ -2,26 +2,31 @@
 
 .profile-dialog {
   nb-card-header {
-    @apply com-w-[98vw] md:com-w-[700px];
+    @apply com-w-[98vw] com-pb-0 md:com-w-[700px];
     .navigation-buttons {
       position: relative;
-      top: 17px;
-
+      top: 0px;
       @apply com-flex com-items-center com-overflow-x-auto com-gap-3;
 
       a {
-        @apply com-text-gunmetal com-px-2 com-py-2;
+        @apply com-text-gunmetal com-p-0;
         text-align: center;
         border: none;
         text-decoration: none;
       }
 
       .profile-navbar-menu-option {
-        @apply com-text-sm com-font-medium com-leading-5;
+        @apply com-text-sm com-font-medium com-leading-5 com-gap-2;
         cursor: pointer;
+
+        &:hover {
+          @apply com-bg-blue-50;
+          transition: background-color 0.2s ease;
+        }
       }
 
       .active {
+        @apply com-bg-blue-50;
         border-bottom: 4px solid rgba($azure, 0.9);
       }
     }
