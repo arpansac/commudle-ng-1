@@ -115,6 +115,16 @@
               [error]="true"
               errorMessage="Minimum 3 characters required."
             ></commudle-alert>
+            <commudle-alert
+              *ngIf="communityGroupForm.get('name').touched && communityGroupForm.get('name').hasError('maxlength')"
+              [error]="true"
+              errorMessage="Name cannot exceed 100 characters."
+            ></commudle-alert>
+            <commudle-alert
+              *ngIf="communityGroupForm.get('name').touched && communityGroupForm.get('name').hasError('whitespace')"
+              [error]="true"
+              errorMessage="Name cannot be only whitespace."
+            ></commudle-alert>
           </div>
           <div class="cf-field">
             <label class="cf-label">Contact Email <span class="cf-required">*</span></label>
@@ -140,6 +150,14 @@
               "
               [error]="true"
               errorMessage="Enter a valid email address."
+            ></commudle-alert>
+            <commudle-alert
+              *ngIf="
+                communityGroupForm.get('contact_email').touched &&
+                communityGroupForm.get('contact_email').hasError('maxlength')
+              "
+              [error]="true"
+              errorMessage="Email cannot exceed 254 characters."
             ></commudle-alert>
           </div>
         </div>
@@ -198,10 +216,33 @@
               [error]="true"
               errorMessage="Tagline is required."
             ></commudle-alert>
+            <commudle-alert
+              *ngIf="
+                communityGroupForm.get('mini_description').touched &&
+                communityGroupForm.get('mini_description').hasError('minlength')
+              "
+              [error]="true"
+              errorMessage="Tagline must be at least 10 characters."
+            ></commudle-alert>
+            <commudle-alert
+              *ngIf="
+                communityGroupForm.get('mini_description').touched &&
+                communityGroupForm.get('mini_description').hasError('maxlength')
+              "
+              [error]="true"
+              errorMessage="Tagline cannot exceed 200 characters."
+            ></commudle-alert>
           </div>
           <div class="cf-field">
             <label class="cf-label">Website</label>
             <input nbInput fullWidth formControlName="website" type="url" placeholder="https://yourorg.com" />
+            <commudle-alert
+              *ngIf="
+                communityGroupForm.get('website').touched && communityGroupForm.get('website').hasError('invalidUrl')
+              "
+              [error]="true"
+              errorMessage="Enter a valid URL starting with http:// or https://"
+            ></commudle-alert>
           </div>
         </div>
 
@@ -230,12 +271,43 @@
               <nb-icon icon="linkedin" class="cf-social-icon cf-linkedin"></nb-icon> LinkedIn
             </label>
             <input nbInput fullWidth formControlName="linkedin" type="url" placeholder="https://linkedin.com/..." />
+            <commudle-alert
+              *ngIf="
+                communityGroupForm.get('linkedin').touched && communityGroupForm.get('linkedin').hasError('invalidUrl')
+              "
+              [error]="true"
+              errorMessage="Enter a valid URL starting with http:// or https://"
+            ></commudle-alert>
+            <commudle-alert
+              *ngIf="
+                communityGroupForm.get('linkedin').touched &&
+                communityGroupForm.get('linkedin').hasError('invalidDomain')
+              "
+              [error]="true"
+              errorMessage="Must be a linkedin.com URL."
+            ></commudle-alert>
           </div>
           <div class="cf-field">
             <label class="cf-label cf-social-label">
               <nb-icon icon="at" class="cf-social-icon cf-instagram"></nb-icon> Instagram
             </label>
             <input nbInput fullWidth formControlName="instagram" type="url" placeholder="https://instagram.com/..." />
+            <commudle-alert
+              *ngIf="
+                communityGroupForm.get('instagram').touched &&
+                communityGroupForm.get('instagram').hasError('invalidUrl')
+              "
+              [error]="true"
+              errorMessage="Enter a valid URL starting with http:// or https://"
+            ></commudle-alert>
+            <commudle-alert
+              *ngIf="
+                communityGroupForm.get('instagram').touched &&
+                communityGroupForm.get('instagram').hasError('invalidDomain')
+              "
+              [error]="true"
+              errorMessage="Must be an instagram.com URL."
+            ></commudle-alert>
           </div>
         </div>
 
@@ -245,12 +317,40 @@
               <nb-icon icon="github" class="cf-social-icon"></nb-icon> GitHub
             </label>
             <input nbInput fullWidth formControlName="github" type="url" placeholder="https://github.com/..." />
+            <commudle-alert
+              *ngIf="
+                communityGroupForm.get('github').touched && communityGroupForm.get('github').hasError('invalidUrl')
+              "
+              [error]="true"
+              errorMessage="Enter a valid URL starting with http:// or https://"
+            ></commudle-alert>
+            <commudle-alert
+              *ngIf="
+                communityGroupForm.get('github').touched && communityGroupForm.get('github').hasError('invalidDomain')
+              "
+              [error]="true"
+              errorMessage="Must be a github.com URL."
+            ></commudle-alert>
           </div>
           <div class="cf-field">
             <label class="cf-label cf-social-label">
               <nb-icon icon="twitter" class="cf-social-icon cf-twitter"></nb-icon> Twitter / X
             </label>
             <input nbInput fullWidth formControlName="twitter" type="url" placeholder="https://twitter.com/..." />
+            <commudle-alert
+              *ngIf="
+                communityGroupForm.get('twitter').touched && communityGroupForm.get('twitter').hasError('invalidUrl')
+              "
+              [error]="true"
+              errorMessage="Enter a valid URL starting with http:// or https://"
+            ></commudle-alert>
+            <commudle-alert
+              *ngIf="
+                communityGroupForm.get('twitter').touched && communityGroupForm.get('twitter').hasError('invalidDomain')
+              "
+              [error]="true"
+              errorMessage="Must be a twitter.com or x.com URL."
+            ></commudle-alert>
           </div>
         </div>
 
@@ -260,6 +360,21 @@
               <nb-icon icon="facebook" class="cf-social-icon cf-facebook"></nb-icon> Facebook
             </label>
             <input nbInput fullWidth formControlName="facebook" type="url" placeholder="https://facebook.com/..." />
+            <commudle-alert
+              *ngIf="
+                communityGroupForm.get('facebook').touched && communityGroupForm.get('facebook').hasError('invalidUrl')
+              "
+              [error]="true"
+              errorMessage="Enter a valid URL starting with http:// or https://"
+            ></commudle-alert>
+            <commudle-alert
+              *ngIf="
+                communityGroupForm.get('facebook').touched &&
+                communityGroupForm.get('facebook').hasError('invalidDomain')
+              "
+              [error]="true"
+              errorMessage="Must be a facebook.com URL."
+            ></commudle-alert>
           </div>
         </div>
       </form>

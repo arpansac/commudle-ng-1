@@ -67,6 +67,7 @@ export class SubscriptionPlanBadgeComponent implements OnInit, OnDestroy {
       cancelled: 'status-cancelled',
       payment_failed: 'status-failed',
       pending: 'status-pending',
+      trial: 'status-trial',
     };
     return map[this.subscription?.status] || '';
   }
