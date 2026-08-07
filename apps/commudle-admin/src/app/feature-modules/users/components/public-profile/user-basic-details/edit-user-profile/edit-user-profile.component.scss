@@ -6,20 +6,18 @@
     .navigation-buttons {
       position: relative;
       top: 17px;
-      display: flex;
-      @apply com-overflow-x-auto com-gap-[10px];
+
+      @apply com-flex com-items-center com-overflow-x-auto com-gap-3;
 
       a {
-        @apply com-text-gunmetal;
+        @apply com-text-gunmetal com-px-2 com-py-2;
         text-align: center;
-        // padding: 0 $space-16 $space-6 $space-16;
         border: none;
         text-decoration: none;
       }
 
       .profile-navbar-menu-option {
-        font-size: $fs-17;
-        font-weight: bold;
+        @apply com-text-sm com-font-medium com-leading-5;
         cursor: pointer;
       }
 
