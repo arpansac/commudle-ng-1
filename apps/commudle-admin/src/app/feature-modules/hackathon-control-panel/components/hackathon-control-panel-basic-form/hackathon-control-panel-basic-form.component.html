@@ -266,7 +266,7 @@
                 nbInput
                 placeholder="Search for a location..."
                 type="text"
-                (input)="$event.target.value || locationForm.get('map_link').setValue('')"
+                (input)="$any($event.target).value || locationForm.get('map_link').setValue('')"
               />
             </label>
             <commudle-alert
