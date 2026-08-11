@@ -56,11 +56,9 @@
           </div>
         </div>
         <p class="username" title="{{ user.username }}">&#64;{{ user.username | truncatetext : maxUserNameLength }}</p>
-        <app-hiring-looking-works-tags
-          *ngIf="showHiringLookingTags"
-          [user]="user"
-          [size]="'small'"
-        ></app-hiring-looking-works-tags>
+        <div *ngIf="showHiringLookingTags && user" class="hiring-tags">
+          <app-hiring-looking-works-tags [user]="user" [size]="'small'"></app-hiring-looking-works-tags>
+        </div>
         <p
           [ngClass]="{ 'com-line-clamp-2': truncateDesignation, 'com-h-12': horizontalScroll }"
           class="designation"
