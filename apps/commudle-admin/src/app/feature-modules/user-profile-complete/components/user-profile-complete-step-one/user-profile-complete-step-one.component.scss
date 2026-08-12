@@ -62,7 +62,9 @@
 .continue-btn {
   @apply com-mt-4 md:com-static md:com-bottom-0 com-sticky com-bottom-[68px] com-left-0 com-right-0 md:com-p-0 com-p-4 md:com-bg-transparent com-bg-white com-z-10 md:com-shadow-none com-shadow-md;
 }
-
+.edit-profile-save-btn {
+  @apply com-static;
+}
 .domain-input {
   @apply com-mt-4;
 }
