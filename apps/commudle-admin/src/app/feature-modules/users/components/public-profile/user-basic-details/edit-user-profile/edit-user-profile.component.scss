@@ -1,9 +1,7 @@
 @import './apps/commudle-admin/src/assets/styles/variables';
 
 .profile-dialog {
-  @apply com-flex com-flex-col;
-  height: 95vh;
-  max-height: 95vh;
+  @apply com-flex com-flex-col com-h-[95vh] com-max-h-[95vh];
 
   com-card-header {
     @apply com-flex com-pb-0 com-border-0 com-w-[98vw] md:com-w-[700px];
