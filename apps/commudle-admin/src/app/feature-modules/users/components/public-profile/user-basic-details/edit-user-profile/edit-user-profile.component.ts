@@ -5,18 +5,19 @@ import { UpdateProfileService } from 'apps/commudle-admin/src/app/feature-module
 import { SeoService, AuthService } from '@commudle/shared-services';
 import { IUser } from '@commudle/shared-models';
 import { Subject, takeUntil, filter } from 'rxjs';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-    selector: 'app-edit-user-profile',
-    templateUrl: './edit-user-profile.component.html',
-    styleUrls: ['./edit-user-profile.component.scss'],
-    standalone: false
+  selector: 'app-edit-user-profile',
+  templateUrl: './edit-user-profile.component.html',
+  styleUrls: ['./edit-user-profile.component.scss'],
+  standalone: false,
 })
 export class EditUserProfileComponent implements OnInit, OnDestroy {
   dialogRef: NbDialogRef<any>;
   currentUser: IUser;
   title: string;
-
+  faXmark = faXmark;
   private destroy$ = new Subject<void>();
 
   @ViewChild('editProfile', { static: true }) editProfile: TemplateRef<any>;
