@@ -1,62 +1,44 @@
 <ng-template #editProfile let-data let-ref="dialogRef">
-  <nb-card class="profile-dialog max-full-height-dialog-card !com-mx-0">
-    <nb-card-header class="d-flex align-items-center justify-content-space-between">
+  <com-card class="profile-dialog max-full-height-dialog-card !com-mx-0">
+    <com-card-header class="com-flex com-align-items-center com-justify-content-space-between">
       <div class="navigation-buttons">
         <a [routerLink]="['goals-and-skills']" routerLinkActive="active">
           <div class="profile-navbar-menu-option">
-            <div class="nav-icon">
-              <nb-icon icon="award-outline"></nb-icon>
-            </div>
-            <span>Goals & Skills</span>
+            <span com-text-xs>Goals & Skills</span>
           </div>
         </a>
         <a [routerLink]="['basic-details']" routerLinkActive="active">
           <div class="profile-navbar-menu-option">
-            <div class="nav-icon">
-              <nb-icon icon="person-outline"></nb-icon>
-            </div>
-            <span>Basic Details</span>
+            <span com-text-xs>Basic Details</span>
           </div>
         </a>
         <a [routerLink]="['email-preferences']" routerLinkActive="active">
           <div class="profile-navbar-menu-option">
-            <div class="nav-icon">
-              <nb-icon icon="email-outline"></nb-icon>
-            </div>
-            <span>Email Preferences</span>
+            <span com-text-xs>Email Preferences</span>
           </div>
         </a>
         <a [routerLink]="['communication-preferences']" routerLinkActive="active">
           <div class="profile-navbar-menu-option">
-            <div class="nav-icon">
-              <nb-icon icon="message-circle-outline"></nb-icon>
-            </div>
-            <span>Communication Preferences</span>
+            <span com-text-xs>Communication Preferences</span>
           </div>
         </a>
         <a [routerLink]="['cookie-preferences']" routerLinkActive="active">
           <div class="profile-navbar-menu-option">
-            <div class="nav-icon">
-              <nb-icon icon="settings-2-outline"></nb-icon>
-            </div>
-            <span>Cookie Preferences</span>
+            <span com-text-xs>Cookie Preferences</span>
           </div>
         </a>
         <a [routerLink]="['account-management']" routerLinkActive="active">
           <div class="profile-navbar-menu-option">
-            <div class="nav-icon">
-              <nb-icon icon="settings-outline"></nb-icon>
-            </div>
-            <span>Account Management</span>
+            <span com-text-xs>Account Management</span>
           </div>
         </a>
       </div>
       <button (click)="ref.close()" ghost nbButton size="small">
         <nb-icon icon="close"></nb-icon>
       </button>
-    </nb-card-header>
-    <nb-card-body>
+    </com-card-header>
+    <com-card-body>
       <router-outlet></router-outlet>
-    </nb-card-body>
-  </nb-card>
+    </com-card-body>
+  </com-card>
 </ng-template>

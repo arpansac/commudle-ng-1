@@ -120,7 +120,7 @@
             <commudle-alert *ngIf="showDomainError" [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
           </div>
 
-          <div class="continue-btn">
+          <div class="continue-btn" [class.edit-profile-save-btn]="parentType === 'edit-profile'">
             <button nbButton status="primary" shape="semi-round" fullWidth (click)="goToNextStep()">
               <span *ngIf="parentType === 'profile-complete'"
                 >Continue &nbsp;<fa-icon [icon]="faArrowRight"></fa-icon
