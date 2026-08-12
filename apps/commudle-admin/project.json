@@ -70,8 +70,8 @@
           "optimization": false,
           "vendorChunk": true,
           "extractLicenses": false,
-          "sourceMap": false,
-          "namedChunks":false,
+          "sourceMap": true,
+          "namedChunks":true,
           "aot": false
         }
       },
