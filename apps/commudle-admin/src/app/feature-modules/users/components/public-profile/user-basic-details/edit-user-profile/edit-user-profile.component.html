@@ -1,42 +1,49 @@
 <ng-template #editProfile let-data let-ref="dialogRef">
-  <com-card class="profile-dialog max-full-height-dialog-card !com-mx-0">
-    <com-card-header class="com-flex com-align-items-center com-justify-content-space-between">
+  <com-card class="profile-dialog">
+    <com-card-header>
       <div class="navigation-buttons">
         <a [routerLink]="['goals-and-skills']" routerLinkActive="active">
           <div class="profile-navbar-menu-option">
             <span>Goals & Skills</span>
           </div>
         </a>
+
         <a [routerLink]="['basic-details']" routerLinkActive="active">
           <div class="profile-navbar-menu-option">
             <span>Basic Details</span>
           </div>
         </a>
+
         <a [routerLink]="['email-preferences']" routerLinkActive="active">
           <div class="profile-navbar-menu-option">
             <span>Email Preferences</span>
           </div>
         </a>
+
         <a [routerLink]="['communication-preferences']" routerLinkActive="active">
           <div class="profile-navbar-menu-option">
             <span>Communication Preferences</span>
           </div>
         </a>
+
         <a [routerLink]="['cookie-preferences']" routerLinkActive="active">
           <div class="profile-navbar-menu-option">
             <span>Cookie Preferences</span>
           </div>
         </a>
+
         <a [routerLink]="['account-management']" routerLinkActive="active">
           <div class="profile-navbar-menu-option">
             <span>Account Management</span>
           </div>
         </a>
       </div>
+
       <button (click)="ref.close()" ghost nbButton size="small">
         <fa-icon [icon]="faXmark"></fa-icon>
       </button>
     </com-card-header>
+
     <com-card-body>
       <router-outlet></router-outlet>
     </com-card-body>
