@@ -7,9 +7,7 @@
     @apply com-flex com-pb-0 com-border-0 com-w-[98vw] md:com-w-[700px];
 
     .navigation-buttons {
-      position: relative;
-      top: 0px;
-      @apply com-flex com-items-center com-gap-3 com-flex-1 com-min-w-0 com-overflow-x-auto com-scrollbar-hide;
+      @apply com-relative com-top-0 com-flex com-items-center com-gap-3 com-flex-1 com-min-w-0 com-overflow-x-auto com-scrollbar-hide;
 
       a {
         @apply com-text-gunmetal com-p-0 com-shrink-0;
