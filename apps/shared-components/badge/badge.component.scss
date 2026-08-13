@@ -33,7 +33,7 @@ div {
     }
 
     &.regular-text {
-      @apply com-py-2 com-px-3 com-text-sm;
+      @apply com-w-4 com-py-0.5 com-px-3 com-text-sm com-justify-center com-items-center com-flex com-rounded-full;
 
       nb-icon {
         font-size: 1.125rem;
