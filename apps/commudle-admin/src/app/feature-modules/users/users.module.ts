@@ -64,7 +64,6 @@ import { UserNetworkListComponent } from './components/public-profile/user-netwo
 import { UserNetworkComponent } from './components/public-profile/user-network/user-network.component';
 import { UsersRoutingModule } from './users-routing.module';
 import { JobsModule } from '../jobs/jobs.module';
-import { UserProfileCompleteStepOneComponent } from 'apps/commudle-admin/src/app/feature-modules/user-profile-complete/components/user-profile-complete-step-one/user-profile-complete-step-one.component';
 import { CommunicationPreferencesComponent } from './components/public-profile/user-basic-details/communication-preferences/communication-preferences.component';
 import { CookiePreferencesComponent } from './components/public-profile/user-basic-details/cookie-preferences/cookie-preferences.component';
 import { AccountManagementComponent } from './components/public-profile/user-basic-details/account-management/account-management.component';
@@ -110,7 +109,6 @@ import { UserProfileQrCardComponent } from 'apps/commudle-admin/src/app/app-shar
     UsernameComponent,
     BasicInfoComponent,
     SocialLinksComponent,
-    UserProfileCompleteStepOneComponent,
     UserWorkHistoryComponent,
     UserWorkHistoryCardComponent,
     UserResumeComponent,
@@ -172,7 +170,6 @@ import { UserProfileQrCardComponent } from 'apps/commudle-admin/src/app/app-shar
     SocialLinksComponent,
     UserCoverPhotoComponent,
     UserBuildCardComponent,
-    UserProfileCompleteStepOneComponent,
   ],
   providers: [UserProfileMenuService],
 })

@@ -16,11 +16,7 @@ import { EventMiniCardComponent } from 'apps/commudle-admin/src/app/app-shared-c
 import { FeaturedCommunitiesCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/featured-communities-card/featured-communities-card.component';
 
 @NgModule({
-  declarations: [
-    UserProfileCompleteStepOneComponent,
-    UserProfileCompleteStepTwoComponent,
-    UserProfileCompleteStepThreeComponent,
-  ],
+  declarations: [UserProfileCompleteStepTwoComponent, UserProfileCompleteStepThreeComponent],
   imports: [
     CommonModule,
     NbCardModule,
