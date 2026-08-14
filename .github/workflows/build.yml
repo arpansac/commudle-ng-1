@@ -95,3 +95,7 @@ jobs:
           path: dist/prod-server-bundle/
           retention-days: 14
           if-no-files-found: error
+          # upload-artifact@v4 excludes dotfiles/dotfolders by default, which
+          # would silently drop .ebextensions/ and .npmrc from the deploy
+          # bundle. Both are required by Elastic Beanstalk, so include them.
+          include-hidden-files: true
