@@ -1,20 +1,22 @@
-<div class="surveys-page" *ngIf="communityGroup">
-  <!-- Header -->
-  <header class="page-header">
-    <div class="header-info">
-      <h1 class="page-title">
-        <nb-icon icon="file-text-outline"></nb-icon>
-        Surveys
-      </h1>
-    </div>
-  </header>
+<com-card class="surveys-page" *ngIf="communityGroup">
+  <com-card-body>
+    <!-- Header -->
+    <header class="page-header">
+      <div class="header-info">
+        <h1 class="page-title">
+          <nb-icon icon="file-text-outline"></nb-icon>
+          Surveys
+        </h1>
+      </div>
+    </header>
 
-  <!-- Surveys content -->
-  <div class="surveys-content">
-    <commudle-surveys
-      [parentId]="communityGroup.id"
-      parentType="CommunityGroup"
-      [showHeading]="false"
-    ></commudle-surveys>
-  </div>
-</div>
+    <!-- Surveys content -->
+    <div class="surveys-content">
+      <commudle-surveys
+        [parentId]="communityGroup.id"
+        parentType="CommunityGroup"
+        [showHeading]="false"
+      ></commudle-surveys>
+    </div>
+  </com-card-body>
+</com-card>

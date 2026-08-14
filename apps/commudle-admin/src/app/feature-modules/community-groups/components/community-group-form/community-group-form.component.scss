@@ -1,10 +1,10 @@
 @import '../../../../app-shared-components/create-community-form/create-community-form.component.scss';
 
 .community-group-form-page {
-  @apply com-flex com-flex-col com-gap-6 com-pt-4 com-bg-white com-rounded-lg com-p-5;
+  @apply com-flex com-flex-col com-gap-6 com-bg-white com-rounded-lg com-p-0;
 
   .page-header {
-    @apply com-flex com-flex-col com-gap-0.5;
+    @apply com-flex com-flex-col com-gap-0.5 com-mb-4;
 
     .page-title {
       @apply com-flex com-items-center com-gap-2 com-m-0 com-text-lg com-font-semibold com-text-Yankees-Blue;

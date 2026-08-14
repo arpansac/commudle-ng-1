@@ -1,19 +1,21 @@
-<div class="channels-page" *ngIf="communityGroup">
-  <!-- Header -->
-  <header class="page-header">
-    <div class="header-info">
-      <h1 class="page-title">
-        <nb-icon icon="message-circle-outline"></nb-icon>
-        Channels & Forums
-      </h1>
-    </div>
-  </header>
+<com-card class="channels-page" *ngIf="communityGroup">
+  <com-card-body>
+    <!-- Header -->
+    <header class="page-header">
+      <div class="header-info">
+        <h1 class="page-title">
+          <nb-icon icon="message-circle-outline"></nb-icon>
+          Channels & Forums
+        </h1>
+      </div>
+    </header>
 
-  <!-- Channels content -->
-  <div class="channels-content">
-    <commudle-channel-forum-dashboard
-      [parent]="communityGroup"
-      [parentType]="EDbModels.COMMUNITY_GROUP"
-    ></commudle-channel-forum-dashboard>
-  </div>
-</div>
+    <!-- Channels content -->
+    <div class="channels-content">
+      <commudle-channel-forum-dashboard
+        [parent]="communityGroup"
+        [parentType]="EDbModels.COMMUNITY_GROUP"
+      ></commudle-channel-forum-dashboard>
+    </div>
+  </com-card-body>
+</com-card>

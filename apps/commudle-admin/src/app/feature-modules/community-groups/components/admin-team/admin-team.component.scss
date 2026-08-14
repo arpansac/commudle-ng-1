@@ -1,8 +1,8 @@
 .admin-team-page {
-  @apply com-flex com-flex-col com-gap-6 com-pt-4 com-bg-white com-rounded-lg com-p-5;
+  @apply com-flex com-flex-col com-gap-4 com-p-0;
 
   .page-header {
-    @apply com-flex com-flex-col md:com-flex-row md:com-items-center md:com-justify-between com-gap-3;
+    @apply com-flex com-flex-col md:com-flex-row md:com-items-center md:com-justify-between com-gap-3 com-mb-4;
 
     .header-info {
       @apply com-flex com-flex-col com-gap-0.5;
@@ -26,6 +26,7 @@
   }
 
   .invite-section {
+    @apply com-mb-4;
     .invite-form {
       @apply com-flex com-flex-col com-gap-2;
 

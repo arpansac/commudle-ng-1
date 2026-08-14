@@ -31,7 +31,7 @@
       @apply com-flex com-flex-col com-gap-0.5 com-min-w-0;
 
       .cg-eyebrow {
-        @apply com-text-xs com-font-semibold com-uppercase com-tracking-widest com-opacity-80;
+        @apply com-text-xs com-text-tWhite com-font-semibold com-uppercase com-tracking-widest com-opacity-80;
       }
 
       .cg-name {
@@ -51,5 +51,9 @@
 
 // ── Section tabs ──
 .cg-tabs {
-  @apply com-bg-white com-rounded-lg com-shadow-sm com-overflow-x-auto com-p-4;
+  @apply com-overflow-x-auto com-m-0 com-mb-4;
+
+  nb-card-body {
+    @apply com-p-4;
+  }
 }
