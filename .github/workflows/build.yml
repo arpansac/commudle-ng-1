@@ -1,9 +1,21 @@
 name: Build & Package Angular SSR
 
 # Builds the commudle-admin SSR app the same way `build.sh` does locally
-# (npx nx run commudle-admin:release), which produces a deployable
-# prod-server.zip at the repo root — that zip is what gets uploaded as a
-# downloadable workflow artifact.
+# (npx nx run commudle-admin:release), which produces a deployable bundle at
+# dist/prod-server-bundle (and, as a byproduct, prod-server.zip at the repo root).
+#
+# IMPORTANT: we upload the UNZIPPED bundle directory (dist/prod-server-bundle),
+# not prod-server.zip, as the workflow artifact. actions/upload-artifact always
+# wraps whatever you give it in a zip when you download it from the UI/API. If
+# we uploaded prod-server.zip directly, the download would be a zip-of-a-zip:
+# unzipping the download once still leaves you with a single "prod-server.zip"
+# file instead of package.json/commudle-admin/etc at the root, which is exactly
+# why Elastic Beanstalk failed with "Please provide a package.json file or add
+# server.js/app.js file in source bundle".
+#
+# By uploading the raw bundle directory instead, GitHub zips it exactly once.
+# The zip you download from the Actions run summary is then directly
+# deployable to Elastic Beanstalk — no extra unzip/rezip step required.
 on:
   push:
     branches: [release/test]
@@ -58,18 +70,28 @@ jobs:
       - name: Build & package SSR release
         run: npx nx run commudle-admin:release
 
-      - name: Verify build artifact
+      - name: Verify build bundle
         run: |
-          if [ ! -f "prod-server.zip" ]; then
-            echo "::error::prod-server.zip was not produced by the release build"
+          BUNDLE_DIR="dist/prod-server-bundle"
+          if [ ! -f "$BUNDLE_DIR/package.json" ]; then
+            echo "::error::$BUNDLE_DIR/package.json was not produced by the release build"
             exit 1
           fi
-          ls -lh prod-server.zip
+          if [ ! -f "$BUNDLE_DIR/commudle-admin/server/main.js" ]; then
+            echo "::error::$BUNDLE_DIR/commudle-admin/server/main.js is missing"
+            exit 1
+          fi
+          echo "Bundle contents:"
+          ls -la "$BUNDLE_DIR"
 
+      # Upload the unzipped bundle directory, NOT prod-server.zip.
+      # This avoids the zip-of-a-zip problem described above: GitHub will
+      # produce exactly one zip on download, and that zip is ready to upload
+      # to Elastic Beanstalk as-is.
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: prod-server-${{ github.sha }}
-          path: prod-server.zip
+          path: dist/prod-server-bundle/
           retention-days: 14
           if-no-files-found: error
