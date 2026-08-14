@@ -22,7 +22,10 @@
     }
 
     .chip-highlight {
-      @apply com-font-medium com-text-gray-700 com-bg-blue-50 com-border com-border-solid com-border-yellow-300;
+      @apply com-font-medium com-border com-border-solid;
+      background: #fff7ed;
+      color: #c2410c;
+      border-color: #fed7aa;
     }
   }
 

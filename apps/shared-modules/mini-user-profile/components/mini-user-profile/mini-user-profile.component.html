@@ -7,8 +7,11 @@
       [user]="user"
     ></app-user-profile-card-large>
 
+    <!-- Skeleton loader while stats load -->
+    <app-skeleton-text *ngIf="statsLoading" [rows]="2"></app-skeleton-text>
+
     <!-- Combined Activity & Stats - Top 5 by priority -->
-    <div *ngIf="activityChips.length > 0" class="activity-chips">
+    <div *ngIf="!statsLoading && activityChips.length > 0" class="activity-chips">
       <span *ngFor="let chip of activityChips" class="chip" [ngClass]="'chip-' + chip.type">
         {{ chip.label }}
       </span>
@@ -20,7 +23,7 @@
     </div>
 
     <!-- Actions -->
-    <div (click)="closePopup()" class="action-buttons">
+    <div *ngIf="currentUser?.username !== username" (click)="closePopup()" class="action-buttons">
       <app-user-follow [username]="miniUser.username" [name]="miniUser.name" [userId]="miniUser.id"></app-user-follow>
       <button (click)="openChatWithUser()" nbButton size="small" outline status="basic" shape="semi-round">
         <nb-icon icon="paper-plane"></nb-icon>

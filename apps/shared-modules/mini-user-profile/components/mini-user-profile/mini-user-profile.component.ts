@@ -4,6 +4,7 @@ import { UserChatsService } from 'apps/commudle-admin/src/app/feature-modules/us
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { IMiniUserProfile } from 'apps/shared-models/mini-user-profile.model';
 import { IUser, IUserStat } from '@commudle/shared-models';
+import { AuthService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -21,17 +22,28 @@ export class MiniUserProfileComponent implements OnInit, OnDestroy {
   user: IUser;
   userStats: IUserStat;
   activityChips: { label: string; type: string }[] = [];
+  currentUser: IUser;
+  statsLoading = true;
 
   subscriptions: Subscription[] = [];
 
   constructor(
     private userChatsService: UserChatsService,
     private appUsersService: AppUsersService,
+    private authService: AuthService,
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
+    this.subscriptions.push(
+      this.authService.currentUser$.subscribe((currentUser) => {
+        if (currentUser) {
+          this.currentUser = currentUser;
+        }
+      }),
+    );
+
     this.subscriptions.push(
       this.appUsersService.getProfile(this.username).subscribe((response) => {
         this.user = response;
@@ -42,6 +54,7 @@ export class MiniUserProfileComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.appUsersService.getPublicProfileStats(this.username).subscribe((data: IUserStat) => {
         this.userStats = data;
+        this.statsLoading = false;
         this.buildActivityChips();
         this.changeDetectorRef.markForCheck();
       }),
@@ -79,15 +92,18 @@ export class MiniUserProfileComponent implements OnInit, OnDestroy {
   private buildActivityChips(): void {
     const chips: { label: string; type: string }[] = [];
 
+    if (this.miniUser.is_expert) {
+      chips.push({ label: 'Expert', type: 'highlight' });
+    }
     if (this.userStats.hackathon_won_count > 0) {
-      chips.push({ label: 'Hackathon Winner', type: 'stat' });
+      chips.push({ label: 'Hackathon Winner', type: 'highlight' });
     }
     if (this.userStats.community_leader_count > 0) {
       chips.push({
         label: `Organizer of ${this.userStats.community_leader_count} communit${
           this.userStats.community_leader_count > 1 ? 'ies' : 'y'
         }`,
-        type: 'stat',
+        type: 'highlight',
       });
     }
     if (this.userStats.hackathon_mentor_count > 0) {
@@ -95,7 +111,7 @@ export class MiniUserProfileComponent implements OnInit, OnDestroy {
         label: `Mentored ${this.userStats.hackathon_mentor_count} hackathon${
           this.userStats.hackathon_mentor_count > 1 ? 's' : ''
         }`,
-        type: 'stat',
+        type: 'highlight',
       });
     }
     if (this.userStats.hackathon_judge_count > 0) {
@@ -103,13 +119,13 @@ export class MiniUserProfileComponent implements OnInit, OnDestroy {
         label: `Judged ${this.userStats.hackathon_judge_count} hackathon${
           this.userStats.hackathon_judge_count > 1 ? 's' : ''
         }`,
-        type: 'stat',
+        type: 'highlight',
       });
     }
     if (this.userStats.speaker_events_count > 0) {
       chips.push({
         label: `${this.userStats.speaker_events_count} Talk${this.userStats.speaker_events_count > 1 ? 's' : ''}`,
-        type: 'stat',
+        type: 'highlight',
       });
     }
     if (this.userStats.published_community_builds_count > 0) {
