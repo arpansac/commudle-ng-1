@@ -170,6 +170,39 @@
       </div>
       <fa-icon [icon]="faChevronRight" class="explore-action-chevron"></fa-icon>
     </a>
+
+    <a [routerLink]="['/speakers']" (click)="closeDesktopExplorePopover()" class="explore-action-item">
+      <div class="explore-action-left">
+        <fa-icon [icon]="faMicrophone" class="explore-action-icon"></fa-icon>
+        <div class="explore-action-text">
+          <span class="explore-action-title">Find Speakers</span>
+          <span class="explore-action-subtitle">View talk slides</span>
+        </div>
+      </div>
+      <fa-icon [icon]="faChevronRight" class="explore-action-chevron"></fa-icon>
+    </a>
+
+    <a [routerLink]="['/jobs']" (click)="closeDesktopExplorePopover()" class="explore-action-item">
+      <div class="explore-action-left">
+        <fa-icon [icon]="faBriefcase" class="explore-action-icon"></fa-icon>
+        <div class="explore-action-text">
+          <span class="explore-action-title">Jobs</span>
+          <span class="explore-action-subtitle">Post a Job or Apply for one</span>
+        </div>
+      </div>
+      <fa-icon [icon]="faChevronRight" class="explore-action-chevron"></fa-icon>
+    </a>
+
+    <a [routerLink]="['/vibeathon-challenge']" (click)="closeDesktopExplorePopover()" class="explore-action-item">
+      <div class="explore-action-left">
+        <fa-icon [icon]="faTrophy" class="explore-action-icon"></fa-icon>
+        <div class="explore-action-text">
+          <span class="explore-action-title">Vibeathon</span>
+          <span class="explore-action-subtitle">Run a vibecode competition</span>
+        </div>
+      </div>
+      <fa-icon [icon]="faChevronRight" class="explore-action-chevron"></fa-icon>
+    </a>
   </div>
 </ng-template>
 
