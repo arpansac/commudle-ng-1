@@ -134,6 +134,7 @@ import { UserProfileQrCardComponent } from 'apps/commudle-admin/src/app/app-shar
     MiniUserProfileModule,
     SharedComponentsModule,
     JobsModule,
+    newSharedComponentsModule,
     EventMiniCardComponent,
     HelpSectionComponent,
     // Nebular
