@@ -60,8 +60,13 @@
 }
 
 .continue-btn {
-  @apply com-mt-4 com-sticky com-bottom-0 md:com-p-0 com-p-4 com-bg-white md:com-bg-transparent md:com-shadow-none com-shadow-md com-border-t com-border-solid com-border-gray-200 md:com-border-0;
+  @apply com-mt-4 com-sticky com-bottom-0 com-p-4 md:com-p-0 com-bg-white md:com-bg-transparent md:com-shadow-none com-shadow-md;
 }
+
+.mobile-nav-offset {
+  @apply com-bottom-[68px] md:com-bottom-0;
+}
+
 .domain-input {
   @apply com-mt-4;
 }

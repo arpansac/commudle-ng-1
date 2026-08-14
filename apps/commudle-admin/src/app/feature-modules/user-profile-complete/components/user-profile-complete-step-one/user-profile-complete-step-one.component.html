@@ -119,13 +119,15 @@
             />
             <commudle-alert *ngIf="showDomainError" [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
           </div>
-          <div class="continue-btn">
-            <button nbButton status="primary" shape="semi-round" fullWidth (click)="goToNextStep()">
-              <span *ngIf="parentType === 'profile-complete'"
-                >Continue &nbsp;<fa-icon [icon]="faArrowRight"></fa-icon
-              ></span>
-              <span *ngIf="parentType === 'edit-profile'">Save</span>
-            </button>
+          <div class="continue-btn" [class.mobile-nav-offset]="parentType === 'profile-complete'">
+            <div class="continue-btn">
+              <button nbButton status="primary" shape="semi-round" fullWidth (click)="goToNextStep()">
+                <span *ngIf="parentType === 'profile-complete'"
+                  >Continue &nbsp;<fa-icon [icon]="faArrowRight"></fa-icon
+                ></span>
+                <span *ngIf="parentType === 'edit-profile'">Save</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
