@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NbDialogRef, NbButtonModule, NbInputModule, NbFormFieldModule, NbIconModule } from '@commudle/theme';
@@ -75,18 +75,21 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.communityGroupForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+      name: [
+        '',
+        [Validators.required, Validators.minLength(3), Validators.maxLength(100), this.noWhitespaceValidator()],
+      ],
       slug: ['', [Validators.required, Validators.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)]],
-      contact_email: ['', [Validators.required, Validators.email]],
-      mini_description: ['', [Validators.required, Validators.maxLength(200)]],
+      contact_email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
+      mini_description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
       description: ['', [Validators.required, Validators.minLength(100)]],
       theme_color: [this.themeColor],
-      website: [''],
-      facebook: [''],
-      twitter: [''],
-      github: [''],
-      linkedin: [''],
-      instagram: [''],
+      website: ['', [this.urlValidator()]],
+      facebook: ['', [this.socialUrlValidator('facebook.com')]],
+      twitter: ['', [this.socialUrlValidator('twitter.com', 'x.com')]],
+      github: ['', [this.socialUrlValidator('github.com')]],
+      linkedin: ['', [this.socialUrlValidator('linkedin.com')]],
+      instagram: ['', [this.socialUrlValidator('instagram.com')]],
     });
 
     this.communityGroupForm
@@ -198,6 +201,43 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
 
   close(): void {
     this.dialogRef.close(this.createdCommunityGroup ?? undefined);
+  }
+
+  private noWhitespaceValidator(): ValidatorFn {
+    return (control: AbstractControl) => {
+      const value: string = control.value || '';
+      return value.trim().length === 0 && value.length > 0 ? { whitespace: true } : null;
+    };
+  }
+
+  private urlValidator(): ValidatorFn {
+    return (control: AbstractControl) => {
+      const value: string = (control.value || '').trim();
+      if (!value) return null;
+      try {
+        const url = new URL(value);
+        return url.protocol === 'http:' || url.protocol === 'https:' ? null : { invalidUrl: true };
+      } catch {
+        return { invalidUrl: true };
+      }
+    };
+  }
+
+  private socialUrlValidator(...allowedDomains: string[]): ValidatorFn {
+    return (control: AbstractControl) => {
+      const value: string = (control.value || '').trim();
+      if (!value) return null;
+      try {
+        const url = new URL(value);
+        if (url.protocol !== 'http:' && url.protocol !== 'https:') return { invalidUrl: true };
+        const hostname = url.hostname.replace(/^www\./, '');
+        return allowedDomains.some((d) => hostname === d || hostname.endsWith(`.${d}`))
+          ? null
+          : { invalidDomain: true };
+      } catch {
+        return { invalidUrl: true };
+      }
+    };
   }
 
   private toSlug(value: string): string {

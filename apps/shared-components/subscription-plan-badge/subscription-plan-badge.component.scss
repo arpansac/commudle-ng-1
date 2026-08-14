@@ -1,3 +1,8 @@
+// ── Trigger wrapper ───────────────────────────────────
+.spb-trigger {
+  @apply com-inline-flex com-items-center com-gap-1.5 com-cursor-pointer;
+}
+
 // ── Pro chip ──────────────────────────────────────────
 .spb-chip {
   @apply com-inline-flex com-items-center com-cursor-pointer com-select-none;
@@ -7,6 +12,14 @@
   &.spb-chip-inactive {
     @apply com-text-gray-400 hover:com-text-gray-500;
   }
+}
+
+// ── Trial chip ────────────────────────────────────────
+.spb-trial-chip {
+  @apply com-inline-flex com-items-center com-select-none;
+  @apply com-text-xs com-font-semibold;
+  @apply com-px-2 com-py-0.5 com-rounded-full;
+  @apply com-bg-orange-100 com-text-orange-600;
 }
 
 // ── Dialog ────────────────────────────────────────────
@@ -74,11 +87,36 @@
           @apply com-bg-blue-500;
         }
       }
+      &.status-trial {
+        @apply com-bg-orange-100 com-text-orange-600;
+        .spb-status-dot {
+          @apply com-bg-orange-400;
+        }
+      }
     }
 
     .spb-days-chip {
       @apply com-text-xs com-font-semibold com-bg-primary-100 com-text-primary-700 com-px-2.5 com-py-1 com-rounded-full;
     }
+  }
+
+  // ── Trial banner (inside card header) ────────────────
+  .spb-trial-banner {
+    @apply com-flex com-items-center com-gap-2 com-mt-3;
+    @apply com-rounded-lg com-px-3 com-py-2;
+    @apply com-bg-orange-50 com-border com-border-orange-200 com-text-orange-700 com-text-xs com-font-medium;
+
+    .spb-trial-banner-icon {
+      @apply com-flex-shrink-0 com-text-orange-500;
+    }
+  }
+
+  // ── Trial inline chip (inside status row) ────────────
+  .spb-trial-inline-chip {
+    @apply com-inline-flex com-items-center;
+    @apply com-text-xs com-font-semibold;
+    @apply com-px-2 com-py-0.5 com-rounded-full;
+    @apply com-bg-orange-100 com-text-orange-600;
   }
 
   // ── Info grid ────────────────────────────────────────

@@ -1,4 +1,8 @@
-<div *ngIf="user" class="tags-container" [ngClass]="size">
+<div
+  *ngIf="user && (user.is_employee || user.is_employer || user.looking_for_work || user.hiring)"
+  class="tags-container"
+  [ngClass]="size"
+>
   <!-- Both tags: animate/slide between them -->
   <div *ngIf="(user.is_employee && user.is_employer) || (user.looking_for_work && user.hiring)" class="tags-animated">
     <span class="tag-pill work-pill animated-work">

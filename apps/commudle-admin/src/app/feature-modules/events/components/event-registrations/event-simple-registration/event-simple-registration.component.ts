@@ -5,17 +5,17 @@ import {
   IEventSimpleRegistration,
   EEventSimpleRegistrationStatuses,
 } from 'apps/shared-models/event_simple_registration.model';
-import { NbWindowService } from '@commudle/theme';
+import { NbDialogService } from '@commudle/theme';
 import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
 
 @Component({
-    selector: 'app-event-simple-registration',
-    templateUrl: './event-simple-registration.component.html',
-    styleUrls: ['./event-simple-registration.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-event-simple-registration',
+  templateUrl: './event-simple-registration.component.html',
+  styleUrls: ['./event-simple-registration.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class EventSimpleRegistrationComponent implements OnInit {
   @Input() community: ICommunity;
@@ -26,7 +26,7 @@ export class EventSimpleRegistrationComponent implements OnInit {
 
   constructor(
     private eventSimpleRegistrationService: EventSimpleRegistrationsService,
-    private windowService: NbWindowService,
+    private dialogService: NbDialogService,
     private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
@@ -49,13 +49,15 @@ export class EventSimpleRegistrationComponent implements OnInit {
   }
 
   openEmailWindow() {
-    this.windowService.open(EmailerComponent, {
-      title: `Send Registration Link`,
+    this.dialogService.open(EmailerComponent, {
       context: {
         community: this.community,
         event: this.event,
         mailType: this.event.editable ? EemailTypes.SEND_LINK : '',
+        title: `Send Registration Link`,
       },
+      closeOnBackdropClick: false,
+      dialogClass: 'emailer-dialog',
     });
   }
 }

@@ -250,15 +250,17 @@ export class FormGroupsComponent implements OnInit {
   }
 
   openEmailWindow(eventDataFormEntityGroup) {
-    this.windowService.open(EmailerComponent, {
-      title: `Send ${eventDataFormEntityGroup.name} Link`,
+    this.dialogService.open(EmailerComponent, {
       context: {
         community: this.community,
         event: this.event,
         eventDataFormEntityGroupId: eventDataFormEntityGroup.id,
         mailType: EemailTypes.SEND_LINK,
         showEmailFilters: false,
+        title: `Send ${eventDataFormEntityGroup.name} Link`,
       },
+      closeOnBackdropClick: false,
+      dialogClass: 'emailer-dialog',
     });
   }
 
