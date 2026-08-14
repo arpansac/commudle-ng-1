@@ -1,3 +1,19 @@
-.channel-forum-container {
-  @apply com-px-4 com-py-3;
+.channels-page {
+  @apply com-flex com-flex-col com-gap-4 com-pt-4 com-bg-white com-rounded-lg com-p-5;
+
+  .page-header {
+    @apply com-flex com-flex-col com-gap-0.5;
+
+    .page-title {
+      @apply com-flex com-items-center com-gap-2 com-m-0 com-text-lg com-font-semibold com-text-Yankees-Blue;
+
+      nb-icon {
+        @apply com-text-primary-500;
+      }
+    }
+  }
+
+  .channels-content {
+    @apply com-w-full;
+  }
 }
