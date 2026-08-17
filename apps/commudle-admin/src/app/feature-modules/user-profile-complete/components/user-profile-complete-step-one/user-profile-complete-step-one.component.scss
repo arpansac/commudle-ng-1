@@ -64,7 +64,7 @@
 }
 
 .mobile-nav-offset {
-  @apply com-bottom-[58px] md:com-bottom-0 md:com-bg-transparent;
+  @apply com-bottom-[58px] com-px-0 md:com-bottom-0 md:com-bg-transparent;
 }
 
 .domain-input {
