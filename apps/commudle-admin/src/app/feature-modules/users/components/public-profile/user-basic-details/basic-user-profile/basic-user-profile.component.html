@@ -2,16 +2,17 @@
   <app-username></app-username>
   <commudle-basic-info></commudle-basic-info>
   <app-social-links></app-social-links>
-</div>
-<div class="submit-button">
-  <button
-    [disabled]="!userProfileManagerService.userProfileForm.valid"
-    fullWidth
-    nbButton
-    size="medium"
-    status="primary"
-    (click)="updateUserDetails()"
-  >
-    Save
-  </button>
+
+  <div class="submit-button">
+    <button
+      [disabled]="!userProfileManagerService.userProfileForm.valid"
+      fullWidth
+      nbButton
+      size="medium"
+      status="primary"
+      (click)="updateUserDetails()"
+    >
+      Save
+    </button>
+  </div>
 </div>
