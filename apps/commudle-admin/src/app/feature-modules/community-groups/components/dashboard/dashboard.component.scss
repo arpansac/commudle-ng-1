@@ -32,6 +32,10 @@ a {
   .action-button {
     @apply com-p-2 com-pr-3 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer com-text-gray-700;
 
+    &.sub-item {
+      @apply com-pl-9;
+    }
+
     &.active,
     &:hover {
       @apply com-bg-Azure-opacity-10;

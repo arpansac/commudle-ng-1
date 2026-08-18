@@ -1,0 +1,137 @@
+.hackathons-page {
+  @apply com-flex com-flex-col com-gap-4 com-pt-4;
+
+  .page-header {
+    @apply com-flex com-flex-col md:com-flex-row md:com-items-center md:com-justify-between com-gap-3;
+
+    .header-info {
+      @apply com-flex com-flex-col com-gap-0.5;
+
+      .page-title {
+        @apply com-flex com-items-center com-gap-2 com-m-0 com-text-lg com-font-semibold com-text-Yankees-Blue;
+
+        nb-icon {
+          @apply com-text-primary-500;
+        }
+      }
+    }
+  }
+
+  .loading-state,
+  .empty-state {
+    @apply com-flex com-flex-col com-items-center com-justify-center com-py-12 com-text-center;
+  }
+
+  .empty-state {
+    .empty-icon {
+      @apply com-flex com-items-center com-justify-center com-w-14 com-h-14 com-mb-3 com-rounded-full com-bg-gray-100 com-text-gray-400;
+
+      nb-icon {
+        @apply com-text-2xl;
+      }
+    }
+
+    .empty-title {
+      @apply com-m-0 com-mb-1.5 com-text-base com-font-semibold com-text-Yankees-Blue;
+    }
+
+    .empty-desc {
+      @apply com-m-0 com-text-sm com-text-Cadet-Grey;
+    }
+  }
+
+  .hackathons-table-container {
+    @apply com-w-full;
+
+    .table-wrapper {
+      @apply com-overflow-x-scroll com-rounded-lg com-border com-border-solid com-border-Bright-Gray;
+
+      .hackathons-table {
+        @apply com-w-full com-border-collapse com-bg-white;
+
+        .table-header {
+          @apply com-border-0 com-border-solid com-border-b com-border-Bright-Gray;
+
+          th {
+            @apply com-px-3 com-py-2.5 com-text-left com-text-xs com-font-medium com-uppercase com-tracking-wide com-text-Cadet-Grey com-whitespace-nowrap;
+          }
+        }
+
+        .hackathon-row {
+          @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray hover:com-bg-gray-50 com-transition-colors;
+
+          &:last-child {
+            @apply com-border-b-0;
+          }
+
+          td {
+            @apply com-px-3 com-py-2.5 com-align-middle com-text-sm com-text-Cadet-Grey;
+          }
+
+          .stat-cell {
+            @apply com-font-medium com-text-Yankees-Blue com-whitespace-nowrap;
+          }
+
+          .date-cell {
+            @apply com-text-sm com-text-Yankees-Blue com-whitespace-nowrap;
+
+            .date-arrow {
+              @apply com-mx-1 com-text-Cadet-Grey;
+            }
+          }
+
+          .status-cell {
+            .status-badge {
+              @apply com-inline-flex com-px-2 com-py-0.5 com-rounded-full com-text-xs com-font-medium com-bg-gray-100 com-text-Yankees-Blue;
+
+              &.completed {
+                @apply com-bg-green-100 com-text-green-700;
+              }
+
+              &.open {
+                @apply com-bg-blue-50 com-text-primary-500;
+              }
+
+              &.draft {
+                @apply com-bg-gray-100 com-text-gray-600;
+              }
+
+              &.canceled {
+                @apply com-bg-red-100 com-text-red-700;
+              }
+            }
+          }
+
+          .hackathon-meta {
+            @apply com-flex com-flex-col com-gap-1 com-min-w-[200px];
+
+            .hackathon-name {
+              @apply com-inline com-text-sm com-font-medium com-text-Yankees-Blue com-no-underline;
+              @apply hover:com-text-primary-500;
+
+              nb-icon {
+                @apply com-text-xs com-text-gray-400 com-inline-flex com-align-middle com-ml-1;
+              }
+            }
+
+            .hackathon-time {
+              @apply com-text-xs com-text-Cadet-Grey;
+            }
+          }
+
+          .hackathon-actions {
+            @apply com-flex com-flex-wrap com-items-center com-gap-1.5;
+
+            nb-icon {
+              @apply com-mr-0.5;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .pagination {
+    @apply com-mt-3;
+  }
+}

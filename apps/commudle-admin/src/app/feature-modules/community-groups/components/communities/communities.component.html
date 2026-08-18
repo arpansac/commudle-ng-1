@@ -28,9 +28,23 @@
   </div>
 
   <!-- Section tabs -->
-  <com-card class="cg-tabs">
-    <com-card-body>
-      <nb-route-tabset [tabs]="tabs"></nb-route-tabset>
-    </com-card-body>
+  <com-card class="tabs-section">
+    <div class="cg-tabs">
+      <nav class="tab-nav">
+        <a
+          *ngFor="let tab of tabs"
+          [routerLink]="[tab.route]"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: tab.route === './' }"
+          class="tab-link"
+        >
+          <fa-icon [icon]="tab.icon"></fa-icon>
+          {{ tab.title }}
+        </a>
+      </nav>
+    </div>
+
+    <!-- Tab content -->
+    <router-outlet></router-outlet>
   </com-card>
 </div>

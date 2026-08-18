@@ -10,6 +10,7 @@ import { MembersListComponent } from 'apps/commudle-admin/src/app/feature-module
 import { ChannelsComponent } from 'apps/commudle-admin/src/app/feature-modules/community-groups/components/communities/channels/channels.component';
 import { EventsComponent } from 'apps/commudle-admin/src/app/feature-modules/community-groups/components/communities/events/events.component';
 import { CommunityComponent } from 'apps/commudle-admin/src/app/feature-modules/community-groups/components/communities/community/community.component';
+import { HackathonsComponent } from 'apps/commudle-admin/src/app/feature-modules/community-groups/components/communities/hackathons/hackathons.component';
 import { CommunityGroupDetailsResolver } from 'apps/commudle-admin/src/app/feature-modules/community-groups/Resolver/community-group-details.resolver';
 import { CommunityGroupsSurveysComponent } from 'apps/commudle-admin/src/app/feature-modules/community-groups/components/community-groups-surveys/community-groups-surveys.component';
 import { CommunityGroupCustomPagesComponent } from 'apps/commudle-admin/src/app/feature-modules/community-groups/components/community-group-custom-pages/community-group-custom-pages.component';
@@ -47,6 +48,10 @@ const routes = [
           {
             path: 'events',
             component: EventsComponent,
+          },
+          {
+            path: 'hackathons',
+            component: HackathonsComponent,
           },
           // {
           //   path: 'channels',

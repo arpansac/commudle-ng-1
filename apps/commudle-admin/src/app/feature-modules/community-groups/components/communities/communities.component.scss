@@ -51,9 +51,31 @@
 
 // ── Section tabs ──
 .cg-tabs {
-  @apply com-overflow-x-auto com-m-0 com-mb-4;
+  @apply com-m-0 com-scrollbar-hide;
 
-  nb-card-body {
-    @apply com-p-4;
+  .tab-nav {
+    @apply com-flex com-gap-0;
+
+    .tab-link {
+      @apply com-flex com-items-center com-gap-2 com-px-5 com-py-3 com-text-sm com-font-semibold com-text-gray-500 com-no-underline com-whitespace-nowrap com-uppercase;
+      @apply com-border-0 com-border-b-2 com-border-solid com-border-transparent com--mb-2px;
+      @apply com-transition-colors com-duration-200;
+
+      fa-icon {
+        @apply com-text-sm;
+      }
+
+      &:hover {
+        @apply com-text-primary-500;
+      }
+
+      &.active {
+        @apply com-text-primary-500 com-border-primary-500;
+      }
+    }
   }
+}
+
+.tabs-section {
+  @apply com-bg-white com-p-4;
 }

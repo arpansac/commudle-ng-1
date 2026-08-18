@@ -27,6 +27,10 @@
             <div class="icon"><nb-icon icon="info-outline"></nb-icon></div>
             <span *ngIf="sidebarExpanded" class="heading">Communities</span>
           </a>
+          <a class="action-button sub-item" [routerLink]="['events']" routerLinkActive="active">
+            <div class="icon"><nb-icon icon="calendar-outline"></nb-icon></div>
+            <span *ngIf="sidebarExpanded" class="heading">Events</span>
+          </a>
           <a class="action-button" [routerLink]="['members']" routerLinkActive="active">
             <div class="icon"><fa-icon [icon]="icons.faUsers"></fa-icon></div>
             <span *ngIf="sidebarExpanded" class="heading">All Members</span>
@@ -88,6 +92,10 @@
           >
             <div class="icon"><nb-icon icon="info-outline"></nb-icon></div>
             <span class="heading">Communities</span>
+          </a>
+          <a class="action-button sub-item" [routerLink]="['events']" routerLinkActive="active">
+            <div class="icon"><nb-icon icon="calendar-outline"></nb-icon></div>
+            <span class="heading">Events</span>
           </a>
           <a class="action-button" [routerLink]="['members']" routerLinkActive="active">
             <div class="icon"><fa-icon [icon]="icons.faUsers"></fa-icon></div>
