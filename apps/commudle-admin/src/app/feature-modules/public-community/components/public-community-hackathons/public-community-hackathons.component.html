@@ -1,4 +1,33 @@
 <div class="community-hackathons">
+  <!-- Empty state when no hackathons -->
+  <nb-card *ngIf="upcomingHackathons?.length === 0 && pastHackathons?.length === 0" class="empty-state">
+    <nb-card-body>
+      <div class="particles">
+        <span class="particle particle-1"></span>
+        <span class="particle particle-2"></span>
+        <span class="particle particle-3"></span>
+        <span class="particle particle-5"></span>
+        <span class="particle particle-6"></span>
+        <span class="particle particle-8"></span>
+      </div>
+
+      <img [src]="staticAssets.hackathon_empty_state_trophy" title="Hackathon" />
+
+      <h3 class="empty-title">No Hackathon Yet</h3>
+      <a
+        *ngIf="isOrganizer"
+        [routerLink]="['/admin', 'communities', community.slug, 'hackathons']"
+        class="create-hackathon-btn"
+        nbButton
+        status="primary"
+        size="small"
+        shape="semi-round"
+      >
+        Create your Hackathon
+      </a>
+    </nb-card-body>
+  </nb-card>
+
   <com-card *ngIf="upcomingHackathons && upcomingHackathons.length > 0" class="hackathon-section-card com-mt-4">
     <com-card-body class="body-container com-p-0 md:com-p-6">
       <section class="upcoming-hackathons-section">

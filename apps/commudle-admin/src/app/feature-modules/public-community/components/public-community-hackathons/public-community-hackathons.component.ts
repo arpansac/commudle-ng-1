@@ -4,6 +4,8 @@ import { environment } from '@commudle/shared-environments';
 import { EDbModels, ICommunity } from '@commudle/shared-models';
 import { removeHtmlTags, SeoService } from '@commudle/shared-services';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
+import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
@@ -25,11 +27,14 @@ export class PublicCommunityHackathonsComponent implements OnInit, OnDestroy {
   schemaForHackathon = [];
   environment = environment;
   pastHackathonsCount = 0;
+  staticAssets = staticAssets;
+  isOrganizer = false;
 
   constructor(
     private hackathonService: HackathonService,
     private activatedRoute: ActivatedRoute,
     private seoService: SeoService,
+    private communitiesService: CommunitiesService,
   ) {}
 
   ngOnInit() {
@@ -37,6 +42,7 @@ export class PublicCommunityHackathonsComponent implements OnInit, OnDestroy {
       this.activatedRoute.parent.data.subscribe((data) => {
         this.community = data.community;
         this.fetchHackathonIndex();
+        this.checkIfOrganizer();
       }),
     );
   }
@@ -48,6 +54,18 @@ export class PublicCommunityHackathonsComponent implements OnInit, OnDestroy {
   fetchHackathonIndex() {
     this.getUpcomingHackathons();
     this.getPastHackathons();
+  }
+
+  checkIfOrganizer() {
+    this.subscriptions.push(
+      this.communitiesService.userManagedCommunities$.subscribe((data: ICommunity[]) => {
+        if (data.find((cSlug) => cSlug.slug === this.community.slug) !== undefined) {
+          this.isOrganizer = true;
+        } else {
+          this.isOrganizer = false;
+        }
+      }),
+    );
   }
 
   getUpcomingHackathons() {
