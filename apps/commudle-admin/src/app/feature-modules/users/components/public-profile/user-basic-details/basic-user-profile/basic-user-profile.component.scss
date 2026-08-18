@@ -1,3 +1,7 @@
 .basic-details-container {
-  @apply com-h-630px;
+  @apply com-flex com-flex-col com-min-h-full;
+}
+
+.submit-button {
+  @apply com-sticky com-bottom-0 com-p-4 com-bg-white;
 }
