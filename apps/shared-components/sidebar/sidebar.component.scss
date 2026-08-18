@@ -1,5 +1,7 @@
-.header {
-  @apply com-h-12 com-sticky com-top-0 com-z-20;
+:host {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .toggle {
@@ -8,14 +10,22 @@
 
 .sidebar {
   transition: 0.3s;
-  @apply com-pt-0 com-z-[100] com-bg-white com-text-black com-overflow-y-auto com-top-[var(--mobile-navbar-offset,52px)];
+  @apply com-pt-0 com-z-[100] com-bg-white com-text-black com-flex com-flex-col;
+  top: var(--mobile-navbar-offset, 52px);
 
   &.hideFullSidebar {
     @apply com-w-0;
   }
+
   &.forWindow {
-    @apply com-fixed md:com-h-[calc(100dvh-52px)] com-h-[calc(100dvh-56px-var(--mobile-navbar-offset,52px))];
+    @apply com-fixed;
+    height: calc(100dvh - 56px - var(--mobile-navbar-offset, 52px));
+
+    @media (min-width: 768px) {
+      height: calc(100dvh - 52px);
+    }
   }
+
   &.notForWindow {
     @apply com-h-full;
   }
@@ -33,25 +43,32 @@
     &.xsmall {
       @apply com-w-[60px];
     }
+
     &.small {
       @apply com-w-40;
     }
+
     &.medium {
       @apply com-w-48;
     }
+
     &.large {
       @apply com-w-52;
     }
+
     &.extraLarge {
       @apply com-w-80;
     }
+
     &.xxl {
       width: 600px;
     }
+
     .header {
       h1 {
         @apply com-flex com-ml-0 com-cursor-pointer;
       }
+
       .toggle {
         @apply com-ml-auto;
       }
@@ -61,6 +78,7 @@
       h1 {
         @apply com-text-base com-justify-start com-py-2;
       }
+
       fa-icon {
         @apply com-text-sm;
       }
@@ -80,7 +98,8 @@
   }
 
   .header {
-    @apply com-bg-white com-text-black com-flex com-items-center com-justify-center com-p-2;
+    @apply com-bg-white com-text-black com-flex com-items-center com-justify-center com-p-2 com-flex-shrink-0;
+
     h1 {
       @apply com-hidden com-text-xl com-m-0 com-flex-1;
     }
@@ -88,6 +107,7 @@
 
   .header-medium {
     @apply com-m-4 com-mb-3 com-p-0;
+
     .toggle {
       fa-icon {
         @apply com-text-sm;
@@ -101,5 +121,13 @@
         @apply com-text-xl;
       }
     }
+  }
+
+  .sidebar-body {
+    @apply com-flex-1 com-min-h-0 com-overflow-y-auto;
+  }
+
+  .sidebar-footer {
+    @apply com-flex-shrink-0;
   }
 }

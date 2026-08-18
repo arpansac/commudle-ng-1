@@ -1,0 +1,214 @@
+:host {
+  display: contents;
+}
+
+.create-community-form,
+.create-community-group-form {
+  @apply com-w-[100dvw] md:com-w-[680px] com-flex com-flex-col;
+  max-height: 90dvh;
+}
+
+// ── Header ────────────────────────────────────────────
+.cf-header {
+  @apply com-flex com-items-start com-justify-between com-gap-4 com-w-full;
+
+  .cf-title {
+    @apply com-text-lg com-font-bold com-text-Yankees-Blue com-m-0 com-leading-tight;
+  }
+
+  .cf-subtitle {
+    @apply com-text-sm com-text-gray-400 com-m-0 com-mt-0.5;
+  }
+}
+
+// ── Body / submitting overlay ────────────────────────
+.cf-body {
+  position: relative;
+}
+
+.cf-submitting-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.85);
+
+  @apply com-flex com-flex-col com-items-center com-justify-center com-gap-3;
+
+  .cf-submitting-label {
+    @apply com-text-sm com-text-Yankees-Blue com-font-medium;
+  }
+}
+
+// ── Form ──────────────────────────────────────────────
+.cf-form {
+  @apply com-flex com-flex-col com-gap-0;
+}
+
+// ── Media: banner + overlapping logo ──────────────────
+.cf-media {
+  @apply com-flex com-flex-col com-mb-2;
+
+  .cf-banner {
+    @apply com-relative com-flex com-items-center com-justify-center com-w-full com-overflow-hidden;
+    @apply com-rounded-xl com-border-2 com-border-dashed com-border-gray-200 com-bg-gray-50;
+    @apply com-cursor-pointer com-transition-colors;
+    @apply hover:com-border-primary-400;
+    aspect-ratio: 4 / 1;
+
+    &.has-image {
+      @apply com-border-solid com-border-transparent com-cursor-default;
+    }
+
+    .cf-banner-img {
+      @apply com-w-full com-h-full com-object-cover;
+    }
+
+    .cf-banner-placeholder {
+      @apply com-flex com-items-center com-gap-2 com-text-sm com-text-gray-400;
+
+      nb-icon {
+        @apply com-text-xl;
+      }
+    }
+
+    .cf-media-actions {
+      @apply com-absolute com-top-2 com-right-2 com-flex com-gap-2;
+    }
+  }
+
+  .cf-logo-row {
+    @apply com-flex com-items-end com-gap-3 com-px-3;
+    margin-top: -2rem;
+
+    .cf-logo {
+      @apply com-relative com-flex com-items-center com-justify-center com-flex-shrink-0;
+      @apply com-w-20 com-h-20 com-rounded-2xl com-overflow-hidden com-cursor-pointer;
+      @apply com-border-4 com-border-solid com-border-white com-bg-gray-100 com-shadow-md;
+      @apply com-transition-colors hover:com-bg-gray-200;
+
+      .cf-logo-img {
+        @apply com-w-full com-h-full com-object-cover;
+      }
+
+      .cf-logo-icon {
+        @apply com-text-2xl com-text-gray-400;
+      }
+    }
+
+    .cf-logo-meta {
+      @apply com-flex com-flex-col com-gap-0.5 com-pb-1;
+    }
+  }
+}
+
+.cf-hidden {
+  @apply com-hidden;
+}
+
+// ── Row ───────────────────────────────────────────────
+.cf-row {
+  @apply com-grid com-grid-cols-1 com-gap-4 com-mb-2;
+
+  @screen md {
+    @apply com-grid-cols-2;
+  }
+}
+
+// ── Field ─────────────────────────────────────────────
+.cf-field {
+  @apply com-flex com-flex-col com-gap-1 com-mb-4;
+}
+
+.cf-label {
+  @apply com-text-sm com-font-semibold com-text-gray-700 com-flex com-items-center com-gap-1.5;
+}
+
+.cf-required {
+  @apply com-text-red-500;
+}
+
+.cf-hint {
+  @apply com-text-xs com-text-gray-400 com-font-normal;
+}
+
+// ── Slug preview ──────────────────────────────────────
+.cf-slug-preview {
+  @apply com-text-xs com-text-gray-500 com-m-0 com-mt-1 com-font-mono;
+
+  strong {
+    @apply com-text-primary-600;
+  }
+}
+
+// ── Social labels ─────────────────────────────────────
+.cf-social-label {
+  @apply com-flex com-flex-row com-items-center com-gap-2;
+}
+
+.cf-social-icon {
+  @apply com-text-base com-flex-shrink-0;
+}
+
+.cf-facebook {
+  @apply com-text-blue-600;
+}
+.cf-twitter {
+  @apply com-text-sky-500;
+}
+.cf-linkedin {
+  @apply com-text-blue-700;
+}
+.cf-instagram {
+  @apply com-text-pink-500;
+}
+
+// ── Footer ────────────────────────────────────────────
+.cf-footer {
+  @apply com-flex com-justify-end com-items-center com-gap-3 com-w-full;
+
+  .cf-spinning {
+    @apply com-animate-spin;
+  }
+}
+
+.cf-success {
+  @apply com-relative com-flex com-flex-col com-items-center com-text-center com-gap-3 com-py-8 com-px-6;
+
+  .cf-success-header {
+    @apply com-absolute com-top-3 com-right-3;
+  }
+
+  .cf-success-icon {
+    @apply com-flex com-items-center com-justify-center com-w-16 com-h-16 com-rounded-full com-bg-green-50;
+
+    nb-icon {
+      @apply com-text-4xl com-text-Caribbean-Green;
+    }
+  }
+
+  .cf-success-title {
+    @apply com-text-xl com-font-bold com-text-Yankees-Blue com-m-0;
+  }
+
+  .cf-success-subtitle {
+    @apply com-text-sm com-text-gray-500 com-m-0 com-max-w-md;
+  }
+
+  .cf-success-actions {
+    @apply com-flex com-flex-col com-w-full com-gap-2 com-mt-3;
+    @apply sm:com-flex-row sm:com-justify-center;
+
+    button {
+      nb-icon {
+        @apply com-mr-1;
+      }
+    }
+  }
+
+  .cf-success-secondary {
+    @apply com-flex com-items-center com-justify-center com-gap-2 com-mt-2;
+  }
+}

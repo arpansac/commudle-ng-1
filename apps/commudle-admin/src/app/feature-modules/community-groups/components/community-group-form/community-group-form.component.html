@@ -11,128 +11,141 @@
           <h1>Edit {{ communityGroup.name }}</h1>
         </nb-card-body>
       </nb-card>
+
       <nb-card class="form">
         <nb-card-body>
-          <form
-            (ngSubmit)="createOrUpdateCommunityGroup()"
-            [formGroup]="communityGroupForm"
-            class="community-edit-details-form"
-          >
-            <div>
-              <div role="group">
-                <div>
-                  <label>
-                    Name*
-                    <input formControlName="name" fullWidth nbInput type="text" />
-                  </label>
-                </div>
-                <label class="clickable">
-                  <span> <a nbButton outline status="primary">Change Theme Color</a> </span>
-                  <input
-                    (input)="updateThemeColor($event)"
-                    class="com-h-0 !com-w-0 !com-p-0 -com-z-10 com-relative"
-                    formControlName="theme_color"
-                    id="colorPicker"
-                    type="color"
-                  />
-                </label>
+          <form (ngSubmit)="createOrUpdateCommunityGroup()" [formGroup]="communityGroupForm" class="cf-form">
+            <!-- Media: theme-color banner with overlapping logo -->
 
-                <div [style.background-color]="themeColor" class="logo" id="logo">
-                  <div *ngIf="uploadedLogoImage || (communityGroup && communityGroup.logo)" class="uploaded-logo">
-                    <img
-                      alt="Profile Picture"
-                      src="{{ uploadedLogoImage || communityGroup.logo.url }}"
-                      title="Profile Picture"
-                    />
-                  </div>
-                  <div class="delete-logo-button">
-                    <button
-                      (click)="removeLogo()"
-                      *ngIf="uploadedLogoImage || (communityGroup && communityGroup.logo)"
-                      nbButton
-                      size="tiny"
-                      status="danger"
-                    >
-                      <nb-icon icon="close-circle"></nb-icon>
-                      Remove Logo
-                    </button>
-                  </div>
-                  <label
-                    [ngClass]="{
-                      hidden: uploadedLogoImage || (communityGroup && communityGroup.logo && communityGroup.logo.url)
-                    }"
-                    class="clickable"
-                  >
-                    <span>
-                      <span>
-                        <nb-icon icon="image-outline"></nb-icon>
-                      </span>
-                      <span> Click to upload a Logo image </span>
-                    </span>
+            <div class="cf-media">
+              <!-- Theme-color banner with the colour picker overlaid on it -->
+              <div class="cf-banner cf-banner-theme has-image" [style.background-color]="themeColor">
+                <div class="cf-media-actions cf-theme-picker">
+                  <label class="cf-theme-swatch">
                     <input
-                      (change)="displaySelectedLogo($event)"
-                      accept="image/*"
-                      formControlName="logo"
-                      fullWidth
-                      nbInput
-                      type="file"
+                      type="color"
+                      formControlName="theme_color"
+                      (input)="updateThemeColor($event)"
+                      class="cf-color-input"
                     />
+                    <nb-icon icon="color-palette-outline"></nb-icon>
                   </label>
+                  <span class="cf-color-value">{{ themeColor }}</span>
                 </div>
+              </div>
 
-                <div>
-                  <label>
-                    Tagline (describe in max 160 characters)*
-                    <textarea formControlName="mini_description" fullWidth nbInput rows="2"></textarea>
-                  </label>
+              <!-- Logo overlapping banner -->
+              <div class="cf-logo-row">
+                <div
+                  class="cf-logo"
+                  [class.has-image]="uploadedLogoImage || communityGroup?.logo?.url"
+                  (click)="logoInput.click()"
+                >
+                  <img
+                    *ngIf="uploadedLogoImage || communityGroup?.logo?.url"
+                    [src]="uploadedLogoImage || communityGroup?.logo?.url"
+                    alt="Logo"
+                    class="cf-logo-img"
+                  />
+                  <nb-icon
+                    *ngIf="!(uploadedLogoImage || communityGroup?.logo?.url)"
+                    icon="camera"
+                    class="cf-logo-icon"
+                  ></nb-icon>
+                  <input
+                    #logoInput
+                    type="file"
+                    accept="image/png,image/jpg,image/jpeg"
+                    class="cf-hidden"
+                    (change)="displaySelectedLogo($event)"
+                  />
                 </div>
-
-                <div>
-                  <label>
-                    Website
-                    <input formControlName="website" fullWidth nbInput type="url" />
-                  </label>
+                <div class="cf-logo-meta">
+                  <span class="cf-label">Organization Logo <span class="cf-required">*</span></span>
+                  <span class="cf-hint">PNG or JPG · max 2MB</span>
+                  <button
+                    *ngIf="uploadedLogoImage || communityGroup?.logo?.url"
+                    nbButton
+                    status="danger"
+                    ghost
+                    size="tiny"
+                    type="button"
+                    (click)="removeLogo()"
+                  >
+                    <nb-icon icon="trash-2-outline"></nb-icon> Remove
+                  </button>
                 </div>
-
-                <div>
-                  <label>
-                    Facebook
-                    <input formControlName="facebook" fullWidth nbInput type="url" />
-                  </label>
-                </div>
-                <div>
-                  <label>
-                    Twitter
-                    <input formControlName="twitter" fullWidth nbInput type="url" />
-                  </label>
-                </div>
-                <div>
-                  <label>
-                    Github
-                    <input formControlName="github" fullWidth nbInput type="url" />
-                  </label>
-                </div>
-                <div>
-                  <label>
-                    Linkedin
-                    <input formControlName="linkedin" fullWidth nbInput type="url" />
-                  </label>
-                </div>
-
-                <label> About* </label>
-                <editor [init]="tinyMCE" formControlName="description"></editor>
               </div>
             </div>
 
-            <div>
+            <!-- Basic Info -->
+            <div class="cf-field">
+              <label class="cf-label">Organization Name <span class="cf-required">*</span></label>
+              <input nbInput fullWidth formControlName="name" type="text" placeholder="e.g. Google Developer Groups" />
+            </div>
+
+            <div class="cf-field">
+              <label class="cf-label">Tagline <span class="cf-required">*</span></label>
+              <textarea
+                nbInput
+                fullWidth
+                formControlName="mini_description"
+                rows="2"
+                placeholder="A short one-liner about your organization"
+              ></textarea>
+            </div>
+
+            <div class="cf-field">
+              <label class="cf-label">Website</label>
+              <input nbInput fullWidth formControlName="website" type="url" placeholder="https://yourorg.com" />
+            </div>
+
+            <div class="cf-field">
+              <label class="cf-label">About <span class="cf-required">*</span></label>
+              <editor [init]="tinyMCE" formControlName="description"></editor>
+            </div>
+
+            <!-- Social Links -->
+
+            <div class="cf-row">
+              <div class="cf-field">
+                <label class="cf-label cf-social-label">
+                  <nb-icon icon="facebook" class="cf-social-icon cf-facebook"></nb-icon> Facebook
+                </label>
+                <input nbInput fullWidth formControlName="facebook" type="url" placeholder="https://facebook.com/..." />
+              </div>
+              <div class="cf-field">
+                <label class="cf-label cf-social-label">
+                  <nb-icon icon="twitter" class="cf-social-icon cf-twitter"></nb-icon> Twitter / X
+                </label>
+                <input nbInput fullWidth formControlName="twitter" type="url" placeholder="https://twitter.com/..." />
+              </div>
+            </div>
+
+            <div class="cf-row">
+              <div class="cf-field">
+                <label class="cf-label cf-social-label">
+                  <nb-icon icon="github" class="cf-social-icon"></nb-icon> GitHub
+                </label>
+                <input nbInput fullWidth formControlName="github" type="url" placeholder="https://github.com/..." />
+              </div>
+              <div class="cf-field">
+                <label class="cf-label cf-social-label">
+                  <nb-icon icon="linkedin" class="cf-social-icon cf-linkedin"></nb-icon> LinkedIn
+                </label>
+                <input nbInput fullWidth formControlName="linkedin" type="url" placeholder="https://linkedin.com/..." />
+              </div>
+            </div>
+
+            <div class="cf-footer">
               <button
                 [disabled]="!communityGroupForm.valid || (communityGroup && !communityGroup.logo && !uploadedLogoImage)"
-                fullWidth
                 nbButton
                 status="primary"
+                shape="semi-round"
                 type="submit"
               >
-                Save
+                Save Changes
               </button>
             </div>
           </form>

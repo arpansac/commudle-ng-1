@@ -21,10 +21,10 @@ import { Subject, forkJoin, takeUntil } from 'rxjs';
 import { NotificationsStore } from '../../feature-modules/notifications/store/notifications.store';
 
 @Component({
-    selector: 'app-sidebar-menu',
-    templateUrl: './sidebar-menu.component.html',
-    styleUrls: ['./sidebar-menu.component.scss'],
-    standalone: false
+  selector: 'app-sidebar-menu',
+  templateUrl: './sidebar-menu.component.html',
+  styleUrls: ['./sidebar-menu.component.scss'],
+  standalone: false,
 })
 export class SidebarMenuComponent implements OnInit, OnDestroy {
   faSuitcase = faSuitcase;
@@ -46,6 +46,7 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
   isFeaturedItemsAdmin = false;
   isAdCampaignAdmin = false;
   isNewsletterAdmin = false;
+  isFinanceAdmin = false;
 
   // Store notification counts to avoid repeated subscriptions
   communityNotificationCounts: { [key: string]: number } = {};
@@ -117,6 +118,9 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
         }
         if (currentUser.user_roles.includes(EUserRoles.NEWSLETTER)) {
           this.isNewsletterAdmin = true;
+        }
+        if (currentUser.user_roles.includes(EUserRoles.FINANCE_ADMIN)) {
+          this.isFinanceAdmin = true;
         }
       }
     });

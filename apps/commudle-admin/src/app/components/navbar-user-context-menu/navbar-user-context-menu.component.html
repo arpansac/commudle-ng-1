@@ -31,11 +31,20 @@
     <div class="section">
       <h2 class="section-title">ACCOUNT</h2>
       <ul class="menu-list">
+        <li [routerLink]="['/dashboard']" class="menu-item">
+          Dashboard
+          <app-badge
+            [color]="'com-bg-primary-500'"
+            [fontSize]="'xx-small'"
+            [text]="'New'"
+            [borderRadius]="'semi-round'"
+          ></app-badge>
+        </li>
         <li [routerLink]="['/builds/my-builds']" class="menu-item">My Builds</li>
         <li [routerLink]="['/labs/my-labs']" class="menu-item">My Labs</li>
         <li [routerLink]="['/jobs/my-applications']" class="menu-item">Job Applications</li>
-        <li [routerLink]="['/dashboard']" class="menu-item">
-          Dashboard
+        <li [routerLink]="['/subscriptions']" class="menu-item">
+          My Subscriptions
           <app-badge
             [color]="'com-bg-primary-500'"
             [fontSize]="'xx-small'"

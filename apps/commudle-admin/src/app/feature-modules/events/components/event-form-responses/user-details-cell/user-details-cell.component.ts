@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { faGithub, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faInfo, faEnvelope, faStickyNote, faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
-import { NbDialogService, NbWindowService } from '@commudle/theme';
+import { NbDialogService } from '@commudle/theme';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
 import { DataFormEntityResponseGroupsService } from 'apps/commudle-admin/src/app/services/data-form-entity-response-groups.service';
 import { EventEntryPassesService } from 'apps/commudle-admin/src/app/services/event-entry-passes.service';
@@ -19,10 +19,10 @@ import { NoteService } from '@commudle/shared-services';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
-    selector: 'app-user-details-cell',
-    templateUrl: './user-details-cell.component.html',
-    styleUrls: ['./user-details-cell.component.scss'],
-    standalone: false
+  selector: 'app-user-details-cell',
+  templateUrl: './user-details-cell.component.html',
+  styleUrls: ['./user-details-cell.component.scss'],
+  standalone: false,
 })
 export class UserDetailsCellComponent implements OnInit, OnChanges {
   faGithub = faGithub;
@@ -64,8 +64,7 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
     private dataFormEntityResponseGroupsService: DataFormEntityResponseGroupsService,
     private toastLogService: LibToastLogService,
     private eventEntryPassesService: EventEntryPassesService,
-    private windowService: NbWindowService,
-    private nbDialogService: NbDialogService,
+    private dialogService: NbDialogService,
     private noteService: NoteService,
     private fb: FormBuilder,
   ) {
@@ -117,45 +116,51 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
   }
 
   openGeneralEmailWindow() {
-    this.windowService.open(EmailerComponent, {
-      title: `Send Email To ${this.user.name}`,
+    this.dialogService.open(EmailerComponent, {
       context: {
         community: this.community,
         mailType: EemailTypes.GENERAL_ALL,
         recipientUsername: this.user.username,
+        title: `Send Email To ${this.user.name}`,
       },
+      closeOnBackdropClick: false,
+      dialogClass: 'emailer-dialog',
     });
   }
 
   openRSVPEmailWindow() {
-    this.windowService.open(EmailerComponent, {
-      title: `Send RSVP To ${this.user.name}`,
+    this.dialogService.open(EmailerComponent, {
       context: {
         community: this.community,
         event: this.event,
         eventDataFormEntityGroupId: this.eventDataFormEntityGroupId,
         mailType: EemailTypes.RSVP,
         recipientUsername: this.user.username,
+        title: `Send RSVP To ${this.user.name}`,
       },
+      closeOnBackdropClick: false,
+      dialogClass: 'emailer-dialog',
     });
   }
 
   openEntryPassEmailWindow() {
-    this.windowService.open(EmailerComponent, {
-      title: `Send Entry Pass To ${this.user.name}`,
+    this.dialogService.open(EmailerComponent, {
       context: {
         community: this.community,
         event: this.event,
         eventDataFormEntityGroupId: this.eventDataFormEntityGroupId,
         mailType: EemailTypes.ENTRY_PASS,
         recipientUsername: this.user.username,
+        title: `Send Entry Pass To ${this.user.name}`,
       },
+      closeOnBackdropClick: false,
+      dialogClass: 'emailer-dialog',
     });
   }
 
   openConfirmationDialogBox(registrationStatusId) {
     if (registrationStatusId !== 4 && this.userResponse.entry_pass) {
-      this.nbDialogService.open(this.confirmDeleteEntryPassDialog, {
+      this.dialogService.open(this.confirmDeleteEntryPassDialog, {
         context: {
           registrationStatusId: registrationStatusId,
         },
@@ -166,7 +171,7 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
   }
 
   openNotesDialogBox(dfergId) {
-    this.nbDialogService.open(this.notesListDialogBox, {
+    this.dialogService.open(this.notesListDialogBox, {
       context: {
         dfergId: dfergId,
       },
@@ -197,7 +202,7 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
   }
 
   openDeleteNoteConfirmation(noteId: number, index: number) {
-    this.nbDialogService.open(this.confirmDeleteNoteDialog, {
+    this.dialogService.open(this.confirmDeleteNoteDialog, {
       context: {
         noteId: noteId,
         index: index,
@@ -215,7 +220,7 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
   }
 
   openResponseDialogBox(viewResponse) {
-    this.nbDialogService.open(viewResponse);
+    this.dialogService.open(viewResponse);
   }
 
   closeActionBottomSheet() {

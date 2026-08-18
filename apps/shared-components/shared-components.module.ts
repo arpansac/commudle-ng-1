@@ -17,6 +17,7 @@ import {
   NbCardModule,
   NbCheckboxModule,
   NbContextMenuModule,
+  NbDialogModule,
   NbFormFieldModule,
   NbIconModule,
   NbInputModule,
@@ -43,6 +44,8 @@ import { AlertComponent } from './alert/alert.component';
 import { BadgeComponent } from './badge/badge.component';
 import { BannerImageComponent } from './banner-image/banner-image.component';
 import { CommunityBadgeComponent } from './community-badge/community-badge.component';
+import { CommunityGroupBadgeComponent } from './community-group-badge/community-group-badge.component';
+import { SubscriptionPlanBadgeComponent } from './subscription-plan-badge/subscription-plan-badge.component';
 import { CookieConsentComponent } from './cookie-consent/cookie-consent.component';
 import { DataFormFillComponent } from './data-form-fill/data-form-fill.component';
 import { DiscussionPersonalChatComponent } from './discussion-personal-chat/discussion-personal-chat.component';
@@ -111,6 +114,7 @@ import { CommudleCardModule } from '@commudle/commudle-theme';
     WorkInProgressComponent,
     UserProfileHorizontalComponent,
     CommunityBadgeComponent,
+    CommunityGroupBadgeComponent,
     VideoStreamComponent,
     PollsComponent,
     PollCreateFormComponent,
@@ -167,6 +171,7 @@ import { CommudleCardModule } from '@commudle/commudle-theme';
     CampaignStatsComponent,
     ProductPriceDetailsComponent,
     BottomSheetComponent,
+    SubscriptionPlanBadgeComponent,
   ],
   imports: [
     CommonModule,
@@ -210,6 +215,7 @@ import { CommudleCardModule } from '@commudle/commudle-theme';
     NbToggleModule,
     NbContextMenuModule,
     NbSpinnerModule,
+    NbDialogModule.forChild(),
     NbAutocompleteModule,
     //cdk
     DragDropModule,
@@ -224,6 +230,7 @@ import { CommudleCardModule } from '@commudle/commudle-theme';
     UserProfileHorizontalComponent,
     BadgeComponent,
     CommunityBadgeComponent,
+    CommunityGroupBadgeComponent,
     VideoStreamComponent,
     PollsComponent,
     PollResultComponent,
@@ -268,6 +275,7 @@ import { CommudleCardModule } from '@commudle/commudle-theme';
     CampaignStatsComponent,
     ProductPriceDetailsComponent,
     BottomSheetComponent,
+    SubscriptionPlanBadgeComponent,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })

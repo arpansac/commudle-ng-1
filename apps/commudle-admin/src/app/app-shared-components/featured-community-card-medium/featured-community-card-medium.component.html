@@ -3,9 +3,18 @@
     <div class="banner">
       <div *ngIf="community.banner_image" class="banner-image">
         <commudle-banner-image
+          *appBreakpoints="'>md'"
           [headerImagePath]="community.banner_image?.i320"
           [name]="community.name"
           [aspectRatio]="'6/1'"
+          [bottomRightCurve]="false"
+          [bottomLeftCurve]="false"
+        ></commudle-banner-image>
+        <commudle-banner-image
+          *appBreakpoints="'<=md'"
+          [headerImagePath]="community.banner_image?.i320"
+          [name]="community.name"
+          [aspectRatio]="'5/1'"
           [bottomRightCurve]="false"
           [bottomLeftCurve]="false"
         ></commudle-banner-image>
@@ -35,11 +44,20 @@
       </div>
       <div class="featured-community-tags">
         <app-tag
+          *appBreakpoints="'>md'"
           [tags]="getTagNames(community)"
           [backgroundColor]="'com-bg-Azure-opacity-10'"
           [size]="'tiny'"
           [fontColor]="'com-text-Dark-Jungle-Green'"
           [maximumTag]="5"
+        ></app-tag>
+        <app-tag
+          *appBreakpoints="'<=md'"
+          [tags]="getTagNames(community)"
+          [backgroundColor]="'com-bg-Azure-opacity-10'"
+          [size]="'tiny'"
+          [fontColor]="'com-text-Dark-Jungle-Green'"
+          [maximumTag]="2"
         ></app-tag>
       </div>
     </div>

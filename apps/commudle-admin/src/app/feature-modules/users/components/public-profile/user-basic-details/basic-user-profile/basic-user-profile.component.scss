@@ -2,10 +2,6 @@
   @apply com-flex com-flex-col com-min-h-full;
 }
 
-.scrollable-body {
-  @apply com-flex-1;
-}
-
 .submit-button {
-  @apply com-flex-shrink-0 com-mt-4 com-p-4 md:com-p-0 com-bg-white md:com-bg-transparent com-border-t com-border-solid com-border-gray-200 md:com-border-0 com-sticky com-bottom-0;
+  @apply com-sticky com-bottom-0 com-p-4 com-bg-white;
 }

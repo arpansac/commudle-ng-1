@@ -13,6 +13,11 @@ export interface IDiscountCode {
   user: IUser;
   min_users_count: number;
   max_users_count: number;
+  /**
+   * Per-user usage cap. `null` / `0` = unlimited (lifetime — applies to first purchase
+   * and every renewal / add-on). `N` = up to N paid POs by the same user can use it.
+   */
+  max_redemptions?: number | null;
   discount_applied_count: number;
   discount_used_count: number;
   object_type: EDbModels;

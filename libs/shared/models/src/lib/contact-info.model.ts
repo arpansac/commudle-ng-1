@@ -19,8 +19,17 @@ export interface Address {
   address: string;
   pin_code: string;
   company_name: string;
+  /** State / region — required when the billing country is India, empty otherwise. */
+  state?: string;
+  /** Billing contact person's full name — collected in the checkout billing form. */
+  contact_person_name?: string;
+  /** Billing contact email — collected in the checkout billing form. */
+  contact_email?: string;
+  /** Billing contact phone — collected in the checkout billing form. */
+  contact_phone?: string;
 }
 
 export interface TaxInfo {
   gst: string;
+  pan_card: string;
 }

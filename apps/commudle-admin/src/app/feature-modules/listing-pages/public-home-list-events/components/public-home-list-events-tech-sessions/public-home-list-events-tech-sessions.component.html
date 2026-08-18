@@ -10,7 +10,7 @@
       <h4 class="sub-heading">All the knowledge from event sessions</h4>
     </div>
     <app-skeleton-cards *ngIf="showSkeletonCard" [cards]="4" [ImageShapeCircle]="false"></app-skeleton-cards>
-    <div class="tech-sessions custom-scrollbar">
+    <div class="tech-sessions com-scrollbar-hide">
       <div *ngFor="let session of techSessions" class="tech-sessions-card">
         <div *appBreakpoints="'>lg'">
           <commudle-tech-sessions-card [session]="session"></commudle-tech-sessions-card>

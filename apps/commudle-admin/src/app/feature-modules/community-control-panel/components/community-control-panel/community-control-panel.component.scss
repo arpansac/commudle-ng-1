@@ -105,7 +105,7 @@
 }
 
 .sidebar {
-  @apply com-sticky com-top-[132px] com-h-[calc(100vh-148px)];
+  @apply com-sticky com-top-[112px] com-h-[calc(100vh-60px-52px)] com-flex com-flex-col com-overflow-hidden;
 
   a {
     @apply com-text-inherit com-no-underline;
@@ -213,4 +213,24 @@ a {
 
 nb-badge {
   @apply md:com-top-[10px] com-top-[-8px] #{!important};
+}
+
+.community-identity {
+  @apply com-flex com-items-center com-gap-2 com-p-3 com-bg-white com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+
+  .community-logo {
+    @apply com-h-12 com-w-12 com-flex-shrink-0 com-overflow-hidden com-rounded-md;
+
+    img {
+      @apply com-h-full com-w-full com-object-contain;
+    }
+  }
+
+  .community-info {
+    @apply com-flex com-flex-col com-gap-0 com-overflow-hidden;
+
+    .community-name {
+      @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-truncate;
+    }
+  }
 }

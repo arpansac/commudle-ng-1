@@ -39,9 +39,28 @@ export class PurchaseOrderService {
     });
   }
 
+  /**
+   * Updates the buyer's contact info for a PO that already has one saved.
+   * `createContactInfo` can only run once (unique parent_id/parent_type on
+   * ContactInfo) — any edits made after the first save (e.g. adding a GSTIN)
+   * must go through this instead, or they're silently dropped on Pay.
+   */
+  updateContactInfo(purchaseOrderUuid: string, formData): Observable<IContactInfo> {
+    return this.http.put<IContactInfo>(this.baseApiService.getRoute(API_ROUTES.PURCHASE_ORDER.UPDATE_CONTACT_INFO), {
+      contact_info: formData,
+      purchase_order_uuid: purchaseOrderUuid,
+    });
+  }
+
   updatePurchaseOrder(
     purchaseOrderUuid: string,
-    data: { quantity?: number; subscription_months?: number; discount_code?: string },
+    data: {
+      quantity?: number;
+      subscription_months?: number;
+      discount_code?: string;
+      country_code?: string;
+      state?: string;
+    },
   ): Observable<IPurchaseOrder> {
     return this.http.put<IPurchaseOrder>(this.baseApiService.getRoute(API_ROUTES.PURCHASE_ORDER.UPDATE), {
       purchase_order_uuid: purchaseOrderUuid,
@@ -49,10 +68,38 @@ export class PurchaseOrderService {
     });
   }
 
+  /**
+   * Owner-only: marks a high-value PO as awaiting bank transfer and notifies
+   * sys admins. Should only be called when totalPrice >= BANK_TRANSFER_THRESHOLD.
+   * Contact info must be saved before calling this.
+   */
+  requestInvoice(purchaseOrderUuid: string): Observable<IPurchaseOrder> {
+    const params = new HttpParams().set('purchase_order_uuid', purchaseOrderUuid);
+    return this.http.post<IPurchaseOrder>(
+      this.baseApiService.getRoute(API_ROUTES.PURCHASE_ORDER.REQUEST_INVOICE),
+      {},
+      { params },
+    );
+  }
+
   markPaidForFullyDiscounted(purchaseOrderUuid: string): Observable<IPurchaseOrder> {
     return this.http.put<IPurchaseOrder>(
       this.baseApiService.getRoute(API_ROUTES.PURCHASE_ORDER.MARK_PAID_FOR_FULLY_DISCOUNTED),
       { purchase_order_uuid: purchaseOrderUuid },
+    );
+  }
+
+  /**
+   * Owner-only self-service: enqueue an invoice email for the given paid PO.
+   * The backend uses the buyer's contact_info email (or user email) as the
+   * recipient — no need to pass one from the client.
+   */
+  sendInvoice(purchaseOrderUuid: string): Observable<{ queued: boolean; invoice_number: string; sent_to: string }> {
+    const params = new HttpParams().set('purchase_order_uuid', purchaseOrderUuid);
+    return this.http.post<{ queued: boolean; invoice_number: string; sent_to: string }>(
+      this.baseApiService.getRoute(API_ROUTES.PURCHASE_ORDER.SEND_INVOICE),
+      {},
+      { params },
     );
   }
 }

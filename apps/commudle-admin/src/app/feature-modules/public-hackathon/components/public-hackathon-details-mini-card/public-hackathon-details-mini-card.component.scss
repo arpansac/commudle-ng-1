@@ -90,7 +90,7 @@
         @apply com-flex com-items-center com-gap-1;
 
         .dot {
-          @apply com-text-lg;
+          @apply com-pl-2 com-text-lg;
         }
       }
 
@@ -154,6 +154,10 @@
         @apply com-text-xs com-text-blue-500;
       }
 
+      a {
+        @apply com-no-underline com-bg-gray-50 com-text-Yankees-Blue;
+      }
+
       &.completed-chip {
         @apply com-bg-gray-100 com-text-gray-600;
 
@@ -169,6 +173,36 @@
           @apply com-w-2 com-h-2 com-rounded-full com-bg-green-500;
           animation: pulse-dot 2s ease-in-out infinite;
         }
+      }
+    }
+  }
+
+  .chip-location {
+    @apply com-flex com-items-start com-gap-1 com-px-3 com-py-1 com-rounded-full com-text-sm com-font-medium;
+    @apply com-bg-gray-50 com-text-Yankees-Blue;
+
+    fa-icon {
+      @apply com-text-xs com-text-blue-500 com-mt-2px;
+    }
+
+    a {
+      @apply com-no-underline com-bg-gray-50 com-text-Yankees-Blue;
+    }
+
+    &.completed-chip {
+      @apply com-bg-gray-100 com-text-gray-600;
+
+      fa-icon {
+        @apply com-text-gray-500;
+      }
+    }
+
+    &.live-chip {
+      @apply com-bg-green-50 com-text-green-500 com-border com-border-solid com-border-green-200;
+
+      .badge-dot {
+        @apply com-w-2 com-h-2 com-rounded-full com-bg-green-500;
+        animation: pulse-dot 2s ease-in-out infinite;
       }
     }
   }
@@ -226,7 +260,7 @@
   }
 
   .apply-section {
-    @apply com-px-4 com-pt-3 com-pb-5;
+    @apply com-px-4 com-pt-3 md:com-pb-5 com-pb-0;
   }
 }
 

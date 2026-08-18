@@ -1,0 +1,154 @@
+// ── Trigger wrapper ───────────────────────────────────
+.spb-trigger {
+  @apply com-inline-flex com-items-center com-gap-1.5 com-cursor-pointer;
+}
+
+// ── Pro chip ──────────────────────────────────────────
+.spb-chip {
+  @apply com-inline-flex com-items-center com-cursor-pointer com-select-none;
+  @apply com-text-xs com-font-bold com-text-primary-500;
+  @apply com-transition-colors hover:com-text-primary-600;
+
+  &.spb-chip-inactive {
+    @apply com-text-gray-400 hover:com-text-gray-500;
+  }
+}
+
+// ── Trial chip ────────────────────────────────────────
+.spb-trial-chip {
+  @apply com-inline-flex com-items-center com-select-none;
+  @apply com-text-xs com-font-semibold;
+  @apply com-px-2 com-py-0.5 com-rounded-full;
+  @apply com-bg-orange-100 com-text-orange-600;
+}
+
+// ── Dialog ────────────────────────────────────────────
+.spb-dialog {
+  @apply com-w-[100dvw] sm:com-w-96;
+
+  .spb-dialog-header {
+    @apply com-flex com-items-start com-justify-between com-gap-3 com-w-full;
+
+    .spb-dialog-title-row {
+      @apply com-flex com-items-center com-gap-3;
+
+      .spb-dialog-icon {
+        @apply com-text-2xl com-text-primary-500 com-flex-shrink-0;
+      }
+
+      .spb-dialog-title {
+        @apply com-text-base com-font-bold com-text-Yankees-Blue com-m-0 com-leading-tight;
+      }
+
+      .spb-dialog-product {
+        @apply com-text-xs com-text-gray-400 com-m-0 com-mt-0.5;
+      }
+    }
+  }
+
+  // ── Status row ──────────────────────────────────────
+  .spb-status-row {
+    @apply com-flex com-items-center com-gap-2 com-mb-4;
+
+    .spb-status-pill {
+      @apply com-inline-flex com-items-center com-gap-1.5 com-px-3 com-py-1 com-rounded-full com-text-xs com-font-semibold;
+
+      .spb-status-dot {
+        @apply com-w-1.5 com-h-1.5 com-rounded-full;
+      }
+
+      &.status-active {
+        @apply com-bg-green-100 com-text-green-700;
+        .spb-status-dot {
+          @apply com-bg-green-500;
+        }
+      }
+      &.status-expired {
+        @apply com-bg-yellow-100 com-text-yellow-700;
+        .spb-status-dot {
+          @apply com-bg-yellow-500;
+        }
+      }
+      &.status-cancelled {
+        @apply com-bg-gray-100 com-text-gray-500;
+        .spb-status-dot {
+          @apply com-bg-gray-400;
+        }
+      }
+      &.status-failed {
+        @apply com-bg-red-100 com-text-red-600;
+        .spb-status-dot {
+          @apply com-bg-red-500;
+        }
+      }
+      &.status-pending {
+        @apply com-bg-blue-100 com-text-blue-600;
+        .spb-status-dot {
+          @apply com-bg-blue-500;
+        }
+      }
+      &.status-trial {
+        @apply com-bg-orange-100 com-text-orange-600;
+        .spb-status-dot {
+          @apply com-bg-orange-400;
+        }
+      }
+    }
+
+    .spb-days-chip {
+      @apply com-text-xs com-font-semibold com-bg-primary-100 com-text-primary-700 com-px-2.5 com-py-1 com-rounded-full;
+    }
+  }
+
+  // ── Trial banner (inside card header) ────────────────
+  .spb-trial-banner {
+    @apply com-flex com-items-center com-gap-2 com-mt-3;
+    @apply com-rounded-lg com-px-3 com-py-2;
+    @apply com-bg-orange-50 com-border com-border-orange-200 com-text-orange-700 com-text-xs com-font-medium;
+
+    .spb-trial-banner-icon {
+      @apply com-flex-shrink-0 com-text-orange-500;
+    }
+  }
+
+  // ── Trial inline chip (inside status row) ────────────
+  .spb-trial-inline-chip {
+    @apply com-inline-flex com-items-center;
+    @apply com-text-xs com-font-semibold;
+    @apply com-px-2 com-py-0.5 com-rounded-full;
+    @apply com-bg-orange-100 com-text-orange-600;
+  }
+
+  // ── Info grid ────────────────────────────────────────
+  .spb-info-grid {
+    @apply com-flex com-flex-col com-gap-0 com-rounded-xl com-border com-border-Bright-Gray com-overflow-hidden;
+
+    .spb-info-item {
+      @apply com-flex com-justify-between com-items-center com-px-4 com-py-3;
+      @apply com-border-b com-border-Bright-Gray last:com-border-b-0;
+
+      .spb-info-label {
+        @apply com-text-xs com-text-gray-400 com-uppercase com-tracking-wide com-font-medium;
+      }
+
+      .spb-info-value {
+        @apply com-text-sm com-font-semibold com-text-Yankees-Blue;
+      }
+    }
+  }
+
+  // ── Renew notice ─────────────────────────────────────
+  .spb-renew-notice {
+    @apply com-flex com-items-start com-gap-2 com-mt-4 com-p-3 com-rounded-xl;
+    @apply com-bg-yellow-50 com-text-yellow-800 com-text-xs;
+
+    nb-icon {
+      @apply com-flex-shrink-0 com-text-yellow-500 com-mt-0.5;
+    }
+  }
+
+  // ── Footer ───────────────────────────────────────────
+  .spb-dialog-footer {
+    @apply com-flex com-justify-between com-items-center com-w-full;
+  }
+}

@@ -1,9 +1,8 @@
 <div *ngIf="currentUser" [ngClass]="{ 'page-padding': pagePadding }" class="page-padding basic-details-container">
-  <div class="scrollable-body">
-    <app-username></app-username>
-    <commudle-basic-info></commudle-basic-info>
-    <app-social-links></app-social-links>
-  </div>
+  <app-username></app-username>
+  <commudle-basic-info></commudle-basic-info>
+  <app-social-links></app-social-links>
+
   <div class="submit-button">
     <button
       [disabled]="!userProfileManagerService.userProfileForm.valid"

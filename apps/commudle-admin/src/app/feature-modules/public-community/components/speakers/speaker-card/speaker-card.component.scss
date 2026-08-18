@@ -8,19 +8,27 @@ com-card {
       @apply com-overflow-hidden;
 
       .banner-image {
-        @apply com-h-[96px] com-overflow-hidden com-w-full;
+        @apply com-h-[60px] lg:com-h-[90px] com-overflow-hidden com-w-full;
 
         img {
           @apply com-h-full com-object-cover com-object-center com-w-full;
         }
 
         .upcoming-events {
-          @apply com-absolute com-right-3 com-top-3 com-bg-tWhite com-text-xs com-text-tYankees-Blue com-border-0;
+          @apply com-absolute com-right-2 lg:com-right-3 com-top-2 lg:com-top-3 com-bg-tWhite com-text-[10px] lg:com-text-xs com-text-tYankees-Blue com-border-0;
+        }
+      }
+
+      .no-banner-image {
+        @apply com-h-[60px] lg:com-h-[90px] com-overflow-hidden com-w-full;
+
+        img {
+          @apply com-h-full com-w-full com-object-cover;
         }
       }
 
       .banner {
-        @apply com-grid com-relative;
+        @apply com-relative;
 
         div {
           @apply com-col-start-1 com-row-start-1;
@@ -28,7 +36,7 @@ com-card {
       }
 
       .user-image {
-        @apply com-border-3 com-border-solid com-border-white com-rounded-full com-h-[72px] com-ml-3 com-mt-[60px] com-overflow-hidden com-w-[72px] com-bg-Azureish-White;
+        @apply com-border-2 lg:com-border-3 com-border-solid com-border-white com-rounded-full com-h-12 lg:com-h-[72px] com-ml-2 lg:com-ml-3 com-overflow-hidden com-w-12 lg:com-w-[72px] com-bg-Azureish-White com-absolute com-bottom-0 com-left-0 com-translate-y-1/2;
 
         img {
           @apply com-h-full com-object-cover com-w-full;
@@ -36,14 +44,15 @@ com-card {
       }
 
       .talks-leader {
-        @apply com-flex com-absolute com-right-3 com-top-[92px] com-mt-3 md:com-mb-0 com-mx-0;
+        @apply com-flex com-absolute com-right-2 lg:com-right-3 com-top-[56px] lg:com-top-[90px] com-mt-2 lg:com-mt-3 md:com-mb-0 com-mx-0;
 
         button {
-          @apply com-mr-3 com-text-orange-500 com-border-0 com-bg-orange-50;
+          @apply com-mr-2 lg:com-mr-3 com-text-orange-500 com-border-0 com-bg-orange-50;
         }
       }
+
       .user-details {
-        @apply md:com-mx-3 md:com-mt-3 md:com-mb-3 com-m-4;
+        @apply com-m-2 lg:com-m-4 com-mt-8 lg:com-mt-10 md:com-mx-3 md:com-mb-3;
 
         a {
           @apply com-h-full com-no-underline;
@@ -58,47 +67,49 @@ com-card {
             }
 
             .user-name {
-              @apply com-m-0 com-text-sm com-font-semibold com-text-Yankees-Blue com-flex com-items-center com-gap-1 com-min-w-0 com-line-clamp-1;
+              @apply com-m-0 com-text-xs lg:com-text-sm com-font-semibold com-text-Yankees-Blue com-flex com-items-center com-gap-1 com-min-w-0 com-line-clamp-1;
 
               .user-name-text {
                 @apply com-min-w-0 com-flex-1 com-truncate;
               }
 
               .user-name-badges {
-                @apply com-inline-flex com-items-center com-gap-1 com-flex-shrink-0;
+                @apply com-inline-flex com-items-center com-gap-0.5 lg:com-gap-1 com-flex-shrink-0;
               }
             }
 
             .username {
-              @apply com-text-xs com-font-normal com-text-gray-500 com-m-0 com-mb-1 com-w-full com-truncate;
+              @apply com-text-[10px] lg:com-text-xs com-font-normal com-text-gray-500 com-m-0 com-mb-0.5 lg:com-mb-1 com-w-full com-truncate;
             }
 
             .designation {
-              @apply com-text-xs com-font-normal com-text-gray-500 com-m-0 com-line-clamp-2 com-h-8;
+              @apply com-text-[10px] lg:com-text-xs com-font-normal com-text-gray-500 com-m-0 com-line-clamp-1 lg:com-line-clamp-2 com-h-auto lg:com-h-8;
             }
           }
 
           .count-and-location {
-            @apply com-flex com-items-center com-m-0 com-h-[18px] com-mt-3 com-overflow-hidden;
+            @apply com-flex com-items-center com-m-0 com-h-[16px] lg:com-h-[18px] com-mt-1 lg:com-mt-3 com-overflow-hidden;
+
             .followers-count {
-              @apply com-text-xs com-font-normal com-text-gray-500 com-m-0 com-mr-2 com-flex-shrink-0;
+              @apply com-text-[10px] lg:com-text-xs com-font-normal com-text-gray-500 com-m-0 com-mr-2 com-flex-shrink-0;
             }
 
             .location {
-              @apply com-flex com-text-xs com-font-normal com-flex-shrink-0 com-items-center;
+              @apply com-flex com-text-[10px] lg:com-text-xs com-font-normal com-flex-shrink-0 com-items-center;
 
               nb-icon {
-                @apply com-w-[14px] com-mr-1 com-text-Azure;
+                @apply com-w-[12px] lg:com-w-[14px] com-mr-0.5 lg:com-mr-1 com-text-Azure;
               }
 
               p {
-                @apply com-m-0 com-text-xs com-text-Azure;
+                @apply com-m-0 com-text-[10px] lg:com-text-xs com-text-Azure;
               }
             }
           }
         }
+
         .tags {
-          @apply com-overflow-hidden com-h-8 com-gap-3 com-m-0 com-p-0 com-mt-3 com-flex com-flex-shrink-0;
+          @apply com-overflow-hidden com-h-8 com-gap-2 lg:com-gap-3 com-m-0 com-p-0 com-mt-2 lg:com-mt-3 com-flex com-flex-shrink-0;
 
           ::ng-deep {
             .tag {
@@ -108,7 +119,7 @@ com-card {
         }
 
         .user-follow-button {
-          @apply com-mt-4;
+          @apply com-mt-2 lg:com-mt-4;
         }
       }
     }

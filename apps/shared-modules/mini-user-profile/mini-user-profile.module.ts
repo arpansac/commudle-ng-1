@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NbButtonModule, NbCardModule, NbIconModule, NbTagModule } from '@commudle/theme';
+import { CommudleCardModule } from '@commudle/commudle-theme';
+import { SkeletonScreensModule } from 'apps/commudle-admin/src/app/feature-modules/skeleton-screens/skeleton-screens.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { MiniUserProfileComponent } from './components/mini-user-profile/mini-user-profile.component';
 import { UserProfileCardLargeComponent } from './components/profile-cards/user-profile-card-large/user-profile-card-large.component';
@@ -35,6 +37,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     NbTagModule,
     NbIconModule,
     NbButtonModule,
+    CommudleCardModule,
+    SkeletonScreensModule,
     UserPersonalConnectComponent,
     UserExpertTickComponent,
     FontAwesomeModule,

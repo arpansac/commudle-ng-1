@@ -14,13 +14,14 @@ com-card {
           @apply com-no-underline;
         }
       }
+
       .sub-heading {
         @apply com-text-xs com-font-normal com-text-gray-500 com-m-0;
       }
     }
 
     .user-profile-card-large {
-      @apply com-flex com-flex-nowrap com-overflow-x-auto com-m-0 com-mx-4 com-gap-4 com-items-center lg:com-block lg:com-flex-wrap lg:com-mx-0 lg:com-gap-0;
+      @apply com-flex com-flex-nowrap com-overflow-x-auto com-scrollbar-hide com-m-0 com-mx-4 com-gap-4 com-items-center lg:com-block lg:com-flex-wrap lg:com-mx-0 lg:com-gap-0;
 
       .user-profile-card-large-card {
         @apply com-m-0 com-h-full com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-p-3 lg:com-h-auto lg:com-rounded-none lg:com-border-0 lg:com-border-b lg:com-p-0 lg:com-py-3;

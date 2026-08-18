@@ -88,7 +88,7 @@ inclusion: always
 
 #### Available Color Families
 
-- Primary colors: `primary-100` through `primary-900` (**NEVER use `primary-50`**)
+- Primary colors: `primary-100` through `primary-900` (**NEVER use `primary-50` — it does not exist in the preset**)
 - Gray colors: `gray-50` through `gray-900`
 - Named colors: `Yankees-Blue`, `Bright-Gray`, `Infra-Red`, `Cadet-Grey`
 - Semantic colors: `success`, `warning`, `danger`, `info`
@@ -473,6 +473,9 @@ Always start with mobile styles, then add larger breakpoints:
 
 // ❌ Arbitrary colors
 @apply com-bg-[#ff0000];
+
+// ❌ Non-existent primary shade (primary-50 does not exist)
+@apply com-bg-primary-50; // Use com-bg-primary-100 instead
 
 // ❌ Too much nesting
 .a { .b { .c { .d { } } } }

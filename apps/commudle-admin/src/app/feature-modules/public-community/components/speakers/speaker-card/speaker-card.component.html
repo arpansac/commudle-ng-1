@@ -3,15 +3,29 @@
     <div class="user-card d-flex flex-column justify-content-space-around">
       <a [routerLink]="['/users', speaker.username]" class="clickable">
         <div class="banner">
-          <div class="banner-image">
-            <img
-              alt="{{ speaker.name }} Profile Banner"
-              src="{{ speaker.profile_banner_image?.i906 || '/assets/images/User-Profile-Cover-Default.png' }}"
-              title="{{ speaker.name }} Profile Banner"
-            />
+          <div *ngIf="speaker.profile_banner_image" class="banner-image">
+            <commudle-banner-image
+              *appBreakpoints="'>md'"
+              [headerImagePath]="speaker.profile_banner_image.i906"
+              [name]="speaker.name"
+              [aspectRatio]="'3/1'"
+              [bottomRightCurve]="false"
+              [bottomLeftCurve]="false"
+            ></commudle-banner-image>
+            <commudle-banner-image
+              *appBreakpoints="'<=md'"
+              [headerImagePath]="speaker.profile_banner_image.i906"
+              [name]="speaker.name"
+              [aspectRatio]="'3/1'"
+              [bottomRightCurve]="false"
+              [bottomLeftCurve]="false"
+            ></commudle-banner-image>
             <button *ngIf="speaker.has_upcoming_talk" nbButton shape="rectangle" size="tiny" class="upcoming-events">
               Upcoming Talk
             </button>
+          </div>
+          <div *ngIf="!speaker.profile_banner_image" class="no-banner-image">
+            <img src="/assets/images/User-Profile-Cover-Default.png" alt="Default Banner" />
           </div>
 
           <div class="user-image">

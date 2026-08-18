@@ -18,4 +18,18 @@
 
 ## Testing
 
+- [ ] Light mode
+- [ ] Dark mode
+- [ ] Mobile
+- [ ] Desktop
+- [ ] Logged in
+- [ ] Logged out
+- [ ] No console errors/warnings
+
+## Checklist
+
+- [ ] Self-review performed
+- [ ] No console.log statements
+- [ ] Docs updated (if needed)
+
 ## Bundle Size

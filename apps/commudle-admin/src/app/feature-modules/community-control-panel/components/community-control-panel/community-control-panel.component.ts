@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { NbWindowService } from '@commudle/theme';
+import { NbDialogService } from '@commudle/theme';
 import {
   faRightLeft,
   faCalendarDay,
@@ -35,10 +35,10 @@ import { Subscription } from 'rxjs';
 import { commudleIcons } from 'apps/commudle-admin/src/assets/store/icons-library';
 
 @Component({
-    selector: 'app-community-control-panel',
-    templateUrl: './community-control-panel.component.html',
-    styleUrls: ['./community-control-panel.component.scss'],
-    standalone: false
+  selector: 'app-community-control-panel',
+  templateUrl: './community-control-panel.component.html',
+  styleUrls: ['./community-control-panel.component.scss'],
+  standalone: false,
 })
 export class CommunityControlPanelComponent implements OnInit, OnDestroy {
   community: ICommunity;
@@ -81,7 +81,7 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
   constructor(
     private communitiesService: CommunitiesService,
     private activatedRoute: ActivatedRoute,
-    private windowService: NbWindowService,
+    private dialogService: NbDialogService,
     private seoService: SeoService,
     private notificationsStore: NotificationsStore,
     private gtm: GoogleTagManagerService,
@@ -135,6 +135,7 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
       const communityId = this.activatedRoute.snapshot.params['community_id'];
       this.communitiesService.getCommunityDetails(communityId).subscribe((data) => {
         this.community = data;
+        console.log('🚀 ~ CommunityControlPanelComponent ~ setCommunity ~ this.community:', this.community);
         this.seoService.setTitle(`Admin Dashboard | ${this.community.name}`);
         this.checkOrganizer();
       });
@@ -153,11 +154,13 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
   }
 
   sendEmails() {
-    this.windowService.open(EmailerComponent, {
-      title: `Send Email to All ${this.community.members_count} Members`,
+    this.dialogService.open(EmailerComponent, {
       context: {
+        title: `Send Email to All ${this.community.members_count} Members`,
         community: this.community,
       },
+      closeOnBackdropClick: false,
+      dialogClass: 'emailer-dialog',
     });
   }
 

@@ -5,22 +5,22 @@
     @apply com-no-underline;
 
     .banner {
-      @apply com-grid com-relative com-h-[72px];
+      @apply com-grid com-relative com-h-[56px] lg:com-h-[72px];
 
       div {
         @apply com-col-start-1 com-row-start-1;
       }
 
       .banner-image {
-        @apply com-h-[46px] com-overflow-hidden com-w-full;
+        @apply com-h-[36px] lg:com-h-[46px] com-overflow-hidden com-w-full;
       }
 
       .no-banner-image {
-        @apply com-h-[46px] com-bg-zinc-100;
+        @apply com-h-[36px] lg:com-h-[46px] com-bg-zinc-100;
       }
 
       .community-image {
-        @apply com-border com-border-solid com-border-Bright-Gray com-rounded-full com-h-[52px] com-ml-3 com-mt-[20px] com-overflow-hidden com-w-[52px] com-flex com-absolute com-top-0 com-left-0;
+        @apply com-border com-border-solid com-border-Bright-Gray com-rounded-full com-h-10 lg:com-h-[52px] com-ml-3 com-mt-4 lg:com-mt-[20px] com-overflow-hidden com-w-10 lg:com-w-[52px] com-flex com-absolute com-top-0 com-left-0;
 
         img {
           @apply com-bg-tWhite com-h-auto com-w-full com-object-contain com-object-center;
@@ -29,38 +29,38 @@
     }
 
     .featured-community-about {
-      @apply com-p-3 com-pb-0 com-h-[160px] com-relative;
+      @apply com-p-2 lg:com-p-3 com-pb-0 com-h-[140px] lg:com-h-[160px] com-relative;
 
       .featured-community-name {
-        @apply com-m-0 com-text-sm com-font-medium com-text-Yankees-Blue com-line-clamp-1;
+        @apply com-m-0 com-text-xs lg:com-text-sm com-font-medium com-text-Yankees-Blue com-line-clamp-1;
       }
 
       .featured-community-reason,
       .description {
-        @apply com-mt-2 com-text-xs com-text-gray-500 com-line-clamp-3 com-h-8;
+        @apply com-mt-1 lg:com-mt-2 com-text-[10px] lg:com-text-xs com-text-gray-500 com-line-clamp-1 lg:com-line-clamp-3 com-h-auto lg:com-h-8 com-mb-2 lg:com-mb-3;
       }
 
       .members-events {
-        @apply com-flex com-flex-row com-items-center com-mt-3 com-gap-x-3;
+        @apply com-flex com-flex-row com-flex-wrap com-items-center com-mt-1 lg:com-mt-3 com-gap-x-2 lg:com-gap-x-3;
 
         .members,
         .events-organized {
-          @apply com-flex com-items-center com-text-gray-500 com-m-0;
+          @apply com-flex com-items-center com-text-[10px] lg:com-text-xs com-text-gray-500 com-m-0;
 
           nb-icon {
-            @apply com-h-4 com-w-4 com-mr-1 com-flex-shrink-0;
+            @apply com-h-3 lg:com-h-4 com-w-3 lg:com-w-4 com-mr-2px lg:com-mr-1 com-flex-shrink-0;
           }
 
           p {
-            @apply com-text-xs com-font-medium com-text-Dark-Jungle-Green com-m-0;
+            @apply com-text-[10px] lg:com-text-xs com-font-medium com-text-Dark-Jungle-Green com-m-0;
           }
         }
 
         .events-location {
-          @apply com-flex com-items-start com-text-Azure com-m-0;
+          @apply com-flex com-items-start com-text-Azure com-m-0 com-w-full com-text-[10px] lg:com-text-xs com-mt-1 lg:com-w-auto lg:com-mt-0;
 
           nb-icon {
-            @apply com-h-4 com-w-4 com-mr-1 com-mt-2px com-flex-shrink-0;
+            @apply com-h-3 lg:com-h-4 com-w-3 lg:com-w-4 com-mr-2px lg:com-mr-1 md:com-mt-0 com-mt-1 com-flex-shrink-0;
           }
 
           span {
@@ -70,12 +70,12 @@
       }
 
       .featured-community-tags {
-        @apply com-h-8 com-mx-0 com-my-3 com-flex com-flex-nowrap com-overflow-hidden;
+        @apply com-h-8 com-mx-0 com-my-1 lg:com-my-3 com-flex com-flex-nowrap com-overflow-hidden;
       }
     }
   }
 
   .community-join-btn {
-    @apply com-px-3 com-pb-3;
+    @apply com-px-2 lg:com-px-3 com-pb-2 lg:com-pb-3;
   }
 }

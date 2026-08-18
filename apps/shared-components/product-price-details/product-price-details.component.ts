@@ -3,16 +3,18 @@ import { IProductPrice } from '@commudle/shared-models';
 import { ProductPriceService } from '@commudle/shared-services';
 
 @Component({
-    selector: 'commudle-product-price-details',
-    templateUrl: './product-price-details.component.html',
-    styleUrls: ['./product-price-details.component.scss'],
-    standalone: false
+  selector: 'commudle-product-price-details',
+  templateUrl: './product-price-details.component.html',
+  styleUrls: ['./product-price-details.component.scss'],
+  standalone: false,
 })
 export class ProductPriceDetailsComponent implements OnInit {
   @Input() productPriceId: number;
   @Output() productPriceLoaded = new EventEmitter<IProductPrice>();
+  @Input() withTrial: boolean;
 
   productPrice: IProductPrice;
+
   hasDiscount = false;
   isLoading = true;
 

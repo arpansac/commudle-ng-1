@@ -1,0 +1,432 @@
+.user-subscriptions {
+  @apply com-py-2;
+
+  // ── Empty state ───────────────────────────────────────────
+  .empty-state {
+    @apply com-flex com-flex-col com-items-center com-gap-6 com-py-16 com-text-center;
+
+    .empty-state-icon {
+      @apply com-w-16 com-h-16 com-rounded-2xl com-bg-primary-100 com-flex com-items-center com-justify-center;
+
+      nb-icon {
+        @apply com-text-4xl com-text-primary-500;
+      }
+    }
+
+    .empty-state-content {
+      @apply com-flex com-flex-col com-items-center com-gap-3 com-max-w-sm;
+
+      .empty-state-title {
+        @apply com-text-lg com-font-bold com-text-Yankees-Blue com-m-0;
+      }
+
+      .empty-state-desc {
+        @apply com-text-sm com-text-Cadet-Grey com-m-0 com-leading-relaxed;
+      }
+    }
+  }
+
+  /* ── List ── */
+  .subscriptions-list {
+    @apply com-flex com-flex-col com-gap-3;
+  }
+
+  /* ── Capacity summary card ── */
+  .capacity-card {
+    @apply com-flex com-flex-col com-gap-4 com-p-5 com-rounded-xl;
+    @apply com-bg-primary-100 com-border com-border-solid com-border-primary-200;
+
+    @screen sm {
+      @apply com-flex-row com-items-center com-justify-between com-gap-6;
+    }
+
+    .capacity-info {
+      @apply com-flex com-flex-col com-gap-1 com-min-w-0;
+
+      .capacity-label {
+        @apply com-text-xs com-font-bold com-uppercase com-tracking-wide com-text-primary-600;
+      }
+
+      .capacity-headline {
+        @apply com-text-2xl com-font-extrabold com-text-Yankees-Blue com-leading-tight;
+      }
+
+      .capacity-subtext {
+        @apply com-text-sm com-text-Cadet-Grey com-leading-relaxed;
+
+        strong {
+          @apply com-text-Yankees-Blue com-font-semibold;
+        }
+      }
+    }
+
+    .capacity-cta {
+      @apply com-flex-shrink-0 com-cursor-pointer com-whitespace-nowrap;
+      @apply com-px-4 com-py-2.5 com-rounded-lg com-border-0;
+      @apply com-text-sm com-font-semibold com-text-white com-bg-primary-500;
+      @apply com-transition-colors hover:com-bg-primary-600;
+    }
+  }
+
+  /* ── Cancelled/expired collapsed row ── */
+  .sub-row-cancelled {
+    @apply com-flex com-items-center com-gap-2 com-py-2 com-px-1 com-text-xs com-text-Cadet-Grey;
+
+    .cancelled-icon {
+      nb-icon {
+        @apply com-text-base com-text-Cadet-Grey;
+      }
+    }
+
+    strong {
+      @apply com-text-Yankees-Blue;
+    }
+  }
+
+  /* ── Subscription card ── */
+  .sub-card {
+    @apply com-bg-white com-rounded-xl com-border com-border-solid com-border-Bright-Gray com-overflow-hidden;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+
+    /* Full primary border when the plan still has empty capacity to fill */
+    &.sub-card-highlight {
+      @apply com-border-primary-500;
+    }
+
+    &.sub-card-pending {
+      @apply com-border-yellow-400 com-bg-yellow-50;
+    }
+
+    &.sub-card-failed {
+      @apply com-border-red-400;
+    }
+  }
+
+  /* ── Plan row (header) ── */
+  .plan-row {
+    @apply com-flex com-items-start com-justify-between com-gap-3 com-px-4 com-py-3;
+
+    .plan-row-left {
+      @apply com-flex com-items-start com-gap-3 com-min-w-0;
+
+      .plan-icon {
+        @apply com-w-8 com-h-8 com-rounded-lg com-bg-primary-100 com-flex com-items-center com-justify-center com-flex-shrink-0;
+
+        nb-icon {
+          @apply com-text-sm com-text-primary-600;
+        }
+
+        &.plan-icon-org {
+          @apply com-bg-indigo-100;
+
+          nb-icon {
+            @apply com-text-indigo-600;
+          }
+        }
+      }
+
+      .plan-details {
+        @apply com-flex com-flex-col com-gap-0.5 com-min-w-0;
+
+        .plan-title-line {
+          @apply com-flex com-items-center com-gap-1.5 com-flex-wrap;
+
+          .plan-cycle {
+            @apply com-text-sm com-font-bold com-text-Yankees-Blue;
+          }
+
+          .plan-product {
+            @apply com-text-sm com-text-Yankees-Blue;
+          }
+        }
+
+        .plan-meta-line {
+          @apply com-flex com-items-center com-flex-wrap com-gap-1 com-text-xs com-text-Cadet-Grey;
+
+          .meta-sep {
+            @apply com-text-Bright-Gray;
+          }
+        }
+      }
+    }
+
+    .plan-row-right {
+      @apply com-flex com-items-center com-gap-2 com-flex-shrink-0 com-flex-wrap com-justify-end;
+
+      .status-pill {
+        @apply com-inline-flex com-items-center com-gap-1.5 com-px-2.5 com-py-1 com-rounded-full com-text-xs com-font-semibold;
+
+        .status-dot {
+          @apply com-w-1.5 com-h-1.5 com-rounded-full;
+        }
+
+        &.status-active {
+          @apply com-bg-green-100 com-text-green-700;
+
+          .status-dot {
+            @apply com-bg-green-500;
+          }
+
+          .days-left {
+            @apply com-font-normal;
+          }
+        }
+
+        &.status-pending {
+          @apply com-bg-yellow-100 com-text-yellow-700;
+        }
+
+        &.status-cancel-sched {
+          @apply com-bg-orange-100 com-text-orange-700;
+        }
+
+        &.status-failed {
+          @apply com-bg-red-100 com-text-red-600;
+
+          .status-dot {
+            @apply com-bg-red-500;
+          }
+        }
+        &.status-pending {
+          @apply com-bg-primary-100 com-text-primary-600;
+          .status-dot {
+            @apply com-bg-primary-500;
+          }
+        }
+      }
+
+      .days-chip {
+        @apply com-text-xs com-font-bold com-bg-primary-100 com-text-primary-700 com-px-2.5 com-py-1 com-rounded-full;
+        @apply dark:com-bg-primary-900 dark:com-text-primary-300;
+      }
+
+      .cancel-scheduled-chip {
+        @apply com-text-xs com-font-semibold com-px-2.5 com-py-1 com-rounded-full;
+        @apply com-bg-yellow-100 com-text-yellow-700 dark:com-bg-yellow-900 dark:com-text-yellow-300;
+      }
+
+      .cancel-chip {
+        @apply com-text-xs com-font-medium com-text-Cadet-Grey com-bg-transparent com-border-0 com-cursor-pointer;
+        @apply com-px-2 com-py-1 com-rounded-full com-transition-colors;
+        @apply hover:com-text-red-600 hover:com-bg-red-50 dark:hover:com-bg-red-900;
+      }
+
+      .pay-now-chip {
+        @apply com-flex com-items-center com-gap-1 com-no-underline com-text-xs com-font-semibold com-text-white;
+        @apply com-bg-primary-500 com-px-3 com-py-1.5 com-rounded-full com-transition-colors;
+        @apply hover:com-bg-primary-600;
+
+        nb-icon {
+          @apply com-text-sm;
+        }
+
+        &.action-btn-primary {
+          @apply com-bg-primary-600 com-text-white hover:com-bg-primary-700;
+        }
+      }
+
+      .cancel-link {
+        @apply com-text-xs com-text-Cadet-Grey com-bg-transparent com-border-0 com-cursor-pointer;
+        @apply com-px-2 com-py-1 com-rounded com-transition-colors;
+        @apply hover:com-text-red-500 hover:com-bg-red-50;
+      }
+
+      // Kebab-menu trigger (three-dot button) in the card header
+      .sub-menu-trigger {
+        @apply com-text-Cadet-Grey;
+      }
+    }
+  }
+
+  // ── Resource section (communities / orgs) ─────────────────
+  .resource-section {
+    @apply com-flex com-flex-col com-gap-2 com-px-4 com-pb-4;
+    @apply com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+    padding-top: 0.6rem;
+
+    .resource-header {
+      @apply com-flex com-items-center com-justify-between com-gap-2 com-flex-wrap;
+
+      .resource-label {
+        @apply com-flex com-items-center com-gap-1.5 com-text-sm com-font-semibold com-text-Yankees-Blue;
+
+        nb-icon {
+          @apply com-text-sm com-text-Cadet-Grey;
+        }
+
+        .resource-count {
+          @apply com-font-semibold;
+
+          &.count-full {
+            @apply com-text-green-600;
+          }
+
+          &.count-partial {
+            @apply com-text-primary-600;
+          }
+        }
+      }
+
+      .slots-full-badge {
+        @apply com-text-xs com-font-medium com-px-2.5 com-py-1 com-rounded-full;
+        @apply com-bg-Bright-Gray-opacity-30 com-text-Cadet-Grey;
+      }
+
+      // Shine sweep on the "+ Create New Community" CTA to draw attention to it
+      .shine-btn {
+        @apply com-relative com-overflow-hidden;
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -75%;
+          width: 50%;
+          height: 100%;
+          background: linear-gradient(
+            120deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.6) 50%,
+            rgba(255, 255, 255, 0) 100%
+          );
+          transform: skewX(-20deg);
+          animation: shine-sweep 2.8s ease-in-out infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          &::after {
+            animation: none;
+          }
+        }
+      }
+    }
+
+    .remaining-hint {
+      @apply com-text-xs com-text-primary-600 com-font-medium;
+    }
+
+    .pending-hint {
+      @apply com-text-xs com-text-Cadet-Grey com-italic;
+    }
+
+    .renews-hint {
+      @apply com-text-xs com-text-yellow-600 com-font-medium;
+    }
+
+    .empty-hint {
+      @apply com-text-xs com-text-Cadet-Grey com-italic com-m-0;
+    }
+
+    /* Community 2-column grid */
+    .community-grid {
+      @apply com-grid com-gap-2;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+
+      .community-item {
+        @apply com-flex com-items-center com-gap-2.5 com-no-underline com-rounded-lg com-p-2;
+        @apply com-transition-colors hover:com-bg-Bright-Gray-opacity-30;
+
+        .community-avatar {
+          @apply com-w-9 com-h-9 com-rounded-lg com-flex com-items-center com-justify-center;
+          @apply com-text-sm com-font-bold com-flex-shrink-0;
+        }
+
+        .community-info {
+          @apply com-flex com-flex-col com-min-w-0;
+
+          .community-name {
+            @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-truncate;
+          }
+
+          .community-meta {
+            @apply com-text-xs com-text-Cadet-Grey;
+          }
+
+          .resource-chip-date {
+            @apply com-text-xs com-text-Cadet-Grey;
+          }
+        }
+
+        .resource-chip-arrow {
+          @apply com-text-xs com-text-Cadet-Grey com-flex-shrink-0 com-transition-colors;
+        }
+
+        &:hover .resource-chip-arrow {
+          @apply com-text-primary-500;
+        }
+      }
+    }
+
+    .resource-empty-hint {
+      @apply com-text-xs com-text-Cadet-Grey com-italic com-m-0;
+    }
+  }
+
+  /* ── Status notice (expired / cancelled) ── */
+  .status-notice {
+    @apply com-flex com-items-center com-gap-3 com-px-5 com-py-3;
+    @apply com-bg-yellow-50 com-text-yellow-800 com-text-xs;
+    @apply com-border-0 com-border-t com-border-solid com-border-yellow-100;
+    @apply dark:com-bg-yellow-900 dark:com-text-yellow-200 dark:com-border-yellow-800;
+
+    nb-icon {
+      @apply com-flex-shrink-0 com-text-yellow-500;
+    }
+
+    span {
+      @apply com-flex-1;
+    }
+  }
+
+  // ── Pagination ────────────────────────────────────────────
+  .pagination-wrapper {
+    @apply com-pt-4;
+  }
+}
+
+@keyframes shine-sweep {
+  0% {
+    left: -75%;
+  }
+  50% {
+    left: 125%;
+  }
+  100% {
+    left: 125%;
+  }
+}
+
+/* ── Cancel dialog ── */
+.cancel-dialog {
+  @apply com-max-w-md;
+
+  .cancel-dialog-header {
+    @apply com-flex com-items-center com-justify-between com-text-base com-font-bold com-text-Yankees-Blue;
+  }
+
+  .cancel-dialog-body {
+    .cancel-dialog-text {
+      @apply com-m-0 com-text-sm com-text-Cadet-Grey com-leading-relaxed;
+
+      strong {
+        @apply com-text-Yankees-Blue com-font-semibold;
+      }
+    }
+
+    .quantity-stepper {
+      @apply com-flex com-items-center com-gap-2 com-mt-4;
+
+      label {
+        @apply com-text-sm com-text-Yankees-Blue com-mr-1;
+      }
+
+      .stepper-value {
+        @apply com-min-w-6 com-text-center com-text-sm com-font-semibold com-text-Yankees-Blue;
+      }
+    }
+  }
+
+  .cancel-dialog-actions {
+    @apply com-flex com-items-center com-justify-end com-gap-2;
+  }
+}

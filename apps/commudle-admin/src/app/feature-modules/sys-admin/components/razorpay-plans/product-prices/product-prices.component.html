@@ -1,0 +1,48 @@
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+<ng-container *ngIf="!isLoading">
+  <ng-container *ngIf="productPrices.length > 0; else empty">
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Product</th>
+            <th>Plan</th>
+            <th>Original Price</th>
+            <th>Final Price</th>
+            <th>Currency</th>
+            <th>Billing Cycle</th>
+            <th>Subscription</th>
+            <th>Rzp Plan ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pp of productPrices">
+            <td>{{ pp.id }}</td>
+            <td class="product-name">{{ pp.product_name }}</td>
+            <td>{{ pp.plan_name }}</td>
+            <td>{{ pp.original_price | currency : pp.currency }}</td>
+            <td class="amount-cell">{{ pp.final_price | currency : pp.currency }}</td>
+            <td>{{ pp.currency }}</td>
+            <td>
+              <span class="period-badge" *ngIf="pp.billing_cycle">{{ pp.billing_cycle | titlecase }}</span>
+              <span class="no-data" *ngIf="!pp.billing_cycle">—</span>
+            </td>
+            <td>
+              <span class="status-badge status-active" *ngIf="pp.is_subscription_plan">Yes</span>
+              <span class="status-badge status-inactive" *ngIf="!pp.is_subscription_plan">No</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+
+  <ng-template #empty>
+    <div class="empty-state">
+      <nb-icon icon="pricetags-outline"></nb-icon>
+      <p>No product prices found.</p>
+    </div>
+  </ng-template>
+</ng-container>

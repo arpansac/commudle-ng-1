@@ -1,42 +1,212 @@
-table {
-  @apply com-border-collapse com-w-auto;
-  td,
-  th {
-    @apply com-border com-border-solid com-border-gray-200 com-p-4;
-    a {
-      @apply com-no-underline;
+.communities-page {
+  @apply com-flex com-flex-col com-gap-6 com-py-4;
+
+  .page-header {
+    @apply com-flex com-flex-col md:com-flex-row md:com-items-center md:com-justify-between com-gap-4;
+
+    .header-info {
+      @apply com-flex com-flex-col com-gap-1;
+
+      .page-title {
+        @apply com-flex com-items-center com-gap-2 com-m-0 com-text-2xl com-font-bold com-text-Yankees-Blue;
+
+        nb-icon {
+          @apply com-text-primary-500;
+        }
+      }
+
+      .page-subtitle {
+        @apply com-m-0 com-text-sm com-text-gray-500;
+
+        strong {
+          @apply com-font-semibold com-text-Yankees-Blue;
+        }
+      }
+
+      .header-quota {
+        @apply com-inline-flex com-items-center com-gap-2 com-mt-2;
+
+        .quota-count {
+          @apply com-px-3 com-py-1 com-rounded-full com-bg-primary-100 com-text-primary-700 com-text-sm com-font-semibold;
+
+          &.quota-full {
+            @apply com-bg-Infra-Red com-text-white;
+          }
+        }
+
+        .quota-label {
+          @apply com-text-xs com-text-gray-400;
+        }
+      }
     }
-    .actions {
-      @apply com-m-1;
+
+    .header-actions {
+      @apply com-flex com-flex-wrap com-items-center com-gap-2;
+
+      nb-icon {
+        @apply com-mr-1;
+      }
     }
-  }
-  th {
-    @apply com-font-extrabold com-text-lg;
   }
 
-  .heading {
-    .name {
-      @apply com-w-48;
+  .loading-state,
+  .empty-state {
+    @apply com-flex com-flex-col com-items-center com-justify-center com-py-16 com-text-center;
+  }
+
+  .empty-state {
+    .empty-icon {
+      @apply com-flex com-items-center com-justify-center com-w-16 com-h-16 com-mb-4 com-rounded-full com-bg-gray-100 com-text-gray-400;
+
+      nb-icon {
+        @apply com-text-3xl;
+      }
     }
-    .upcoming-events {
-      @apply com-w-72;
+
+    .empty-title {
+      @apply com-m-0 com-mb-2 com-text-lg com-font-semibold com-text-Yankees-Blue;
     }
-    .members-count {
-      @apply com-w-32;
+
+    .empty-desc {
+      @apply com-m-0 com-text-sm com-text-gray-500;
     }
-    .events-count {
-      @apply com-w-32;
+  }
+
+  .community-table-container {
+    @apply com-w-full;
+
+    .table-wrapper {
+      @apply com-overflow-x-scroll com-rounded-2xl com-border com-border-solid com-border-Bright-Gray;
+
+      .community-table {
+        @apply com-w-full com-border-collapse com-bg-white;
+
+        .table-header {
+          @apply com-border-0 com-border-solid com-border-b com-border-Bright-Gray;
+
+          th {
+            @apply com-px-4 com-py-3 com-text-left com-text-xs com-font-semibold com-uppercase com-tracking-wide com-text-gray-500 com-whitespace-nowrap;
+          }
+        }
+
+        .community-row {
+          @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray hover:com-bg-gray-50 com-transition-colors;
+
+          &:last-child {
+            @apply com-border-b-0;
+          }
+
+          td {
+            @apply com-px-4 com-py-3 com-align-top com-text-sm com-text-gray-500;
+          }
+
+          .stat-cell {
+            @apply com-font-semibold com-text-Yankees-Blue com-whitespace-nowrap;
+          }
+
+          .community-meta {
+            @apply com-flex com-flex-col com-gap-1 com-min-w-[160px];
+
+            .community-name {
+              @apply com-inline-flex com-items-center com-gap-1.5 com-text-sm com-font-semibold com-text-Yankees-Blue com-no-underline;
+              @apply hover:com-text-primary-500;
+
+              nb-icon {
+                @apply com-text-xs com-text-gray-400;
+              }
+            }
+
+            .community-slug {
+              @apply com-inline-flex com-items-center com-gap-1 com-text-xs com-text-gray-500;
+
+              nb-icon {
+                @apply com-text-gray-400;
+              }
+            }
+          }
+
+          .events-cell {
+            @apply com-min-w-[200px];
+
+            .event-list {
+              @apply com-m-0 com-p-0 com-flex com-flex-col com-gap-1;
+
+              li {
+                @apply com-list-none;
+
+                a {
+                  @apply com-inline-flex com-items-center com-gap-1 com-text-sm com-text-Yankees-Blue com-no-underline;
+                  @apply hover:com-text-primary-500;
+
+                  nb-icon {
+                    @apply com-text-xs com-text-gray-400;
+                  }
+                }
+              }
+            }
+
+            .no-events {
+              @apply com-text-xs com-text-gray-400 com-italic;
+            }
+          }
+
+          .community-actions {
+            @apply com-flex com-flex-wrap com-items-center com-gap-2;
+
+            nb-icon {
+              @apply com-mr-1;
+            }
+          }
+        }
+      }
     }
-    .channels-count {
-      @apply com-w-32;
-    }
-    .links {
-      @apply com-w-60;
-    }
+  }
+
+  .pagination {
+    @apply com-flex com-justify-center com-mt-4;
   }
 }
 
-.loading,
-.view-more-button {
-  @apply com-my-4;
+.add-communities-dialog {
+  @apply com-max-w-md com-w-full;
+
+  .dialog-header {
+    @apply com-flex com-items-center com-justify-between com-text-base com-font-semibold com-text-Yankees-Blue;
+  }
+
+  .dialog-body {
+    @apply com-flex com-flex-col com-gap-4;
+
+    .dialog-text {
+      @apply com-m-0 com-text-sm com-text-Cadet-Grey com-leading-relaxed;
+    }
+
+    .dialog-current-plan {
+      @apply com-flex com-items-center com-gap-1.5 com-m-0 com-text-sm com-text-Yankees-Blue com-bg-primary-100 com-px-3 com-py-2 com-rounded-lg;
+
+      nb-icon {
+        @apply com-text-primary-500 com-flex-shrink-0;
+      }
+    }
+
+    .quantity-stepper {
+      @apply com-flex com-items-center com-justify-between com-gap-3;
+
+      label {
+        @apply com-text-sm com-font-medium com-text-Yankees-Blue;
+      }
+
+      .stepper-controls {
+        @apply com-flex com-items-center com-gap-2;
+
+        .stepper-value {
+          @apply com-min-w-8 com-text-center com-text-base com-font-semibold com-text-Yankees-Blue;
+        }
+      }
+    }
+  }
+
+  .dialog-actions {
+    @apply com-flex com-items-center com-justify-end com-gap-2;
+  }
 }

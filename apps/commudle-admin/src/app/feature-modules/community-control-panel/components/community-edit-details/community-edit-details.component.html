@@ -1,225 +1,231 @@
-<div class="com-bg-white com-rounded-[10px]">
-  <form (ngSubmit)="updateCommunityDetails()" [formGroup]="communityForm" class="community-edit-details-form">
-    <div class="heading">
-      Edit Community Details
-      <commudle-help-section [helpDictionaryName]="'community-details-edit'"></commudle-help-section>
-    </div>
+<div class="community-edit-details">
+  <form (ngSubmit)="updateCommunityDetails()" [formGroup]="communityForm">
     <div formGroupName="community">
-      <div role="group">
-        <div>
-          <label fullWidth>
-            Name*
-            <input formControlName="name" fullWidth nbInput type="text" />
-          </label>
-          <span
-            *ngIf="
-              communityForm.get('community').get('name').touched &&
-              communityForm.get('community').get('name').invalid &&
-              communityForm.get('community').get('name').errors.required
-            "
-          >
-            <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-          </span>
-        </div>
-      </div>
+      <!-- Media: banner with overlapping logo -->
+      <p class="cf-section-label">Logo &amp; Banner</p>
 
-      <div role="group">
-        <div>
-          <label>
-            Logo*
-            <input (change)="displaySelectedLogo($event)" accept="image/*" fullWidth nbInput type="file" />
-          </label>
-          <span *ngIf="!uploadedLogo">
-            <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-          </span>
-        </div>
-      </div>
-
-      <div>
-        <div *ngIf="uploadedLogo == null" class="uploaded-logo"></div>
-        <div *ngIf="uploadedLogo" class="uploaded-logo-image">
-          <img alt="Uploaded Logo" src="{{ uploadedLogo }}" title="Uploaded Logo" />
-        </div>
-      </div>
-
-      <div role="group">
-        <div>
-          <label> Banner Image </label>
-        </div>
-      </div>
-
-      <div>
-        <label
-          *ngIf="!uploadedBanner"
-          class="com-ml-5 com-mb-5 com-w-64 com-flex com-flex-col com-items-center com-px-4 com-py-6 com-tracking-wide com-cursor-pointer com-bg-gray-100 com-rounded-md com-transition-shadow hover:com-shadow-md"
-        >
-          <svg class="com-w-8 com-h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z"
-            />
-          </svg>
-          <span class="com-mt-2 com-text-base">Upload a Banner Image</span>
-          <span class="com-text-base"><small>(1280px x 320px)</small></span>
-          <input (change)="displaySelectedBanner($event)" accept="image/*" class="com-hidden" type="file" />
-        </label>
-        <div *ngIf="uploadedBanner" class="uploaded-banner-image">
-          <div class="com-flex com-justify-center com-mb-2">
-            <button (click)="uploadedBanner = ''" *ngIf="uploadedBanner" nbButton outline size="tiny" status="danger">
-              <nb-icon icon="trash-2-outline"></nb-icon>
-              Delete
+      <div class="cf-media">
+        <!-- Banner -->
+        <div class="cf-banner" [class.has-image]="uploadedBanner" (click)="!uploadedBanner && bannerInput.click()">
+          <img *ngIf="uploadedBanner" [src]="uploadedBanner" alt="Banner" class="cf-banner-img" />
+          <div class="cf-banner-placeholder" *ngIf="!uploadedBanner">
+            <nb-icon icon="image-outline"></nb-icon>
+            <span>Add a banner <span class="cf-hint">1280×320 · optional</span></span>
+          </div>
+          <div *ngIf="uploadedBanner" class="cf-media-actions">
+            <button
+              nbButton
+              status="danger"
+              size="tiny"
+              type="button"
+              (click)="$event.stopPropagation(); uploadedBanner = null; uploadedBannerFile = null"
+            >
+              <nb-icon icon="trash-2-outline"></nb-icon> Remove
             </button>
           </div>
-          <img alt="Uploaded Banner Image" src="{{ uploadedBanner }}" title="Uploaded Banner Image" />
+          <input
+            #bannerInput
+            type="file"
+            accept="image/png,image/jpg,image/jpeg"
+            class="cf-hidden"
+            (change)="displaySelectedBanner($event)"
+          />
         </div>
+
+        <!-- Logo overlapping banner -->
+        <div class="cf-logo-row">
+          <div class="cf-logo" [class.has-image]="uploadedLogo" (click)="logoInput.click()">
+            <img *ngIf="uploadedLogo" [src]="uploadedLogo" alt="Logo" class="cf-logo-img" />
+            <nb-icon *ngIf="!uploadedLogo" icon="camera" class="cf-logo-icon"></nb-icon>
+            <input
+              #logoInput
+              type="file"
+              accept="image/png,image/jpg,image/jpeg"
+              class="cf-hidden"
+              (change)="displaySelectedLogo($event)"
+            />
+          </div>
+          <div class="cf-logo-meta">
+            <span class="cf-label">Community Logo <span class="cf-required">*</span></span>
+            <span class="cf-hint">PNG or JPG · max 2MB</span>
+          </div>
+        </div>
+
+        <commudle-alert
+          *ngIf="!uploadedLogo"
+          [error]="true"
+          errorMessage="A community logo is required."
+        ></commudle-alert>
       </div>
 
-      <div role="group">
-        <div>
-          <label>
-            Email*
-            <input formControlName="contact_email" fullWidth nbInput type="text" />
-          </label>
-          <span
+      <!-- Basic Info -->
+      <p class="cf-section-label">Basic Info</p>
+
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label">Community Name <span class="cf-required">*</span></label>
+          <input nbInput fullWidth formControlName="name" type="text" placeholder="e.g. GDG New Delhi" />
+          <commudle-alert
+            *ngIf="
+              communityForm.get('community').get('name').touched &&
+              communityForm.get('community').get('name').hasError('required')
+            "
+            [error]="true"
+            errorMessage="Name is required."
+          ></commudle-alert>
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">Contact Email <span class="cf-required">*</span></label>
+          <input nbInput fullWidth formControlName="contact_email" type="email" placeholder="hello@community.com" />
+          <commudle-alert
             *ngIf="
               communityForm.get('community').get('contact_email').touched &&
-              communityForm.get('community').get('contact_email').invalid &&
-              communityForm.get('community').get('contact_email').errors.required
+              communityForm.get('community').get('contact_email').hasError('required')
             "
-          >
-            <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-          </span>
+            [error]="true"
+            errorMessage="Email is required."
+          ></commudle-alert>
         </div>
       </div>
 
-      <div role="group">
-        <div>
-          <label>
-            Location*
-            <input #autocompleteInput formControlName="location" fullWidth nbInput type="text" />
-          </label>
-          <span
-            *ngIf="
-              communityForm.get('community').get('location').touched &&
-              communityForm.get('community').get('location').invalid &&
-              communityForm.get('community').get('location').errors.required
-            "
-          >
-            <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-          </span>
-        </div>
-      </div>
-
-      <div role="group">
-        <div>
-          <label>
-            Website
-            <input formControlName="website" fullWidth nbInput type="text" />
-          </label>
-        </div>
-      </div>
-
-      <div class="about" role="group">
-        <label>
-          About*
-          <span
-            *ngIf="
-              communityForm.get('community').get('about').touched &&
-              communityForm.get('community').get('about').invalid &&
-              communityForm.get('community').get('about').errors.required
-            "
-          >
-            <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-          </span>
-          <editor [init]="tinyMCE" formControlName="about"></editor>
-        </label>
-      </div>
-
-      <div role="group">
-        <div>
-          <label>
-            Mini Description*
-            <input formControlName="mini_description" fullWidth nbInput type="text" />
-          </label>
-          <span
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label">Tagline <span class="cf-required">*</span></label>
+          <input
+            nbInput
+            fullWidth
+            formControlName="mini_description"
+            type="text"
+            placeholder="A short one-liner about your community"
+          />
+          <commudle-alert
             *ngIf="
               communityForm.get('community').get('mini_description').touched &&
-              communityForm.get('community').get('mini_description').invalid &&
-              communityForm.get('community').get('mini_description').errors.required
+              communityForm.get('community').get('mini_description').hasError('required')
             "
-          >
-            <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-          </span>
+            [error]="true"
+            errorMessage="Tagline is required."
+          ></commudle-alert>
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">Location <span class="cf-required">*</span></label>
+          <input
+            #autocompleteInput
+            nbInput
+            fullWidth
+            formControlName="location"
+            type="text"
+            placeholder="e.g. New Delhi, India"
+          />
+          <commudle-alert
+            *ngIf="
+              communityForm.get('community').get('location').touched &&
+              communityForm.get('community').get('location').hasError('required')
+            "
+            [error]="true"
+            errorMessage="Location is required."
+          ></commudle-alert>
         </div>
       </div>
 
-      <div role="group">
-        <div>
-          <label>
-            Facebook
-            <input formControlName="facebook" fullWidth nbInput type="text" />
-          </label>
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label">Website</label>
+          <input nbInput fullWidth formControlName="website" type="url" placeholder="https://yourcommunity.com" />
         </div>
       </div>
 
-      <div role="group">
-        <div>
-          <label>
-            Twitter
-            <input formControlName="twitter" fullWidth nbInput type="text" />
+      <div class="cf-field">
+        <label class="cf-label">About <span class="cf-required">*</span></label>
+        <commudle-alert
+          *ngIf="
+            communityForm.get('community').get('about').touched &&
+            communityForm.get('community').get('about').hasError('required')
+          "
+          [error]="true"
+          errorMessage="About is required."
+        ></commudle-alert>
+        <editor [init]="tinyMCE" formControlName="about"></editor>
+      </div>
+
+      <!-- Tags -->
+      <p class="cf-section-label">Tags</p>
+
+      <div class="cf-field">
+        <label class="cf-label"
+          >Tags <span class="cf-required">* (min {{ minimumTags }})</span></label
+        >
+        <app-tag
+          (tagAdd)="onTagAdd($event)"
+          (tagDelete)="onTagDelete($event)"
+          [backgroundColor]="'com-bg-tAnti-Flash'"
+          [editable]="true"
+          [fontColor]="'com-text-tYankees-Blue'"
+          [minimumTags]="minimumTags"
+          [tags]="tags"
+        ></app-tag>
+        <commudle-alert
+          *ngIf="tags.length < minimumTags"
+          [error]="true"
+          [errorMessage]="'Add at least ' + minimumTags + ' tags.'"
+        ></commudle-alert>
+      </div>
+
+      <!-- Social Links -->
+      <p class="cf-section-label">Social Links</p>
+
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label cf-social-label">
+            <nb-icon icon="facebook" class="cf-social-icon cf-facebook"></nb-icon> Facebook
           </label>
+          <input nbInput fullWidth formControlName="facebook" type="url" placeholder="https://facebook.com/..." />
+        </div>
+        <div class="cf-field">
+          <label class="cf-label cf-social-label">
+            <nb-icon icon="twitter" class="cf-social-icon cf-twitter"></nb-icon> Twitter / X
+          </label>
+          <input nbInput fullWidth formControlName="twitter" type="url" placeholder="https://twitter.com/..." />
         </div>
       </div>
 
-      <div role="group">
-        <div>
-          <label>
-            Github
-            <input formControlName="github" fullWidth nbInput type="text" />
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label cf-social-label">
+            <nb-icon icon="github" class="cf-social-icon"></nb-icon> GitHub
           </label>
+          <input nbInput fullWidth formControlName="github" type="url" placeholder="https://github.com/..." />
+        </div>
+        <div class="cf-field">
+          <label class="cf-label cf-social-label">
+            <nb-icon icon="linkedin" class="cf-social-icon cf-linkedin"></nb-icon> LinkedIn
+          </label>
+          <input nbInput fullWidth formControlName="linkedin" type="url" placeholder="https://linkedin.com/..." />
         </div>
       </div>
 
-      <div role="group">
-        <div>
-          <label>
-            Linkedin
-            <input formControlName="linkedin" fullWidth nbInput type="text" />
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label cf-social-label">
+            <nb-icon icon="at" class="cf-social-icon cf-instagram"></nb-icon> Instagram
           </label>
-        </div>
-      </div>
-
-      <div role="group">
-        <div>
-          <label>
-            Instagram
-            <input formControlName="instagram" fullWidth nbInput type="text" />
-          </label>
-        </div>
-      </div>
-
-      <div role="group">
-        <div>
-          <label fullWidth>
-            Tags*
-            <app-tag
-              (tagAdd)="onTagAdd($event)"
-              (tagDelete)="onTagDelete($event)"
-              [backgroundColor]="'com-bg-tAnti-Flash'"
-              [editable]="true"
-              [fontColor]="'com-text-tYankees-Blue'"
-              [minimumTags]="minimumTags"
-              [tags]="tags"
-            ></app-tag>
-          </label>
-          <span *ngIf="tags.length < 5">
-            <commudle-alert [errorMessage]="'Minimum 5 tags need to be added'" [error]="true"></commudle-alert>
-          </span>
+          <input nbInput fullWidth formControlName="instagram" type="url" placeholder="https://instagram.com/..." />
         </div>
       </div>
     </div>
+    <!-- /formGroupName="community" -->
 
-    <div>
-      <button [disabled]="!communityForm.valid || tags.length < 5" nbButton status="primary" type="submit">Save</button>
+    <!-- Footer -->
+    <div class="cf-footer">
+      <button
+        nbButton
+        status="primary"
+        shape="semi-round"
+        type="submit"
+        [disabled]="!communityForm.valid || tags.length < minimumTags || !uploadedLogo"
+      >
+        Save Changes
+      </button>
     </div>
   </form>
 </div>

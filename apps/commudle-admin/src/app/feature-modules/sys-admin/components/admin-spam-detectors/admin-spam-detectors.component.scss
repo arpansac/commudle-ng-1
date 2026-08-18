@@ -1,15 +1,15 @@
 .spam-dashboard {
-  @apply com-flex com-flex-col com-gap-6 com-p-6;
+  @apply com-flex com-flex-col com-gap-4 com-p-3 sm:com-gap-6 sm:com-p-6;
 
   // ── Dashboard Header ──
   .dashboard-header {
-    @apply com-flex com-justify-between com-items-center;
+    @apply com-flex com-flex-col sm:com-flex-row sm:com-justify-between sm:com-items-center com-gap-3;
 
     .header-left {
-      @apply com-flex com-items-center com-gap-4;
+      @apply com-flex com-items-center com-gap-3;
 
       .header-icon-wrapper {
-        @apply com-flex com-items-center com-justify-center com-w-12 com-h-12 com-rounded-lg com-bg-primary-100 com-text-primary-600;
+        @apply com-flex com-items-center com-justify-center com-w-10 com-h-10 sm:com-w-12 sm:com-h-12 com-rounded-lg com-bg-primary-100 com-text-primary-600 com-flex-shrink-0;
 
         fa-icon {
           @apply com-text-Page-Section-Header;
@@ -18,11 +18,11 @@
 
       .header-text {
         h1 {
-          @apply com-text-Page-Section-Header com-font-bold com-text-Yankees-Blue com-m-0 com-leading-tight;
+          @apply com-text-Paragraph-1 sm:com-text-Page-Section-Header com-font-bold com-text-Yankees-Blue com-m-0 com-leading-tight;
         }
 
         p {
-          @apply com-text-Paragraph-2 com-text-gray-500 com-m-0 com-mt-0.5;
+          @apply com-text-Caption sm:com-text-Paragraph-2 com-text-gray-500 com-m-0 com-mt-0.5;
         }
       }
     }
@@ -36,7 +36,7 @@
 
   // ── Summary Stat Cards ──
   .stats-row {
-    @apply com-grid com-grid-cols-2 lg:com-grid-cols-4 com-gap-4;
+    @apply com-grid com-grid-cols-2 lg:com-grid-cols-4 com-gap-3;
 
     .stat-card {
       @apply com-flex com-items-center com-gap-4 com-p-4 com-rounded-lg com-border com-border-solid;
@@ -150,10 +150,10 @@
     }
 
     .filter-controls {
-      @apply com-flex com-gap-5 com-p-5;
+      @apply com-flex com-flex-col sm:com-flex-row com-gap-4 com-p-5;
 
       .filter-field {
-        @apply com-flex com-flex-col com-gap-1.5 com-min-w-[200px];
+        @apply com-flex com-flex-col com-gap-1.5 com-w-full sm:com-min-w-[200px];
 
         label {
           @apply com-text-Caption com-font-semibold com-text-gray-600 com-uppercase com-tracking-wider;
@@ -178,34 +178,241 @@
   .table-panel {
     @apply com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-bg-white com-overflow-hidden;
 
-    table {
-      @apply com-w-full com-border-collapse;
+    .table-scroll-wrapper {
+      @apply com-hidden md:com-block com-overflow-x-auto;
 
-      thead tr {
-        @apply com-bg-gray-50 com-border-0 com-border-b-2 com-border-solid com-border-Bright-Gray;
+      table {
+        @apply com-w-full com-border-collapse;
 
-        th {
-          @apply com-px-5 com-py-3.5 com-text-left com-text-Caption com-font-bold com-text-gray-600 com-uppercase com-tracking-wider com-whitespace-nowrap;
+        thead tr {
+          @apply com-bg-gray-50 com-border-0 com-border-b-2 com-border-solid com-border-Bright-Gray;
+
+          th {
+            @apply com-px-5 com-py-3.5 com-text-left com-text-Caption com-font-bold com-text-gray-600 com-uppercase com-tracking-wider com-whitespace-nowrap;
+          }
+        }
+
+        tbody tr {
+          @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-transition-colors com-duration-150;
+
+          &:last-child {
+            @apply com-border-b-0;
+          }
+
+          &:hover {
+            @apply com-bg-gray-50;
+          }
+
+          &.row-flagged {
+            @apply com-border-l-4 com-border-l-red-400;
+          }
+
+          td {
+            @apply com-px-5 com-py-4 com-align-middle;
+          }
+        }
+      }
+    }
+
+    // ── Skeleton loader ──
+    .skeleton-wrapper {
+      @apply com-p-4;
+    }
+
+    .skeleton-table {
+      @apply com-w-full;
+
+      .skeleton-header-row {
+        @apply com-grid com-gap-4 com-px-5 com-py-3.5 com-bg-gray-50 com-border-0 com-border-b-2 com-border-solid com-border-Bright-Gray;
+        grid-template-columns: 2fr 1.5fr 1fr 1fr 1.5fr 1.2fr;
+
+        .skeleton-th {
+          @apply com-h-3 com-rounded com-bg-gray-200;
+          animation: skeleton-pulse 1.6s ease-in-out infinite;
         }
       }
 
-      tbody tr {
-        @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-transition-colors com-duration-150;
+      .skeleton-row {
+        @apply com-grid com-gap-4 com-px-5 com-py-4 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+        grid-template-columns: 2fr 1.5fr 1fr 1fr 1.5fr 1.2fr;
+        align-items: center;
 
         &:last-child {
           @apply com-border-b-0;
         }
 
-        &:hover {
-          @apply com-bg-gray-50;
+        .skeleton-cell {
+          @apply com-flex com-flex-col com-gap-2;
+
+          &:nth-child(2) {
+            @apply com-flex-row com-items-center com-gap-3;
+          }
+
+          .skeleton-lines {
+            @apply com-flex com-flex-col com-gap-1.5;
+          }
+
+          .skeleton-avatar-row {
+            @apply com-flex com-items-center com-gap-2;
+          }
+        }
+      }
+    }
+
+    .skeleton-cards {
+      @apply com-flex com-flex-col com-gap-3;
+
+      .skeleton-card {
+        @apply com-rounded-xl com-border com-border-solid com-border-Bright-Gray com-overflow-hidden;
+
+        .skeleton-card-header {
+          @apply com-flex com-justify-between com-items-center com-px-4 com-py-3 com-bg-gray-50;
         }
 
-        &.row-flagged {
+        .skeleton-card-body {
+          @apply com-flex com-flex-col com-gap-2.5 com-px-4 com-py-3;
+
+          .skeleton-avatar-row {
+            @apply com-flex com-items-center com-gap-2;
+          }
+        }
+      }
+    }
+
+    // ── Shared skeleton elements ──
+    .skeleton-chip {
+      @apply com-h-5 com-w-20 com-rounded-full;
+      animation: skeleton-pulse 1.6s ease-in-out infinite;
+      background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+      background-size: 200% 100%;
+      animation: skeleton-shimmer 1.6s ease-in-out infinite;
+    }
+
+    .skeleton-pill {
+      @apply com-h-6 com-w-24 com-rounded-full;
+      animation: skeleton-shimmer 1.6s ease-in-out infinite;
+      background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+      background-size: 200% 100%;
+    }
+
+    .skeleton-avatar {
+      @apply com-w-9 com-h-9 com-rounded-full com-flex-shrink-0;
+      &.sm {
+        @apply com-w-7 com-h-7;
+      }
+      animation: skeleton-shimmer 1.6s ease-in-out infinite;
+      background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+      background-size: 200% 100%;
+    }
+
+    .skeleton-line {
+      @apply com-h-3 com-rounded;
+      animation: skeleton-shimmer 1.6s ease-in-out infinite;
+      background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+      background-size: 200% 100%;
+      &.xs {
+        @apply com-w-10;
+      }
+      &.sm {
+        @apply com-w-24;
+      }
+      &.md {
+        @apply com-w-36;
+      }
+      &.lg {
+        @apply com-w-full;
+      }
+    }
+
+    .skeleton-select {
+      @apply com-h-9 com-w-40 com-rounded-lg;
+      animation: skeleton-shimmer 1.6s ease-in-out infinite;
+      background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+      background-size: 200% 100%;
+    }
+
+    .skeleton-bar-track {
+      @apply com-w-full com-h-2 com-rounded-full com-bg-gray-100;
+
+      .skeleton-bar-fill {
+        @apply com-h-full com-w-3/5 com-rounded-full;
+        animation: skeleton-shimmer 1.6s ease-in-out infinite;
+        background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+        background-size: 200% 100%;
+      }
+    }
+
+    // ── Mobile cards ──
+    .mobile-cards {
+      @apply com-flex com-flex-col com-gap-3 com-p-3 md:com-hidden;
+
+      .mobile-card {
+        @apply com-rounded-xl com-border com-border-solid com-border-Bright-Gray com-bg-white com-overflow-hidden;
+
+        &.mobile-card-flagged {
           @apply com-border-l-4 com-border-l-red-400;
         }
 
-        td {
-          @apply com-px-5 com-py-4 com-align-middle;
+        .mobile-card-header {
+          @apply com-flex com-justify-between com-items-center com-px-4 com-py-3 com-bg-gray-50 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
+          .mobile-card-meta {
+            @apply com-flex com-items-center com-gap-2;
+          }
+        }
+
+        .mobile-card-body {
+          @apply com-flex com-flex-col com-gap-2 com-px-4 com-py-3;
+
+          .content-title {
+            @apply com-m-0;
+          }
+
+          .content-desc {
+            @apply com-m-0;
+          }
+
+          .mobile-author-row {
+            @apply com-flex com-items-center com-gap-2 com-flex-wrap;
+
+            .author-avatar-sm {
+              @apply com-w-7 com-h-7 com-text-xs;
+            }
+          }
+
+          .mobile-links-row {
+            @apply com-flex com-items-center com-gap-2 com-flex-wrap;
+          }
+
+          .score-bar-track {
+            @apply com-w-full com-h-2 com-rounded-full com-bg-gray-100 com-overflow-hidden;
+
+            .score-bar-fill {
+              @apply com-h-full com-rounded-full com-transition-all com-duration-300;
+
+              &.score-critical {
+                @apply com-bg-red-500;
+              }
+              &.score-warning {
+                @apply com-bg-yellow-500;
+              }
+              &.score-ok {
+                @apply com-bg-green-500;
+              }
+            }
+          }
+
+          .timestamp-value {
+            @apply com-text-Caption com-text-gray-400;
+          }
+        }
+
+        .mobile-card-footer {
+          @apply com-px-4 com-py-3 com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+
+          .decision-dropdown {
+            @apply com-w-full;
+          }
         }
       }
     }
@@ -368,7 +575,7 @@
 
   // ── Pagination ──
   .pagination-bar {
-    @apply com-flex com-justify-center;
+    @apply com-w-full;
   }
 
   // ── View Button ──
@@ -444,5 +651,14 @@
 
   .confirm-dialog-footer {
     @apply com-flex com-justify-end com-gap-3;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
   }
 }

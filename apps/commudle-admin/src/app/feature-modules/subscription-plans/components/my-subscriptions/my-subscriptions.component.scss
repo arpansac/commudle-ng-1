@@ -1,0 +1,194 @@
+.my-subscriptions-page {
+  @apply com-min-h-screen com-bg-white;
+
+  .welcome-hero {
+    @apply com-relative com-overflow-hidden com-pt-6 com-mb-2 com-p-6 com-rounded-2xl;
+    @apply com-flex com-items-center com-justify-between com-gap-6;
+    @apply sm:com-p-8;
+    background: linear-gradient(135deg, #4b3f9e, #1b1464);
+    animation: heroFadeUp 0.6s ease-out both;
+
+    &.hero-morning {
+      background: linear-gradient(135deg, #fdb813, #f68b1f);
+
+      .hero-blob {
+        background-color: #ffd985;
+      }
+    }
+    &.hero-afternoon {
+      background: linear-gradient(135deg, #4a90d9, #2c5f9e);
+
+      .hero-blob {
+        background-color: #8fc1ee;
+      }
+    }
+    &.hero-evening {
+      background: linear-gradient(135deg, #4b3f9e, #1b1464);
+
+      .hero-blob {
+        background-color: #7d72d1;
+      }
+    }
+    &.hero-night {
+      background: linear-gradient(135deg, #1a1a2e, #0d0d1a);
+
+      .hero-blob {
+        background-color: #363652;
+      }
+    }
+
+    .hero-blob {
+      @apply com-absolute com-rounded-full com-pointer-events-none;
+      filter: blur(2px);
+
+      &.hero-blob-1 {
+        width: 16rem;
+        height: 16rem;
+        top: -6rem;
+        right: -4rem;
+        animation: blobFloat 9s ease-in-out infinite;
+      }
+
+      &.hero-blob-2 {
+        width: 10rem;
+        height: 10rem;
+        bottom: -5rem;
+        right: 8rem;
+        animation: blobFloat 11s ease-in-out infinite reverse;
+      }
+
+      &.hero-blob-3 {
+        width: 6rem;
+        height: 6rem;
+        top: 1.5rem;
+        right: 30%;
+        animation: blobFloat 13s ease-in-out infinite;
+      }
+    }
+
+    .hero-content {
+      @apply com-relative com-flex com-flex-col com-gap-2;
+      z-index: 1;
+
+      .hero-eyebrow {
+        @apply com-self-start com-text-sm com-font-semibold com-text-tWhite com-text-opacity-90;
+        animation: heroFadeUp 0.6s ease-out 0.05s both;
+      }
+
+      .hero-title {
+        @apply com-text-2xl com-font-bold com-text-tWhite com-m-0;
+        @apply sm:com-text-3xl;
+        animation: heroFadeUp 0.6s ease-out 0.12s both;
+
+        .hero-name {
+          @apply com-font-extrabold com-text-tWhite;
+        }
+      }
+
+      .hero-subtitle {
+        @apply com-text-sm com-text-tWhite com-text-opacity-90 com-m-0;
+        animation: heroFadeUp 0.6s ease-out 0.18s both;
+      }
+    }
+  }
+
+  .dashboard-layout {
+    @apply com-flex com-flex-col com-gap-6 com-py-8;
+
+    @screen lg {
+      @apply com-flex-row com-gap-8 com-items-start;
+    }
+  }
+
+  /* ── Sidebar ── */
+  .dashboard-sidebar {
+    @apply com-flex com-flex-col com-gap-6 com-w-full;
+
+    @screen lg {
+      @apply com-w-56 com-flex-shrink-0 com-sticky;
+      top: 5rem;
+    }
+
+    .sidebar-title {
+      .page-title {
+        @apply com-text-xl com-font-bold com-text-Yankees-Blue com-m-0;
+      }
+
+      .page-subtitle {
+        @apply com-text-xs com-text-gray-400 com-m-0 com-mt-1;
+      }
+    }
+
+    .sidebar-nav {
+      @apply com-flex com-flex-row com-gap-1;
+
+      @screen lg {
+        @apply com-flex-col;
+      }
+
+      .nav-item {
+        @apply com-px-3 com-py-2 com-rounded-lg com-text-sm com-font-medium com-text-gray-500;
+        @apply com-no-underline com-transition-colors com-duration-150 com-cursor-pointer;
+        @apply hover:com-bg-gray-100 hover:com-text-gray-800;
+
+        &.nav-active {
+          @apply com-bg-primary-100 com-text-primary-600 com-font-semibold;
+        }
+      }
+    }
+
+    .sidebar-stats {
+      @apply com-hidden;
+
+      @screen lg {
+        @apply com-flex com-flex-col com-gap-0 com-border com-border-gray-200 com-rounded-xl com-overflow-hidden;
+      }
+
+      .stat-item {
+        @apply com-flex com-flex-col com-gap-0.5 com-px-4 com-py-3;
+        @apply com-border-b com-border-gray-100 last:com-border-b-0;
+
+        .stat-value {
+          @apply com-text-2xl com-font-bold com-text-Yankees-Blue com-leading-none;
+        }
+
+        .stat-label {
+          @apply com-text-xs com-text-gray-400 com-uppercase com-tracking-wide;
+        }
+      }
+    }
+  }
+
+  /* ── Main content ── */
+  .dashboard-main {
+    @apply com-flex-1 com-min-w-0;
+  }
+}
+
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blobFloat {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-1.5rem, 1rem) scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .my-subscriptions-page .welcome-hero,
+  .my-subscriptions-page .welcome-hero * {
+    animation: none !important;
+  }
+}

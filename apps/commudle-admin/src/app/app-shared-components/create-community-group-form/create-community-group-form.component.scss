@@ -1,0 +1,33 @@
+@import '../create-community-form/create-community-form.component.scss';
+
+// Theme-color banner (no image) with overlapping logo — org variant of the media block
+.cf-media {
+  .cf-banner-theme {
+    @apply com-border-none com-cursor-default;
+  }
+
+  // Colour picker overlaid on the theme banner (top-right)
+  .cf-theme-picker {
+    @apply com-flex com-items-center com-gap-2 com-rounded-full com-py-1 com-pl-1 com-pr-3;
+    @apply com-bg-white com-bg-opacity-90 com-shadow-sm;
+
+    .cf-theme-swatch {
+      @apply com-relative com-flex com-items-center com-justify-center com-w-7 com-h-7 com-rounded-full com-cursor-pointer com-overflow-hidden;
+      @apply com-bg-gray-100 com-text-gray-600;
+
+      nb-icon {
+        @apply com-text-base com-pointer-events-none;
+      }
+
+      .cf-color-input {
+        @apply com-absolute com-inset-0 com-w-full com-h-full com-opacity-0 com-cursor-pointer;
+        padding: 0;
+        border: none;
+      }
+    }
+
+    .cf-color-value {
+      @apply com-text-xs com-font-mono com-font-semibold com-text-Yankees-Blue;
+    }
+  }
+}

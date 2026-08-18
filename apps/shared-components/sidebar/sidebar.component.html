@@ -39,5 +39,10 @@
       <fa-icon [icon]="faRightLeft" class="com-cursor-pointer"></fa-icon>
     </div>
   </div>
-  <ng-content></ng-content>
+  <div class="sidebar-body">
+    <ng-content></ng-content>
+  </div>
+  <div class="sidebar-footer">
+    <ng-content select="[sidebarFooter]"></ng-content>
+  </div>
 </div>

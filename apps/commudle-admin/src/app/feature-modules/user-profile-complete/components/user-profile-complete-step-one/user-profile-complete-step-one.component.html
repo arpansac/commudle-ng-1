@@ -119,11 +119,11 @@
             />
             <commudle-alert *ngIf="showDomainError" [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
           </div>
-          <div class="continue-btn">
+          <div class="continue-btn" [class.mobile-nav-offset]="parentType === 'profile-complete'">
             <button nbButton status="primary" shape="semi-round" fullWidth (click)="goToNextStep()">
-              <span *ngIf="parentType === 'profile-complete'"
-                >Continue &nbsp;<fa-icon [icon]="faArrowRight"></fa-icon
-              ></span>
+              <span *ngIf="parentType === 'profile-complete'">
+                Continue &nbsp;<fa-icon [icon]="faArrowRight"></fa-icon>
+              </span>
               <span *ngIf="parentType === 'edit-profile'">Save</span>
             </button>
           </div>

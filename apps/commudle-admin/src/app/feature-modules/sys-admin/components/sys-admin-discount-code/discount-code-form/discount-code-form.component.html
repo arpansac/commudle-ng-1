@@ -122,6 +122,32 @@
           <input nbInput fullWidth type="datetime-local" id="expires_at" formControlName="expires_at" />
         </div>
       </div>
+
+      <div class="form-group-container">
+        <div class="form-group">
+          <label for="usage_preset">Total Usage Limit</label>
+          <div class="select">
+            <select id="usage_preset" formControlName="usage_preset">
+              <option *ngFor="let preset of usagePresets" [ngValue]="preset.value">{{ preset.label }}</option>
+            </select>
+          </div>
+          <small class="hint">Maximum number of times this code can be used in total across all customers.</small>
+        </div>
+
+        <div class="form-group" *ngIf="showCustomUsageInput">
+          <label for="max_redemptions">Custom total uses <span class="required">*</span></label>
+          <input
+            nbInput
+            fullWidth
+            type="number"
+            min="1"
+            id="max_redemptions"
+            formControlName="max_redemptions"
+            placeholder="e.g. 12"
+          />
+        </div>
+      </div>
+
       <!-- <div class="form-group checkbox-group">
         <nb-checkbox formControlName="is_limited">Limit usage count</nb-checkbox>
       </div>

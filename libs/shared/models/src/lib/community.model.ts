@@ -33,6 +33,7 @@ export interface ICommunity {
   upcoming_hackathons_count: number;
   instagram: string;
   community_group: ICommunityGroup;
+  user_subscription_id?: number;
 }
 
 export interface ICommunitySearch extends ICommunity {

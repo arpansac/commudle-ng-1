@@ -5,6 +5,7 @@ import { NbButtonModule, NbIconModule } from '@commudle/theme';
 import { CommudleCardModule } from '@commudle/commudle-theme';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
+import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
@@ -22,6 +23,7 @@ import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/com
     CommudleCardModule,
     SharedComponentsModule,
     SharedPipesModule,
+    SharedDirectivesModule,
     MiniUserProfileModule,
     UserExpertTickComponent,
     UserPersonalConnectComponent,

@@ -53,6 +53,20 @@
       <fa-icon [icon]="icons.faGlobe"></fa-icon>
       <span>{{ hackathon.hackathon_location_type | titlecase }}</span>
     </div>
+    <div *ngIf="showLocation && hackathon.location_address" class="chip-location">
+      <fa-icon [icon]="icons.faLocationDot"></fa-icon>
+      <a
+        *ngIf="hackathon.location_map_link; else noLink"
+        [href]="hackathon.location_map_link"
+        target="_blank"
+        class="chip-link"
+      >
+        <span *ngIf="hackathon.location_address">{{ hackathon.location_address }}</span>
+      </a>
+      <ng-template #noLink>
+        <span *ngIf="hackathon.location_name">{{ hackathon.location_name }}</span>
+      </ng-template>
+    </div>
     <div *ngIf="showLocation && hackathon.prizes_count" class="chip">
       <fa-icon [icon]="icons.faAward"></fa-icon>
       <span>{{ hackathon.prizes_count }} Prizes</span>
