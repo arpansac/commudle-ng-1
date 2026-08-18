@@ -2,8 +2,16 @@
   <div class="heading-filter">
     <div class="header-text">
       <h3 class="title">
-        <a [routerLink]="'.'" fragment="latest-builds">Latest Builds</a>
+        Latest Builds
         <commudle-help-section [helpDictionaryName]="'build-help'"></commudle-help-section>
+        <a
+          [routerLink]="'.'"
+          fragment="latest-builds"
+          class="section-anchor-link"
+          aria-label="Link to latest builds section"
+        >
+          <fa-icon [icon]="faHashtag"></fa-icon>
+        </a>
       </h3>
       <h4 class="sub-heading">Explore latest projects and get inspired</h4>
     </div>

@@ -6,9 +6,21 @@ p {
   @apply com-mb-10 com-overflow-hidden com-relative com-p-0 com-pt-8 com-mx-4 lg:com-mx-0;
 
   .communities-featured-heading {
-    a {
-      @apply com-text-2xl com-text-Dark-Jungle-Green com-m-0 com-mb-6 com-no-underline;
+    @apply com-text-2xl com-text-Dark-Jungle-Green com-m-0 com-mb-6 com-flex com-items-center;
+
+    .section-anchor-link {
+      @apply com-opacity-0 com-ml-2 com-text-primary-400 com-no-underline com-inline-flex com-items-center com-align-middle;
+      @apply com-text-base;
+      @apply com-transition-opacity com-duration-200;
+
+      &:focus {
+        @apply com-opacity-100;
+      }
     }
+  }
+
+  .communities-featured-heading:hover .section-anchor-link {
+    @apply com-opacity-100 com-text-primary-600;
   }
 
   .communities-featured-list {
