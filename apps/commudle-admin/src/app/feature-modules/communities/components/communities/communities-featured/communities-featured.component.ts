@@ -6,6 +6,7 @@ import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { IFeaturedItems } from 'apps/shared-models/featured-items.model';
 import { Subscription } from 'rxjs';
 import { faHashtag } from '@fortawesome/free-solid-svg-icons';
+import { faLink } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-communities-featured',
@@ -17,6 +18,7 @@ export class CommunitiesFeaturedComponent implements OnInit, OnDestroy {
   faUsers = faUsers;
   faCalendar = faCalendar;
   faHashtag = faHashtag;
+  faLink = faLink;
   featuredItems: IFeaturedItems[] = [];
   environment = environment;
   tags: string[] = [];
