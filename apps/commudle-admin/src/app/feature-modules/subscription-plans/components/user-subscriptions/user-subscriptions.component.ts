@@ -39,6 +39,9 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
   /** Subscription the user last opened the context menu against. Set on kebab click. */
   activeContextSubscription: IUserSubscription | null = null;
 
+  /** Id of the subscription whose renewal is currently in flight, so only that card's button disables. */
+  renewingSubId: number | null = null;
+
   @ViewChild('cancelDialog') cancelDialog: TemplateRef<unknown>;
   @ViewChild('addCommunitiesDialog') addCommunitiesDialog: TemplateRef<unknown>;
 
@@ -331,7 +334,14 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
     });
   }
 
-  isRenewing = false;
+  /**
+   * Expired and cancelled plans are both dead ends the user can recover from by
+   * renewing. The backend's `renew` action has no status guard, so it accepts
+   * either one.
+   */
+  needsRenewal(subscription: IUserSubscription): boolean {
+    return subscription.status === 'expired' || subscription.status === 'cancelled';
+  }
 
   /**
    * Kick off a renewal: backend creates a fresh PurchaseOrder mirroring this
@@ -340,18 +350,18 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
    * ends_at and flips status to :active (see PurchaseOrder#update_payment).
    */
   renewPlan(subscription: IUserSubscription): void {
-    if (this.isRenewing) return;
-    this.isRenewing = true;
+    if (this.renewingSubId !== null) return;
+    this.renewingSubId = subscription.id;
     this.userSubscriptionService
       .renew(subscription.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (po) => {
-          this.isRenewing = false;
+          this.renewingSubId = null;
           this.router.navigate(['/checkout', po.uuid]);
         },
         error: (err) => {
-          this.isRenewing = false;
+          this.renewingSubId = null;
           this.toastrService.errorDialog(err?.error?.message || 'Failed to start renewal. Please try again.');
         },
       });
