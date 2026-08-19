@@ -94,6 +94,37 @@
                   <nb-icon icon="settings-2-outline"></nb-icon>
                   Dashboard
                 </a>
+                <a
+                  [routerLink]="['/communities', hackathon.community?.slug, 'hackathons', hackathon.slug]"
+                  comButton
+                  status="basic"
+                  size="tiny"
+                  shape="semi-round"
+                  outline
+                  target="_blank"
+                >
+                  <nb-icon icon="eye-outline"></nb-icon>
+                  Public
+                </a>
+                <a
+                  [routerLink]="[
+                    '/admin',
+                    'communities',
+                    hackathon.community?.slug,
+                    'hackathon-dashboard',
+                    hackathon.slug,
+                    'stats'
+                  ]"
+                  comButton
+                  status="success"
+                  size="tiny"
+                  shape="semi-round"
+                  outline
+                  target="_blank"
+                >
+                  <nb-icon icon="bar-chart-outline"></nb-icon>
+                  Stats
+                </a>
               </div>
             </td>
           </tr>
