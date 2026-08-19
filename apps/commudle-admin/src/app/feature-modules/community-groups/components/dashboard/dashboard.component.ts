@@ -11,6 +11,7 @@ import {
   faCalendar,
   faHashtag,
   faMessage,
+  faTrophy,
 } from '@fortawesome/free-solid-svg-icons';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { ICommunityGroup } from '@commudle/shared-models';
@@ -44,6 +45,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     faCalendar,
     faHashtag,
     faMessage,
+    faTrophy,
   };
 
   constructor(
