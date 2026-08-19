@@ -1,6 +1,117 @@
 .community-hackathons {
   @apply com-bg-transparent com-flex com-flex-col com-gap-4 com-mx-0 com-mb-8 com-mt-4;
 
+  // ── Empty state with trophy illustration ──
+  .empty-state {
+    @apply com-relative com-flex com-flex-col com-items-center com-justify-center com-text-center com-m-0 com-p-4;
+
+    nb-card-body {
+      @apply com-p-0;
+    }
+
+    img {
+      @apply com-w-full md:com-h-[260px] com-h-full com-pt-4;
+    }
+
+    .particles {
+      @apply com-absolute com-inset-0 com-pointer-events-none;
+
+      .particle {
+        @apply com-absolute com-block;
+
+        &.particle-1 {
+          width: 10px;
+          height: 10px;
+          background: #7c3aed;
+          clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+          top: 15%;
+          left: 22%;
+          animation: particleFloat 6s ease-in-out infinite;
+        }
+
+        &.particle-2 {
+          width: 6px;
+          height: 6px;
+          background: #c4b5fd;
+          border-radius: 50%;
+          top: 10%;
+          left: 38%;
+          animation: particleFloat 8s ease-in-out infinite 1s;
+        }
+
+        &.particle-3 {
+          width: 10px;
+          height: 10px;
+          background: #a78bfa;
+          border-radius: 2px;
+          top: 12%;
+          right: 30%;
+          transform: rotate(45deg);
+          animation: particleFloat 7s ease-in-out infinite 0.5s;
+        }
+
+        &.particle-4 {
+          width: 6px;
+          height: 6px;
+          background: #fbbf24;
+          clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+          top: 28%;
+          left: 30%;
+          animation: particleFloat 9s ease-in-out infinite 2s;
+        }
+
+        &.particle-5 {
+          width: 8px;
+          height: 8px;
+          background: #ddd6fe;
+          border-radius: 50%;
+          top: 8%;
+          right: 38%;
+          animation: particleFloat 7s ease-in-out infinite 1.5s;
+        }
+
+        &.particle-6 {
+          width: 12px;
+          height: 12px;
+          background: #fbbf24;
+          clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+          top: 22%;
+          right: 22%;
+          animation: particleFloat 10s ease-in-out infinite 3s;
+        }
+
+        &.particle-7 {
+          width: 6px;
+          height: 6px;
+          background: #c4b5fd;
+          border-radius: 2px;
+          top: 18%;
+          right: 42%;
+          transform: rotate(45deg);
+          animation: particleFloat 6.5s ease-in-out infinite 0.8s;
+        }
+
+        &.particle-8 {
+          width: 8px;
+          height: 8px;
+          background: #e9d5ff;
+          border-radius: 50%;
+          top: 32%;
+          right: 28%;
+          animation: particleFloat 8.5s ease-in-out infinite 2.5s;
+        }
+      }
+    }
+
+    .empty-title {
+      @apply com-m-0 com-text-xl com-font-medium com-text-Yankees-Blue com-mb-2;
+    }
+
+    .create-hackathon-btn {
+      @apply com-mt-2;
+    }
+  }
+
   .hackathon-section-card {
     @apply com-h-max com-mx-0 com-mb-0 com-mt-0;
 
@@ -34,6 +145,7 @@
       border-radius: 50%;
       pointer-events: none;
     }
+
     &::before {
       width: 260px;
       height: 260px;
@@ -42,6 +154,7 @@
       right: -40px;
       filter: blur(2px);
     }
+
     &::after {
       width: 190px;
       height: 190px;
@@ -99,8 +212,38 @@
     opacity: 0.45;
     transform: scale(0.95);
   }
+
   50% {
     opacity: 1;
     transform: scale(1.1);
+  }
+}
+
+@keyframes particleFloat {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.6;
+  }
+
+  25% {
+    transform: translateY(-10px) translateX(5px);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(-5px) translateX(-4px);
+    opacity: 0.4;
+  }
+
+  75% {
+    transform: translateY(-12px) translateX(3px);
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .empty-state .particles .particle {
+    animation: none !important;
   }
 }
