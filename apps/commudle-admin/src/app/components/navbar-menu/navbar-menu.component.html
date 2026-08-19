@@ -171,6 +171,17 @@
       <fa-icon [icon]="faChevronRight" class="explore-action-chevron"></fa-icon>
     </a>
 
+    <a [routerLink]="['/pricing']" (click)="closeDesktopExplorePopover()" class="explore-action-item">
+      <div class="explore-action-left">
+        <fa-icon [icon]="faHandHoldingDollar" class="explore-action-icon"></fa-icon>
+        <div class="explore-action-text">
+          <span class="explore-action-title">Pricing</span>
+          <span class="explore-action-subtitle">Plans and subscriptions</span>
+        </div>
+      </div>
+      <fa-icon [icon]="faChevronRight" class="explore-action-chevron"></fa-icon>
+    </a>
+
     <a [routerLink]="['/my-profile']" (click)="closeDesktopExplorePopover()" class="explore-action-item">
       <div class="explore-action-left">
         <fa-icon [icon]="faIdCard" class="explore-action-icon"></fa-icon>
