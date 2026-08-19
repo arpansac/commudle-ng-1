@@ -14,6 +14,8 @@ import {
   faChevronRight,
   faCircleCheck,
   faCompass,
+  faMicrophone,
+  faBolt,
 } from '@fortawesome/free-solid-svg-icons';
 import { NbPopoverDirective } from '@commudle/theme';
 import { NotificationsStore } from 'apps/commudle-admin/src/app/feature-modules/notifications/store/notifications.store';
@@ -47,7 +49,8 @@ export class NavbarMenuComponent implements OnInit, OnDestroy {
   faTrophy = faTrophy;
   faCompass = faCompass;
   faChevronRight = faChevronRight;
-
+  faMicrophone = faMicrophone;
+  faBolt = faBolt;
   notificationCount = 0;
   ENotificationSenderTypes = ENotificationSenderTypes;
 

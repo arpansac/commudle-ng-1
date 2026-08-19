@@ -84,7 +84,7 @@
         <fa-icon [icon]="faHandHoldingDollar" class="explore-action-icon"></fa-icon>
         <div class="explore-action-text">
           <span class="explore-action-title">Pricing</span>
-          <span class="explore-action-subtitle">Plans and subscriptions</span>
+          <span class="explore-action-subtitle">Start your community</span>
         </div>
       </div>
       <fa-icon [icon]="faChevronRight" class="explore-action-chevron"></fa-icon>
@@ -122,6 +122,39 @@
       </div>
       <fa-icon [icon]="faChevronRight" class="explore-action-chevron"></fa-icon>
     </a>
+
+    <a [routerLink]="['/speakers']" (click)="closeExploreBottomSheet()" class="explore-action-item">
+      <div class="explore-action-left">
+        <fa-icon [icon]="faMicrophone" class="explore-action-icon"></fa-icon>
+        <div class="explore-action-text">
+          <span class="explore-action-title">Find Speakers</span>
+          <span class="explore-action-subtitle">View talk slides</span>
+        </div>
+      </div>
+      <fa-icon [icon]="faChevronRight" class="explore-action-chevron"></fa-icon>
+    </a>
+
+    <a [routerLink]="['/jobs']" (click)="closeExploreBottomSheet()" class="explore-action-item">
+      <div class="explore-action-left">
+        <fa-icon [icon]="faBriefcase" class="explore-action-icon"></fa-icon>
+        <div class="explore-action-text">
+          <span class="explore-action-title">Jobs</span>
+          <span class="explore-action-subtitle">Post a Job or Apply for one</span>
+        </div>
+      </div>
+      <fa-icon [icon]="faChevronRight" class="explore-action-chevron"></fa-icon>
+    </a>
+
+    <a [routerLink]="['/vibeathon-challenge']" (click)="closeExploreBottomSheet()" class="explore-action-item">
+      <div class="explore-action-left">
+        <fa-icon [icon]="faBolt" class="explore-action-icon"></fa-icon>
+        <div class="explore-action-text">
+          <span class="explore-action-title">Vibeathon</span>
+          <span class="explore-action-subtitle">Run a vibecode competition</span>
+        </div>
+      </div>
+      <fa-icon [icon]="faChevronRight" class="explore-action-chevron"></fa-icon>
+    </a>
   </div>
 </commudle-bottom-sheet>
 
@@ -133,6 +166,17 @@
         <div class="explore-action-text">
           <span class="explore-action-title">Labs</span>
           <span class="explore-action-subtitle">Step by Step Tutorials</span>
+        </div>
+      </div>
+      <fa-icon [icon]="faChevronRight" class="explore-action-chevron"></fa-icon>
+    </a>
+
+    <a [routerLink]="['/pricing']" (click)="closeDesktopExplorePopover()" class="explore-action-item">
+      <div class="explore-action-left">
+        <fa-icon [icon]="faHandHoldingDollar" class="explore-action-icon"></fa-icon>
+        <div class="explore-action-text">
+          <span class="explore-action-title">Pricing</span>
+          <span class="explore-action-subtitle">Start your community</span>
         </div>
       </div>
       <fa-icon [icon]="faChevronRight" class="explore-action-chevron"></fa-icon>
@@ -166,6 +210,39 @@
         <div class="explore-action-text">
           <span class="explore-action-title">Features</span>
           <span class="explore-action-subtitle">Know more about Commudle</span>
+        </div>
+      </div>
+      <fa-icon [icon]="faChevronRight" class="explore-action-chevron"></fa-icon>
+    </a>
+
+    <a [routerLink]="['/speakers']" (click)="closeDesktopExplorePopover()" class="explore-action-item">
+      <div class="explore-action-left">
+        <fa-icon [icon]="faMicrophone" class="explore-action-icon"></fa-icon>
+        <div class="explore-action-text">
+          <span class="explore-action-title">Find Speakers</span>
+          <span class="explore-action-subtitle">View talk slides</span>
+        </div>
+      </div>
+      <fa-icon [icon]="faChevronRight" class="explore-action-chevron"></fa-icon>
+    </a>
+
+    <a [routerLink]="['/jobs']" (click)="closeDesktopExplorePopover()" class="explore-action-item">
+      <div class="explore-action-left">
+        <fa-icon [icon]="faBriefcase" class="explore-action-icon"></fa-icon>
+        <div class="explore-action-text">
+          <span class="explore-action-title">Jobs</span>
+          <span class="explore-action-subtitle">Post a Job or Apply for one</span>
+        </div>
+      </div>
+      <fa-icon [icon]="faChevronRight" class="explore-action-chevron"></fa-icon>
+    </a>
+
+    <a [routerLink]="['/vibeathon-challenge']" (click)="closeDesktopExplorePopover()" class="explore-action-item">
+      <div class="explore-action-left">
+        <fa-icon [icon]="faBolt" class="explore-action-icon"></fa-icon>
+        <div class="explore-action-text">
+          <span class="explore-action-title">Vibeathon</span>
+          <span class="explore-action-subtitle">Run a vibecode competition</span>
         </div>
       </div>
       <fa-icon [icon]="faChevronRight" class="explore-action-chevron"></fa-icon>
