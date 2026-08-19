@@ -10,7 +10,7 @@
       .page-title {
         @apply com-flex com-items-center com-gap-2 com-m-0 com-text-lg com-font-semibold com-text-Yankees-Blue;
 
-        nb-icon {
+        fa-icon {
           @apply com-text-primary-500;
         }
       }
@@ -44,7 +44,7 @@
     @apply com-w-full;
 
     .table-wrapper {
-      @apply com-overflow-x-scroll com-rounded-lg com-border com-border-solid com-border-Bright-Gray;
+      @apply com-overflow-x-auto com-rounded-lg com-border com-border-solid com-border-Bright-Gray;
 
       .hackathons-table {
         @apply com-w-full com-border-collapse com-bg-white;

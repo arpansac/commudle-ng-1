@@ -52,7 +52,7 @@
     @apply com-w-full;
 
     .table-wrapper {
-      @apply com-overflow-x-scroll com-rounded-lg com-border com-border-solid com-border-Bright-Gray;
+      @apply com-overflow-x-auto com-rounded-lg com-border com-border-solid com-border-Bright-Gray;
 
       .events-table {
         @apply com-w-full com-border-collapse com-bg-white;

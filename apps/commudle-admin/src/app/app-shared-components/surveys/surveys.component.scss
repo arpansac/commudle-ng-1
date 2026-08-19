@@ -1,5 +1,6 @@
 .dropdown {
   @apply com-flex com-items-center com-text-sm com-cursor-pointer com-m-0;
+
   select {
     @apply com-bg-Custom-Select-Background com-border com-border-solid com-border-Bright-Gray com-cursor-pointer com-w-full com-rounded-lg com-h-10 com-mt-3;
   }
@@ -10,7 +11,7 @@
   @apply com-w-full;
 
   .table-wrapper {
-    @apply com-overflow-scroll;
+    @apply com-overflow-x-auto;
 
     .surveys-table {
       @apply com-w-full com-border-collapse;
@@ -24,6 +25,7 @@
           &:nth-child(1) {
             @apply com-w-[40%];
           }
+
           &:nth-child(2) {
             @apply com-w-[60%];
           }
@@ -46,6 +48,7 @@
 
           .survey-link {
             @apply com-text-xs com-font-normal com-text-Ultramarine-Blue com-no-underline com-flex com-items-center com-gap-1 com-whitespace-nowrap;
+
             nb-icon {
               @apply com-text-base;
             }
@@ -73,6 +76,7 @@
 
           .edit-btn {
             @apply com-text-xs com-font-normal com-text-Yankees-Blue com-no-underline com-flex com-items-center com-gap-1 com-pl-4;
+
             fa-icon {
               @apply com-text-base;
             }
@@ -102,6 +106,7 @@
     .name,
     .data-form-type-select {
       @apply com-w-full;
+
       label {
         @apply com-text-sm com-font-medium com-text-Yankees-Blue com-w-full;
       }

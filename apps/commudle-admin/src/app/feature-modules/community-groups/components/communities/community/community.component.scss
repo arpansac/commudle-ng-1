@@ -46,6 +46,10 @@
       nb-icon {
         @apply com-mr-1;
       }
+
+      button {
+        @apply md:com-w-auto com-w-full;
+      }
     }
   }
 
@@ -76,10 +80,10 @@
     @apply com-w-full;
 
     .table-wrapper {
-      @apply com-overflow-x-scroll com-rounded-lg com-border com-border-solid com-border-Bright-Gray;
+      @apply com-overflow-x-auto com-rounded-lg com-border com-border-solid com-border-Bright-Gray;
 
       .community-table {
-        @apply com-w-full com-border-collapse com-bg-white;
+        @apply com-w-full com-border-collapse;
 
         .table-header {
           @apply com-border-0 com-border-solid com-border-b com-border-Bright-Gray;

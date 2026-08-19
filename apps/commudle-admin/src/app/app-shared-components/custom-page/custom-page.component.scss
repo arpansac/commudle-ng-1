@@ -2,7 +2,7 @@
   @apply com-w-full;
 
   .table-wrapper {
-    @apply com-overflow-scroll;
+    @apply com-overflow-x-auto;
 
     .pages-table {
       @apply com-w-full com-border-collapse;
@@ -16,12 +16,15 @@
           &:nth-child(1) {
             @apply com-w-[40%];
           }
+
           &:nth-child(2) {
             @apply com-w-[20%];
           }
+
           &:nth-child(3) {
             @apply com-w-[20%];
           }
+
           &:nth-child(4) {
             @apply com-w-[20%];
           }
@@ -42,7 +45,8 @@
             @apply com-flex com-items-center;
 
             .page-link {
-              @apply com-text-Yankees-Blue com-no-underline com-cursor-pointer com-flex com-items-center com-gap-1  hover:com-border-0 hover:com-border-b hover:com-border-solid hover:com-border-gray-400;
+              @apply com-text-Yankees-Blue com-no-underline com-cursor-pointer com-flex com-items-center com-gap-1 hover:com-border-0 hover:com-border-b hover:com-border-solid hover:com-border-gray-400;
+
               fa-icon {
                 @apply com-text-xs;
               }
@@ -56,6 +60,7 @@
               ::ng-deep {
                 label {
                   @apply com-text-sm;
+
                   .text {
                     @apply com-text-xs com-text-gray-900;
                   }
@@ -75,6 +80,7 @@
           .edit-link,
           .delete-link {
             @apply com-text-xs com-font-normal com-no-underline com-flex com-items-center com-border-0 com-border-solid com-border-Bright-Gray com-whitespace-nowrap com-cursor-pointer;
+
             fa-icon {
               @apply com-text-base com-mr-1;
             }
@@ -122,6 +128,7 @@ nb-card {
   nb-card-body {
     form {
       @apply com-flex com-flex-col com-gap-3;
+
       div {
         @apply com-flex com-flex-col;
       }
