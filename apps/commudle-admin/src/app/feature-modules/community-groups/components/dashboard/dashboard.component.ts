@@ -102,6 +102,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.sidebarService.toggleSidebarVisibility(this.sidebarEventName);
   }
 
+  closeSidebarOnMobile() {
+    if (this.isMobileView) {
+      this.sidebarService.closeSidebar(this.sidebarEventName);
+    }
+  }
+
   checkMobileView() {
     this.isMobileView = window.innerWidth < 768;
   }
