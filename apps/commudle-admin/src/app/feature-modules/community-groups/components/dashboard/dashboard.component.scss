@@ -1,6 +1,10 @@
 .community-mobile-header {
   @apply com-items-center com-gap-3 com-p-3 com-bg-white com-border-0 com-border-b com-border-solid com-border-Bright-Gray md:com-hidden;
 
+  .toggle-sidebar-btn {
+    @apply com-mr-2 com-text-Yankees-Blue;
+  }
+
   .community-logo-mobile {
     @apply com-flex com-items-center com-gap-3;
 
@@ -15,7 +19,7 @@
 }
 
 .sidebar {
-  @apply com-sticky com-top-navbar-desktop com-h-[calc(100vh-52px)] com-flex-shrink-0 com-flex com-flex-col com-overflow-hidden;
+  @apply md:com-sticky com-top-navbar-desktop com-h-[calc(100vh-52px)] com-flex-shrink-0 com-flex com-flex-col com-overflow-hidden;
 }
 
 a {
@@ -75,36 +79,6 @@ a {
 
     .community-name {
       @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-truncate;
-    }
-  }
-}
-
-.mobile-nav {
-  @apply com-w-full com-p-4;
-
-  nb-card {
-    @apply com-m-0;
-  }
-
-  .menu {
-    @apply com-flex com-flex-wrap com-gap-2;
-
-    .action-button {
-      @apply com-flex com-flex-col com-items-center com-gap-1 com-p-3 com-rounded-lg com-cursor-pointer com-text-gray-600;
-      @apply com-border com-border-transparent;
-
-      &.active,
-      &:hover {
-        @apply com-bg-primary-100 com-text-primary-500 com-border-primary-300;
-      }
-
-      .icon {
-        @apply com-text-lg;
-      }
-
-      .heading {
-        @apply com-text-xs com-font-medium;
-      }
     }
   }
 }

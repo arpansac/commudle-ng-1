@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ESidebarWidth = ESidebarWidth;
   ESidebarHeading = ESidebarHeading;
   sidebarEventName = 'communityGroup';
+  isMobileView = false;
 
   icons = {
     faRightLeft,
@@ -53,6 +54,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.checkMobileView();
+    window.addEventListener('resize', () => this.checkMobileView());
     this.footerService.changeMiniFooterStatus(false);
     this.seoService.noIndex(true);
 
@@ -63,7 +66,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }),
     );
 
-    this.sidebarService.setSidebarVisibility(this.sidebarEventName, true);
+    if (this.isMobileView) {
+      this.sidebarService.setSidebarVisibility(this.sidebarEventName, false, true);
+    } else {
+      this.sidebarService.setSidebarVisibility(this.sidebarEventName, true);
+    }
 
     if (Object.prototype.hasOwnProperty.call(this.sidebarService.setSidebar$, this.sidebarEventName)) {
       this.subscriptions.push(
@@ -75,6 +82,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    window.removeEventListener('resize', () => this.checkMobileView());
     this.seoService.noIndex(false);
     this.footerService.changeMiniFooterStatus(true);
     this.subscriptions.forEach((sub) => sub.unsubscribe());
@@ -90,6 +98,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   toggleSidebar() {
     this.sidebarService.toggleSidebarVisibility(this.sidebarEventName);
+  }
+
+  checkMobileView() {
+    this.isMobileView = window.innerWidth < 768;
   }
 
   setMeta() {

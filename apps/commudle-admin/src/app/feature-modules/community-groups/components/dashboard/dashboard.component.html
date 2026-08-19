@@ -1,4 +1,7 @@
 <section class="com-flex md:com-hidden community-mobile-header">
+  <button *ngIf="isMobileView" nbButton ghost size="small" (click)="toggleSidebar()" class="toggle-sidebar-btn">
+    <fa-icon [icon]="icons.faRightLeft"></fa-icon>
+  </button>
   <div class="community-logo-mobile" *ngIf="communityGroup">
     <img [src]="logoUrl" [alt]="communityGroup.name" />
     <span>{{ communityGroup.name }}</span>
@@ -6,12 +9,12 @@
 </section>
 
 <section class="com-flex">
-  <!-- Desktop Sidebar -->
-  <div class="sidebar" *appBreakpoints="'>md'">
+  <!-- Sidebar (desktop: sticky, mobile: overlay window) -->
+  <div class="sidebar">
     <commudle-sidebar
       [expandedWidth]="sidebarExpanded ? ESidebarWidth.XL : ESidebarWidth.XSMALL"
-      [forWindow]="false"
-      [showExpandedButton]="true"
+      [forWindow]="isMobileView"
+      [showExpandedButton]="!isMobileView || sidebarExpanded"
       [eventName]="sidebarEventName"
       [heading]="'Org Dashboard'"
       [textSize]="ESidebarHeading.MEDIUM"
@@ -63,11 +66,11 @@
       </div>
 
       <!-- Community identity footer -->
-      <div sidebarFooter class="community-identity" *ngIf="communityGroup">
+      <div sidebarFooter class="community-identity" *ngIf="communityGroup && sidebarExpanded">
         <div class="community-logo">
           <img [src]="logoUrl" [alt]="communityGroup.name" />
         </div>
-        <div *ngIf="sidebarExpanded" class="community-info">
+        <div class="community-info">
           <span class="community-name">{{ communityGroup.name }}</span>
           <app-subscription-plan-badge
             [subscriptionId]="groupSubscriptionId"
@@ -77,57 +80,6 @@
         </div>
       </div>
     </commudle-sidebar>
-  </div>
-
-  <!-- Mobile nav card -->
-  <div *appBreakpoints="'<=md'" class="mobile-nav">
-    <nb-card>
-      <nb-card-body>
-        <div class="menu">
-          <a
-            class="action-button"
-            [routerLink]="['./']"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <div class="icon"><nb-icon icon="info-outline"></nb-icon></div>
-            <span class="heading">Communities</span>
-          </a>
-          <a class="action-button sub-item" [routerLink]="['events']" routerLinkActive="active">
-            <div class="icon"><nb-icon icon="calendar-outline"></nb-icon></div>
-            <span class="heading">Events</span>
-          </a>
-          <a class="action-button" [routerLink]="['members']" routerLinkActive="active">
-            <div class="icon"><fa-icon [icon]="icons.faUsers"></fa-icon></div>
-            <span class="heading">All Members</span>
-          </a>
-          <a class="action-button" [routerLink]="['admin-team']" routerLinkActive="active">
-            <div class="icon"><fa-icon [icon]="icons.faUserGroup"></fa-icon></div>
-            <span class="heading">Admin Team</span>
-          </a>
-          <a class="action-button" [routerLink]="['edit']" routerLinkActive="active">
-            <div class="icon"><fa-icon [icon]="icons.faPen"></fa-icon></div>
-            <span class="heading">Edit Details</span>
-          </a>
-          <a class="action-button" [routerLink]="['surveys']" routerLinkActive="active">
-            <div class="icon"><fa-icon [icon]="icons.faScroll"></fa-icon></div>
-            <span class="heading">Surveys</span>
-          </a>
-          <a class="action-button" [routerLink]="['pages']" routerLinkActive="active">
-            <div class="icon"><fa-icon [icon]="icons.faHouse"></fa-icon></div>
-            <span class="heading">Pages</span>
-          </a>
-          <a class="action-button" [routerLink]="['channels']" routerLinkActive="active">
-            <div class="icon"><fa-icon [icon]="icons.faHashtag"></fa-icon></div>
-            <span class="heading">Channels</span>
-          </a>
-          <a class="action-button" [routerLink]="['forums']" routerLinkActive="active">
-            <div class="icon"><fa-icon [icon]="icons.faMessage"></fa-icon></div>
-            <span class="heading">Forums</span>
-          </a>
-        </div>
-      </nb-card-body>
-    </nb-card>
   </div>
 
   <!-- Router outlet -->
