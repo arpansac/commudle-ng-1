@@ -10,7 +10,7 @@
       .page-title {
         @apply com-flex com-items-center com-gap-2 com-m-0 com-text-lg com-font-semibold com-text-Yankees-Blue;
 
-        nb-icon {
+        fa-icon {
           @apply com-text-primary-500;
         }
       }
@@ -34,7 +34,8 @@
     .empty-icon {
       @apply com-flex com-items-center com-justify-center com-w-14 com-h-14 com-mb-3 com-rounded-full com-bg-gray-100 com-text-gray-400;
 
-      nb-icon {
+      nb-icon,
+      fa-icon {
         @apply com-text-2xl;
       }
     }
@@ -93,7 +94,8 @@
               @apply com-inline com-text-sm com-font-medium com-text-Yankees-Blue com-no-underline;
               @apply hover:com-text-primary-500;
 
-              nb-icon {
+              nb-icon,
+              fa-icon {
                 @apply com-text-xs com-text-gray-400 com-inline-flex com-align-middle com-ml-1;
               }
             }

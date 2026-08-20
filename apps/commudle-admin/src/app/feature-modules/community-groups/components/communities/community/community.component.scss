@@ -10,7 +10,7 @@
       .page-title {
         @apply com-flex com-items-center com-gap-2 com-m-0 com-text-lg com-font-semibold com-text-Yankees-Blue;
 
-        nb-icon {
+        fa-icon {
           @apply com-text-primary-500;
         }
       }
@@ -43,7 +43,8 @@
     .header-actions {
       @apply com-flex com-flex-wrap com-items-center com-gap-2;
 
-      nb-icon {
+      nb-icon,
+      fa-icon {
         @apply com-mr-1;
       }
 
@@ -62,7 +63,8 @@
     .empty-icon {
       @apply com-flex com-items-center com-justify-center com-w-14 com-h-14 com-mb-3 com-rounded-full com-bg-gray-100 com-text-gray-400;
 
-      nb-icon {
+      nb-icon,
+      fa-icon {
         @apply com-text-2xl;
       }
     }
@@ -115,7 +117,8 @@
               @apply com-inline com-text-sm com-font-medium com-text-Yankees-Blue com-no-underline;
               @apply hover:com-text-primary-500;
 
-              nb-icon {
+              nb-icon,
+              fa-icon {
                 @apply com-text-xs com-text-gray-400 com-inline-flex com-align-middle com-ml-1;
               }
             }
@@ -123,7 +126,8 @@
             .community-slug {
               @apply com-inline-flex com-items-center com-gap-1 com-text-xs com-text-Cadet-Grey;
 
-              nb-icon {
+              nb-icon,
+              fa-icon {
                 @apply com-text-gray-400;
               }
             }
@@ -151,7 +155,8 @@
                   @apply com-inline com-text-sm com-text-Yankees-Blue com-no-underline;
                   @apply hover:com-text-primary-500;
 
-                  nb-icon {
+                  nb-icon,
+                  fa-icon {
                     @apply com-text-xs com-text-gray-400 com-inline-flex com-align-middle com-ml-1;
                   }
                 }
@@ -166,7 +171,8 @@
           .community-actions {
             @apply com-flex com-flex-wrap com-items-center com-gap-2;
 
-            nb-icon {
+            nb-icon,
+            fa-icon {
               @apply com-mr-0.5;
             }
           }
@@ -197,7 +203,8 @@
     .dialog-current-plan {
       @apply com-flex com-items-center com-gap-1.5 com-m-0 com-text-xs com-text-Yankees-Blue com-bg-primary-100 com-px-3 com-py-2 com-rounded-lg;
 
-      nb-icon {
+      nb-icon,
+      fa-icon {
         @apply com-text-primary-500 com-flex-shrink-0;
       }
     }

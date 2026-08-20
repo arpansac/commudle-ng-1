@@ -4,21 +4,23 @@ import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/com
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { IEvent } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
+import { faGrip, faEye, faChartPie, faCalendarDays, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 
 @Component({
-    selector: 'commudle-events',
-    templateUrl: './events.component.html',
-    styleUrls: ['./events.component.scss'],
-    standalone: false
+  selector: 'commudle-events',
+  templateUrl: './events.component.html',
+  styleUrls: ['./events.component.scss'],
+  standalone: false,
 })
 export class EventsComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;
   events: IEvent[];
   subscriptions: Subscription[] = [];
   moment = moment;
+  icons = { faGrip, faEye, faChartPie, faCalendarDays, faArrowUpRightFromSquare };
 
   isLoading = false;
 

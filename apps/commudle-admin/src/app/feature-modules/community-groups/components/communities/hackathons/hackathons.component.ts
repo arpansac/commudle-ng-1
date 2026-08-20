@@ -4,7 +4,7 @@ import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/com
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { SeoService } from '@commudle/shared-services';
-import { faTrophy } from '@fortawesome/free-solid-svg-icons';
+import { faTrophy, faGrip, faEye, faChartPie, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 
@@ -20,6 +20,7 @@ export class HackathonsComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   moment = moment;
   faTrophy = faTrophy;
+  icons = { faGrip, faEye, faChartPie, faArrowUpRightFromSquare };
 
   isLoading = false;
   count = 10;

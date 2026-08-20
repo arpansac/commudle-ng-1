@@ -7,6 +7,15 @@ import { ICommunity } from 'apps/shared-models/community.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { ToastrService, UserSubscriptionService } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
+import {
+  faGrip,
+  faEye,
+  faChartPie,
+  faGlobe,
+  faPlus,
+  faPlusCircle,
+  faArrowUpRightFromSquare,
+} from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { CreateCommunityFormComponent } from 'apps/commudle-admin/src/app/app-shared-components/create-community-form/create-community-form.component';
 
@@ -20,6 +29,7 @@ export class CommunityComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;
   communities: ICommunity[];
   subscriptions: Subscription[] = [];
+  icons = { faGrip, faEye, faChartPie, faGlobe, faPlus, faPlusCircle, faArrowUpRightFromSquare };
 
   isLoading = false;
 

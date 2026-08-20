@@ -3,7 +3,7 @@
   <header class="page-header">
     <div class="header-info">
       <h1 class="page-title">
-        <nb-icon icon="globe-outline"></nb-icon>
+        <fa-icon [icon]="icons.faGlobe"></fa-icon>
         Communities
       </h1>
       <div class="header-quota" *ngIf="communityGroup.community_count_limit">
@@ -29,7 +29,7 @@
           (communityGroup.community_count_limit ?? 0) <= (communities?.length ?? 0)
         "
       >
-        <nb-icon icon="plus-outline"></nb-icon>
+        <fa-icon [icon]="icons.faPlus"></fa-icon>
         New community
       </button>
 
@@ -133,7 +133,7 @@
                   shape="semi-round"
                   target="_blank"
                 >
-                  <nb-icon icon="settings-2-outline"></nb-icon>
+                  <fa-icon [icon]="icons.faGrip"></fa-icon>
                   Dashboard
                 </a>
                 <a
@@ -145,8 +145,7 @@
                   outline
                   target="_blank"
                 >
-                  <nb-icon icon="eye-outline"></nb-icon>
-                  Public
+                  <fa-icon [icon]="icons.faEye"></fa-icon>
                 </a>
                 <a
                   [routerLink]="['/admin', 'communities', community.id, 'stats']"
@@ -157,8 +156,7 @@
                   outline
                   target="_blank"
                 >
-                  <nb-icon icon="bar-chart-outline"></nb-icon>
-                  Stats
+                  <fa-icon [icon]="icons.faChartPie"></fa-icon>
                 </a>
               </div>
             </td>

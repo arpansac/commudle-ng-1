@@ -16,7 +16,7 @@
 
   <!-- Empty state -->
   <div *ngIf="!isLoading && hackathons && hackathons.length === 0" class="empty-state">
-    <div class="empty-icon"><nb-icon icon="award-outline"></nb-icon></div>
+    <div class="empty-icon"><fa-icon [icon]="faTrophy"></fa-icon></div>
     <h3 class="empty-title">No hackathons yet</h3>
   </div>
 
@@ -42,7 +42,7 @@
                   [routerLink]="['/communities', hackathon.community?.slug, 'hackathons', hackathon.slug]"
                   target="_blank"
                 >
-                  {{ hackathon.name }}<nb-icon icon="external-link-outline"></nb-icon>
+                  {{ hackathon.name }}<fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
                 </a>
                 <app-community-badge
                   *ngIf="hackathon.community"
@@ -91,7 +91,7 @@
                   shape="semi-round"
                   target="_blank"
                 >
-                  <nb-icon icon="settings-2-outline"></nb-icon>
+                  <fa-icon [icon]="icons.faGrip"></fa-icon>
                   Dashboard
                 </a>
                 <a
@@ -103,8 +103,7 @@
                   outline
                   target="_blank"
                 >
-                  <nb-icon icon="eye-outline"></nb-icon>
-                  Public
+                  <fa-icon [icon]="icons.faEye"></fa-icon>
                 </a>
                 <a
                   [routerLink]="[
@@ -122,8 +121,7 @@
                   outline
                   target="_blank"
                 >
-                  <nb-icon icon="bar-chart-outline"></nb-icon>
-                  Stats
+                  <fa-icon [icon]="icons.faChartPie"></fa-icon>
                 </a>
               </div>
             </td>

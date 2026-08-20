@@ -3,7 +3,7 @@
   <header class="page-header">
     <div class="header-info">
       <h1 class="page-title">
-        <nb-icon icon="calendar-outline"></nb-icon>
+        <fa-icon [icon]="icons.faCalendarDays"></fa-icon>
         Events
       </h1>
     </div>
@@ -16,7 +16,7 @@
 
   <!-- Empty state -->
   <div *ngIf="!isLoading && events && events.length === 0" class="empty-state">
-    <div class="empty-icon"><nb-icon icon="calendar-outline"></nb-icon></div>
+    <div class="empty-icon"><fa-icon [icon]="icons.faCalendarDays"></fa-icon></div>
     <h3 class="empty-title">No events yet</h3>
     <p class="empty-desc">Events from your communities will appear here.</p>
   </div>
@@ -43,7 +43,7 @@
                   [routerLink]="['/communities', event.kommunity_id, 'events', event.slug]"
                   target="_blank"
                 >
-                  {{ event.name }}<nb-icon icon="external-link-outline"></nb-icon>
+                  {{ event.name }}<fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
                 </a>
                 <app-community-badge [community]="event.kommunity" size="small"></app-community-badge>
                 <span class="event-time" *ngIf="event.start_time">
@@ -74,7 +74,7 @@
                   shape="semi-round"
                   target="_blank"
                 >
-                  <nb-icon icon="settings-2-outline"></nb-icon>
+                  <fa-icon [icon]="icons.faGrip"></fa-icon>
                   Dashboard
                 </a>
                 <a
@@ -86,8 +86,7 @@
                   outline
                   target="_blank"
                 >
-                  <nb-icon icon="eye-outline"></nb-icon>
-                  Public
+                  <fa-icon [icon]="icons.faEye"></fa-icon>
                 </a>
                 <a
                   [routerLink]="['/admin', 'communities', event.kommunity_id, 'event-dashboard', event.slug, 'stats']"
@@ -98,8 +97,7 @@
                   outline
                   target="_blank"
                 >
-                  <nb-icon icon="bar-chart-outline"></nb-icon>
-                  Stats
+                  <fa-icon [icon]="icons.faChartPie"></fa-icon>
                 </a>
               </div>
             </td>
