@@ -24,27 +24,53 @@
 
     <!-- ── Subscription cards ── -->
     <div class="subscriptions-list" *ngIf="subscriptions.length > 0">
-      <!-- Cancelled summary line (shown collapsed at the bottom) -->
       <ng-container *ngFor="let sub of subscriptions">
-        <!-- Cancelled / expired — collapsed row only -->
-        <div class="sub-row-cancelled" *ngIf="sub.status === 'cancelled' || sub.status === 'expired'">
-          <span class="cancelled-icon">
-            <nb-icon icon="close-circle-outline"></nb-icon>
-          </span>
-          <span class="cancelled-text">
-            <strong>{{ sub.product_price?.billing_cycle | titlecase }} {{ sub.product_price?.product_name }}</strong>
-            — {{ sub.status | titlecase }} no action needed
-          </span>
-        </div>
-
-        <!-- All other statuses — full card -->
+        <!-- Every status renders a full card -->
         <div
           class="sub-card"
-          *ngIf="sub.status !== 'cancelled' && sub.status !== 'expired'"
           [class.sub-card-highlight]="hasEmptySlots(sub)"
           [class.sub-card-pending]="sub.status === 'pending'"
           [class.sub-card-failed]="sub.status === 'payment_failed'"
+          [class.sub-card-inactive]="needsRenewal(sub)"
         >
+          <!-- ── Expired / cancelled alert banner ── -->
+          <div class="renew-alert" *ngIf="needsRenewal(sub)" role="alert">
+            <div class="renew-alert-main">
+              <span class="renew-alert-icon">
+                <nb-icon icon="alert-triangle-outline"></nb-icon>
+              </span>
+              <div class="renew-alert-content">
+                <span class="renew-alert-title" *ngIf="sub.status === 'expired'">
+                  Your plan expired
+                  <ng-container *ngIf="sub.ends_at">on {{ sub.ends_at | date : 'MMM d, y' }}</ng-container>
+                </span>
+                <span class="renew-alert-title" *ngIf="sub.status === 'cancelled'">
+                  Your plan was cancelled
+                  <ng-container *ngIf="sub.cancellation_requested_at">
+                    on {{ sub.cancellation_requested_at | date : 'MMM d, y' }}
+                  </ng-container>
+                </span>
+                <span class="renew-alert-desc">
+                  You can no longer create new communities or organizations on this plan. Renew now to restore your
+                  benefits, your existing communities stay untouched.
+                </span>
+              </div>
+            </div>
+            <div class="renew-alert-actions">
+              <button
+                nbButton
+                status="danger"
+                size="small"
+                shape="semi-round"
+                (click)="renewPlan(sub)"
+                [disabled]="renewingSubId === sub.id"
+              >
+                <nb-icon icon="refresh-outline"></nb-icon>
+                {{ renewingSubId === sub.id ? 'Starting…' : 'Renew Plan' }}
+              </button>
+            </div>
+          </div>
+
           <!-- ── Plan row ── -->
           <div class="plan-row">
             <div class="plan-row-left">
@@ -101,6 +127,14 @@
               <!-- Payment failed -->
               <span class="status-pill status-failed" *ngIf="sub.status === 'payment_failed'">
                 <span class="status-dot"></span>Payment Failed
+              </span>
+              <!-- Expired -->
+              <span class="status-pill status-expired" *ngIf="sub.status === 'expired'">
+                <span class="status-dot"></span>Expired
+              </span>
+              <!-- Cancelled -->
+              <span class="status-pill status-cancelled" *ngIf="sub.status === 'cancelled'">
+                <span class="status-dot"></span>Cancelled
               </span>
               <!-- Context menu (Add more communities / Cancel).
                    Rendered only when subMenuItemsMap has non-empty items for
@@ -185,7 +219,15 @@
               </a>
             </div>
 
-            <p class="empty-hint" *ngIf="!(sub.kommunities?.length || 0) && sub.status !== 'pending'">
+            <!-- Expired / cancelled warning -->
+            <span class="locked-hint" *ngIf="needsRenewal(sub)">
+              Community creation is locked until you renew this plan.
+            </span>
+
+            <p
+              class="empty-hint"
+              *ngIf="!(sub.kommunities?.length || 0) && sub.status !== 'pending' && !needsRenewal(sub)"
+            >
               No communities yet, create your first one.
             </p>
           </div>
@@ -251,7 +293,15 @@
               </a>
             </div>
 
-            <p class="empty-hint" *ngIf="!(sub.community_groups?.length || 0) && sub.status !== 'pending'">
+            <!-- Expired / cancelled warning -->
+            <span class="locked-hint" *ngIf="needsRenewal(sub)">
+              Organization creation is locked until you renew this plan.
+            </span>
+
+            <p
+              class="empty-hint"
+              *ngIf="!(sub.community_groups?.length || 0) && sub.status !== 'pending' && !needsRenewal(sub)"
+            >
               No organizations yet, create your first one.
             </p>
           </div>

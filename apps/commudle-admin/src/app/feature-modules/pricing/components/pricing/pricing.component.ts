@@ -190,10 +190,12 @@ export class PricingComponent implements OnInit, OnDestroy {
             const trialParam = withTrial === true ? '?with_trial=1' : '';
             window.location.href = `/checkout/${response.uuid}${trialParam}`;
           }
+          dialogRef.close();
         },
         (error) => {
           this.isFullPageLoading = false;
           console.error('Error creating purchase order:', error);
+          dialogRef.close();
         },
       );
     });

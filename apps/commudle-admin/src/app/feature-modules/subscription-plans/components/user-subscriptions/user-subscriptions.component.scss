@@ -68,21 +68,6 @@
     }
   }
 
-  /* ── Cancelled/expired collapsed row ── */
-  .sub-row-cancelled {
-    @apply com-flex com-items-center com-gap-2 com-py-2 com-px-1 com-text-xs com-text-Cadet-Grey;
-
-    .cancelled-icon {
-      nb-icon {
-        @apply com-text-base com-text-Cadet-Grey;
-      }
-    }
-
-    strong {
-      @apply com-text-Yankees-Blue;
-    }
-  }
-
   /* ── Subscription card ── */
   .sub-card {
     @apply com-bg-white com-rounded-xl com-border com-border-solid com-border-Bright-Gray com-overflow-hidden;
@@ -99,6 +84,50 @@
 
     &.sub-card-failed {
       @apply com-border-red-400;
+    }
+
+    /* Expired or cancelled plan needs attention — red border, no primary highlight */
+    &.sub-card-inactive {
+      @apply com-border-red-400;
+    }
+  }
+
+  /* ── Renew alert banner (top of an expired / cancelled card) ── */
+  .renew-alert {
+    @apply com-flex com-flex-col com-gap-3 com-px-4 com-py-3;
+    @apply com-bg-red-50 com-border-0 com-border-b com-border-solid com-border-red-100;
+
+    @screen sm {
+      @apply com-flex-row com-items-center com-justify-between com-gap-4;
+    }
+
+    .renew-alert-main {
+      @apply com-flex com-items-start com-gap-3 com-min-w-0 com-flex-1;
+    }
+
+    .renew-alert-icon {
+      @apply com-flex com-items-center com-justify-center com-flex-shrink-0;
+      @apply com-w-8 com-h-8 com-rounded-lg com-bg-red-100;
+
+      nb-icon {
+        @apply com-text-base com-text-red-600;
+      }
+    }
+
+    .renew-alert-content {
+      @apply com-flex com-flex-col com-gap-0.5 com-min-w-0;
+
+      .renew-alert-title {
+        @apply com-text-sm com-font-bold com-text-red-700;
+      }
+
+      .renew-alert-desc {
+        @apply com-text-xs com-text-red-600 com-leading-relaxed;
+      }
+    }
+
+    .renew-alert-actions {
+      @apply com-flex com-items-center com-gap-2 com-flex-shrink-0 com-flex-wrap;
     }
   }
 
@@ -182,6 +211,22 @@
 
         &.status-failed {
           @apply com-bg-red-100 com-text-red-600;
+
+          .status-dot {
+            @apply com-bg-red-500;
+          }
+        }
+
+        &.status-expired {
+          @apply com-bg-red-100 com-text-red-700;
+
+          .status-dot {
+            @apply com-bg-red-500;
+          }
+        }
+
+        &.status-cancelled {
+          @apply com-bg-red-100 com-text-red-700;
 
           .status-dot {
             @apply com-bg-red-500;
@@ -311,6 +356,10 @@
 
     .renews-hint {
       @apply com-text-xs com-text-yellow-600 com-font-medium;
+    }
+
+    .locked-hint {
+      @apply com-text-xs com-text-red-600 com-font-medium;
     }
 
     .empty-hint {
