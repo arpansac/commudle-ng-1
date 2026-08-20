@@ -8,8 +8,8 @@
 
 // ── Themed org header ──
 .cg-header {
-  @apply com-relative com-flex com-flex-col com-gap-4 com-p-6 com-rounded-none com-text-white com-overflow-hidden;
-  @apply sm:com-flex-row sm:com-items-center sm:com-justify-between md:com-rounded-md;
+  @apply com-relative com-flex com-flex-col com-gap-4 com-p-6 com-rounded-none com-text-white com-overflow-hidden com-justify-between;
+  @apply md:com-flex-row md:com-items-center md:com-rounded-md;
 
   .cg-identity {
     @apply com-flex com-items-center com-gap-4 com-min-w-0;
