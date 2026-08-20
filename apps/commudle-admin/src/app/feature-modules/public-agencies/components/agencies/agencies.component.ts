@@ -8,22 +8,22 @@ import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-    selector: 'commudle-agencies',
-    templateUrl: './agencies.component.html',
-    styleUrls: ['./agencies.component.scss'],
-    standalone: false
+  selector: 'commudle-agencies',
+  templateUrl: './agencies.component.html',
+  styleUrls: ['./agencies.component.scss'],
+  standalone: false,
 })
 export class AgenciesComponent implements OnInit, OnDestroy {
   staticAssets = staticAssets;
   headerImgUrl = staticAssets.agencies_header_image;
   stats: any[] = [
     {
-      number: '107+k',
+      number: '310k+',
       name: 'Developers',
       description: 'Thousands of developers use Commudle to share knowledge, build recognition and find opportunities.',
     },
     {
-      number: '250k',
+      number: '600k+',
       name: 'Community Roles',
       description:
         'From being an organizer at a developer community to participating as a member in multiple others, developers empower each other by sharing knowledge.',
