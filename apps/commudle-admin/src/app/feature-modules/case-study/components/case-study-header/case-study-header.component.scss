@@ -1,5 +1,6 @@
 .header {
   @apply com-h-full;
+
   .background-image {
     @apply com-relative com-m-0 com-p-0 com-w-full com-h-full com-bg-no-repeat com-bg-contain com-bg-center;
   }
@@ -13,6 +14,10 @@
     z-index: 2;
   }
 
+  .banner-below {
+    @apply md:com-my-9 com-my-6 com-relative;
+  }
+
   .base-layout {
     @apply com-flex com-min-h-0;
   }
@@ -24,15 +29,16 @@
       ::ng-deep {
         h5 {
           @apply com-m-0;
+
           span {
-            @apply md:com-text-tWhite com-text-black #{!important};
+            @apply md:com-text-xl com-text-lg com-font-medium com-text-Yankees-Blue #{!important};
           }
         }
       }
     }
 
     .title {
-      @apply com-text-[32px] com-font-bold md:com-text-tWhite com-text-black com-m-0 md:com-mt-0 com-mt-1 com-mb-3;
+      @apply md:com-text-2xl com-text-xl com-font-semibold com-text-Yankees-Blue com-m-0 md:com-mt-0 com-mt-1 com-mb-3;
     }
   }
 
@@ -43,6 +49,7 @@
       ::ng-deep {
         h5 {
           @apply com-m-0;
+
           span {
             @apply com-text-black #{!important};
           }
@@ -57,6 +64,7 @@
 
   .logo-image {
     @apply com-h-[140px] com-w-[170px] md:com-mr-6 com-mr-0 com-flex com-flex-shrink-0 com-bg-tWhite com-rounded-[20px];
+
     img {
       @apply com-h-full com-w-full com-rounded-[20px] com-object-cover;
     }
