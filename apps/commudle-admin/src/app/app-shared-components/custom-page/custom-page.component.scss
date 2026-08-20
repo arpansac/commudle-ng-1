@@ -45,10 +45,10 @@
             @apply com-flex com-items-center;
 
             .page-link {
-              @apply com-text-Yankees-Blue com-no-underline com-cursor-pointer com-flex com-items-center com-gap-1 hover:com-border-0 hover:com-border-b hover:com-border-solid hover:com-border-gray-400;
+              @apply com-text-Yankees-Blue com-no-underline com-cursor-pointer com-inline com-gap-1 hover:com-border-0 hover:com-border-b hover:com-border-solid hover:com-border-gray-400;
 
               fa-icon {
-                @apply com-text-xs;
+                @apply com-text-xs com-ml-1;
               }
             }
           }
