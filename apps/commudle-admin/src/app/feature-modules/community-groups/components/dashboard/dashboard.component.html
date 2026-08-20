@@ -80,11 +80,11 @@
       </div>
 
       <!-- Community identity footer -->
-      <div sidebarFooter class="community-identity" *ngIf="communityGroup && sidebarExpanded">
+      <div sidebarFooter class="community-identity" *ngIf="communityGroup">
         <div class="community-logo">
           <img [src]="logoUrl" [alt]="communityGroup.name" />
         </div>
-        <div class="community-info">
+        <div *ngIf="sidebarExpanded" class="community-info">
           <span class="community-name">{{ communityGroup.name }}</span>
           <app-subscription-plan-badge
             [subscriptionId]="groupSubscriptionId"

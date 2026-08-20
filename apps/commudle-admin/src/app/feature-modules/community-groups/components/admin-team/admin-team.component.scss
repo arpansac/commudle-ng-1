@@ -27,6 +27,7 @@
 
   .invite-section {
     @apply com-mb-4;
+
     .invite-form {
       @apply com-flex com-flex-col com-gap-2;
 
@@ -101,4 +102,20 @@
 
 app-user-profile-horizontal {
   @apply com-w-full;
+}
+
+.remove-dialog {
+  @apply md:com-w-[400px] com-w-full com-m-0;
+
+  .remove-dialog-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+
+  .remove-dialog-text {
+    @apply com-m-0 com-text-sm com-text-gray-700;
+  }
+
+  .remove-dialog-footer {
+    @apply com-flex com-justify-end com-gap-2;
+  }
 }
