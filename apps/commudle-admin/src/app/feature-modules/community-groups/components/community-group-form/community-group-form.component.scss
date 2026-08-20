@@ -30,8 +30,7 @@
   // Theme-color banner overrides
   .cf-media {
     .cf-banner-theme {
-      @apply com-border-none com-cursor-default;
-      aspect-ratio: 1280 / 192;
+      @apply com-border-none com-cursor-default md:com-aspect-[1280/192] com-aspect-[3/1];
     }
 
     .cf-theme-picker {
@@ -63,10 +62,10 @@
     }
 
     .cf-logo-row {
-      @apply com-flex com-items-end com-gap-3 com-px-4 -com-mt-[93px] com-relative com-z-10;
+      @apply com-flex com-flex-col com-items-start md:com-flex-row md:com-items-end com-gap-3 com-px-4 -com-mt-[40px] md:-com-mt-[93px] com-relative com-z-10;
 
       .cf-logo {
-        @apply com-w-[176px] com-h-[176px];
+        @apply com-w-[80px] com-h-[80px] md:com-w-[176px] md:com-h-[176px];
 
         img {
           @apply com-w-full com-h-full com-object-contain com-block;
