@@ -5,12 +5,12 @@ import { IPageInfo } from '@commudle/shared-models';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
-
+import { faHashtag } from '@fortawesome/free-solid-svg-icons';
 @Component({
-    selector: 'commudle-public-home-list-hackathons-homeage',
-    templateUrl: './public-home-list-hackathons-homeage.component.html',
-    styleUrl: './public-home-list-hackathons-homeage.component.scss',
-    standalone: false
+  selector: 'commudle-public-home-list-hackathons-homeage',
+  templateUrl: './public-home-list-hackathons-homeage.component.html',
+  styleUrl: './public-home-list-hackathons-homeage.component.scss',
+  standalone: false,
 })
 export class PublicHomeListHackathonsHomeageComponent implements OnInit, OnDestroy {
   showSpinnerUpcoming = true;
@@ -22,7 +22,7 @@ export class PublicHomeListHackathonsHomeageComponent implements OnInit, OnDestr
   limit = 20;
   isMobileView: boolean;
   private readonly isBrowser: boolean;
-
+  faHashtag = faHashtag;
   constructor(
     private hackathonService: HackathonService,
     private seoService: SeoService,

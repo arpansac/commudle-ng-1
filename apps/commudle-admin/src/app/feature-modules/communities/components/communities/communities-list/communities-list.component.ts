@@ -8,7 +8,7 @@ import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communi
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Output, EventEmitter } from '@angular/core';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { faHashtag } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-communities-list',
@@ -38,7 +38,7 @@ export class CommunitiesListComponent implements OnInit, OnDestroy {
   loadingData = false;
   loadingCommunities = false;
   private isBrowser: boolean;
-  faLink = faLink;
+  faHashtag = faHashtag;
 
   @Output() seoTitleChange = new EventEmitter<string>();
 

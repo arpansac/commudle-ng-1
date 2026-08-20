@@ -13,7 +13,7 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from '@commudle/shared-services';
 import { PdfXssValidationService } from '@commudle/shared-components';
-
+import { faHashtag } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-user-resume',
   templateUrl: './user-resume.component.html',
@@ -35,6 +35,7 @@ export class UserResumeComponent implements OnInit, OnChanges, OnDestroy {
   dialogRef: NbDialogRef<any>;
 
   faClipboard = faClipboard;
+  faHashtag = faHashtag;
 
   @ViewChild('userResumeDialog', { static: true }) userResumeDialog: TemplateRef<any>;
 

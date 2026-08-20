@@ -1,9 +1,5 @@
 h2 {
-  @apply md:com-text-4xl com-text-2xl com-font-bold com-text-Yankees-Blue com-m-0 md:com-mb-[52px] com-mb-10 com-text-center;
-}
-
-a {
-  @apply com-no-underline;
+  @apply com-no-underline md:com-text-4xl com-text-2xl com-font-bold com-text-Yankees-Blue com-m-0 md:com-mb-[52px] com-mb-10 com-text-center;
 }
 
 .faq-cards {

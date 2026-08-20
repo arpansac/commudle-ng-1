@@ -71,6 +71,7 @@ a {
 
         .title {
           @apply com-mb-4 com-text-2xl com-font-extrabold com-tracking-tight com-text-center com-text-black md:com-leading-tight sm:com-text-left md:com-text-4xl;
+          // @apply com-flex com-items-center md:com-mb-2 md:com-mt-6 com-my-6 md:com-text-2xl com-text-xl com-m-0 md:com-font-bold com-font-semibold com-text-Dark-Jungle-Green com-mb-2;
         }
 
         .description {

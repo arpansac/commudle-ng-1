@@ -6,7 +6,7 @@ import { FooterService } from 'apps/commudle-admin/src/app/services/footer.servi
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { faHashtag } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-about',
   templateUrl: './about.component.html',
@@ -17,8 +17,7 @@ export class AboutComponent implements OnInit, OnDestroy {
   ICmsAbout: ICMSAbout;
   staticAssets = staticAssets;
   imgUrl: string;
-  faLink = faLink;
-
+  faHashtag = faHashtag;
   constructor(private cmsService: CmsService, private seoService: SeoService, private footerService: FooterService) {}
 
   ngOnInit(): void {

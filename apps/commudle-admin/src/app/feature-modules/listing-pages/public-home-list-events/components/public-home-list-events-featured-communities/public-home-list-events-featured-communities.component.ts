@@ -5,7 +5,7 @@ import { FeaturedItemsService } from 'apps/commudle-admin/src/app/services/featu
 import { IFeaturedItems } from 'apps/shared-models/featured-items.model';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-
+import { faHashtag } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'commudle-public-home-list-events-featured-communities',
   templateUrl: './public-home-list-events-featured-communities.component.html',
@@ -22,6 +22,7 @@ export class PublicHomeListEventsFeaturedCommunitiesComponent implements OnInit,
   private readonly isBrowser: boolean;
   private readonly destroy$ = new Subject<void>();
   faLink = faLink;
+  faHashtag = faHashtag;
 
   constructor(
     private featuredItemsService: FeaturedItemsService,

@@ -10,9 +10,7 @@ com-card {
 
     .title {
       @apply com-m-0 com-leading-[0];
-      a {
-        @apply com-text-base com-font-semibold com-text-Yankees-Blue com-mb-1 com-mt-0 com-mx-0 com-no-underline lg:com-text-sm;
-      }
+      @apply com-text-base com-font-semibold com-text-Yankees-Blue com-mb-1 com-mt-0 com-mx-0 com-no-underline lg:com-text-sm;
     }
     .sub-heading {
       @apply com-text-sm com-font-normal com-text-gray-500 com-m-0 lg:com-text-xs;

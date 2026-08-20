@@ -41,6 +41,7 @@ import {
   faLink,
   faGlobe,
   faEllipsisVertical,
+  faHashtag,
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faLinkedin, faInstagram, faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
 @Component({
@@ -82,6 +83,7 @@ export class PublicHackathonDetailsComponent implements OnInit, OnDestroy {
     faGithub,
     faGlobe,
     faEllipsisVertical,
+    faHashtag,
   };
 
   onSponsorStripGradientEnter = onSponsorStripGradientEnter;
