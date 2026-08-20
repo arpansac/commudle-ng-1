@@ -80,7 +80,7 @@
       </div>
 
       <!-- Community identity footer -->
-      <div sidebarFooter class="community-identity" *ngIf="communityGroup">
+      <div sidebarFooter class="community-identity" *ngIf="communityGroup && !isMobileView">
         <div class="community-logo">
           <img [src]="logoUrl" [alt]="communityGroup.name" />
         </div>
