@@ -6,20 +6,20 @@
       [name]="caseStudyPageHeader.title"
       [aspectRatio]="'4/1'"
     ></commudle-banner-image>
-    <div class="base-layout">
-      <div class="container">
-        <div class="content banner">
-          <div class="logo-image" *ngIf="caseStudyPageHeader?.logoImage">
-            <img
-              [src]="imageUrl(caseStudyPageHeader.logoImage).url()"
-              alt="{{ caseStudyPageHeader.title }}"
-              title="{{ caseStudyPageHeader.title }}"
-            />
-          </div>
-          <div class="header-text-banner">
-            <h1 class="title">{{ caseStudyPageHeader.title }}</h1>
-            <div [innerHTML]="richTextTagline"></div>
-          </div>
+  </div>
+  <div *ngIf="caseStudyPageHeader?.logoImage || caseStudyPageHeader.title" class="base-layout">
+    <div class="container">
+      <div class="content banner-below">
+        <div class="logo-image" *ngIf="caseStudyPageHeader?.logoImage">
+          <img
+            [src]="imageUrl(caseStudyPageHeader.logoImage).url()"
+            alt="{{ caseStudyPageHeader.title }}"
+            title="{{ caseStudyPageHeader.title }}"
+          />
+        </div>
+        <div class="header-text-banner">
+          <h1 class="title">{{ caseStudyPageHeader.title }}</h1>
+          <div [innerHTML]="richTextTagline"></div>
         </div>
       </div>
     </div>
