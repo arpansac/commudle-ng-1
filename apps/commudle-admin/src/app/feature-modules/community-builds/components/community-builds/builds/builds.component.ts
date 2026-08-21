@@ -6,7 +6,6 @@ import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { IPagination } from 'apps/shared-models/pagination.model';
 import { Output, EventEmitter } from '@angular/core';
 import { SeoService } from '@commudle/shared-services';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-builds',
@@ -33,7 +32,6 @@ export class BuildsComponent implements OnInit {
   selectedTags = [];
   isCampaignMode = false;
   schemaForBuild = [];
-  faLink = faLink;
 
   @Output() seoMetadataChange = new EventEmitter<object>();
   @Output() totalSubmissionsChange = new EventEmitter<number>();
