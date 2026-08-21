@@ -62,7 +62,6 @@ export class HackathonsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.communityGroupsService.pHackathons(this.communityGroup.slug, this.page, this.count).subscribe((data) => {
         this.hackathons = data.values;
-        console.log(this.hackathons);
         this.total = data.total;
         this.page = data.page;
         this.count = data.count;

@@ -57,7 +57,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.checkMobileView();
-    window.addEventListener('resize', () => this.checkMobileView());
     this.footerService.changeMiniFooterStatus(false);
     this.seoService.noIndex(true);
 
@@ -84,7 +83,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    window.removeEventListener('resize', () => this.checkMobileView());
     this.seoService.noIndex(false);
     this.footerService.changeMiniFooterStatus(true);
     this.subscriptions.forEach((sub) => sub.unsubscribe());
