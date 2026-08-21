@@ -19,7 +19,7 @@ export class BadgeComponent {
   @Input() faIcon: any;
   @Input() dotMode: boolean;
   @Input() position: 'top right' | 'top left' | 'right center' | 'left center' | 'center right' | 'center left';
-  @Input() borderRadius: 'rectangle' | 'semi-round' | 'round' | 'full-round' = 'rectangle';
+  @Input() borderRadius: 'rectangle' | 'semi-round' | 'round' | 'full-round' | 'rounded' = 'rectangle';
 
   // bg;
 
