@@ -60,11 +60,11 @@
 }
 
 .continue-btn {
-  @apply com-mt-4 com-sticky com-bottom-0 com-p-4 com-bg-white com-shadow-none;
+  @apply com-mt-4 com-sticky com-bottom-0 com-py-4 com-px-0 com-bg-white com-shadow-none;
 }
 
 .mobile-nav-offset {
-  @apply com-bottom-[58px] com-px-0 md:com-bottom-0 md:com-bg-transparent;
+  @apply com-bottom-[58px] com-px-4 md:com-bottom-0 md:com-px-0 md:com-bg-transparent;
 }
 .domain-input {
   @apply com-mt-4;
