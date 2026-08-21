@@ -78,7 +78,6 @@ import { SkeletonCardsComponent } from 'apps/commudle-admin/src/app/feature-modu
 import { CommudleCardModule } from '@commudle/commudle-theme';
 import { UserFeaturesStatsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-features-stats/user-features-stats.component';
 import { UserProfileQrCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-profile-qr-card/user-profile-qr-card.component';
-
 @NgModule({
   declarations: [
     PublicProfileComponent,

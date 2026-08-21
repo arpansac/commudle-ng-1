@@ -1,5 +1,5 @@
 .basic-details-container {
-  @apply com-flex com-flex-col com-min-h-full;
+  @apply com-flex com-flex-col com-min-h-full com-p-3 md:com-pl-6 com-pr-6 com-pb-0;
 }
 
 .submit-button {
