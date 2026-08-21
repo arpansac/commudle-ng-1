@@ -71,6 +71,9 @@ a {
 
         .title {
           @apply com-mb-4 com-text-2xl com-font-extrabold com-tracking-tight com-text-center com-text-black md:com-leading-tight sm:com-text-left md:com-text-4xl;
+          .anchor-link {
+            vertical-align: middle;
+          }
         }
 
         .description {
@@ -124,6 +127,9 @@ a {
           @apply com-my-5 sm:com-mx-auto sm:com-max-w-xl sm:com-my-4 lg:com-max-w-5xl;
           .title {
             @apply com-text-3xl com-font-extrabold com-tracking-tight sm:com-text-4xl com-text-Yankees-Blue;
+            .anchor-link {
+              vertical-align: middle;
+            }
           }
 
           .description {
@@ -164,6 +170,9 @@ a {
 
           .title {
             @apply com-text-3xl com-font-extrabold com-tracking-tight sm:com-text-4xl com-text-Yankees-Blue;
+            .anchor-link {
+              vertical-align: middle;
+            }
           }
           .description {
             @apply com-text-xl com-text-gray-500;
