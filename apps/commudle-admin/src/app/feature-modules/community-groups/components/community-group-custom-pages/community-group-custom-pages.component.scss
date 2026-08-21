@@ -1,0 +1,19 @@
+.pages-page {
+  @apply com-flex com-flex-col com-gap-4;
+
+  .page-header {
+    @apply com-flex com-flex-col com-gap-0.5 com-mb-4;
+
+    .page-title {
+      @apply com-flex com-items-center com-gap-2 com-m-0 com-text-lg com-font-semibold com-text-Yankees-Blue;
+
+      nb-icon {
+        @apply com-text-primary-500;
+      }
+    }
+  }
+
+  .pages-content {
+    @apply com-w-full;
+  }
+}

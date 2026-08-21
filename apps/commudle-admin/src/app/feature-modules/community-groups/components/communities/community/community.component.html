@@ -3,12 +3,9 @@
   <header class="page-header">
     <div class="header-info">
       <h1 class="page-title">
-        <nb-icon icon="globe-outline"></nb-icon>
+        <fa-icon [icon]="icons.faGlobe"></fa-icon>
         Communities
       </h1>
-      <p class="page-subtitle">
-        Manage every community under <strong>{{ communityGroup.name }}</strong>
-      </p>
       <div class="header-quota" *ngIf="communityGroup.community_count_limit">
         <span
           class="quota-count"
@@ -22,7 +19,7 @@
 
     <div class="header-actions">
       <button
-        nbButton
+        comButton
         status="primary"
         shape="semi-round"
         (click)="openCreateCommunityDialog()"
@@ -32,13 +29,13 @@
           (communityGroup.community_count_limit ?? 0) <= (communities?.length ?? 0)
         "
       >
-        <nb-icon icon="plus-outline"></nb-icon>
+        <fa-icon [icon]="icons.faPlus"></fa-icon>
         New community
       </button>
 
       <button
         *ngIf="communityGroup.user_subscription_id"
-        nbButton
+        comButton
         status="info"
         outline
         shape="semi-round"
@@ -114,6 +111,7 @@
               <nb-toggle
                 (click)="toggleEmailVisibility(community.id)"
                 status="basic"
+                size="tiny"
                 [(checked)]="community.emails_visible"
               ></nb-toggle>
             </td>
@@ -122,6 +120,7 @@
               <nb-toggle
                 (click)="togglePaymentEnable(community.id)"
                 status="basic"
+                size="tiny"
                 [(checked)]="community.payments_enabled"
               ></nb-toggle>
             </td>
@@ -130,38 +129,36 @@
               <div class="community-actions">
                 <a
                   [routerLink]="['/admin', 'communities', community.id]"
-                  nbButton
+                  comButton
                   status="primary"
-                  size="small"
+                  size="tiny"
                   shape="semi-round"
                   target="_blank"
                 >
-                  <nb-icon icon="settings-2-outline"></nb-icon>
+                  <fa-icon [icon]="icons.faGrip"></fa-icon>
                   Dashboard
                 </a>
                 <a
                   [routerLink]="['/communities', community.id]"
-                  nbButton
+                  comButton
                   status="basic"
-                  size="small"
+                  size="tiny"
                   shape="semi-round"
                   outline
                   target="_blank"
                 >
-                  <nb-icon icon="eye-outline"></nb-icon>
-                  Public
+                  <fa-icon [icon]="icons.faEye"></fa-icon>
                 </a>
                 <a
                   [routerLink]="['/admin', 'communities', community.id, 'stats']"
-                  nbButton
+                  comButton
                   status="success"
-                  size="small"
+                  size="tiny"
                   shape="semi-round"
                   outline
                   target="_blank"
                 >
-                  <nb-icon icon="bar-chart-outline"></nb-icon>
-                  Stats
+                  <fa-icon [icon]="icons.faChartPie"></fa-icon>
                 </a>
               </div>
             </td>
@@ -186,14 +183,14 @@
 
 <!-- ── Add More Communities dialog ── -->
 <ng-template #addCommunitiesDialog let-ref="dialogRef">
-  <nb-card class="add-communities-dialog">
-    <nb-card-header class="dialog-header">
+  <com-card class="add-communities-dialog">
+    <com-card-header class="dialog-header">
       <span>Add more communities</span>
-      <button ghost nbButton size="small" shape="round" (click)="ref.close()" [disabled]="isAddingCommunities">
+      <button comButton ghost size="small" shape="round" (click)="ref.close()" [disabled]="isAddingCommunities">
         <nb-icon icon="close"></nb-icon>
       </button>
-    </nb-card-header>
-    <nb-card-body class="dialog-body">
+    </com-card-header>
+    <com-card-body class="dialog-body">
       <p class="dialog-text">
         You'll be charged a prorated amount for the remaining days in your current billing cycle. Starting next cycle,
         your recurring charge will increase by the new communities.
@@ -210,7 +207,7 @@
         <label>Communities</label>
         <div class="stepper-controls">
           <button
-            nbButton
+            comButton
             size="tiny"
             shape="round"
             (click)="extraCommunities = extraCommunities > 1 ? extraCommunities - 1 : 1"
@@ -220,7 +217,7 @@
           </button>
           <span class="stepper-value">{{ extraCommunities }}</span>
           <button
-            nbButton
+            comButton
             size="tiny"
             shape="round"
             (click)="extraCommunities = extraCommunities + 1"
@@ -230,13 +227,13 @@
           </button>
         </div>
       </div>
-    </nb-card-body>
-    <nb-card-footer class="dialog-actions">
-      <button nbButton status="basic" shape="semi-round" (click)="ref.close()" [disabled]="isAddingCommunities">
+    </com-card-body>
+    <com-card-footer class="dialog-actions">
+      <button comButton status="basic" shape="semi-round" (click)="ref.close()" [disabled]="isAddingCommunities">
         Cancel
       </button>
       <button
-        nbButton
+        comButton
         status="primary"
         shape="semi-round"
         (click)="confirmAddCommunities(ref)"
@@ -244,6 +241,6 @@
       >
         {{ isAddingCommunities ? 'Processing...' : 'Proceed to pay' }}
       </button>
-    </nb-card-footer>
-  </nb-card>
+    </com-card-footer>
+  </com-card>
 </ng-template>

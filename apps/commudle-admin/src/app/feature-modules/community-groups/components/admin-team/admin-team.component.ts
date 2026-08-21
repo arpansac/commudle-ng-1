@@ -6,14 +6,15 @@ import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { EUserRolesUserStatus, IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
+import { NbDialogService } from '@commudle/theme';
 import { Subscription } from 'rxjs';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-    selector: 'commudle-admin-team',
-    templateUrl: './admin-team.component.html',
-    styleUrls: ['./admin-team.component.scss'],
-    standalone: false
+  selector: 'commudle-admin-team',
+  templateUrl: './admin-team.component.html',
+  styleUrls: ['./admin-team.component.scss'],
+  standalone: false,
 })
 export class AdminTeamComponent implements OnInit, OnDestroy {
   team: IUserRolesUser[] = [];
@@ -30,6 +31,7 @@ export class AdminTeamComponent implements OnInit, OnDestroy {
     private toastLogService: LibToastLogService,
     private fb: FormBuilder,
     private seoService: SeoService,
+    private dialogService: NbDialogService,
   ) {
     this.userRolesUserForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -73,10 +75,16 @@ export class AdminTeamComponent implements OnInit, OnDestroy {
     });
   }
 
-  remove(index) {
+  openRemoveConfirmation(index, templateRef) {
+    this.dialogService.open(templateRef, {
+      context: { index },
+    });
+  }
+
+  remove(index, ref) {
     this.userRolesUsersService.removeUserRolesUser(this.team[index].id).subscribe((data) => {
       this.team.splice(index, 1);
-
+      ref.close();
       this.toastLogService.successDialog('Removed and informed by email!', 3000);
     });
   }

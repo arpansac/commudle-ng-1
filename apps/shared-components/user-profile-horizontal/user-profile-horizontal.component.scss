@@ -1,10 +1,7 @@
 @import './apps/commudle-admin/src/assets/styles/variables';
 
 .user {
-  align-items: flex-start;
-  display: flex;
-  padding: 0.5rem 0.5rem 0.5rem 0;
-  position: relative;
+  @apply com-flex com-items-start com-p-0 com-relative;
 
   .profile-picture {
     display: flex;

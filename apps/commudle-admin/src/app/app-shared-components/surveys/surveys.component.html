@@ -1,5 +1,5 @@
 <div class="header-section">
-  <h1 class="page-title">Surveys</h1>
+  <h1 *ngIf="showHeading" class="page-title">Surveys</h1>
   <a *appBreakpoints="'<=lg'" nbButton status="primary" shape="semi-round" (click)="openBottomSheet()"
     ><fa-icon [icon]="faPlus"></fa-icon> &nbsp; New Survey Form
   </a>

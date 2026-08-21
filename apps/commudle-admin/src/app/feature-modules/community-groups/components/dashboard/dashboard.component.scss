@@ -1,5 +1,9 @@
 .community-mobile-header {
-  @apply com-items-center com-gap-3 com-p-4 com-border-b com-border-gray-200 md:com-hidden;
+  @apply com-items-center com-gap-3 com-p-3 com-bg-white com-border-0 com-border-b com-border-solid com-border-Bright-Gray md:com-hidden;
+
+  .toggle-sidebar-btn {
+    @apply com-mr-2 com-text-Yankees-Blue;
+  }
 
   .community-logo-mobile {
     @apply com-flex com-items-center com-gap-3;
@@ -9,13 +13,13 @@
     }
 
     span {
-      @apply com-font-semibold com-text-gray-900;
+      @apply com-text-lg com-font-semibold com-text-Yankees-Blue;
     }
   }
 }
 
 .sidebar {
-  @apply com-sticky com-top-navbar-desktop com-h-[calc(100vh-52px)] com-flex-shrink-0 com-flex com-flex-col com-overflow-hidden;
+  @apply md:com-sticky com-top-navbar-desktop com-h-[calc(100vh-52px)] com-flex-shrink-0 com-flex com-flex-col com-overflow-hidden;
 }
 
 a {
@@ -32,9 +36,13 @@ a {
   .action-button {
     @apply com-p-2 com-pr-3 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer com-text-gray-700;
 
+    &.sub-item {
+      @apply com-pl-9;
+    }
+
     &.active,
     &:hover {
-      @apply com-bg-primary-100 com-text-Yankees-Blue;
+      @apply com-bg-Azure-opacity-10;
 
       .heading {
         @apply com-font-semibold com-text-primary-500;
@@ -75,40 +83,14 @@ a {
   }
 }
 
-.mobile-nav {
-  @apply com-w-full com-p-4;
-
-  nb-card {
-    @apply com-m-0;
-  }
-
-  .menu {
-    @apply com-flex com-flex-wrap com-gap-2;
-
-    .action-button {
-      @apply com-flex com-flex-col com-items-center com-gap-1 com-p-3 com-rounded-lg com-cursor-pointer com-text-gray-600;
-      @apply com-border com-border-transparent;
-
-      &.active,
-      &:hover {
-        @apply com-bg-primary-100 com-text-primary-500 com-border-primary-300;
-      }
-
-      .icon {
-        @apply com-text-lg;
-      }
-
-      .heading {
-        @apply com-text-xs com-font-medium;
-      }
-    }
-  }
-}
-
 .right-column {
   @apply com-flex-1 com-min-w-0;
 
   .router {
-    @apply com-w-full com-max-w-screen-xl com-mx-auto com-mt-4;
+    @apply com-w-full com-max-w-screen-xl com-mx-auto com-mt-4 md:com-ml-6 com-px-0;
+
+    com-card-body {
+      @apply com-p-4;
+    }
   }
 }

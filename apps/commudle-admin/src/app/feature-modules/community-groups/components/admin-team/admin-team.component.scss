@@ -1,14 +1,121 @@
-.form {
-  @apply com-mb-3;
+.admin-team-page {
+  @apply com-flex com-flex-col com-gap-4 com-p-0;
+
+  .page-header {
+    @apply com-flex com-flex-col md:com-flex-row md:com-items-center md:com-justify-between com-gap-3 com-mb-4;
+
+    .header-info {
+      @apply com-flex com-flex-col com-gap-0.5;
+
+      .page-title {
+        @apply com-flex com-items-center com-gap-2 com-m-0 com-text-lg com-font-semibold com-text-Yankees-Blue;
+
+        nb-icon {
+          @apply com-text-primary-500;
+        }
+      }
+
+      .page-subtitle {
+        @apply com-m-0 com-text-xs com-text-Cadet-Grey;
+
+        strong {
+          @apply com-font-medium com-text-Yankees-Blue;
+        }
+      }
+    }
+  }
+
+  .invite-section {
+    @apply com-mb-4;
+
+    .invite-form {
+      @apply com-flex com-flex-col com-gap-2;
+
+      .invite-label {
+        @apply com-text-sm com-font-medium com-text-Yankees-Blue;
+      }
+
+      .invite-controls {
+        @apply com-flex com-flex-wrap com-items-center com-gap-3;
+
+        input {
+          @apply com-max-w-xs;
+        }
+      }
+    }
+  }
+
+  .loading-state,
+  .empty-state {
+    @apply com-flex com-flex-col com-pt-5 com-pb-12 com-text-center;
+  }
+
+  .empty-state {
+    .empty-icon {
+      @apply com-flex com-items-center com-justify-center com-w-14 com-h-14 com-mb-3 com-rounded-full com-bg-gray-100 com-text-gray-400;
+
+      nb-icon {
+        @apply com-text-2xl;
+      }
+    }
+
+    .empty-title {
+      @apply com-m-0 com-mb-1.5 com-text-base com-font-semibold com-text-Yankees-Blue;
+    }
+
+    .empty-desc {
+      @apply com-m-0 com-text-sm com-text-Cadet-Grey;
+    }
+  }
+
+  .team-list {
+    @apply com-flex com-flex-col;
+
+    .team-member {
+      @apply com-flex com-flex-col md:com-flex-row com-items-start md:com-items-center md:com-justify-between com-justify-center com-py-3 com-gap-2;
+      @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
+      &:last-child {
+        @apply com-border-b-0;
+      }
+
+      .member-actions {
+        @apply com-flex com-items-center com-gap-3 com-flex-shrink-0 md:com-ml-0 com-ml-[64px];
+
+        .action-link {
+          @apply com-text-xs com-font-medium com-cursor-pointer com-no-underline;
+
+          &.resend {
+            @apply com-text-primary-500;
+            @apply hover:com-text-primary-700;
+          }
+
+          &.remove {
+            @apply com-text-Infra-Red;
+            @apply hover:com-text-red-700;
+          }
+        }
+      }
+    }
+  }
 }
 
-.member {
-  @apply com-flex com-items-center com-justify-between com-w-1/2;
+app-user-profile-horizontal {
+  @apply com-w-full;
 }
 
-.member:not(:last-child) {
-  @apply com-border-0 com-border-b-2 com-border-solid com-border-Bright-Gray;
-}
-.actions {
-  @apply com-w-28;
+.remove-dialog {
+  @apply md:com-w-[400px] com-w-full com-m-0;
+
+  .remove-dialog-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+
+  .remove-dialog-text {
+    @apply com-m-0 com-text-sm com-text-gray-700;
+  }
+
+  .remove-dialog-footer {
+    @apply com-flex com-justify-end com-gap-2;
+  }
 }

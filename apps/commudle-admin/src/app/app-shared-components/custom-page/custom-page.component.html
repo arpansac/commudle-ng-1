@@ -1,5 +1,5 @@
 <div class="page-builder-container">
-  <div class="header-section">
+  <div class="header-section" *ngIf="showHeading">
     <h1 class="page-title">Page Builder</h1>
     <a
       *ngIf="isLoading || (pages && pages.length > 0)"

@@ -1,33 +1,33 @@
 .communities-page {
-  @apply com-flex com-flex-col com-gap-6 com-py-4;
+  @apply com-flex com-flex-col com-gap-6 com-pt-4;
 
   .page-header {
-    @apply com-flex com-flex-col md:com-flex-row md:com-items-center md:com-justify-between com-gap-4;
+    @apply com-flex com-flex-col md:com-flex-row md:com-items-center md:com-justify-between com-gap-3;
 
     .header-info {
-      @apply com-flex com-flex-col com-gap-1;
+      @apply com-flex com-flex-col com-gap-0.5;
 
       .page-title {
-        @apply com-flex com-items-center com-gap-2 com-m-0 com-text-2xl com-font-bold com-text-Yankees-Blue;
+        @apply com-flex com-items-center com-gap-2 com-m-0 com-text-lg com-font-semibold com-text-Yankees-Blue;
 
-        nb-icon {
+        fa-icon {
           @apply com-text-primary-500;
         }
       }
 
       .page-subtitle {
-        @apply com-m-0 com-text-sm com-text-gray-500;
+        @apply com-m-0 com-text-xs com-text-Cadet-Grey;
 
         strong {
-          @apply com-font-semibold com-text-Yankees-Blue;
+          @apply com-font-medium com-text-Yankees-Blue;
         }
       }
 
       .header-quota {
-        @apply com-inline-flex com-items-center com-gap-2 com-mt-2;
+        @apply com-inline-flex com-items-center com-gap-2 com-mt-1.5;
 
         .quota-count {
-          @apply com-px-3 com-py-1 com-rounded-full com-bg-primary-100 com-text-primary-700 com-text-sm com-font-semibold;
+          @apply com-px-2.5 com-py-0.5 com-rounded-full com-bg-primary-100 com-text-primary-700 com-text-xs com-font-semibold;
 
           &.quota-full {
             @apply com-bg-Infra-Red com-text-white;
@@ -43,32 +43,38 @@
     .header-actions {
       @apply com-flex com-flex-wrap com-items-center com-gap-2;
 
-      nb-icon {
+      nb-icon,
+      fa-icon {
         @apply com-mr-1;
+      }
+
+      button {
+        @apply md:com-w-auto com-w-full;
       }
     }
   }
 
   .loading-state,
   .empty-state {
-    @apply com-flex com-flex-col com-items-center com-justify-center com-py-16 com-text-center;
+    @apply com-flex com-flex-col com-items-center com-justify-center com-py-12 com-text-center;
   }
 
   .empty-state {
     .empty-icon {
-      @apply com-flex com-items-center com-justify-center com-w-16 com-h-16 com-mb-4 com-rounded-full com-bg-gray-100 com-text-gray-400;
+      @apply com-flex com-items-center com-justify-center com-w-14 com-h-14 com-mb-3 com-rounded-full com-bg-gray-100 com-text-gray-400;
 
-      nb-icon {
-        @apply com-text-3xl;
+      nb-icon,
+      fa-icon {
+        @apply com-text-2xl;
       }
     }
 
     .empty-title {
-      @apply com-m-0 com-mb-2 com-text-lg com-font-semibold com-text-Yankees-Blue;
+      @apply com-m-0 com-mb-1.5 com-text-base com-font-semibold com-text-Yankees-Blue;
     }
 
     .empty-desc {
-      @apply com-m-0 com-text-sm com-text-gray-500;
+      @apply com-m-0 com-text-sm com-text-Cadet-Grey;
     }
   }
 
@@ -76,16 +82,16 @@
     @apply com-w-full;
 
     .table-wrapper {
-      @apply com-overflow-x-scroll com-rounded-2xl com-border com-border-solid com-border-Bright-Gray;
+      @apply com-overflow-x-auto com-rounded-lg com-border com-border-solid com-border-Bright-Gray;
 
       .community-table {
-        @apply com-w-full com-border-collapse com-bg-white;
+        @apply com-w-full com-border-collapse;
 
         .table-header {
           @apply com-border-0 com-border-solid com-border-b com-border-Bright-Gray;
 
           th {
-            @apply com-px-4 com-py-3 com-text-left com-text-xs com-font-semibold com-uppercase com-tracking-wide com-text-gray-500 com-whitespace-nowrap;
+            @apply com-px-3 com-py-2.5 com-text-left com-text-xs com-font-medium com-uppercase com-tracking-wide com-text-Cadet-Grey com-whitespace-nowrap;
           }
         }
 
@@ -97,49 +103,61 @@
           }
 
           td {
-            @apply com-px-4 com-py-3 com-align-top com-text-sm com-text-gray-500;
+            @apply com-px-3 com-py-2.5 com-align-top com-text-sm com-text-Cadet-Grey;
           }
 
           .stat-cell {
-            @apply com-font-semibold com-text-Yankees-Blue com-whitespace-nowrap;
+            @apply com-font-medium com-text-Yankees-Blue com-whitespace-nowrap;
           }
 
           .community-meta {
-            @apply com-flex com-flex-col com-gap-1 com-min-w-[160px];
+            @apply com-flex com-flex-col com-gap-0.5 com-min-w-[140px];
 
             .community-name {
-              @apply com-inline-flex com-items-center com-gap-1.5 com-text-sm com-font-semibold com-text-Yankees-Blue com-no-underline;
+              @apply com-inline com-text-sm com-font-medium com-text-Yankees-Blue com-no-underline;
               @apply hover:com-text-primary-500;
 
-              nb-icon {
-                @apply com-text-xs com-text-gray-400;
+              nb-icon,
+              fa-icon {
+                @apply com-text-xs com-text-gray-400 com-inline-flex com-align-middle com-ml-1;
               }
             }
 
             .community-slug {
-              @apply com-inline-flex com-items-center com-gap-1 com-text-xs com-text-gray-500;
+              @apply com-inline-flex com-items-center com-gap-1 com-text-xs com-text-Cadet-Grey;
 
-              nb-icon {
+              nb-icon,
+              fa-icon {
                 @apply com-text-gray-400;
               }
             }
           }
 
           .events-cell {
-            @apply com-min-w-[200px];
+            @apply com-min-w-[180px];
 
             .event-list {
-              @apply com-m-0 com-p-0 com-flex com-flex-col com-gap-1;
+              @apply com-m-0 com-p-0 com-flex com-flex-col com-gap-0;
 
               li {
-                @apply com-list-none;
+                @apply com-list-none com-py-1.5;
+                @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
+                &:first-child {
+                  @apply com-pt-0;
+                }
+
+                &:last-child {
+                  @apply com-border-b-0 com-pb-0;
+                }
 
                 a {
-                  @apply com-inline-flex com-items-center com-gap-1 com-text-sm com-text-Yankees-Blue com-no-underline;
+                  @apply com-inline com-text-sm com-text-Yankees-Blue com-no-underline;
                   @apply hover:com-text-primary-500;
 
-                  nb-icon {
-                    @apply com-text-xs com-text-gray-400;
+                  nb-icon,
+                  fa-icon {
+                    @apply com-text-xs com-text-gray-400 com-inline-flex com-align-middle com-ml-1;
                   }
                 }
               }
@@ -153,8 +171,9 @@
           .community-actions {
             @apply com-flex com-flex-wrap com-items-center com-gap-2;
 
-            nb-icon {
-              @apply com-mr-1;
+            nb-icon,
+            fa-icon {
+              @apply com-mr-0.5;
             }
           }
         }
@@ -163,7 +182,7 @@
   }
 
   .pagination {
-    @apply com-flex com-justify-center com-mt-4;
+    @apply com-mt-3;
   }
 }
 
@@ -171,20 +190,21 @@
   @apply com-max-w-md com-w-full;
 
   .dialog-header {
-    @apply com-flex com-items-center com-justify-between com-text-base com-font-semibold com-text-Yankees-Blue;
+    @apply com-flex com-items-center com-justify-between com-text-sm com-font-semibold com-text-Yankees-Blue;
   }
 
   .dialog-body {
-    @apply com-flex com-flex-col com-gap-4;
+    @apply com-flex com-flex-col com-gap-3;
 
     .dialog-text {
       @apply com-m-0 com-text-sm com-text-Cadet-Grey com-leading-relaxed;
     }
 
     .dialog-current-plan {
-      @apply com-flex com-items-center com-gap-1.5 com-m-0 com-text-sm com-text-Yankees-Blue com-bg-primary-100 com-px-3 com-py-2 com-rounded-lg;
+      @apply com-flex com-items-center com-gap-1.5 com-m-0 com-text-xs com-text-Yankees-Blue com-bg-primary-100 com-px-3 com-py-2 com-rounded-lg;
 
-      nb-icon {
+      nb-icon,
+      fa-icon {
         @apply com-text-primary-500 com-flex-shrink-0;
       }
     }
@@ -200,7 +220,7 @@
         @apply com-flex com-items-center com-gap-2;
 
         .stepper-value {
-          @apply com-min-w-8 com-text-center com-text-base com-font-semibold com-text-Yankees-Blue;
+          @apply com-min-w-8 com-text-center com-text-sm com-font-semibold com-text-Yankees-Blue;
         }
       }
     }

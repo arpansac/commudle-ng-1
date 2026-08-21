@@ -1,0 +1,145 @@
+<div class="hackathons-page" *ngIf="communityGroup">
+  <!-- Header -->
+  <header class="page-header">
+    <div class="header-info">
+      <h1 class="page-title">
+        <fa-icon [icon]="faTrophy"></fa-icon>
+        Hackathons
+      </h1>
+    </div>
+  </header>
+
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="loading-state">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+
+  <!-- Empty state -->
+  <div *ngIf="!isLoading && hackathons && hackathons.length === 0" class="empty-state">
+    <div class="empty-icon"><fa-icon [icon]="faTrophy"></fa-icon></div>
+    <h3 class="empty-title">No hackathons yet</h3>
+  </div>
+
+  <!-- Hackathons table -->
+  <div class="hackathons-table-container" *ngIf="!isLoading && hackathons && hackathons.length > 0">
+    <div class="table-wrapper">
+      <table class="hackathons-table">
+        <thead>
+          <tr class="table-header">
+            <th>Hackathon</th>
+            <th>Application Dates</th>
+            <th>Hackathon Dates</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="hackathon-row" *ngFor="let hackathon of hackathons">
+            <td>
+              <div class="hackathon-meta">
+                <a
+                  class="hackathon-name"
+                  [routerLink]="['/communities', hackathon.community?.slug, 'hackathons', hackathon.slug]"
+                  target="_blank"
+                >
+                  {{ hackathon.name }}<fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
+                </a>
+                <app-community-badge
+                  *ngIf="hackathon.community"
+                  [community]="hackathon.community"
+                  size="small"
+                ></app-community-badge>
+              </div>
+            </td>
+
+            <td class="date-cell">
+              <span *ngIf="hackathon.application_start_date">
+                {{ moment(hackathon.application_start_date).format('MMM DD, YYYY') }}
+                <span class="date-arrow">&rarr;</span>
+                {{ moment(hackathon.application_end_date).format('MMM DD, YYYY') }}
+              </span>
+            </td>
+
+            <td class="date-cell">
+              <span *ngIf="hackathon.start_date">
+                {{ moment(hackathon.start_date).format('MMM DD, YYYY') }}
+                <span class="date-arrow">&rarr;</span>
+                {{ moment(hackathon.end_date).format('MMM DD, YYYY') }}
+              </span>
+            </td>
+
+            <td class="status-cell">
+              <span *ngIf="hackathon.status" class="status-badge" [ngClass]="hackathon.status">{{
+                hackathon.status | titlecase
+              }}</span>
+              <span *ngIf="!hackathon.status" class="status-badge">—</span>
+            </td>
+
+            <td>
+              <div class="hackathon-actions">
+                <a
+                  [routerLink]="[
+                    '/admin',
+                    'communities',
+                    hackathon.community?.slug,
+                    'hackathon-dashboard',
+                    hackathon.slug
+                  ]"
+                  comButton
+                  status="primary"
+                  size="tiny"
+                  shape="semi-round"
+                  target="_blank"
+                >
+                  <fa-icon [icon]="icons.faGrip"></fa-icon>
+                  Dashboard
+                </a>
+                <a
+                  [routerLink]="['/communities', hackathon.community?.slug, 'hackathons', hackathon.slug]"
+                  comButton
+                  status="basic"
+                  size="tiny"
+                  shape="semi-round"
+                  outline
+                  target="_blank"
+                >
+                  <fa-icon [icon]="icons.faEye"></fa-icon>
+                </a>
+                <a
+                  [routerLink]="[
+                    '/admin',
+                    'communities',
+                    hackathon.community?.slug,
+                    'hackathon-dashboard',
+                    hackathon.slug,
+                    'stats'
+                  ]"
+                  comButton
+                  status="success"
+                  size="tiny"
+                  shape="semi-round"
+                  outline
+                  target="_blank"
+                >
+                  <fa-icon [icon]="icons.faChartPie"></fa-icon>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <app-pagination
+    *ngIf="total > count"
+    class="pagination"
+    (goTo)="page = $event; getHackathons()"
+    (next)="page = $event; getHackathons()"
+    (previous)="page = $event; getHackathons()"
+    [count]="count"
+    [current]="page"
+    [total]="total"
+  ></app-pagination>
+</div>

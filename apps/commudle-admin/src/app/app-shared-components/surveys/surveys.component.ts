@@ -12,14 +12,15 @@ import { faEdit, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-    selector: 'commudle-surveys',
-    templateUrl: './surveys.component.html',
-    styleUrls: ['./surveys.component.scss'],
-    standalone: false
+  selector: 'commudle-surveys',
+  templateUrl: './surveys.component.html',
+  styleUrls: ['./surveys.component.scss'],
+  standalone: false,
 })
 export class SurveysComponent implements OnInit, OnDestroy {
   @Input() parentId: number;
   @Input() parentType: 'CommunityGroup' | 'Kommunity';
+  @Input() showHeading = true;
   surveys: ISurvey[];
   ESurveyStatus = ESurveyStatus;
   dataForms: IDataForm[] = [];
@@ -146,7 +147,6 @@ export class SurveysComponent implements OnInit, OnDestroy {
       this.openNewFormDialogBox();
     }
   }
-  updateSurvey() {}
 
   openBottomSheet() {
     this.isBottomSheetOpen = true;

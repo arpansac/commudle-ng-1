@@ -3,12 +3,13 @@ import { ActivatedRoute } from '@angular/router';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
+import { faUsers, faCalendarDays, faTrophy } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-    selector: 'commudle-communities',
-    templateUrl: './communities.component.html',
-    styleUrls: ['./communities.component.scss'],
-    standalone: false
+  selector: 'commudle-communities',
+  templateUrl: './communities.component.html',
+  styleUrls: ['./communities.component.scss'],
+  standalone: false,
 })
 export class CommunitiesComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;
@@ -18,12 +19,17 @@ export class CommunitiesComponent implements OnInit, OnDestroy {
     {
       route: './',
       title: 'Communities',
-      icon: 'people',
+      icon: faUsers,
     },
     {
       route: 'events',
       title: 'Events',
-      icon: 'calendar',
+      icon: faCalendarDays,
+    },
+    {
+      route: 'hackathons',
+      title: 'Hackathons',
+      icon: faTrophy,
     },
     // {
     //   route: 'channels',

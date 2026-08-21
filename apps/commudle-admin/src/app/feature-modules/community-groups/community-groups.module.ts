@@ -10,6 +10,7 @@ import {
   NbTagModule,
   NbToggleModule,
 } from '@commudle/theme';
+import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CommunityGroupsRoutingModule } from './community-groups-routing.module';
@@ -24,6 +25,7 @@ import { MembersListComponent } from './components/members-list/members-list.com
 import { SkeletonCardsComponent } from 'apps/commudle-admin/src/app/feature-modules/skeleton-screens/components/skeleton-cards/skeleton-cards.component';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 import { EventsComponent } from './components/communities/events/events.component';
+import { HackathonsComponent } from './components/communities/hackathons/hackathons.component';
 import { ChannelsComponent } from './components/communities/channels/channels.component';
 import { CommunityComponent } from './components/communities/community/community.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -41,6 +43,7 @@ import { CommunityChannelsModule } from 'apps/commudle-admin/src/app/feature-mod
     AdminTeamComponent,
     MembersListComponent,
     EventsComponent,
+    HackathonsComponent,
     ChannelsComponent,
     CommunityComponent,
     CommunityGroupsSurveysComponent,
@@ -75,6 +78,10 @@ import { CommunityChannelsModule } from 'apps/commudle-admin/src/app/feature-mod
     NbRouteTabsetModule,
     NbFormFieldModule,
     NbToggleModule,
+
+    // Commudle Theme
+    CommudleCardModule,
+    CommudleButtonModule,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })

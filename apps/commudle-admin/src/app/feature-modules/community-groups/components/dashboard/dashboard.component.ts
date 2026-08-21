@@ -11,6 +11,7 @@ import {
   faCalendar,
   faHashtag,
   faMessage,
+  faTrophy,
 } from '@fortawesome/free-solid-svg-icons';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { ICommunityGroup } from '@commudle/shared-models';
@@ -32,6 +33,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ESidebarWidth = ESidebarWidth;
   ESidebarHeading = ESidebarHeading;
   sidebarEventName = 'communityGroup';
+  isMobileView = false;
 
   icons = {
     faRightLeft,
@@ -43,6 +45,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     faCalendar,
     faHashtag,
     faMessage,
+    faTrophy,
   };
 
   constructor(
@@ -53,6 +56,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.checkMobileView();
     this.footerService.changeMiniFooterStatus(false);
     this.seoService.noIndex(true);
 
@@ -63,7 +67,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }),
     );
 
-    this.sidebarService.setSidebarVisibility(this.sidebarEventName, true);
+    if (this.isMobileView) {
+      this.sidebarService.setSidebarVisibility(this.sidebarEventName, false, true);
+    } else {
+      this.sidebarService.setSidebarVisibility(this.sidebarEventName, true);
+    }
 
     if (Object.prototype.hasOwnProperty.call(this.sidebarService.setSidebar$, this.sidebarEventName)) {
       this.subscriptions.push(
@@ -90,6 +98,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   toggleSidebar() {
     this.sidebarService.toggleSidebarVisibility(this.sidebarEventName);
+  }
+
+  closeSidebarOnMobile() {
+    if (this.isMobileView) {
+      this.sidebarService.closeSidebar(this.sidebarEventName);
+    }
+  }
+
+  checkMobileView() {
+    this.isMobileView = window.innerWidth < 768;
   }
 
   setMeta() {

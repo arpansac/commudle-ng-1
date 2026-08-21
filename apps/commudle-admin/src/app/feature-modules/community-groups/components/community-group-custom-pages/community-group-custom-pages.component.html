@@ -1,8 +1,22 @@
-<nb-card>
-  <nb-card-body>
-    <commudle-custom-page
-      [parentId]="communityGroup.slug"
-      [parentType]="EDbModels.COMMUNITY_GROUP"
-    ></commudle-custom-page>
-  </nb-card-body>
-</nb-card>
+<com-card class="pages-page" *ngIf="communityGroup">
+  <com-card-body>
+    <!-- Header -->
+    <header class="page-header">
+      <div class="header-info">
+        <h1 class="page-title">
+          <nb-icon icon="file-text-outline"></nb-icon>
+          Pages
+        </h1>
+      </div>
+    </header>
+
+    <!-- Pages content -->
+    <div class="pages-content">
+      <commudle-custom-page
+        [parentId]="communityGroup.slug"
+        [parentType]="EDbModels.COMMUNITY_GROUP"
+        [showHeading]="false"
+      ></commudle-custom-page>
+    </div>
+  </com-card-body>
+</com-card>
