@@ -7,7 +7,7 @@ com-card {
     @apply dark:com-from-[#080808] dark:com-via-[#141414] dark:com-to-[#080808] dark:com-bg-gradient-to-br;
     @apply com-flex com-m-0 com-text-base com-font-semibold com-text-Yankees-Blue com-no-underline com-items-center com-gap-2;
 
-    fa-icon {
+    .Icon {
       @apply com-text-lg;
     }
 

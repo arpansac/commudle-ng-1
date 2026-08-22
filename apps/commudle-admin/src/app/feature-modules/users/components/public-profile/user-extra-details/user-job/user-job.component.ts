@@ -20,7 +20,7 @@ import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { IUser } from 'apps/shared-models/user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
-import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import { faBriefcase, faHashtag } from '@fortawesome/free-solid-svg-icons';
 import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
 import { SeoService } from '@commudle/shared-services';
 import { EnumFormatPipe } from 'apps/shared-pipes/enum-format.pipe';
@@ -66,6 +66,7 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   subscriptions: Subscription[] = [];
 
   faBriefcase = faBriefcase;
+  faHashtag = faHashtag;
   schemaForJobs = [];
 
   environment = environment;

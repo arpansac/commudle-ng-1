@@ -1,7 +1,7 @@
 <com-card *ngIf="showBuilds && builds?.length > 0" class="contribution-card" id="builds">
   <com-card-header class="section-heading-anchor">
     <div>
-      <fa-icon [icon]="faLightbulb" class="com-text-Caribbean-Green"></fa-icon>
+      <fa-icon [icon]="faLightbulb" class="com-text-Caribbean-Green Icon"></fa-icon>
       Builds
       <a [routerLink]="'.'" fragment="builds" class="anchor-link" aria-label="Link to user-builds section">
         <fa-icon [icon]="faHashtag" class="anchor-icon-small"></fa-icon>
@@ -22,7 +22,7 @@
 <com-card *ngIf="showLabs && labs?.length > 0" class="contribution-card" id="labs">
   <com-card-header class="section-heading-anchor">
     <div>
-      <fa-icon [icon]="faBookOpen" class="com-text-Infra-Red"></fa-icon>
+      <fa-icon [icon]="faBookOpen" class="com-text-Infra-Red Icon"></fa-icon>
       Labs
       <a [routerLink]="'.'" fragment="labs" class="anchor-link" aria-label="link to user-Labs section">
         <fa-icon [icon]="faHashtag" class="anchor-icon-small"></fa-icon>
@@ -39,7 +39,7 @@
 <com-card *ngIf="showTalksAtEvents && pastEvents?.length > 0" class="contribution-card" id="talks-at-events">
   <com-card-header class="section-heading-anchor">
     <div>
-      <fa-icon [icon]="faCalendar" class="com-text-Azure"></fa-icon>
+      <fa-icon [icon]="faCalendar" class="com-text-Azure Icon"></fa-icon>
       Talks at Events
       <a [routerLink]="'.'" fragment="talks-at-events" class="anchor-link" aria-label="Link to Talks-at-events section">
         <fa-icon [icon]="faHashtag" class="anchor-icon-small"></fa-icon>
@@ -56,7 +56,7 @@
 <com-card *ngIf="showAttendedEvents && attendedEvents?.length > 0" class="contribution-card" id="attended-events">
   <com-card-header class="section-heading-anchor">
     <div>
-      <fa-icon [icon]="faIdBadge" class="com-text-Caribbean-Green"></fa-icon>
+      <fa-icon [icon]="faIdBadge" class="com-text-Caribbean-Green Icon"></fa-icon>
       Attended Events
       <a [routerLink]="'.'" fragment="attended-events" class="anchor-link" aria-label="Link to attended-events section">
         <fa-icon [icon]="faHashtag" class="anchor-icon-small"></fa-icon>
@@ -119,7 +119,7 @@
 <com-card *ngIf="showCommunities && communities?.length > 0" class="contribution-card" id="communities">
   <com-card-header class="section-heading-anchor">
     <div>
-      <fa-icon [icon]="faUsers" class="com-text-Chrome-Yellow"></fa-icon>
+      <fa-icon [icon]="faUsers" class="com-text-Chrome-Yellow Icon"></fa-icon>
       Communities
       <a [routerLink]="'.'" fragment="communities" class="anchor-link" aria-label="Link to user-communities section">
         <fa-icon [icon]="faHashtag" class="anchor-icon-small"></fa-icon>
