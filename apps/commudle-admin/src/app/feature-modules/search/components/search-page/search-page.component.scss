@@ -23,6 +23,7 @@
       }
     }
   }
+
   .container {
     .three-column-layout {
       @apply com-pt-4;
@@ -45,15 +46,17 @@
             @apply com-p-0;
 
             .query-results-heading {
-              @apply com-py-2 com-m-0 com-text-sm com-font-medium com-text-Yankees-Blue;
+              @apply com-py-2 com-m-0 com-text-sm com-font-medium com-text-Yankees-Blue com-inline-flex com-items-center com-justify-center;
             }
           }
         }
       }
     }
+
     .main-column {
       @apply com-p-0 md:com-px-0 com-px-4;
     }
+
     .results-count {
       @apply com-m-0 com-text-base com-font-semibold com-text-gray-500;
     }
@@ -71,11 +74,7 @@
         }
 
         .query-results-heading {
-          @apply com-m-0 com-mt-4 com-mb-6 com-text-xl com-font-bold com-text-Dark-Jungle-Green com-border-0 com-border-t com-border-solid com-border-Bright-Gray com-w-full;
-
-          &:first-child {
-            @apply com-border-t-0;
-          }
+          @apply com-py-2 com-m-0 com-text-sm com-font-medium com-text-Yankees-Blue com-flex com-items-center;
         }
 
         .labs-card,
