@@ -33,9 +33,7 @@
       @apply com-mt-0 com-mb-8 md:com-mb-12 com-text-left;
 
       h2 {
-        a {
-          @apply com-m-0 com-text-2xl md:com-text-4xl com-font-semibold com-text-Yankees-Blue com-no-underline;
-        }
+        @apply com-m-0 com-text-2xl com-inline-flex com-items-center com-justify-center md:com-text-4xl com-font-semibold com-text-Yankees-Blue com-no-underline;
       }
     }
 
