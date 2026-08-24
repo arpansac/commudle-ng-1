@@ -39,6 +39,14 @@ div {
         font-size: 1.125rem;
       }
     }
+
+    &.regular-compact-text {
+      @apply com-px-[9px] com-py-[7px] com-text-sm;
+
+      nb-icon {
+        font-size: 1.125rem;
+      }
+    }
   }
 
   &.rectangle {
