@@ -56,7 +56,6 @@ input {
 // Reusable section heading fragment anchor styles
 .anchor-link {
   @apply com-inline-flex com-items-center com-justify-center com-ml-2 com-no-underline com-text-gray-400;
-  // vertical-align: middle;
   fa-icon,
   nb-icon {
     @apply com-text-gray-400 com-leading-[0];
