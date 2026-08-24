@@ -1,5 +1,5 @@
 .container {
-  @apply md:com-py-6 com-pt-5 com-pb-0 com-px-0;
+  @apply md:com-py-3 com-pt-5 com-pb-0 com-px-0;
 }
 
 .step-number {
@@ -47,7 +47,7 @@
 }
 
 .domain-section {
-  @apply com-mb-10 md:com-px-0 com-px-4;
+  @apply com-mb-2 md:com-px-0 com-px-4;
 }
 
 .experience-select,
@@ -60,17 +60,15 @@
 }
 
 .continue-btn {
-  @apply com-mt-4 com-sticky com-bottom-0 com-p-4 com-bg-white md:com-shadow-none com-shadow-md;
+  @apply com-mt-4 com-sticky com-bottom-0 com-py-4 com-px-0 com-bg-white com-shadow-none;
 }
 
 .mobile-nav-offset {
-  @apply com-bottom-[58px] com-px-0 md:com-bottom-0 md:com-bg-transparent;
+  @apply com-bottom-[58px] com-px-4 md:com-bottom-0 md:com-px-0 md:com-bg-transparent;
 }
-
 .domain-input {
   @apply com-mt-4;
 }
-
 .horizontal-spacing {
-  @apply com-px-6;
+  @apply com-p-3 md:com-px-6 com-pb-0;
 }
