@@ -15,12 +15,17 @@
         'x-small-text': fontSize == 'x-small',
         'xx-small-text': fontSize == 'xx-small',
         'regular-text': fontSize == 'regular',
-        'regular-compact-text': fontSize == 'regular-compact'
       }"
       class="{{ fontColor }}"
     >
-      <nb-icon *ngIf="nbIcon" icon="{{ nbIcon }}"></nb-icon>
-      <fa-icon *ngIf="faIcon" [icon]="faIcon"></fa-icon>
+      <span *ngIf="fixedIconContainer; else plainIcon" class="icon-container">
+        <nb-icon *ngIf="nbIcon" icon="{{ nbIcon }}"></nb-icon>
+        <fa-icon *ngIf="faIcon" [icon]="faIcon"></fa-icon>
+      </span>
+      <ng-template #plainIcon>
+        <nb-icon *ngIf="nbIcon" icon="{{ nbIcon }}"></nb-icon>
+        <fa-icon *ngIf="faIcon" [icon]="faIcon"></fa-icon>
+      </ng-template>
       {{ text }}
     </p>
   </div>

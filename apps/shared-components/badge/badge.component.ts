@@ -12,7 +12,7 @@ import { NbIconModule } from '@commudle/theme';
 })
 export class BadgeComponent {
   @Input() text: string | number;
-  @Input() fontSize: 'small' | 'x-small' | 'xx-small' | 'regular' | 'regular-compact';
+  @Input() fontSize: 'small' | 'x-small' | 'xx-small' | 'regular';
   @Input() color = 'com-bg-Bright-Gray';
   @Input() fontColor = 'com-text-tWhite';
   @Input() nbIcon: string;
@@ -20,7 +20,7 @@ export class BadgeComponent {
   @Input() dotMode: boolean;
   @Input() position: 'top right' | 'top left' | 'right center' | 'left center' | 'center right' | 'center left';
   @Input() borderRadius: 'rectangle' | 'semi-round' | 'round' | 'full-round' = 'rectangle';
-
+  @Input() fixedIconContainer = false;
   // bg;
 
   @HostBinding('class')

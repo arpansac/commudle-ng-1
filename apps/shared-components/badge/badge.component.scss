@@ -4,6 +4,10 @@ div {
   p {
     @apply com-flex com-items-center com-m-0 com-px-1 com-py-2px;
 
+    .icon-container {
+      @apply com-flex com-items-center com-justify-center com-flex-shrink-0 com-h-5 com-w-3;
+    }
+
     nb-icon {
       font-size: 1rem;
     }
@@ -34,14 +38,6 @@ div {
 
     &.regular-text {
       @apply com-py-2 com-px-3 com-text-sm;
-
-      nb-icon {
-        font-size: 1.125rem;
-      }
-    }
-
-    &.regular-compact-text {
-      @apply com-px-[9px] com-py-[7px] com-text-sm;
 
       nb-icon {
         font-size: 1.125rem;
