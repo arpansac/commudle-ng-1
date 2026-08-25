@@ -18,14 +18,10 @@
       }"
       class="{{ fontColor }}"
     >
-      <span *ngIf="fixedIconContainer; else plainIcon" class="icon-container">
+      <span [ngClass]="{ 'icon-container': fixedIconContainer }">
         <nb-icon *ngIf="nbIcon" icon="{{ nbIcon }}"></nb-icon>
         <fa-icon *ngIf="faIcon" [icon]="faIcon"></fa-icon>
       </span>
-      <ng-template #plainIcon>
-        <nb-icon *ngIf="nbIcon" icon="{{ nbIcon }}"></nb-icon>
-        <fa-icon *ngIf="faIcon" [icon]="faIcon"></fa-icon>
-      </ng-template>
       {{ text }}
     </p>
   </div>
