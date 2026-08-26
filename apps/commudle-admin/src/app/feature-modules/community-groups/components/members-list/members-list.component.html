@@ -126,12 +126,17 @@
                           | slice : 0 : (showSpeakers[i] ? member.speaker_events.length : 5)
                       "
                     >
-                      <a [href]="'communities/' + event.kommunity_id + '/events/' + event.id" target="_blank">
-                        {{ event.name }}
+                      <a
+                        [href]="'communities/' + $any(event).kommunity_id + '/events/' + $any(event).id"
+                        target="_blank"
+                      >
+                        {{ $any(event).name }}
                       </a>
                       <span class="speaker-community">
                         &#64;
-                        <a [href]="'communities/' + event.kommunity_id" target="_blank">{{ event.kommunity.name }}</a>
+                        <a [href]="'communities/' + $any(event).kommunity_id" target="_blank">{{
+                          $any(event).kommunity.name
+                        }}</a>
                       </span>
                     </li>
                   </ul>
