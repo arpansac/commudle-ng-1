@@ -10,7 +10,7 @@ import { CmsService } from 'apps/shared-services/cms.service';
 import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Observable, Subscription, of, timer } from 'rxjs';
-import { faHashtag } from '@fortawesome/free-solid-svg-icons';
+import { faHashtag, faLink } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
@@ -24,6 +24,7 @@ export class HomepageComponent implements OnInit, OnDestroy, AfterViewInit {
   staticAsset = staticAssets;
   homepageActions: IHomepageAction[] = [];
   faHashtag = faHashtag;
+  faLink = faLink;
   // @ViewChild('homepageAnimation', { static: false }) homepageAnimationContainer: ElementRef<HTMLDivElement>;
   testimonials: ITestimonial[];
   homepageCallouts: { subtitle: string; title: string }[] = [
