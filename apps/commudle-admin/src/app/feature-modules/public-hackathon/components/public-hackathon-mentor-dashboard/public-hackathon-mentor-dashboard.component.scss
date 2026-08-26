@@ -199,6 +199,19 @@ com-card {
 
 .teams-table {
   @apply com-w-full com-border-collapse com-min-w-[800px];
+  table-layout: fixed;
+
+  .col-sm {
+    width: 8%;
+  }
+
+  .col-md {
+    width: 12%;
+  }
+
+  .col-lg {
+    width: 20%;
+  }
 
   thead {
     @apply com-bg-gray-50;

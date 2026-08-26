@@ -334,20 +334,20 @@
       <table *ngIf="!isLoading && teamDetails.length > 0" class="teams-table">
         <thead>
           <tr>
-            <th>Team Name</th>
-            <th>Track</th>
-            <th>Problem Statement</th>
-            <th>Members count</th>
-            <th width="100">Submission & Updates</th>
-            <th>Total Score</th>
-            <th>Score Details</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th class="col-lg">Team Name</th>
+            <th class="col-lg">Track</th>
+            <th class="col-sm">Problem Statement</th>
+            <th class="col-sm">Members</th>
+            <th class="col-lg">Submission & Updates</th>
+            <th class="col-sm">Total Score</th>
+            <th class="col-md">Score Details</th>
+            <th class="col-md">Status</th>
+            <th class="col-md">Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let teamData of teamDetails">
-            <td class="team-name">
+            <td class="team-name col-team-name">
               <div class="team-name-wrapper">
                 <span>{{ teamData.team.name }}</span>
                 @if(teamData.evaluators && teamData.evaluators.length > 0) {
