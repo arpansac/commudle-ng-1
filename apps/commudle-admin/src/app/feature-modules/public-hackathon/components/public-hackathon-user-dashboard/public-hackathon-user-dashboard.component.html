@@ -257,7 +257,10 @@
         [hackathon]="hackathon"
         [team]="data.selectedTeam"
         [hasSubmitButton]="true"
+        [viewMode]="true"
         (submitTeammateDetailsEvent)="submitTeammateDetails($event, ref, data.hackathonUserResponse.id)"
+        (resendInviteEvent)="resendInviteToMember($event, data.selectedTeam)"
+        (removeMemberEvent)="openDialogBox(removeTeamMember, $event.hur, data.selectedTeam, $event.index)"
       ></commudle-public-hackathon-teammate-form>
     </com-card-body>
   </com-card>

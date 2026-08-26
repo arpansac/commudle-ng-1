@@ -1,117 +1,179 @@
-<commudle-alert
-  *ngIf="!hasTeammateOption"
-  [info]="true"
-  message="Although this is an individual participation, it would be great if you can select a team name for your project, by default it will be your name."
-></commudle-alert>
-<br />
-<form [formGroup]="teammateForm">
-  <div>
-    <label for="name">{{ hasTeammateOption ? 'Team Name*' : 'Your Name?*' }}</label>
-    <input
-      type="text"
-      nbInput
-      fullWidth
-      formControlName="name"
-      [placeholder]="hasTeammateOption ? 'Team Name*' : 'Your Name?*'"
-    />
-  </div>
-  <ng-container formArrayName="teammates">
-    <div *ngFor="let teammate of teammatesArray.controls; let i = index" [formGroupName]="i" class="teammate-form">
-      <section>
-        <label for="email">Enter Email*</label>
-        <input
-          type="email"
-          formControlName="email"
-          placeholder="xyz@example.com"
-          fullWidth
-          nbInput
-          #emailInput
-          (input)="checkEmail($event.target)"
-        />
-        <commudle-alert *ngIf="showEmailError" [error]="true" errorMessage="You can't put your own email as teammate">
-        </commudle-alert>
-        <commudle-alert
-          *ngIf="getEmailControl(i)?.invalid && getEmailControl(i)?.touched"
-          [error]="true"
-          [errorMessage]="getEmailControl(i)?.errors?.['required'] ? 'Email is required' : 
-                         getEmailControl(i)?.errors?.['invalidEmail'] ? 'Please enter a valid email address (e.g., user@example.com)' : ''"
-        >
-        </commudle-alert>
-      </section>
-
-      <section *ngIf="hackathonResponseGroup.user_details.tshirt_size">
-        <label for="tshirt_size">T shirt size*</label>
-        <select name="tshirt_size" id="tshirt_size" formControlName="tshirt_size">
-          <option selected disabled value="">Select T-shirt size</option>
-          <option value="S">S</option>
-          <option value="M">M</option>
-          <option value="L">L</option>
-          <option value="XL">XL</option>
-          <option value="XXL">XXL</option>
-          <option value="XXXL">XXXL</option>
-        </select>
-      </section>
-
+<ng-container *ngIf="viewMode && team; else editModeTemplate">
+  <div class="view-mode">
+    <div class="team-name-section">
+      <label>Team Name*</label>
+      <form [formGroup]="teammateForm">
+        <input type="text" nbInput fullWidth formControlName="name" placeholder="Team Name*" />
+      </form>
+    </div>
+    <div class="team-members-list">
+      <div *ngFor="let hur of team.hackathon_user_responses; let i = index" class="team-member-card">
+        <div class="member-info">
+          <app-user-profile-card-small *ngIf="hur.user" [user]="hur.user"></app-user-profile-card-small>
+          <span *ngIf="!hur.user" class="member-name">{{ hur.name }}</span>
+          <span class="member-email">{{ hur.user_email }}</span>
+        </div>
+        <div class="member-actions" *ngIf="team.user_id !== hur.user_id">
+          <button
+            *ngIf="
+              hur.invite_status === EInvitationStatus.INCOMPLETE_APPLICATION ||
+              hur.invite_status === EInvitationStatus.INVITED
+            "
+            type="button"
+            nbButton
+            ghost
+            status="primary"
+            size="tiny"
+            (click)="resendInviteEvent.emit(hur)"
+          >
+            Resend Invite
+          </button>
+          <button
+            type="button"
+            nbButton
+            ghost
+            status="danger"
+            size="tiny"
+            (click)="removeMemberEvent.emit({ hur: hur, index: i })"
+          >
+            Remove
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="action-buttons">
       <button
-        *ngIf="
-          hackathonUserResponse &&
-          (hackathonUserResponse.current_user_is_team_lead || team?.user_id === currentUser?.id)
-        "
         type="button"
+        (click)="submitTeammateDetails()"
         nbButton
-        ghost
-        status="danger"
-        (click)="removeTeammate(i)"
+        status="primary"
+        fullWidth
+        [disabled]="teammateForm.invalid"
       >
-        <fa-icon [icon]="icons.faUserLargeSlash"></fa-icon>
-        <span>Remove Teammate</span>
+        Save
       </button>
     </div>
-  </ng-container>
-
-  <commudle-alert [error]="hasTeammateOption && hackathon.min_number_of_teammates > teammatesArray.controls.length + 1">
-    <div errorContent>Minimum {{ hackathon.min_number_of_teammates }} teammates are Required, including you</div>
-  </commudle-alert>
-
-  <button
-    *ngIf="hasTeammateOption && hackathon.max_number_of_teammates - 1 > teammatesArray.controls.length"
-    type="button"
-    (click)="addTeammate()"
-    nbButton
-  >
-    <fa-icon [icon]="icons.faPlus"></fa-icon>
-    <span> Add Teammate </span>
-  </button>
-
-  <div class="action-buttons">
-    @if(hasSubmitButton){
-    <button
-      type="submit"
-      (click)="submitTeammateDetails()"
-      nbButton
-      status="primary"
-      fullWidth
-      [disabled]="
-        teammateForm.invalid ||
-        (hasTeammateOption && hackathon.min_number_of_teammates - 1 > teammatesArray.controls.length)
-      "
-    >
-      Save
-    </button>
-    }@else{
-    <button status="primary" nbButton (click)="previousButton()">Previous</button>
-    <button
-      type="submit"
-      (click)="submitTeammateDetails()"
-      nbButton
-      status="primary"
-      [disabled]="
-        teammateForm.invalid ||
-        (hasTeammateOption && hackathon.min_number_of_teammates - 1 > teammatesArray.controls.length)
-      "
-    >
-      Next
-    </button>
-    }
   </div>
-</form>
+</ng-container>
+
+<ng-template #editModeTemplate>
+  <commudle-alert
+    *ngIf="!hasTeammateOption"
+    [info]="true"
+    message="Although this is an individual participation, it would be great if you can select a team name for your project, by default it will be your name."
+  ></commudle-alert>
+  <br />
+  <form [formGroup]="teammateForm">
+    <div>
+      <label for="name">{{ hasTeammateOption ? 'Team Name*' : 'Your Name?*' }}</label>
+      <input
+        type="text"
+        nbInput
+        fullWidth
+        formControlName="name"
+        [placeholder]="hasTeammateOption ? 'Team Name*' : 'Your Name?*'"
+      />
+    </div>
+    <ng-container formArrayName="teammates">
+      <div *ngFor="let teammate of teammatesArray.controls; let i = index" [formGroupName]="i" class="teammate-form">
+        <section>
+          <label for="email">Enter Email*</label>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="xyz@example.com"
+            fullWidth
+            nbInput
+            #emailInput
+            (input)="checkEmail($event.target)"
+          />
+          <commudle-alert *ngIf="showEmailError" [error]="true" errorMessage="You can't put your own email as teammate">
+          </commudle-alert>
+          <commudle-alert
+            *ngIf="getEmailControl(i)?.invalid && getEmailControl(i)?.touched"
+            [error]="true"
+            [errorMessage]="getEmailControl(i)?.errors?.['required'] ? 'Email is required' : 
+                         getEmailControl(i)?.errors?.['invalidEmail'] ? 'Please enter a valid email address (e.g., user@example.com)' : ''"
+          >
+          </commudle-alert>
+        </section>
+
+        <section *ngIf="hackathonResponseGroup.user_details.tshirt_size">
+          <label for="tshirt_size">T shirt size*</label>
+          <select name="tshirt_size" id="tshirt_size" formControlName="tshirt_size">
+            <option selected disabled value="">Select T-shirt size</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+            <option value="XXL">XXL</option>
+            <option value="XXXL">XXXL</option>
+          </select>
+        </section>
+
+        <button
+          *ngIf="
+            hackathonUserResponse &&
+            (hackathonUserResponse.current_user_is_team_lead || team?.user_id === currentUser?.id)
+          "
+          type="button"
+          nbButton
+          ghost
+          status="danger"
+          (click)="removeTeammate(i)"
+        >
+          <fa-icon [icon]="icons.faUserLargeSlash"></fa-icon>
+          <span>Remove Teammate</span>
+        </button>
+      </div>
+    </ng-container>
+
+    <commudle-alert
+      [error]="hasTeammateOption && hackathon.min_number_of_teammates > teammatesArray.controls.length + 1"
+    >
+      <div errorContent>Minimum {{ hackathon.min_number_of_teammates }} teammates are Required, including you</div>
+    </commudle-alert>
+
+    <button
+      *ngIf="hasTeammateOption && hackathon.max_number_of_teammates - 1 > teammatesArray.controls.length"
+      type="button"
+      (click)="addTeammate()"
+      nbButton
+    >
+      <fa-icon [icon]="icons.faPlus"></fa-icon>
+      <span> Add Teammate </span>
+    </button>
+
+    <div class="action-buttons">
+      @if(hasSubmitButton){
+      <button
+        type="submit"
+        (click)="submitTeammateDetails()"
+        nbButton
+        status="primary"
+        fullWidth
+        [disabled]="
+          teammateForm.invalid ||
+          (hasTeammateOption && hackathon.min_number_of_teammates - 1 > teammatesArray.controls.length)
+        "
+      >
+        Save
+      </button>
+      }@else{
+      <button status="primary" nbButton (click)="previousButton()">Previous</button>
+      <button
+        type="submit"
+        (click)="submitTeammateDetails()"
+        nbButton
+        status="primary"
+        [disabled]="
+          teammateForm.invalid ||
+          (hasTeammateOption && hackathon.min_number_of_teammates - 1 > teammatesArray.controls.length)
+        "
+      >
+        Next
+      </button>
+      }
+    </div>
+  </form></ng-template
+>
