@@ -15,7 +15,7 @@ import { debounceTime, switchMap } from 'rxjs/operators';
   standalone: false,
 })
 export class MembersListComponent implements OnInit, OnDestroy {
-  members: IUser[] = [];
+  members: any[] = [];
   subscriptions: Subscription[] = [];
   communityGroup: ICommunityGroup;
   showSpeakers: { [key: number]: boolean } = {};

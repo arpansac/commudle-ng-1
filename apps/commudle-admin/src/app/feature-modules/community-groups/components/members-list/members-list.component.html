@@ -122,7 +122,7 @@
                   <ul class="speaker-list" *ngIf="member.speaker_events?.length">
                     <li
                       *ngFor="
-                        let event of member.speaker_events
+                        let event of $any(member.speaker_events)
                           | slice : 0 : (showSpeakers[i] ? member.speaker_events.length : 5)
                       "
                     >
