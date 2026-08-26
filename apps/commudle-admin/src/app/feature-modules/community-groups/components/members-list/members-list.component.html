@@ -95,7 +95,7 @@
               </td>
             </tr>
             <ng-container *ngIf="!isLoading">
-              <tr class="member-row" *ngFor="let member of members">
+              <tr class="member-row" *ngFor="let member of members; let i = index">
                 <td>
                   <div class="member-cell">
                     <app-user-profile-card-large
@@ -123,7 +123,7 @@
                     <li
                       *ngFor="
                         let event of member.speaker_events
-                          | slice : 0 : (member.showAllSpeakerEvents ? member.speaker_events.length : 5)
+                          | slice : 0 : (showSpeakers[i] ? member.speaker_events.length : 5)
                       "
                     >
                       <a [href]="'communities/' + event.kommunity_id + '/events/' + event.id" target="_blank">
@@ -138,9 +138,9 @@
                   <a
                     *ngIf="member.speaker_events?.length > 5"
                     class="view-more-link"
-                    (click)="member.showAllSpeakerEvents = !member.showAllSpeakerEvents"
+                    (click)="showSpeakers[i] = !showSpeakers[i]"
                   >
-                    {{ member.showAllSpeakerEvents ? 'Show less' : 'View all ' + member.speaker_events.length }}
+                    {{ showSpeakers[i] ? 'Show less' : 'View all ' + member.speaker_events.length }}
                   </a>
                   <span *ngIf="!member.speaker_events?.length" class="no-data">—</span>
                 </td>
