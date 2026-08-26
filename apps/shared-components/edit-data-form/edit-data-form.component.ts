@@ -25,10 +25,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { filter, map } from 'rxjs';
 
 @Component({
-    selector: 'commudle-edit-data-form',
-    templateUrl: './edit-data-form.component.html',
-    styleUrls: ['./edit-data-form.component.scss'],
-    standalone: false
+  selector: 'commudle-edit-data-form',
+  templateUrl: './edit-data-form.component.html',
+  styleUrls: ['./edit-data-form.component.scss'],
+  standalone: false,
 })
 export class EditDataFormComponent implements OnInit, OnChanges {
   @Input() dataFormId: number;
@@ -160,16 +160,17 @@ export class EditDataFormComponent implements OnInit, OnChanges {
   }
 
   addQuestionChoiceButtonClick(questionIndex: number) {
-    (<FormArray>(
-      (<FormArray>this.editDataForm.get('data_form').get('questions')).controls[questionIndex].get('question_choices')
-    )).push(this.initQuestionChoice());
+    const questions = (<FormArray>this.editDataForm.get('data_form').get('questions')).controls;
+    const questionChoices = questions[questionIndex].get('question_choices') as FormArray;
+    questionChoices.push(this.initQuestionChoice());
 
-    // Focus
     setTimeout(() => {
-      const inputs = this.choiceInputs.toArray();
-      if (inputs.length > 0) {
-        inputs[inputs.length - 1].nativeElement.focus();
-      }
+      const target = this.choiceInputs
+        .toArray()
+        .filter((el) => el.nativeElement.dataset.qi === String(questionIndex))
+        .pop();
+      target?.nativeElement.scrollIntoView({ block: 'nearest' });
+      target?.nativeElement.focus({ preventScroll: true });
     }, 0);
   }
 
