@@ -1,6 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, Component, Inject, Input, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
-import { faLink, faUserGroup } from '@fortawesome/free-solid-svg-icons';
+import { faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import { FeaturedItemsService } from 'apps/commudle-admin/src/app/services/featured-items.service';
 import { IFeaturedItems } from 'apps/shared-models/featured-items.model';
 import { ActivatedRoute } from '@angular/router';
@@ -21,7 +21,6 @@ export class PublicHomeListEventsFeaturedCommunitiesComponent implements OnInit,
   faUserGroup = faUserGroup;
   private readonly isBrowser: boolean;
   private readonly destroy$ = new Subject<void>();
-  faLink = faLink;
   faHashtag = faHashtag;
 
   constructor(

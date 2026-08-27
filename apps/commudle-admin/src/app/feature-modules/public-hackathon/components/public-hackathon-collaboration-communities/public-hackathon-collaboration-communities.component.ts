@@ -8,7 +8,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { faLink, faHashtag } from '@fortawesome/free-solid-svg-icons';
+import { faHashtag } from '@fortawesome/free-solid-svg-icons';
 import { ICommunity, IHackathon, IHackathonCollaborationCommunity } from '@commudle/shared-models';
 import { HackathonCollaborationCommunitiesService, ILogoTint, LogoTintService } from '@commudle/shared-services';
 
@@ -24,7 +24,6 @@ export class PublicHackathonCollaborationCommunitiesComponent implements OnInit,
   @Output() hasCollaborationCommunities = new EventEmitter<boolean>();
 
   faHashtag = faHashtag;
-  faLink = faLink;
   collaborationCommunities: IHackathonCollaborationCommunity[] = [];
   logoTints: Record<number, ILogoTint> = {};
 
