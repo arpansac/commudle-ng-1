@@ -28,49 +28,10 @@ button {
   @apply com-flex com-flex-row com-gap-2 com-items-center com-w-max;
 }
 
-.view-mode {
-  .team-name-section {
-    @apply com-mb-4 com-pb-4 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
-
-    label {
-      @apply com-text-xs com-text-Cadet-Grey com-font-medium;
-    }
-
-    .team-name-value {
-      @apply com-m-0 com-mt-1 com-text-base com-font-semibold com-text-Yankees-Blue;
-    }
-  }
-
-  .team-members-list {
-    @apply com-flex com-flex-col;
-
-    .team-member-card {
-      @apply com-flex com-items-center com-justify-between com-py-3;
-      @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
-
-      &:last-child {
-        @apply com-border-b-0;
-      }
-
-      .member-info {
-        @apply com-flex com-flex-col com-gap-1;
-
-        .member-name {
-          @apply com-text-sm com-font-medium com-text-Yankees-Blue;
-        }
-
-        .member-email {
-          @apply com-text-xs com-text-Cadet-Grey;
-        }
-      }
-
-      .member-actions {
-        @apply com-flex com-items-center com-gap-2 com-flex-shrink-0;
-      }
-    }
-  }
-}
-
 .view-email {
   @apply com-text-sm com-text-Cadet-Grey;
+}
+
+.section-padding {
+  @apply com-pb-4;
 }
