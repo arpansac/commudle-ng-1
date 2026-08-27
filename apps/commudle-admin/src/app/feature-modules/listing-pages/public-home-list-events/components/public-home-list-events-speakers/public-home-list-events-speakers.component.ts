@@ -1,11 +1,10 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
+import { faMicrophone, faHashtag } from '@fortawesome/free-solid-svg-icons';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { IUser } from 'apps/shared-models/user.model';
-import { faHashtag } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'commudle-public-home-list-events-speakers',
   templateUrl: './public-home-list-events-speakers.component.html',

@@ -1,12 +1,12 @@
 import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { faHeadset } from '@fortawesome/free-solid-svg-icons';
+import { faHeadset, faHashtag } from '@fortawesome/free-solid-svg-icons';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { ISessions } from 'apps/shared-models/sessions.model';
-import { faHashtag } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'commudle-public-home-list-events-tech-sessions',
   templateUrl: './public-home-list-events-tech-sessions.component.html',
