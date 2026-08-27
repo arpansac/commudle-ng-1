@@ -145,6 +145,12 @@ export class PublicHackathonTeammateFormComponent implements OnInit, AfterViewIn
     return this.teammatesArray.at(index).get('email');
   }
 
+  getTeammateUser(index: number) {
+    const email = this.getEmailControl(index)?.value?.toLowerCase();
+    const hur = this.team?.hackathon_user_responses?.find((h) => h.user_email?.toLowerCase() === email);
+    return hur?.user || null;
+  }
+
   fetchTeamDetails() {
     this.hurService.getTeamDetails(this.hackathonUserResponse.id).subscribe((data) => {
       if (data) {
