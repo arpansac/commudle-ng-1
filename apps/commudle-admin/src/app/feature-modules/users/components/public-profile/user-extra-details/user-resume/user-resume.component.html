@@ -1,6 +1,6 @@
 <com-card *ngIf="currentUser?.id === user.id" class="user-resume" id="resume">
-  <com-card-header class="section-heading-anchor">
-    <div>
+  <com-card-header>
+    <div class="section-heading-anchor heading">
       <fa-icon [icon]="faClipboard" class="com-text-Azure Icon"></fa-icon>
       Resume
       <a [routerLink]="'.'" fragment="resume" class="anchor-link" aria-label="Link to resume section">

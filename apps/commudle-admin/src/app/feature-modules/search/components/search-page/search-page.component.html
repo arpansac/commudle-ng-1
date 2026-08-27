@@ -51,155 +51,137 @@
               <nb-card *ngIf="total > 0">
                 <nb-card-header>On This Page</nb-card-header>
                 <nb-card-body>
-                  <!-- <a [routerLink]="'.'" fragment="upcoming-events">
-                    <div
-                      *ngIf="
-                        upcomingEvents.length > 0 &&
-                        (selectedFilters.includes('Upcoming Events') || selectedFilters.includes('All'))
-                      "
-                      [ngClass]="{ active: currentFragment === 'upcoming-events' }"
-                      class="items-heading"
-                    >
-                      <p class="query-results-heading">Upcoming Events</p>
-                    </div>
-                  </a> -->
-                  <a [routerLink]="'.'" fragment="communities" class="section-heading-anchor">
-                    <div
-                      *ngIf="
-                        communities.length > 0 &&
-                        (selectedFilters.includes('Communities') || selectedFilters.includes('All'))
-                      "
-                      [ngClass]="{ active: currentFragment === 'communities' }"
-                      class="items-heading"
-                    >
-                      <p class="query-results-heading">
-                        Communities
-                        <fa-icon [icon]="faHashtag" class="anchor-link anchor-icon-small"></fa-icon>
-                      </p>
-                    </div>
-                  </a>
-                  <!-- <div
-                  *ngIf="
-                    organizations.length > 0 &&
-                    (selectedFilters.includes('Organizations') || selectedFilters.includes('All'))
-                  "
-                  [ngClass]="{ active: currentFragment === 'communities' }"
-                  class="items-heading"
-                >
-                  <p class="query-results-heading"><a [routerLink]="'.'" fragment="organizations">Organizations</a></p>
-                </div> -->
-                  <a [routerLink]="'.'" fragment="users" class="section-heading-anchor">
-                    <div
-                      *ngIf="users.length > 0 && (selectedFilters.includes('Users') || selectedFilters.includes('All'))"
-                      [ngClass]="{ active: currentFragment === 'users' }"
-                      class="items-heading"
-                    >
-                      <p class="query-results-heading">
-                        Users
-                        <fa-icon [icon]="faHashtag" class="anchor-link anchor-icon-small"></fa-icon>
-                      </p>
-                    </div>
-                  </a>
-                  <a [routerLink]="'.'" fragment="builds" class="section-heading-anchor">
-                    <div
-                      *ngIf="
-                        builds.length > 0 && (selectedFilters.includes('Builds') || selectedFilters.includes('All'))
-                      "
-                      [ngClass]="{ active: currentFragment === 'builds' }"
-                      class="items-heading"
-                    >
-                      <p class="query-results-heading">
-                        Builds
-                        <fa-icon [icon]="faHashtag" class="anchor-link anchor-icon-small"></fa-icon>
-                      </p>
-                    </div>
-                  </a>
-                  <a [routerLink]="'.'" fragment="tech-talks" class="section-heading-anchor">
-                    <div
-                      *ngIf="
-                        speakerResources.length > 0 &&
-                        (selectedFilters.includes('Tech Talks') || selectedFilters.includes('All'))
-                      "
-                      [ngClass]="{ active: currentFragment === 'tech-talks' }"
-                      class="items-heading"
-                    >
-                      <p class="query-results-heading">
-                        Tech Talks
-                        <fa-icon [icon]="faHashtag" class="anchor-link anchor-icon-small"></fa-icon>
-                      </p>
-                    </div>
-                  </a>
-                  <a [routerLink]="'.'" fragment="content" class="section-heading-anchor">
-                    <div
-                      *ngIf="
-                        socialResources.length > 0 &&
-                        (selectedFilters.includes('Content') || selectedFilters.includes('All'))
-                      "
-                      [ngClass]="{ active: currentFragment === 'content' }"
-                      class="items-heading"
-                    >
-                      <p class="query-results-heading">
-                        Content
-                        <fa-icon [icon]="faHashtag" class="anchor-link anchor-icon-small"></fa-icon>
-                      </p>
-                    </div>
-                  </a>
-                  <a [routerLink]="'.'" fragment="community-newsletters" class="section-heading-anchor">
-                    <div
-                      *ngIf="
-                        newsletters.length > 0 &&
-                        (selectedFilters.includes('Community Newsletters') || selectedFilters.includes('All'))
-                      "
-                      [ngClass]="{ active: currentFragment === 'community-newsletters' }"
-                      class="items-heading"
-                    >
-                      <p class="query-results-heading">
-                        Community Newsletters
-                        <fa-icon [icon]="faHashtag" class="anchor-link anchor-icon-small"></fa-icon>
-                      </p>
-                    </div>
-                  </a>
-                  <a [routerLink]="'.'" fragment="commudle-newsletters" class="section-heading-anchor">
-                    <div
-                      *ngIf="
-                        mainNewsletters.length > 0 &&
-                        (selectedFilters.includes('Commudle Newsletters') || selectedFilters.includes('All'))
-                      "
-                      [ngClass]="{ active: currentFragment === 'commudle-newsletters' }"
-                      class="items-heading"
-                    >
-                      <p class="query-results-heading">
-                        Commudle Newsletters
-                        <fa-icon [icon]="faHashtag" class="anchor-link anchor-icon-small"></fa-icon>
-                      </p>
-                    </div>
-                  </a>
-                  <a [routerLink]="'.'" fragment="labs" class="section-heading-anchor">
-                    <div
-                      *ngIf="labs.length > 0 && (selectedFilters.includes('Labs') || selectedFilters.includes('All'))"
-                      [ngClass]="{ active: currentFragment === 'labs' }"
-                      class="items-heading"
-                    >
-                      <p class="query-results-heading">
-                        Labs
-                        <fa-icon [icon]="faHashtag" class="anchor-link anchor-icon-small"></fa-icon>
-                      </p>
-                    </div>
-                  </a>
-                  <a [routerLink]="'.'" fragment="events" class="section-heading-anchor">
-                    <div
-                      *ngIf="
-                        events.length > 0 && (selectedFilters.includes('Events') || selectedFilters.includes('All'))
-                      "
-                      [ngClass]="{ active: currentFragment === 'events' }"
-                      class="items-heading"
-                    >
-                      <p class="query-results-heading">
-                        Events
-                        <fa-icon [icon]="faHashtag" class="anchor-link anchor-icon-small"></fa-icon>
-                      </p>
-                    </div>
-                  </a>
+                  <div
+                    *ngIf="
+                      communities.length > 0 &&
+                      (selectedFilters.includes('Communities') || selectedFilters.includes('All'))
+                    "
+                    [ngClass]="{ active: currentFragment === 'communities' }"
+                    class="items-heading section-heading-anchor"
+                  >
+                    <p class="query-results-heading">
+                      Communities
+                      <a [routerLink]="'.'" fragment="communities" class="anchor-link">
+                        <fa-icon [icon]="faHashtag" class="anchor-icon-small"></fa-icon>
+                      </a>
+                    </p>
+                  </div>
+
+                  <div
+                    *ngIf="users.length > 0 && (selectedFilters.includes('Users') || selectedFilters.includes('All'))"
+                    [ngClass]="{ active: currentFragment === 'users' }"
+                    class="items-heading section-heading-anchor"
+                  >
+                    <p class="query-results-heading">
+                      Users
+                      <a [routerLink]="'.'" fragment="users" class="anchor-link">
+                        <fa-icon [icon]="faHashtag" class="anchor-icon-small"></fa-icon>
+                      </a>
+                    </p>
+                  </div>
+
+                  <div
+                    *ngIf="builds.length > 0 && (selectedFilters.includes('Builds') || selectedFilters.includes('All'))"
+                    [ngClass]="{ active: currentFragment === 'builds' }"
+                    class="items-heading section-heading-anchor"
+                  >
+                    <p class="query-results-heading">
+                      Builds
+                      <a [routerLink]="'.'" fragment="builds" class="anchor-link">
+                        <fa-icon [icon]="faHashtag" class="anchor-icon-small"></fa-icon>
+                      </a>
+                    </p>
+                  </div>
+
+                  <div
+                    *ngIf="
+                      speakerResources.length > 0 &&
+                      (selectedFilters.includes('Tech Talks') || selectedFilters.includes('All'))
+                    "
+                    [ngClass]="{ active: currentFragment === 'tech-talks' }"
+                    class="items-heading section-heading-anchor"
+                  >
+                    <p class="query-results-heading">
+                      Tech Talks
+                      <a [routerLink]="'.'" fragment="tech-talks" class="anchor-link">
+                        <fa-icon [icon]="faHashtag" class="anchor-icon-small"></fa-icon>
+                      </a>
+                    </p>
+                  </div>
+
+                  <div
+                    *ngIf="
+                      socialResources.length > 0 &&
+                      (selectedFilters.includes('Content') || selectedFilters.includes('All'))
+                    "
+                    [ngClass]="{ active: currentFragment === 'content' }"
+                    class="items-heading section-heading-anchor"
+                  >
+                    <p class="query-results-heading">
+                      Content
+                      <a [routerLink]="'.'" fragment="content" class="anchor-link">
+                        <fa-icon [icon]="faHashtag" class="anchor-icon-small"></fa-icon>
+                      </a>
+                    </p>
+                  </div>
+
+                  <div
+                    *ngIf="
+                      newsletters.length > 0 &&
+                      (selectedFilters.includes('Community Newsletters') || selectedFilters.includes('All'))
+                    "
+                    [ngClass]="{ active: currentFragment === 'community-newsletters' }"
+                    class="items-heading section-heading-anchor"
+                  >
+                    <p class="query-results-heading">
+                      Community Newsletters
+                      <a [routerLink]="'.'" fragment="community-newsletters" class="anchor-link">
+                        <fa-icon [icon]="faHashtag" class="anchor-icon-small"></fa-icon>
+                      </a>
+                    </p>
+                  </div>
+
+                  <div
+                    *ngIf="
+                      mainNewsletters.length > 0 &&
+                      (selectedFilters.includes('Commudle Newsletters') || selectedFilters.includes('All'))
+                    "
+                    [ngClass]="{ active: currentFragment === 'commudle-newsletters' }"
+                    class="items-heading section-heading-anchor"
+                  >
+                    <p class="query-results-heading">
+                      Commudle Newsletters
+                      <a [routerLink]="'.'" fragment="commudle-newsletters" class="anchor-link">
+                        <fa-icon [icon]="faHashtag" class="anchor-icon-small"></fa-icon>
+                      </a>
+                    </p>
+                  </div>
+
+                  <div
+                    *ngIf="labs.length > 0 && (selectedFilters.includes('Labs') || selectedFilters.includes('All'))"
+                    [ngClass]="{ active: currentFragment === 'labs' }"
+                    class="items-heading section-heading-anchor"
+                  >
+                    <p class="query-results-heading">
+                      Labs
+                      <a [routerLink]="'.'" fragment="labs" class="anchor-link">
+                        <fa-icon [icon]="faHashtag" class="anchor-icon-small"></fa-icon>
+                      </a>
+                    </p>
+                  </div>
+
+                  <div
+                    *ngIf="events.length > 0 && (selectedFilters.includes('Events') || selectedFilters.includes('All'))"
+                    [ngClass]="{ active: currentFragment === 'events' }"
+                    class="items-heading section-heading-anchor"
+                  >
+                    <p class="query-results-heading">
+                      Events
+                      <a [routerLink]="'.'" fragment="events" class="anchor-link">
+                        <fa-icon [icon]="faHashtag" class="anchor-icon-small"></fa-icon>
+                      </a>
+                    </p>
+                  </div>
                 </nb-card-body>
               </nb-card>
             </div>

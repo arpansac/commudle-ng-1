@@ -16,6 +16,9 @@
       h2 {
         @apply com-text-base com-font-semibold com-text-Yankees-Blue com-m-0 com-no-underline com-text-inherit;
       }
+      .title {
+        @apply com-flex com-items-center;
+      }
     }
 
     com-card-body {

@@ -14,13 +14,13 @@
 }
 
 .title {
-  @apply com-inline-flex com-flex-row com-no-underline com-items-start md:com-mb-2 md:com-mt-6 com-my-6;
+  @apply com-flex com-flex-row com-no-underline md:com-mb-2 md:com-mt-6 com-my-6;
 
   .heading-subheading {
     @apply com-flex com-flex-col com-m-0 com-p-0 com-gap-2;
 
     .title {
-      @apply md:com-text-2xl com-text-xl com-m-0 md:com-font-bold com-font-semibold com-text-Dark-Jungle-Green com-mb-2;
+      @apply md:com-text-2xl com-text-xl com-m-0 md:com-font-bold com-font-semibold com-text-Dark-Jungle-Green com-mb-2 com-flex com-items-center;
     }
 
     .sub-heading {
