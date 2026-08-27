@@ -51,6 +51,21 @@
               <nb-card *ngIf="total > 0">
                 <nb-card-header>On This Page</nb-card-header>
                 <nb-card-body>
+                  <!-- <div
+                    *ngIf="
+                      upcomingEvents.length > 0 &&
+                      (selectedFilters.includes('Upcoming Events') || selectedFilters.includes('All'))
+                    "
+                    [ngClass]="{ active: currentFragment === 'upcoming-events' }"
+                    class="items-heading section-heading-anchor"
+                  >
+                    <p class="query-results-heading">
+                      Upcoming Events
+                      <a [routerLink]="'.'" fragment="upcoming-events" class="anchor-link">
+                        <fa-icon [icon]="faHashtag" class="anchor-icon-small"></fa-icon>
+                      </a>
+                    </p>
+                  </div> -->
                   <div
                     *ngIf="
                       communities.length > 0 &&
@@ -66,7 +81,21 @@
                       </a>
                     </p>
                   </div>
-
+                  <!-- <div
+                  *ngIf="
+                    organizations.length > 0 &&
+                    (selectedFilters.includes('Organizations') || selectedFilters.includes('All'))
+                  "
+                  [ngClass]="{ active: currentFragment === 'communities' }"
+                  class="items-heading section-heading-anchor"
+                >
+                  <p class="query-results-heading">
+                    Organizations
+                    <a [routerLink]="'.'" fragment="organizations" class="anchor-link">
+                      <fa-icon [icon]="faHashtag" class="anchor-icon-small"></fa-icon>
+                    </a>
+                  </p>
+                </div> -->
                   <div
                     *ngIf="users.length > 0 && (selectedFilters.includes('Users') || selectedFilters.includes('All'))"
                     [ngClass]="{ active: currentFragment === 'users' }"
@@ -79,7 +108,6 @@
                       </a>
                     </p>
                   </div>
-
                   <div
                     *ngIf="builds.length > 0 && (selectedFilters.includes('Builds') || selectedFilters.includes('All'))"
                     [ngClass]="{ active: currentFragment === 'builds' }"
@@ -92,7 +120,6 @@
                       </a>
                     </p>
                   </div>
-
                   <div
                     *ngIf="
                       speakerResources.length > 0 &&
@@ -108,7 +135,6 @@
                       </a>
                     </p>
                   </div>
-
                   <div
                     *ngIf="
                       socialResources.length > 0 &&
@@ -124,7 +150,6 @@
                       </a>
                     </p>
                   </div>
-
                   <div
                     *ngIf="
                       newsletters.length > 0 &&
@@ -140,7 +165,6 @@
                       </a>
                     </p>
                   </div>
-
                   <div
                     *ngIf="
                       mainNewsletters.length > 0 &&
@@ -156,7 +180,6 @@
                       </a>
                     </p>
                   </div>
-
                   <div
                     *ngIf="labs.length > 0 && (selectedFilters.includes('Labs') || selectedFilters.includes('All'))"
                     [ngClass]="{ active: currentFragment === 'labs' }"
@@ -169,7 +192,6 @@
                       </a>
                     </p>
                   </div>
-
                   <div
                     *ngIf="events.length > 0 && (selectedFilters.includes('Events') || selectedFilters.includes('All'))"
                     [ngClass]="{ active: currentFragment === 'events' }"
