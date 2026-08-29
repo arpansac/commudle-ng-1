@@ -40,6 +40,10 @@ app-loading-spinner {
 
 .tag-link {
   @apply com-no-underline;
+
+  nb-tag {
+    @apply com-lowercase;
+  }
 }
 
 .pagination {
