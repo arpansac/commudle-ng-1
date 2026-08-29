@@ -34,11 +34,12 @@ app-loading-spinner {
   @apply md:com-text-[32px] com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0 md:com-mb-10 com-mb-8 md:com-text-left com-text-center;
 }
 
-.tags {
-  @apply com-mb-8;
-  nb-tag {
-    @apply com-lowercase com-cursor-pointer;
-  }
+.tag-list {
+  @apply com-flex com-flex-wrap com-gap-2 com-mb-[30px];
+}
+
+.tag-link {
+  @apply com-no-underline;
 }
 
 .pagination {
