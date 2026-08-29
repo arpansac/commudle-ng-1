@@ -38,14 +38,14 @@ app-loading-spinner {
   @apply com-mb-8;
 
   .tag-list {
-    @apply com-flex com-flex-wrap com-gap-2 com-mb-[30px];
+    @apply com-flex com-flex-wrap com-gap-2;
   }
 
   .tag-link {
     @apply com-no-underline;
 
     nb-tag {
-      @apply com-lowercase;
+      @apply com-lowercase com-cursor-pointer;
     }
   }
 }
