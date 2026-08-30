@@ -203,16 +203,15 @@
         <nb-icon icon="close"></nb-icon>
       </button>
     </com-card-header>
-    <com-card-body>
+    <com-card-body class="book-slot-dialog-body">
+      <commudle-alert [info]="true" message="Slot once booked cannot be changed."></commudle-alert>
       <div class="slot-item">
         @if(selectedMentorSlots.length > 0) {
-        <div *ngFor="let slot of selectedMentorSlots">
-          <button comButton fullWidth status="basic" shape="semi-round" (click)="bookSlot(slot.id, ref)">
-            {{ moment(slot.starts_at).format('MMM DD, YYYY hh:mm A') }} - {{ moment(slot.ends_at).format('hh:mm A') }}
-          </button>
+        <div class="slot-row" *ngFor="let slot of selectedMentorSlots" (click)="bookSlot(slot.id, ref)">
+          {{ moment(slot.starts_at).format('MMM DD, YYYY hh:mm A') }} - {{ moment(slot.ends_at).format('hh:mm A') }}
         </div>
         } @else {
-        <p>No slots available yet!</p>
+        <p class="no-slots">No slots available yet!</p>
         }
       </div>
     </com-card-body>
