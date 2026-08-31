@@ -37,6 +37,7 @@ import { SearchPageCampaignComponent } from 'apps/commudle-admin/src/app/feature
 import { SharedComponentsModule as newSharedComponentsModule } from '@commudle/shared-components';
 import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 @NgModule({
   declarations: [
     SearchBoxComponent,
@@ -60,6 +61,7 @@ import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
     NbButtonModule,
     NbListModule,
     NbTagModule,
+    FontAwesomeModule,
     SharedDirectivesModule,
     SharedComponentsModule,
     PublicHomeListSpeakersModule,
