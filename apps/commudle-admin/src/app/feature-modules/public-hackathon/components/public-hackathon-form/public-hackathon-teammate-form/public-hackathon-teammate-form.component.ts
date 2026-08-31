@@ -35,6 +35,7 @@ export class PublicHackathonTeammateFormComponent implements OnInit, AfterViewIn
   @Input() hasSubmitButton = false;
   @Input() hackathon: IHackathon;
   @Input() team: IHackathonTeam;
+  @Input() viewMode = false;
   @Output() submitTeammateDetailsEvent = new EventEmitter<any>();
   @Output() previousButtonEvent = new EventEmitter<any>();
   showEmailError = false;
@@ -138,6 +139,12 @@ export class PublicHackathonTeammateFormComponent implements OnInit, AfterViewIn
 
   getEmailControl(index: number) {
     return this.teammatesArray.at(index).get('email');
+  }
+
+  getTeammateUser(index: number) {
+    const email = this.getEmailControl(index)?.value?.toLowerCase();
+    const hur = this.team?.hackathon_user_responses?.find((h) => h.user_email?.toLowerCase() === email);
+    return hur?.user || null;
   }
 
   fetchTeamDetails() {
