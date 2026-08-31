@@ -56,27 +56,23 @@ export class BlogsListComponent implements OnInit, OnDestroy {
         this.updatePagesAndCount(false);
       }
     });
-
     this.activatedRoute.params.subscribe((params) => {
       const tag = params['tag'];
-
       if (tag) {
         this.showFeaturedBlogsSection = false;
-        this.activeTag = this.slugToText(tag);
-        this.isLoading = true;
-        this.getTagFilterBlogs(this.activeTag);
+        const tag = {
+          value: this.slugToText(params['tag']),
+          slug: params['tag'],
+        };
+        this.setActiveTag(tag);
       } else {
         this.showFeaturedBlogsSection = true;
-        this.activeTag = this.defaultTag.value;
-        this.isLoading = true;
-        this.getBlogs();
+        this.setActiveTag(this.defaultTag);
       }
     });
-
     this.cmsService.getCountOfType('blog').subscribe((total) => {
       this.total = total;
     });
-
     this.footerService.changeFooterStatus(true);
     this.getFeaturedBlogs();
     this.getTags();
@@ -151,6 +147,27 @@ export class BlogsListComponent implements OnInit, OnDestroy {
 
   slugToText(slug: string): string {
     return slug.replace(/-/g, ' '); // Replace hyphens with spaces
+  }
+
+  getFilteredData(tag) {
+    this.isLoading = true;
+    if (tag === this.defaultTag.slug) {
+      this.getBlogs();
+    } else {
+      this.getTagFilterBlogs(tag);
+    }
+  }
+
+  setActiveTag(tag): void {
+    this.activeTag = tag.value;
+    if (tag.slug == this.defaultTag.slug) {
+      this.router.navigate(['/blogs'], { queryParams: { page: this.page } });
+    } else {
+      this.page = 1;
+      this.updatePagesAndCount(false);
+      this.router.navigate(['/blogs/category', tag.slug], { queryParams: { page: this.page } });
+    }
+    this.getFilteredData(tag.value);
   }
 
   setMeta(): void {
