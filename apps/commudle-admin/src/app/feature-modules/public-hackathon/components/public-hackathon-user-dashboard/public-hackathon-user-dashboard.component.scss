@@ -192,7 +192,7 @@ com-card {
 }
 
 .problem-statement-prompt {
-  @apply com-flex com-justify-between com-rounded-lg com-overflow-hidden;
+  @apply com-flex com-justify-between com-rounded-lg com-overflow-hidden com-mt-4;
 
   com-card-body {
     @apply com-flex com-flex-row com-justify-between com-gap-3 com-p-3;
@@ -281,5 +281,13 @@ com-card {
         @apply com-text-sm com-text-Yankees-Blue com-font-medium;
       }
     }
+  }
+}
+
+.application-incomplete-popup {
+  @apply com-mt-4 com-border com-border-solid com-border-Tigers-Eye;
+
+  com-card-body {
+    @apply com-p-4;
   }
 }
