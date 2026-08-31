@@ -223,3 +223,7 @@
 .round-content-actions {
   @apply com-flex md:com-flex-row com-flex-col-reverse com-gap-2 com-items-start;
 }
+
+.footer-confirm-dialog {
+  @apply com-flex com-justify-between;
+}
