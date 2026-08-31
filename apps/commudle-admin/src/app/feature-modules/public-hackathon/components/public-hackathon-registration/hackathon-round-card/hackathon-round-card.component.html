@@ -156,6 +156,9 @@
               {{ moment(bookedSlotByMentor.get(evaluator.id).ends_at).format('hh:mm A') }}
             </span>
           </div>
+          <commudle-alert [info]="true">
+            <div infoContent>In case you want to change the slot, please contact the admin team</div>
+          </commudle-alert>
           @if(mentorSlotsByMentor.get(evaluator.id)?.[0]?.hackathon_judge?.meeting_location) {
           @if(mentorSlotsByMentor.get(evaluator.id)[0].hackathon_judge.meeting_location.startsWith('http://') ||
           mentorSlotsByMentor.get(evaluator.id)[0].hackathon_judge.meeting_location.startsWith('https://')) {
@@ -168,9 +171,6 @@
           >
             <nb-icon icon="video-outline"></nb-icon> Join Meeting
           </a>
-          <commudle-alert [info]="true">
-            <div infoContent>In case you want to alter the slot, please contact the admin team</div>
-          </commudle-alert>
           } @else {
           <span class="meeting-location-text">
             <nb-icon icon="pin-outline"></nb-icon>
