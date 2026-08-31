@@ -292,6 +292,10 @@ com-card {
   }
 
   .complete-application-link {
-    @apply com-inline-flex com-items-center com-text-sm com-gap-1 com-ml-1 com-font-normal com-text-red-500 com-no-underline com-whitespace-nowrap;
+    @apply com-inline-flex com-items-center com-text-sm com-gap-1 com-ml-1 com-font-semibold com-text-red-600 com-cursor-pointer com-whitespace-nowrap;
+
+    &:hover {
+      @apply com-underline;
+    }
   }
 }
