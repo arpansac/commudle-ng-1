@@ -33,7 +33,15 @@
         <commudle-alert
           [error]="true"
           errorMessage="Your application needs to be completed to show your name in the winner list."
-        ></commudle-alert>
+        >
+          <a
+            errorContent
+            class="complete-application-link"
+            [routerLink]="['/communities', community?.slug, 'hackathons', hackathon?.slug, 'fill-form', hrgId]"
+          >
+            Complete Application <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+          </a>
+        </commudle-alert>
       </com-card-body>
     </com-card>
 

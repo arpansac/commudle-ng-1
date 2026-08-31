@@ -7,6 +7,7 @@ import {
   EHackathonRegistrationStatus,
   EInvitationStatus,
   EParticipateTypes,
+  ICommunity,
   ICommunityChannel,
   IHackathonTeam,
   IHackathonUserResponse,
@@ -38,6 +39,7 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
   };
   EHackathonRegistrationStatus = EHackathonRegistrationStatus;
   hackathon: IHackathon;
+  community: ICommunity;
   subscriptions: Subscription[] = [];
   userTeamDetails: IHackathonTeam[];
   hrgId: number;
@@ -75,6 +77,7 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((data) => {
         this.hackathon = data.hackathon;
+        this.community = data.community;
         if (this.hackathon.participate_types === EParticipateTypes.TEAM) {
           this.hasTeammateOption = true;
         }
