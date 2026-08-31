@@ -401,7 +401,8 @@ nb-option-list.search-autocomplete {
 }
 
 .pac-container {
-  z-index: 1051 !important;
+  position: fixed !important;
+  z-index: 10000 !important;
 }
 
 .nb-theme-default nb-card {
