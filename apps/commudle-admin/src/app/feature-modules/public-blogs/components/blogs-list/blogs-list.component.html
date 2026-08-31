@@ -34,13 +34,13 @@
           <div class="tags">
             <div class="tag-list">
               <a [routerLink]="['/blogs']" [queryParams]="{ page: 1 }" class="tag-link">
-                <nb-tag
-                  [text]="defaultTag.value"
-                  appearance="outline"
+                <app-tag
+                  [tags]="[defaultTag.value]"
+                  [shape]="'rounded'"
                   [removable]="activeTag === defaultTag.value"
-                  [status]="activeTag === defaultTag.value ? 'primary' : 'basic'"
-                  size="small"
-                ></nb-tag>
+                  [fontColor]="activeTag === defaultTag.value ? 'com-text-azure' : 'com-text-tYankees-Blue'"
+                  [backgroundColor]="activeTag === defaultTag.value ? 'com-bg-primary-100' : 'com-bg-[#F7F9FC]'"
+                ></app-tag>
               </a>
 
               <a
@@ -49,13 +49,13 @@
                 [queryParams]="{ page: 1 }"
                 class="tag-link"
               >
-                <nb-tag
-                  [text]="tag.value"
-                  appearance="outline"
+                <app-tag
+                  [tags]="[tag.value]"
+                  [shape]="'rounded'"
                   [removable]="activeTag === tag.value"
-                  [status]="activeTag === tag.value ? 'primary' : 'basic'"
-                  size="small"
-                ></nb-tag>
+                  [fontColor]="activeTag === tag.value ? 'com-text-azure' : 'com-text-tYankees-Blue'"
+                  [backgroundColor]="activeTag === tag.value ? 'com-bg-primary-100' : 'com-bg-[#F7F9FC]'"
+                ></app-tag>
               </a>
             </div>
           </div>
