@@ -1687,9 +1687,9 @@
 <ng-template #documentViewerDialog let-ref="dialogRef" let-data>
   <nb-card class="document-viewer-dialog">
     <nb-card-header class="com-flex com-justify-between com-items-center">
-      <div>
-        <h3>{{ data.roundName }}</h3>
-        <p>{{ data.teamName }}</p>
+      <div class="document-viewer-title">
+        <span class="round-label">{{ data.roundName }}</span>
+        <h3 class="team-name">{{ data.teamName }}</h3>
       </div>
       <button nbButton ghost (click)="ref.close()" shape="round">
         <nb-icon icon="close"></nb-icon>
