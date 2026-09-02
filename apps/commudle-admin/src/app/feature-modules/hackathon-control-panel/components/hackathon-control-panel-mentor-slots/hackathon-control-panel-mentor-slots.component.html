@@ -307,7 +307,7 @@
           errorMessage="Slot length is required"
         ></commudle-alert>
         <commudle-alert
-          *ngIf="slotRuleForm.controls['slot_length'].touched && slotRuleForm.controls['slot_length'].errors?.['min']"
+          *ngIf="(slotRuleForm.controls['slot_length'].touched || slotRuleForm.controls['slot_length'].dirty) && slotRuleForm.controls['slot_length'].errors?.['min']"
           [error]="true"
           errorMessage="Slot length must be at least 10 minutes"
         ></commudle-alert>
