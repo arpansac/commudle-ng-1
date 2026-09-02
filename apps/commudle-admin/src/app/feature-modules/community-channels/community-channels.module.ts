@@ -96,7 +96,6 @@ import { CommudleCardModule } from '@commudle/commudle-theme';
     InfiniteScrollModule,
     SharedComponentsModule, //new
     CommudleCardModule,
-
     //External
     FontAwesomeModule,
     //standalone modules

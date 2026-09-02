@@ -309,7 +309,7 @@
         <commudle-alert
           *ngIf="slotRuleForm.controls['slot_length'].touched && slotRuleForm.controls['slot_length'].errors?.['min']"
           [error]="true"
-          errorMessage="Slot length must be at least 1 minute"
+          errorMessage="Slot length must be at least 10 minutes"
         ></commudle-alert>
       </div>
       <div class="slot-info" *ngIf="calculateTotalSlots() > 0">

@@ -14,6 +14,7 @@ import { debounceTime, distinctUntilChanged, filter, fromEvent, Subscription, sw
 export class TagComponent implements OnInit, OnDestroy {
   @Input() tags: string[];
   @Input() editable: boolean;
+  @Input() removable = false;
   @Input() inputDisabled: boolean;
   @Input() minimumTags = 5;
   @Input() backgroundColor = 'com-bg-[#F7F9FC]';
