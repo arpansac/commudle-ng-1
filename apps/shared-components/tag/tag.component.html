@@ -16,9 +16,9 @@
     class="{{ backgroundColor }} {{ fontColor }}"
   >
     {{ tag }}
-    <fa-icon *ngIf="editable" class="remove-icon" (click)="onTagRemove(tag)" [icon]="faXmark"> </fa-icon>
-  </span>
 
+    <fa-icon *ngIf="editable || removable" class="remove-icon" (click)="onTagRemove(tag)" [icon]="faXmark"> </fa-icon>
+  </span>
   <form [formGroup]="searchForm">
     <input
       (keydown)="onKeyDown($event)"

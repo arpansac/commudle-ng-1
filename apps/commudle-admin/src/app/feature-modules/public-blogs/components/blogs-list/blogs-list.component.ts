@@ -160,12 +160,9 @@ export class BlogsListComponent implements OnInit, OnDestroy {
 
   setActiveTag(tag): void {
     this.activeTag = tag.value;
-    if (tag.slug == this.defaultTag.slug) {
-      this.router.navigate(['/blogs'], { queryParams: { page: this.page } });
-    } else {
+    if (tag.slug !== this.defaultTag.slug) {
       this.page = 1;
       this.updatePagesAndCount(false);
-      this.router.navigate(['/blogs/category', tag.slug], { queryParams: { page: this.page } });
     }
     this.getFilteredData(tag.value);
   }
