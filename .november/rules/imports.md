@@ -2,35 +2,31 @@
 
 ## Nebular Imports
 
-- **ALWAYS import Nebular components from `@commudle/theme`**
-- **NEVER import directly from `@nebular/theme`**
-
-### Examples
+- Always import Nebular components from `@commudle/theme`.
+- Never import directly from `@nebular/theme`.
 
 ```typescript
-// ✅ Correct - Import from @commudle/theme
+// ✅ Correct
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { NbToastrService, NbIconModule } from '@commudle/theme';
 
-// ❌ Wrong - Do not import from @nebular/theme
+// ❌ Wrong
 import { NbDialogRef } from '@nebular/theme';
 ```
 
 ## Shared Library Imports
 
-- **ALWAYS use barrel exports from `@commudle/shared-services`**
-- **NEVER import directly from `libs/shared/services/src/lib/...`**
-- **ALWAYS use barrel exports from `@commudle/shared-models`**
-- **NEVER import directly from `libs/shared/models/src/lib/...`**
-
-### Examples
+- Always use barrel exports from `@commudle/shared-services` and
+  `@commudle/shared-models`.
+- Never import directly from `libs/shared/services/src/lib/...` or
+  `libs/shared/models/src/lib/...`.
 
 ```typescript
-// ✅ Correct - Import from barrel exports
+// ✅ Correct
 import { HackathonTeamRoundSubmissionService, AuthService } from '@commudle/shared-services';
 import { ICommunityBuild, EBuildType } from '@commudle/shared-models';
 
-// ❌ Wrong - Do not import from direct paths
+// ❌ Wrong
 import { HackathonTeamRoundSubmissionService } from 'libs/shared/services/src/lib/hackathon-team-round-submission.service';
 import { ICommunityBuild } from 'libs/shared/models/src/lib/community-build.model';
 ```
@@ -38,11 +34,11 @@ import { ICommunityBuild } from 'libs/shared/models/src/lib/community-build.mode
 ## Import Organization Order
 
 ```typescript
-// 1. Angular core imports
+// 1. Angular core
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-// 2. Third-party libraries (including @commudle/theme)
+// 2. Third-party (including @commudle/theme)
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { faCircleCheck, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Subject, takeUntil, finalize } from 'rxjs';
