@@ -5,7 +5,7 @@
 .details-card {
   @apply com-flex com-mx-2 com-my-4;
   .details-section {
-    @apply com-flex com-justify-between com-items-center com-py-0;
+    @apply com-flex-row com-justify-between com-items-center com-py-0;
     .details {
       @apply com-flex com-gap-3 com-items-center;
       .hackathon-name {

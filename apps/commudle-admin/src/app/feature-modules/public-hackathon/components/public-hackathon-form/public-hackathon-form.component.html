@@ -6,43 +6,41 @@
     <div class="two-column-layout">
       <div class="main-column">
         <com-card *ngIf="!isLoading" class="details-card">
-          <com-card-body>
-            <div class="details-section">
-              <div class="details">
-                <h1 class="hackathon-name">
-                  {{ hackathon.name }}
-                </h1>
-                <div>
-                  <app-community-badge [community]="community"></app-community-badge>
-                </div>
+          <com-card-body class="details-section">
+            <div class="details">
+              <h1 class="hackathon-name">
+                {{ hackathon.name }}
+              </h1>
+              <div>
+                <app-community-badge [community]="community"></app-community-badge>
               </div>
-              <div class="social-links" *ngIf="contactInfo">
-                <ng-container *ngIf="contactInfo.website">
-                  <a [href]="contactInfo.website">
-                    <fa-icon [icon]="icons.faGlobe"></fa-icon>
-                  </a>
-                </ng-container>
-                <ng-container *ngIf="contactInfo.facebook">
-                  <a [href]="contactInfo.facebook">
-                    <fa-icon [icon]="icons.faFacebookF"></fa-icon>
-                  </a>
-                </ng-container>
-                <ng-container *ngIf="contactInfo.twitter">
-                  <a [href]="contactInfo.twitter">
-                    <fa-icon [icon]="icons.faTwitter"></fa-icon>
-                  </a>
-                </ng-container>
-                <ng-container *ngIf="contactInfo.github">
-                  <a [href]="contactInfo.github">
-                    <fa-icon [icon]="icons.faGithub"></fa-icon>
-                  </a>
-                </ng-container>
-                <ng-container *ngIf="contactInfo.linkedIn">
-                  <a [href]="contactInfo.linkedIn">
-                    <fa-icon [icon]="icons.faLinkedinIn"></fa-icon>
-                  </a>
-                </ng-container>
-              </div>
+            </div>
+            <div class="social-links" *ngIf="contactInfo">
+              <ng-container *ngIf="contactInfo.website">
+                <a [href]="contactInfo.website">
+                  <fa-icon [icon]="icons.faGlobe"></fa-icon>
+                </a>
+              </ng-container>
+              <ng-container *ngIf="contactInfo.facebook">
+                <a [href]="contactInfo.facebook">
+                  <fa-icon [icon]="icons.faFacebookF"></fa-icon>
+                </a>
+              </ng-container>
+              <ng-container *ngIf="contactInfo.twitter">
+                <a [href]="contactInfo.twitter">
+                  <fa-icon [icon]="icons.faTwitter"></fa-icon>
+                </a>
+              </ng-container>
+              <ng-container *ngIf="contactInfo.github">
+                <a [href]="contactInfo.github">
+                  <fa-icon [icon]="icons.faGithub"></fa-icon>
+                </a>
+              </ng-container>
+              <ng-container *ngIf="contactInfo.linkedIn">
+                <a [href]="contactInfo.linkedIn">
+                  <fa-icon [icon]="icons.faLinkedinIn"></fa-icon>
+                </a>
+              </ng-container>
             </div>
           </com-card-body>
         </com-card>
