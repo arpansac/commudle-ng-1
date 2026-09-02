@@ -5,6 +5,7 @@
 .create-community-form,
 .create-community-group-form {
   @apply com-w-[100dvw] md:com-w-[680px] com-flex com-flex-col;
+  max-height: 90dvh;
 }
 
 // ── Header ────────────────────────────────────────────
