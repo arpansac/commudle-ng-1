@@ -1,13 +1,13 @@
 @import './apps/commudle-admin/src/assets/styles/variables';
 
 .admin-badges-list {
-  nb-card-header {
+  com-card-header {
     @media screen and (max-width: $tab-width) {
       flex-direction: column;
     }
   }
 
-  nb-card-body {
+  com-card-body {
     padding: 0;
 
     .badge-list-container {
@@ -65,7 +65,7 @@
 
 @media all and (max-width: $tab-width) {
   .admin-badges-list {
-    nb-card-body {
+    com-card-body {
       .badge-list-container {
         nb-list {
           nb-list-item {

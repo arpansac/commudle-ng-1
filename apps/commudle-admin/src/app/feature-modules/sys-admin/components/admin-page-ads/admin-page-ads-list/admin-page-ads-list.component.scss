@@ -1,7 +1,7 @@
 @import './apps/commudle-admin/src/assets/styles/variables';
 
 .admin-page-ads-list {
-  nb-card-body {
+  com-card-body {
     padding: 0;
 
     .ad-list-container {
@@ -35,7 +35,7 @@
 
 @media all and (max-width: $tab-width) {
   .admin-page-ads-list {
-    nb-card-body {
+    com-card-body {
       .ad-list-container {
         nb-list {
           nb-list-item {

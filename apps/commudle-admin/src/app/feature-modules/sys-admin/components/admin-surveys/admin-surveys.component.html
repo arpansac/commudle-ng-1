@@ -8,8 +8,8 @@
           New Survey Form
         </a>
       </div>
-      <nb-card *ngFor="let survey of adminSurveys; let i = index" class="survey">
-        <nb-card-body>
+      <com-card *ngFor="let survey of adminSurveys; let i = index" class="survey">
+        <com-card-body>
           <h5 class="name">
             {{ survey.name }}
             <small>
@@ -42,8 +42,8 @@
               Responses: {{ survey.total_responses }}
             </a>
           </div>
-        </nb-card-body>
-      </nb-card>
+        </com-card-body>
+      </com-card>
     </div>
   </div>
 </div>
