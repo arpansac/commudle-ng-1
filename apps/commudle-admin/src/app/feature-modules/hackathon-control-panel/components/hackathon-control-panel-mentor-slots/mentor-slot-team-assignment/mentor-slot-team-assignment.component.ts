@@ -53,7 +53,7 @@ export class MentorSlotTeamAssignmentComponent implements OnInit, OnChanges, OnD
     private cdr: ChangeDetectorRef,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.findMatchingSlot();
   }
 
