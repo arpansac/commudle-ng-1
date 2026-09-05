@@ -113,7 +113,7 @@
 .confirmation-dialog {
   @apply com-max-w-md;
 
-  nb-card-header {
+  com-card-header {
     @apply com-flex com-justify-between com-items-center;
 
     div {
@@ -121,11 +121,11 @@
     }
   }
 
-  nb-card-body {
+  com-card-body {
     @apply com-text-gray-700 com-text-sm com-leading-relaxed;
   }
 
-  nb-card-footer {
+  com-card-footer {
     @apply com-flex com-gap-2 com-justify-end;
   }
 }

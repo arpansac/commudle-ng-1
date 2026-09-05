@@ -43,7 +43,7 @@ import { HackathonControlPanelUpdatesComponent } from 'apps/commudle-admin/src/a
 import { EditorModule as NewEditorModule } from '@commudle/editor';
 import { HackathonControlPanelReviewComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-review/hackathon-control-panel-review.component';
 import { HackathonControlPanelRoundsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-rounds/hackathon-control-panel-rounds.component';
-
+import { CommudleCardModule } from '@commudle/commudle-theme';
 import { HackathonControlPanelEmailsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-control-panel-emails.component';
 import { HackathonWinnerAnnouncementEmailerComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-winner-announcement-emailer/hackathon-winner-announcement-emailer.component';
 import { HackathonStatusFilterGeneralEmailsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-status-filter-general-emails/hackathon-status-filter-general-emails.component';
@@ -142,6 +142,7 @@ import { HackathonScoreDashboardComponent } from 'apps/commudle-admin/src/app/fe
     NewEditorModule,
     SharedPipesModule,
     CommunityChannelsModule,
+    CommudleCardModule,
     //components
     SidebarComponent,
     HelpSectionComponent,

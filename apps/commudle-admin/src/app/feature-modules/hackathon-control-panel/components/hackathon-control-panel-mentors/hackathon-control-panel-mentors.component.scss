@@ -1,4 +1,4 @@
-nb-card {
+com-card {
   @apply com-relative com-transition-all com-duration-300;
 
   &.sidebar-expanded:not(.fullscreen-card) {
@@ -18,7 +18,7 @@ nb-card {
   }
 }
 
-nb-card-header {
+com-card-header {
   @apply com-flex com-justify-between com-items-center;
 
   .header-actions {

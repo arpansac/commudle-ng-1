@@ -1,7 +1,7 @@
 .review-section {
   @apply com-mx-0 md:com-mx-2;
 
-  nb-card-header {
+  com-card-header {
     @apply com-p-6;
 
     .header-container {
@@ -98,7 +98,7 @@
     }
   }
 
-  nb-card-body {
+  com-card-body {
     @apply com-flex com-flex-col com-justify-between com-min-h-[680px];
   }
 }
@@ -230,7 +230,7 @@ th {
 
 .response-dialog-box {
   @apply com-w-auto com-mx-0 com-max-h-full md:com-h-[90dvh] md:com-w-800px;
-  nb-card-body {
+  com-card-body {
     @apply com-overflow-x-hidden;
   }
   .action-buttons {
@@ -346,14 +346,14 @@ th {
 
 .round-selection-mailer {
   @apply md:com-w-[40dvw] md:com-h-[90dvh] com-w-full;
-  nb-card-header {
+  com-card-header {
     @apply com-flex com-justify-between com-items-center;
   }
 }
 .send-application-status-dialog-box {
   @apply com-w-auto md:com-w-[40dvw] md:com-max-h-[90dvh] com-max-h-full;
-  nb-card-header,
-  nb-card-footer {
+  com-card-header,
+  com-card-footer {
     @apply com-flex com-justify-between com-items-center;
   }
   .email-buttons-actions {
@@ -371,11 +371,11 @@ th {
 .problem-statement-dialog {
   @apply com-w-full md:com-w-[600px] com-max-h-[90dvh];
 
-  nb-card-header {
+  com-card-header {
     @apply com-flex com-justify-between;
   }
 
-  nb-card-body {
+  com-card-body {
     @apply com-max-h-[70vh] com-overflow-y-auto;
   }
 }
@@ -383,7 +383,7 @@ th {
 .document-viewer-dialog {
   @apply com-w-full md:com-w-[90vw] com-max-h-[95vh];
 
-  nb-card-header {
+  com-card-header {
     @apply com-flex com-justify-between com-items-start com-p-4;
 
     .document-viewer-title {
@@ -399,7 +399,7 @@ th {
     }
   }
 
-  nb-card-body {
+  com-card-body {
     @apply com-p-0 com-overflow-hidden;
   }
 }
@@ -579,8 +579,8 @@ th {
 .confirmation-round-dialog-box,
 .confirmation-track-dialog-box,
 .confirmation-problem-statement-dialog-box {
-  nb-card-header,
-  nb-card-footer {
+  com-card-header,
+  com-card-footer {
     @apply com-flex com-justify-between com-items-center;
   }
 }
@@ -604,7 +604,7 @@ th {
 .bulk-operation-dialog {
   @apply com-w-full md:com-w-[500px];
 
-  nb-card-header {
+  com-card-header {
     @apply com-flex com-justify-between com-items-center com-bg-gray-50 com-p-4;
 
     h3 {
@@ -616,7 +616,7 @@ th {
     }
   }
 
-  nb-card-body {
+  com-card-body {
     @apply com-p-4;
   }
 

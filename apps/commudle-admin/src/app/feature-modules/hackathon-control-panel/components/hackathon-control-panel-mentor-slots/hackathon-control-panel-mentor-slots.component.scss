@@ -1,4 +1,4 @@
-nb-card {
+com-card {
   @apply com-relative com-transition-all com-duration-300;
 
   &.sidebar-expanded:not(.fullscreen-card) {
@@ -16,7 +16,7 @@ nb-card {
       @apply com-h-[calc(100dvh-68px)];
     }
   }
-  nb-card-header {
+  com-card-header {
     @apply com-flex com-justify-between com-items-center;
   }
 }
@@ -221,8 +221,8 @@ nb-card {
 
 .dialog-box-card {
   @apply com-max-h-[90dvh];
-  nb-card-header,
-  nb-card-footer {
+  com-card-header,
+  com-card-footer {
     @apply com-flex com-justify-between com-items-center;
   }
 }
