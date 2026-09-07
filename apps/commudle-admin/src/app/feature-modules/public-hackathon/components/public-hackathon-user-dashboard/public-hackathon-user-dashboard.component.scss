@@ -192,7 +192,7 @@ com-card {
 }
 
 .problem-statement-prompt {
-  @apply com-flex com-justify-between com-rounded-lg com-overflow-hidden;
+  @apply com-flex com-justify-between com-rounded-lg com-overflow-hidden com-mt-4;
 
   com-card-body {
     @apply com-flex com-flex-row com-justify-between com-gap-3 com-p-3;
@@ -280,6 +280,22 @@ com-card {
       .problem-name {
         @apply com-text-sm com-text-Yankees-Blue com-font-medium;
       }
+    }
+  }
+}
+
+.application-incomplete-popup {
+  @apply com-mt-4 com-border com-border-solid com-border-red-500;
+
+  com-card-body {
+    @apply com-p-4;
+  }
+
+  .complete-application-link {
+    @apply com-inline-flex com-items-center com-text-sm com-gap-1 com-ml-1 com-font-semibold com-text-red-600 com-cursor-pointer com-whitespace-nowrap;
+
+    &:hover {
+      @apply com-underline;
     }
   }
 }

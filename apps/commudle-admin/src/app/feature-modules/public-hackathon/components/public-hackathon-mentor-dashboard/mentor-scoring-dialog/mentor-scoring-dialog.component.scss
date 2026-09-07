@@ -1,7 +1,7 @@
 .scoring-dialog {
   @apply md:com-min-w-[500px] md:com-max-w-[600px] com-max-h-90dvh;
 
-  nb-card-header {
+  com-card-header {
     @apply com-px-4 com-py-2 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
     background: linear-gradient(135deg, #f7f7f8 0%, #ffffff 50%, #f7f7f8 100%);
     @apply dark:com-from-[#080808] dark:com-via-[#141414] dark:com-to-[#080808] dark:com-bg-gradient-to-br dark:com-text-tWhite dark:com-border-gray-700;
@@ -28,7 +28,7 @@
     }
   }
 
-  nb-card-body {
+  com-card-body {
     @apply com-p-4;
 
     .loading-section {
@@ -169,7 +169,7 @@
     }
   }
 
-  nb-card-footer {
+  com-card-footer {
     @apply com-px-4 com-py-3 com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
 
     .dialog-actions {

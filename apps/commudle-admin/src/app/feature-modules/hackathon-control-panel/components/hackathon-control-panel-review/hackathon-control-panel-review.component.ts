@@ -56,7 +56,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { IHackathon, EHackathonStatus } from 'apps/shared-models/hackathon.model';
 import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/services/hackathon-user-responses.service';
 import { HackathonOverallRoundSelectionUpdateEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-overall-round-selection-update-email/hackathon-overall-round-selection-update-email.component';
-import { debounceTime, distinctUntilChanged, Subject, switchMap, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { HackathonIndividualTeamEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-individual-team-email/hackathon-individual-team-email.component';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
@@ -148,6 +148,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   private originalTrackValue: number;
   private originalProblemStatementValue: number;
   private originalOfflineInviteStatusValue: EOfflineInviteStatus;
+  private userResponsesSubscription: Subscription;
   expandedUpdates: { [key: number]: boolean } = {};
   activeTab: 'details' | 'scores' = 'details';
   teamScores: any[] = [];
@@ -235,15 +236,18 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       }),
     );
 
-    this.searchForm.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
-      this.page = 1;
-      this.fetchUserResponses();
-    });
+    this.subscriptions.push(
+      this.searchForm.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
+        this.page = 1;
+        this.fetchUserResponses();
+      }),
+    );
   }
 
   ngOnDestroy(): void {
     this.seoService.noIndex(false);
     this.dialogRef?.close();
+    this.userResponsesSubscription?.unsubscribe();
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
@@ -263,8 +267,9 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   }
 
   fetchUserResponses() {
+    this.userResponsesSubscription?.unsubscribe();
     this.isLoading = true;
-    this.hackathonService
+    this.userResponsesSubscription = this.hackathonService
       .indexUserResponses(
         this.hackathonId,
         this.page,
@@ -282,11 +287,16 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         this.withCommunityBuild,
         this.selectedTeamLeaderStatusForFilter,
       )
-      .subscribe((data) => {
-        this.userResponses = data.values;
-        this.page = data.page;
-        this.total = data.total;
-        this.isLoading = false;
+      .subscribe({
+        next: (data) => {
+          this.userResponses = data.values;
+          this.page = data.page;
+          this.total = data.total;
+          this.isLoading = false;
+        },
+        error: () => {
+          this.isLoading = false;
+        },
       });
   }
 
