@@ -1,6 +1,8 @@
 .collaborations {
-  @apply com-mx-0 md:com-mx-2;
-
+  @apply com-mx-0 md:com-mx-2 md:com-my-4;
+  h6 {
+    @apply com-m-0 com-flex;
+  }
   .add-collaboration {
     @apply com-mb-6;
 

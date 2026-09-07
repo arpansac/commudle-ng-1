@@ -1,5 +1,5 @@
 com-card {
-  @apply com-relative com-transition-all com-duration-300;
+  @apply com-relative com-transition-all com-duration-300 md:com-mx-2 md:com-my-4;
 
   &.sidebar-expanded:not(.fullscreen-card) {
     width: calc(100dvw - 360px);

@@ -19,11 +19,11 @@ com-card-footer {
 }
 
 com-card-body {
-  @apply com-p-6;
+  @apply com-p-6 com-overflow-y-auto com-scrollbar-hide;
 }
 
 .mail-popup {
-  @apply md:com-w-[40dvw] com-max-h-[90dvh] com-w-[100dvw] com-mx-0;
+  @apply md:com-w-[40dvw] com-max-h-[90dvh] com-w-[100dvw] com-mx-0 com-flex;
 }
 
 .message-field {

@@ -1,3 +1,6 @@
+com-card {
+  @apply md:com-my-4;
+}
 .hackathon-stats-container {
   @apply com-grid com-grid-cols-1 sm:com-grid-cols-3 lg:com-grid-cols-4 com-gap-4 com-pb-7;
   .hackathon-stats-item {

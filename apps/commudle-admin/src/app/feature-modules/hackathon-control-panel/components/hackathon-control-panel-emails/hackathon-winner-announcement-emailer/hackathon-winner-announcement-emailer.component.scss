@@ -1,5 +1,5 @@
 .mail-popup {
-  @apply md:com-w-[50dvw] md:com-max-h-[90dvh] com-w-[100dvw] com-mx-0;
+  @apply com-flex md:com-w-[50dvw] md:com-max-h-[90dvh] com-w-[100dvw] com-mx-0;
   com-card-header {
     @apply com-flex com-justify-between com-items-center;
 
@@ -13,7 +13,7 @@
   }
 
   com-card-body {
-    @apply com-p-6;
+    @apply com-p-6 com-overflow-y-auto com-scrollbar-hide;
   }
 
   .message-field {
