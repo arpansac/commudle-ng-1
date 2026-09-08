@@ -47,7 +47,7 @@
 }
 .confirmation-dialog {
   @apply com-m-0 md:com-w-[25dvw] com-w-auto com-h-full;
-  nb-card-body {
+  com-card-body {
     @apply com-px-0 com-py-0;
     text-align: center;
     .thank-you-icon {
@@ -61,7 +61,7 @@
     }
   }
 
-  nb-card-footer {
+  com-card-footer {
     display: flex;
     p {
       @apply com-m-0 com-font-medium;
