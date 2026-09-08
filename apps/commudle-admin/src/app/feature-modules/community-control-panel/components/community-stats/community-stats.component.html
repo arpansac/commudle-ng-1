@@ -6,22 +6,22 @@
         Back
       </a>
 
-      <nb-card class="page-header">
-        <nb-card-header>
+      <com-card class="page-header">
+        <com-card-header>
           <h3>
             <nb-icon icon="trending-up-outline"></nb-icon>
             {{ community.name }}
             <small> Community Stats </small>
           </h3>
           <commudle-help-section [helpDictionaryName]="'community-stats'"></commudle-help-section>
-        </nb-card-header>
-      </nb-card>
+        </com-card-header>
+      </com-card>
 
-      <nb-card class="stat-card members">
-        <nb-card-header>
+      <com-card class="stat-card members">
+        <com-card-header>
           <h3>Members</h3>
-        </nb-card-header>
-        <nb-card-body>
+        </com-card-header>
+        <com-card-body>
           <div class="first-section">
             <div class="count">
               <p>
@@ -66,14 +66,14 @@
               </div>
             </div>
           </section>
-        </nb-card-body>
-      </nb-card>
+        </com-card-body>
+      </com-card>
 
-      <nb-card class="stat-card events">
-        <nb-card-header>
+      <com-card class="stat-card events">
+        <com-card-header>
           <h3>Events</h3>
-        </nb-card-header>
-        <nb-card-body>
+        </com-card-header>
+        <com-card-body>
           <section class="first-section !com-justify-start">
             <div *ngIf="eventAttendees" class="table">
               <p>Event Attendees</p>
@@ -99,14 +99,14 @@
               <canvas id="chart-community-events-timeline"></canvas>
             </div>
           </section>
-        </nb-card-body>
-      </nb-card>
+        </com-card-body>
+      </com-card>
 
-      <nb-card class="stat-card speakers">
-        <nb-card-header>
+      <com-card class="stat-card speakers">
+        <com-card-header>
           <h3>Speakers</h3>
-        </nb-card-header>
-        <nb-card-body>
+        </com-card-header>
+        <com-card-body>
           <section class="first-section">
             <div class="count" *ngIf="speakers">
               <p>
@@ -123,14 +123,14 @@
           </section>
 
           <section></section>
-        </nb-card-body>
-      </nb-card>
+        </com-card-body>
+      </com-card>
 
-      <nb-card class="stat-card work-experience-insights">
-        <nb-card-header>
+      <com-card class="stat-card work-experience-insights">
+        <com-card-header>
           <h3>Work Experience Insights</h3>
-        </nb-card-header>
-        <nb-card-body>
+        </com-card-header>
+        <com-card-body>
           <div class="first-section">
             <div *ngIf="membersWorkExperience" class="count">
               <p>
@@ -185,8 +185,8 @@
               </nb-tag-list>
             </div>
           </div>
-        </nb-card-body>
-      </nb-card>
+        </com-card-body>
+      </com-card>
     </div>
   </div>
 </div>
