@@ -58,39 +58,3 @@
   <div class="no-slot-message">NO SLOT</div>
   }
 </div>
-
-<ng-template #cancelConfirmDialog let-data let-ref="dialogRef">
-  <com-card class="dialog-box-card">
-    <com-card-header>
-      <div>Cancel Slot</div>
-      <button ghost nbButton size="small" (click)="ref.close(false)" shape="round">
-        <nb-icon icon="close"></nb-icon>
-      </button>
-    </com-card-header>
-    <com-card-body>
-      <p>Are you sure you want to cancel this slot?</p>
-    </com-card-body>
-    <com-card-footer>
-      <button nbButton status="danger" (click)="ref.close(true)">Yes, Cancel</button>
-      <button nbButton (click)="ref.close(false)">No</button>
-    </com-card-footer>
-  </com-card>
-</ng-template>
-
-<ng-template #activateConfirmDialog let-data let-ref="dialogRef">
-  <com-card class="dialog-box-card">
-    <com-card-header>
-      <div>Activate Slot</div>
-      <button ghost nbButton size="small" (click)="ref.close(false)" shape="round">
-        <nb-icon icon="close"></nb-icon>
-      </button>
-    </com-card-header>
-    <com-card-body>
-      <p>Are you sure you want to open this slot?</p>
-    </com-card-body>
-    <com-card-footer>
-      <button nbButton status="success" (click)="ref.close(true)">Yes, Open</button>
-      <button nbButton (click)="ref.close(false)">No</button>
-    </com-card-footer>
-  </com-card>
-</ng-template>

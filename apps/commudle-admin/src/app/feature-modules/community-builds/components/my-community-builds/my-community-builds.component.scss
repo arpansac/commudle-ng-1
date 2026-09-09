@@ -1,4 +1,9 @@
+.add-new-build {
+  @apply com-mx-2 com-mt-4;
+}
+
 .community-builds {
+  @apply com-mx-2 com-my-4;
   com-card {
     margin-bottom: 1rem;
   }
