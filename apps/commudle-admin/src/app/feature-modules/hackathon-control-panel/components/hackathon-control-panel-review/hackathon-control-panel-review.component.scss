@@ -387,7 +387,7 @@ th {
     @apply com-flex com-justify-between com-items-start com-p-4;
 
     .document-viewer-title {
-      @apply com-flex com-flex-col com-gap-1;
+      @apply com-flex com-flex-col com-gap-1 com-flex com-items-start;
 
       .round-label {
         @apply com-text-xs com-font-medium com-uppercase com-tracking-wide com-text-gray-500;
@@ -395,6 +395,10 @@ th {
 
       .team-name {
         @apply com-text-lg com-font-semibold com-text-gray-900 com-m-0;
+      }
+
+      a {
+        @apply com-p-0;
       }
     }
   }
