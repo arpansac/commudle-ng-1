@@ -33,16 +33,16 @@
 </div>
 
 <ng-template #dialog let-data let-ref="dialogRef">
-  <nb-card class="com-max-h-[90dvh] com-w-full md:com-w-[30vw]">
-    <nb-card-header>
+  <com-card class="com-max-h-[90dvh] com-w-full md:com-w-[30vw]">
+    <com-card-header>
       <div class="com-flex com-justify-between">
         <div>{{ paymentDetailsExist ? 'Edit' : 'Add' }} Payment Details</div>
         <button (click)="closeDialogBox()" ghost nbButton shape="round" size="small">
           <nb-icon icon="close"></nb-icon>
         </button>
       </div>
-    </nb-card-header>
-    <nb-card-body>
+    </com-card-header>
+    <com-card-body>
       <commudle-alert
         [info]="true"
         message="All the confirmed payments will automatically receive an entry pass"
@@ -312,8 +312,8 @@ If you are collecting tax for this ticket, please provide corrected information.
           </div>
         </div>
       </form>
-    </nb-card-body>
-    <nb-card-footer>
+    </com-card-body>
+    <com-card-footer>
       <div class="save-button">
         <button
           (click)="paymentDetailsExist ? updateTicketDetails() : createPaidTicketing()"
@@ -327,28 +327,28 @@ If you are collecting tax for this ticket, please provide corrected information.
           {{ paymentDetailsExist ? 'Update' : 'Save' }}
         </button>
       </div>
-    </nb-card-footer>
-  </nb-card>
+    </com-card-footer>
+  </com-card>
 </ng-template>
 
 <ng-template #refundPage let-ref="dialogRef">
-  <nb-card class="com-max-h-[90dvh] com-w-full md:com-w-[70dvw]">
-    <nb-card-header class="com-flex com-justify-between com-items-center">
+  <com-card class="com-max-h-[90dvh] com-w-full md:com-w-[70dvw]">
+    <com-card-header class="com-flex com-justify-between com-items-center">
       <span>Refund Policy</span>
       <button ghost nbButton size="small" (click)="closeDialogBox()" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
-    </nb-card-header>
-    <nb-card-body class="com-px-0">
+    </com-card-header>
+    <com-card-body class="com-px-0">
       <app-custom-page-form
         [parentId]="community.id"
         [parentType]="EDbModels.KOMMUNITY"
         [pageType]="EPageType.REFUND_POLICIES"
         [pageSlug]="refundPolicy?.slug"
       ></app-custom-page-form>
-    </nb-card-body>
-    <nb-card-footer>
+    </com-card-body>
+    <com-card-footer>
       <button nbButton status="primary" (click)="createOrUpdateRefundPage()">Save</button>
-    </nb-card-footer>
-  </nb-card>
+    </com-card-footer>
+  </com-card>
 </ng-template>
