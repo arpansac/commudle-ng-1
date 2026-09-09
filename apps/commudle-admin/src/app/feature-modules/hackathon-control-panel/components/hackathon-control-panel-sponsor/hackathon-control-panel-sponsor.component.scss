@@ -1,7 +1,7 @@
 .sponsors-container {
-  @apply com-mx-0 md:com-mx-2;
+  @apply com-mx-0 md:com-mx-2 md:com-my-4;
 
-  nb-card-body {
+  com-card-body {
     .sponsors-cards-container {
       h6 {
         @apply com-mb-0 com-mt-2;
@@ -30,6 +30,6 @@
   @apply com-flex com-justify-between;
 }
 
-nb-card-header {
-  @apply com-flex com-items-center;
+com-card-header {
+  @apply com-flex com-items-center com-justify-start;
 }

@@ -1,5 +1,5 @@
-nb-card {
-  @apply com-relative com-transition-all com-duration-300;
+com-card {
+  @apply com-relative com-transition-all com-duration-300 md:com-mx-2 md:com-my-4;
 
   &.sidebar-expanded:not(.fullscreen-card) {
     width: calc(100dvw - 360px);
@@ -16,7 +16,7 @@ nb-card {
       @apply com-h-[calc(100dvh-68px)];
     }
   }
-  nb-card-header {
+  com-card-header {
     @apply com-flex com-justify-between com-items-center;
   }
 }
@@ -221,8 +221,8 @@ nb-card {
 
 .dialog-box-card {
   @apply com-max-h-[90dvh];
-  nb-card-header,
-  nb-card-footer {
+  com-card-header,
+  com-card-footer {
     @apply com-flex com-justify-between com-items-center;
   }
 }

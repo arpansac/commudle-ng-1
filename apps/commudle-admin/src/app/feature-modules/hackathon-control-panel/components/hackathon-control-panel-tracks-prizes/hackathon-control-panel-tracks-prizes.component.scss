@@ -1,7 +1,7 @@
-nb-card {
-  @apply com-mx-0;
-  nb-card-header {
-    @apply com-flex com-items-center;
+com-card {
+  @apply com-mx-0 md:com-my-4;
+  com-card-header {
+    @apply com-flex com-items-center com-justify-start;
   }
 }
 

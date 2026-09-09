@@ -1,5 +1,5 @@
 .hackathon-dates-section {
-  @apply com-mx-0 md:com-mx-2;
+  @apply com-mx-0 md:com-mx-2 md:com-my-4;
 }
 .hackathon-form {
   form {
@@ -28,8 +28,8 @@
   }
 }
 
-nb-card-header {
-  @apply com-flex com-items-center;
+com-card-header {
+  @apply com-flex com-items-center com-justify-start;
 }
 
 .next-step-container {

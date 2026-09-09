@@ -1,9 +1,9 @@
-nb-card {
-  @apply com-mx-0;
+com-card {
+  @apply com-mx-0 md:com-my-4;
 }
 
-nb-card-header {
-  @apply com-flex com-items-center;
+com-card-header {
+  @apply com-flex com-items-center com-justify-start;
 }
 
 .hackathon-form {
