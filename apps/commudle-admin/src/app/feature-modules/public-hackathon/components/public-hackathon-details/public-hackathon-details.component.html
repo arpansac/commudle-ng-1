@@ -287,7 +287,10 @@
           </div>
           <div class="round-info">
             <div class="name">{{ round.name }}</div>
-            <div class="date">{{ moment(round.date).format('DD MMM YYYY') }}</div>
+            <div class="date">
+              {{ moment(round.date).format('DD MMM YYYY') }}
+              <ng-container *ngIf="round.end_date">- {{ moment(round.end_date).format('DD MMM YYYY') }}</ng-container>
+            </div>
           </div>
         </div>
       </com-card-body>
