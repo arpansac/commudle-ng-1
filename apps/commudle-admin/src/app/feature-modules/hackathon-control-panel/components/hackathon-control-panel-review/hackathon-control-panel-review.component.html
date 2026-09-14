@@ -1688,8 +1688,24 @@
   <com-card class="document-viewer-dialog">
     <com-card-header class="com-flex com-justify-between com-items-center">
       <div class="document-viewer-title">
-        <span class="round-label">{{ data.roundName }}</span>
-        <h3 class="team-name">{{ data.teamName }}</h3>
+        <div>
+          <span class="round-label">{{ data.roundName }}</span>
+          <h3 class="team-name">{{ data.teamName }}</h3>
+        </div>
+        <a
+          *ngIf="data.url"
+          [href]="data.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          [attr.download]="data.teamName + ' - ' + data.roundName"
+          comButton
+          ghost
+          size="small"
+          status="primary"
+        >
+          <fa-icon [icon]="icons.faDownload"></fa-icon>
+          Download
+        </a>
       </div>
       <button nbButton ghost (click)="ref.close()" shape="round">
         <nb-icon icon="close"></nb-icon>

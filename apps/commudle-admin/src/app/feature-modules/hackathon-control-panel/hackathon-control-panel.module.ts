@@ -6,6 +6,7 @@ import { HackathonControlPanelDashboardComponent } from './components/hackathon-
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { HackathonControlPanelBasicFormComponent } from './components/hackathon-control-panel-basic-form/hackathon-control-panel-basic-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
@@ -135,6 +136,7 @@ import { HackathonScoreDashboardComponent } from 'apps/commudle-admin/src/app/fe
     HackathonControlPanelRoutes,
     SharedComponentsModule,
     FontAwesomeModule,
+    CommudleButtonModule,
     FormsModule,
     ReactiveFormsModule,
     EditorModule,
