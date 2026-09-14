@@ -3,7 +3,7 @@
     <commudle-listing-page-header [parentType]="'hackathons'"></commudle-listing-page-header>
   </div>
 
-  <div one-column *ngIf="isMobileView">
+  <div one-column *appBreakpoints="'<=lg'">
     <div class="publish-hackathon-button">
       <a [routerLink]="['/pricing']" nbButton size="giant" class="button">
         <nb-icon icon="plus"></nb-icon>
