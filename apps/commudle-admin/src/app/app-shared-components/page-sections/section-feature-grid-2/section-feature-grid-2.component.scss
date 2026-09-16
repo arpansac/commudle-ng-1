@@ -1,0 +1,35 @@
+:host {
+  display: block;
+}
+
+// Prevents global .base-layout from inflating the section to 100vh.
+.base-layout {
+  min-height: 0;
+}
+
+.section-header {
+  &__eyebrow {
+    @apply com-text-Caption com-font-semibold com-text-primary-600;
+    @apply com-uppercase com-tracking-widest com-mb-3 com-block;
+  }
+
+  &__heading {
+    @apply com-text-Page-Section-Header com-font-medium com-text-Yankees-Blue com-mb-3;
+  }
+
+  &__sub {
+    @apply com-text-Paragraph-1 com-text-Auro-Metal-Saurus com-max-w-xl;
+  }
+}
+
+.feature-card {
+  height: 100%;
+
+  &__icon {
+    @apply com-inline-flex com-items-center com-justify-center com-rounded-10;
+    @apply com-bg-primary-100 com-text-primary-600;
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+}

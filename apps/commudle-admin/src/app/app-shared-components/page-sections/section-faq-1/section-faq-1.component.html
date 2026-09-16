@@ -1,0 +1,50 @@
+<div [attr.id]="config.fragmentId || null" class="com-bg-Ghost-White com-py-12 md:com-py-16 com-overflow-x-hidden">
+  <div class="base-layout container com-px-4 md:com-px-6">
+    <div class="faq-grid com-grid com-grid-cols-1 lg:com-grid-cols-3 com-gap-8 lg:com-gap-12">
+      <!-- ── Left rail ─────────────────────────────────────────────── -->
+      <div class="faq-rail">
+        <p *ngIf="config.eyebrow" class="faq-rail__eyebrow com-text-Caption com-font-semibold com-text-primary-600">
+          {{ config.eyebrow }}
+        </p>
+        <h2
+          *ngIf="config.heading"
+          class="faq-rail__heading com-text-Page-Section-Header com-font-medium com-text-Yankees-Blue"
+          [ngClass]="{ 'section-heading-anchor': config.fragmentId }"
+        >
+          {{ config.heading }}
+          <a
+            *ngIf="config.fragmentId"
+            [routerLink]="'.'"
+            [fragment]="config.fragmentId"
+            class="anchor-link"
+            [attr.aria-label]="'Link to ' + config.heading + ' section'"
+          >
+            <fa-icon [icon]="icons.faHashtag" class="anchor-icon-medium"></fa-icon>
+          </a>
+        </h2>
+        <p *ngIf="config.subtext" class="faq-rail__sub com-text-Paragraph-1 com-text-Auro-Metal-Saurus">
+          {{ config.subtext }}
+        </p>
+
+        <div *ngIf="config.helpText || config.helpCta" class="faq-rail__help">
+          <p *ngIf="config.helpText" class="com-text-Paragraph-2 com-text-Auro-Metal-Saurus com-m-0">
+            {{ config.helpText }}
+          </p>
+          <a
+            *ngIf="config.helpCta"
+            class="faq-rail__help-link com-text-Paragraph-2 com-font-semibold com-text-primary-600 com-no-underline"
+            [routerLink]="config.helpCta.routerLink"
+          >
+            {{ config.helpCta.label }}
+            <fa-icon [icon]="icons.faArrowRight" class="com-ml-1"></fa-icon>
+          </a>
+        </div>
+      </div>
+
+      <!-- ── Accordion ────────────────────────────────────────────── -->
+      <div class="faq-list com-col-span-1 lg:com-col-span-2">
+        <commudle-faq [faqs]="config.faqs"></commudle-faq>
+      </div>
+    </div>
+  </div>
+</div>

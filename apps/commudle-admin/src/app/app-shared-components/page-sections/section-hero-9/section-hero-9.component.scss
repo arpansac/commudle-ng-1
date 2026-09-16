@@ -1,0 +1,220 @@
+:host {
+  display: block;
+}
+
+// Prevents global .base-layout from inflating the section to 100vh.
+.base-layout {
+  min-height: 0;
+}
+
+// Explicit overflow-y (the HTML already carries `com-overflow-x-hidden`) on
+// purpose: per the CSS spec, if one axis is `hidden` and the other is left
+// `visible`, the browser computes the visible one as `auto` — silently
+// turning the whole section into a scroll container the moment a
+// descendant visually bleeds past its box, which the floating accents
+// below do by design. Hidden on both axes avoids that entirely (see
+// `.november/rules/` — same footgun hit and fixed once already on the
+// Vibeathon page's tool section).
+.hero-section {
+  overflow-y: hidden;
+}
+
+.hero-layout {
+  position: relative;
+
+  @screen md {
+    min-height: 480px;
+  }
+}
+
+.hero-text {
+  @apply com-py-14 md:com-py-20 lg:com-py-24;
+}
+
+// primary-100 bg / primary-200 border / primary-700 text.
+.hero-badge {
+  @apply com-inline-flex com-items-center com-gap-2 com-rounded-full;
+  @apply com-bg-primary-100 com-text-primary-700 com-border com-border-primary-200;
+  padding: 6px 16px;
+}
+
+.hero-heading {
+  @apply com-font-extrabold com-leading-tight;
+  @apply com-text-4xl md:com-text-5xl lg:com-text-Public-Page-CTA-Heading;
+
+  &__line1 {
+    @apply com-text-Yankees-Blue;
+  }
+
+  &__line2 {
+    @apply com-text-Yankees-Blue;
+
+    span {
+      @apply com-text-primary-600;
+    }
+  }
+}
+
+.cta-buttons {
+  @apply com-flex com-gap-4 com-flex-wrap;
+
+  button {
+    @apply com-w-full sm:com-w-auto;
+  }
+
+  a {
+    @apply com-w-full sm:com-w-auto;
+  }
+}
+
+// ── Right visual ─────────────────────────────────────────────────────────────
+
+.hero-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__glow {
+    position: absolute;
+    width: 90%;
+    max-width: 460px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(51, 102, 255, 0.12) 0%, rgba(51, 102, 255, 0.03) 55%, transparent 76%);
+    pointer-events: none;
+  }
+
+  // Shrink-wraps to the image's own rendered size — see the template
+  // comment. This, not .hero-visual itself, is what the floating accents
+  // below are positioned against.
+  &__frame {
+    position: relative;
+    display: inline-flex;
+    max-width: 100%;
+  }
+
+  &__img {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    border-radius: 16px;
+    object-fit: cover;
+    box-shadow: 0 20px 45px -20px rgba(34, 43, 69, 0.28);
+  }
+}
+
+// ── Floating accents (icon badges / text chips around the photo) ──────────────
+//
+// Absolutely positioned against .hero-visual__frame — i.e. the image's own
+// box, so a small, fixed pixel offset (not a percentage of some larger
+// container) is what keeps each one hugging its corner instead of drifting
+// off toward the viewport edge. Entrance + float animation is GSAP (see
+// animateFloatingAccents()); layout/position here is CSS only.
+
+.floating-accents {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.floating-accent {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  @apply com-bg-white com-rounded-full;
+  padding: 8px 10px;
+  box-shadow: 0 10px 24px -10px rgba(34, 43, 69, 0.3);
+  white-space: nowrap;
+
+  // Hex values map directly to tokens defined in tailwind.preset.js (same
+  // mapping convention as section-hero-4 / the featured-card glow):
+  //   primary-600 = #3366ff, Blue-Violet = #6f22df,
+  //   Infra-Red = #ff3d71,   Chrome-Yellow = #ffaa00
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 13px;
+    flex-shrink: 0;
+    color: #ffffff;
+  }
+
+  &__label {
+    @apply com-text-Yankees-Blue;
+    padding-right: 4px;
+  }
+
+  // Icon-only badges (no label) drop the pill padding for a plain circle.
+  &:not(:has(.floating-accent__label)) {
+    padding: 4px;
+  }
+
+  // Small, fixed offsets (not percentages) — hugs the image corner
+  // regardless of the frame's size, instead of scaling out with it.
+  &--pos-1 {
+    top: -14px;
+    left: -14px;
+
+    .floating-accent__icon {
+      background: #3366ff;
+    }
+  }
+
+  &--pos-2 {
+    top: -14px;
+    right: -14px;
+
+    .floating-accent__icon {
+      background: #ff3d71;
+    }
+  }
+
+  &--pos-3 {
+    bottom: -14px;
+    left: -14px;
+
+    .floating-accent__icon {
+      background: #ffaa00;
+    }
+  }
+
+  &--pos-4 {
+    bottom: -14px;
+    right: -14px;
+
+    .floating-accent__icon {
+      background: #6f22df;
+    }
+  }
+}
+
+// ── Video dialog ─────────────────────────────────────────────────────────────
+
+.video-dialog {
+  width: min(90vw, 880px);
+  margin: 0;
+
+  &__body {
+    padding: 0;
+  }
+
+  &__frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+
+    iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  }
+}

@@ -1,0 +1,105 @@
+:host {
+  display: block;
+}
+
+.base-layout {
+  min-height: 0;
+}
+
+.intro-copy {
+  @apply com-flex com-flex-col;
+}
+
+.highlights {
+  @apply com-grid com-grid-cols-1 sm:com-grid-cols-3 lg:com-grid-cols-1 com-gap-6;
+}
+
+.highlight {
+  @apply com-flex com-items-start com-gap-3;
+
+  &__icon {
+    @apply com-inline-flex com-items-center com-justify-center com-rounded-10 com-flex-shrink-0;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+
+    // Colour rotation — each badge pairs a light tint background with a
+    // saturated icon colour from the same family.
+    &--blue {
+      @apply com-bg-primary-100 com-text-primary-600;
+    }
+
+    &--yellow {
+      @apply com-bg-Blond com-text-Chrome-Yellow;
+    }
+
+    &--red {
+      @apply com-bg-red-100 com-text-Infra-Red;
+    }
+
+    &--green {
+      @apply com-bg-green-100 com-text-Caribbean-Green;
+    }
+  }
+
+  &__body {
+    @apply com-flex com-flex-col com-gap-1;
+  }
+}
+
+// ── Decorative illustration ───────────────────────────────────────────────────
+//
+// Abstract cluster of coloured blobs (matching the highlight badge palette)
+// with a centred icon — fills the empty space under the copy on desktop.
+// Purely decorative: aria-hidden, hidden below `lg`.
+
+.intro-illustration {
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 320px;
+  height: 200px;
+  margin-top: 32px;
+  flex-shrink: 0;
+
+  &__blob {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.9;
+
+    &--a {
+      @apply com-bg-primary-100;
+      width: 140px;
+      height: 140px;
+      top: 0;
+      left: 10%;
+    }
+
+    &--b {
+      @apply com-bg-Blond;
+      width: 90px;
+      height: 90px;
+      bottom: 0;
+      right: 12%;
+    }
+
+    &--c {
+      @apply com-bg-red-100;
+      width: 56px;
+      height: 56px;
+      top: 18%;
+      right: 0;
+    }
+  }
+
+  &__icon {
+    position: relative;
+    z-index: 1;
+    @apply com-inline-flex com-items-center com-justify-center com-rounded-full com-bg-white com-text-primary-600;
+    width: 76px;
+    height: 76px;
+    font-size: 28px;
+    box-shadow: 0 12px 30px -12px rgba(34, 43, 69, 0.25);
+  }
+}
