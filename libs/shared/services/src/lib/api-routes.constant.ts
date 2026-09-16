@@ -1237,10 +1237,27 @@ export const API_ROUTES = {
     SHOW: 'api/v2/certificate_batches/show', //GET
     CREATE: 'api/v2/certificate_batches', //POST
     UPDATE: 'api/v2/certificate_batches', //PUT
+    CSV_PREVIEW: 'api/v2/certificate_batches/csv_preview', //POST
+    CSV_COMMIT: 'api/v2/certificate_batches/csv_commit', //POST
+    SAMPLE_CSV: 'api/v2/certificate_batches/sample_csv', //GET
   },
 
   CERTIFICATE_DESIGNS: {
     INDEX: 'api/v2/certificate_designs', //GET
     CREATE: 'api/v2/certificate_designs', //POST
+  },
+
+  CERTIFICATE_VARIABLES: {
+    INDEX: 'api/v2/certificate_variables', //GET
+    CREATE: 'api/v2/certificate_variables', //POST
+    UPDATE: 'api/v2/certificate_variables', //PUT
+    DELETE: 'api/v2/certificate_variables', //DELETE
+  },
+
+  CERTIFICATE_RECIPIENTS: {
+    INDEX: 'api/v2/certificate_recipients', //GET
+    CREATE: 'api/v2/certificate_recipients', //POST
+    UPDATE: 'api/v2/certificate_recipients', //PUT
+    DELETE: 'api/v2/certificate_recipients', //DELETE
   },
 };

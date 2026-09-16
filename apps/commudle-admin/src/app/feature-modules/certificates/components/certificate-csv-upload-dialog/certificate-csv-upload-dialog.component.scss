@@ -1,0 +1,48 @@
+.certificate-csv-upload-dialog {
+  width: 32rem;
+  max-width: 90vw;
+
+  .hint-text {
+    color: var(--text-hint-color);
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .preview-summary {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+
+    .summary-row {
+      text-align: center;
+
+      .summary-value {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      .summary-label {
+        font-size: 0.75rem;
+        color: var(--text-hint-color);
+      }
+    }
+  }
+
+  .preview-section {
+    margin-bottom: 1rem;
+
+    h4 {
+      margin-bottom: 0.25rem;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 1.25rem;
+
+      li.blocking {
+        color: var(--text-danger-color);
+      }
+    }
+  }
+}

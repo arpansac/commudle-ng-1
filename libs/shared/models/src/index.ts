@@ -73,3 +73,6 @@ export * from './lib/hms-hls.model';
 export * from './lib/hms-room-mode.enum';
 export * from './lib/certificate-batch.model';
 export * from './lib/certificate-design.model';
+export * from './lib/certificate-variable.model';
+export * from './lib/certificate-recipient.model';
+export * from './lib/certificate-csv.model';

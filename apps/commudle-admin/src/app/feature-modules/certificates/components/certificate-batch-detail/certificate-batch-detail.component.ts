@@ -8,11 +8,21 @@ import * as moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { CertificateDesignPickerComponent } from '../certificate-design-picker/certificate-design-picker.component';
+import { CertificateRecipientsTableComponent } from '../certificate-recipients-table/certificate-recipients-table.component';
+import { CertificateVariablesPanelComponent } from '../certificate-variables-panel/certificate-variables-panel.component';
 
 @Component({
   selector: 'commudle-certificate-batch-detail',
   standalone: true,
-  imports: [CommonModule, NbCardModule, NbBadgeModule, SharedComponentsModule, CertificateDesignPickerComponent],
+  imports: [
+    CommonModule,
+    NbCardModule,
+    NbBadgeModule,
+    SharedComponentsModule,
+    CertificateDesignPickerComponent,
+    CertificateRecipientsTableComponent,
+    CertificateVariablesPanelComponent,
+  ],
   templateUrl: './certificate-batch-detail.component.html',
   styleUrls: ['./certificate-batch-detail.component.scss'],
 })
@@ -51,5 +61,10 @@ export class CertificateBatchDetailComponent implements OnInit, OnDestroy {
 
   statusLabel(status: ECertificateBatchStatus): string {
     return ECertificateBatchStatus[status]?.toLowerCase() ?? 'unknown';
+  }
+
+  onVariablesChanged() {
+    // New reference so the recipients table's ngOnChanges re-fires and refetches its variable columns.
+    this.batch = { ...this.batch };
   }
 }

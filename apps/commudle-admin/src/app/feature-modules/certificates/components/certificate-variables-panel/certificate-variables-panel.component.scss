@@ -1,0 +1,34 @@
+.certificate-variables-panel {
+  .empty-state {
+    color: var(--text-hint-color);
+    margin-bottom: 1rem;
+  }
+
+  .variables-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+
+    th {
+      text-align: left;
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--divider-color);
+    }
+
+    td {
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--divider-color);
+    }
+
+    .cell-input {
+      width: 100%;
+    }
+  }
+
+  .add-variable-form {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    align-items: center;
+  }
+}

@@ -1,0 +1,61 @@
+<div class="certificate-variables-panel">
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+  <ng-container *ngIf="!isLoading">
+    <div *ngIf="variables.length === 0" class="empty-state">
+      No variables yet. They're created automatically from a CSV upload, or add one manually below.
+    </div>
+
+    <table *ngIf="variables.length > 0" class="variables-table">
+      <thead>
+        <tr>
+          <th>Label</th>
+          <th>Default Value</th>
+          <th>Keep</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let variable of variables">
+          <td>
+            <input
+              class="cell-input"
+              nbInput
+              fieldSize="small"
+              [value]="variable.label"
+              (blur)="saveLabel(variable, $any($event.target).value)"
+            />
+          </td>
+          <td>
+            <input
+              class="cell-input"
+              nbInput
+              fieldSize="small"
+              [value]="variable.default_value"
+              placeholder="No default — blocks a row missing this value"
+              (blur)="saveDefaultValue(variable, $any($event.target).value)"
+            />
+          </td>
+          <td>
+            <nb-checkbox [checked]="variable.keep" (checkedChange)="toggleKeep(variable, $event)"></nb-checkbox>
+          </td>
+          <td>
+            <button ghost nbButton size="tiny" status="danger" (click)="deleteVariable(variable)">
+              <fa-icon [icon]="icons.faTrash"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button nbButton status="basic" size="small" (click)="toggleAddForm()">
+      <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; {{ showAddForm ? 'Cancel' : 'Add Variable' }}
+    </button>
+
+    <form *ngIf="showAddForm" [formGroup]="addForm" (ngSubmit)="addVariable()" class="add-variable-form">
+      <input formControlName="label" nbInput fieldSize="small" placeholder="Variable label" />
+      <input formControlName="default_value" nbInput fieldSize="small" placeholder="Default value (optional)" />
+      <button type="submit" nbButton status="primary" size="small" [disabled]="addForm.invalid">Add</button>
+    </form>
+  </ng-container>
+</div>

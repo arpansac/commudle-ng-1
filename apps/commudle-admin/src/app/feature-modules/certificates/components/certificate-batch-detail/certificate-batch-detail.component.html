@@ -49,9 +49,24 @@
       </nb-card-body>
     </nb-card>
 
-    <nb-card class="placeholder-section">
+    <nb-card>
+      <nb-card-header>Variables</nb-card-header>
+      <nb-card-body>
+        <commudle-certificate-variables-panel
+          [batch]="batch"
+          (variablesChanged)="onVariablesChanged()"
+        ></commudle-certificate-variables-panel>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card>
       <nb-card-header>Recipients</nb-card-header>
-      <nb-card-body>Recipient upload and management — coming soon.</nb-card-body>
+      <nb-card-body>
+        <commudle-certificate-recipients-table
+          [batch]="batch"
+          (variablesChanged)="onVariablesChanged()"
+        ></commudle-certificate-recipients-table>
+      </nb-card-body>
     </nb-card>
 
     <nb-card class="placeholder-section">

@@ -1,0 +1,40 @@
+.certificate-recipients-table {
+  .table-header {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    color: var(--text-hint-color);
+    padding: 1rem 0;
+  }
+
+  .recipients-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+      text-align: left;
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--divider-color);
+    }
+
+    td {
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--divider-color);
+    }
+
+    .skip-reason {
+      font-size: 0.75rem;
+      color: var(--text-danger-color);
+      margin-top: 0.25rem;
+    }
+
+    .actions {
+      white-space: nowrap;
+    }
+  }
+}

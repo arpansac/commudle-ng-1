@@ -1,0 +1,24 @@
+.certificate-recipient-form-dialog {
+  width: 28rem;
+  max-width: 90vw;
+
+  .form-field-container {
+    margin-bottom: 1rem;
+
+    .form-field {
+      display: block;
+      width: 100%;
+      margin-bottom: 0.25rem;
+    }
+
+    .required {
+      color: var(--color-danger-default);
+    }
+
+    .hint {
+      font-size: 0.75rem;
+      font-weight: normal;
+      color: var(--text-hint-color);
+    }
+  }
+}

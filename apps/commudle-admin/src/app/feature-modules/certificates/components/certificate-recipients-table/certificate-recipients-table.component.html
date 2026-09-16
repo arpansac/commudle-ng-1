@@ -1,0 +1,61 @@
+<div class="certificate-recipients-table">
+  <div class="table-header">
+    <button nbButton status="basic" size="small" (click)="openCsvUploadDialog()">
+      <fa-icon [icon]="icons.faUpload"></fa-icon> &nbsp; Upload CSV
+    </button>
+    <button nbButton status="primary" size="small" (click)="openAddDialog()">
+      <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add Recipient
+    </button>
+  </div>
+
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+  <ng-container *ngIf="!isLoading">
+    <div *ngIf="recipients.length === 0" class="empty-state">No recipients yet. Add one manually, or upload a CSV.</div>
+
+    <table *ngIf="recipients.length > 0" class="recipients-table">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Name</th>
+          <th *ngFor="let variable of variables">{{ variable.label }}</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let recipient of recipients">
+          <td>{{ recipient.email }}</td>
+          <td>{{ recipient.name || '—' }}</td>
+          <td *ngFor="let variable of variables">{{ recipient.row_values?.[variable.key] || '—' }}</td>
+          <td>
+            <nb-badge
+              [text]="statusLabel(recipient.status)"
+              [status]="recipient.status === ECertificateRecipientStatus.BLOCKED ? 'danger' : 'info'"
+              position="static"
+            ></nb-badge>
+            <div class="skip-reason" *ngIf="recipient.skip_reason">{{ recipient.skip_reason }}</div>
+          </td>
+          <td class="actions">
+            <button ghost nbButton size="tiny" (click)="openEditDialog(recipient)">
+              <fa-icon [icon]="icons.faPen"></fa-icon>
+            </button>
+            <button ghost nbButton size="tiny" status="danger" (click)="deleteRecipient(recipient)">
+              <fa-icon [icon]="icons.faTrash"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-pagination
+      *ngIf="total > count"
+      [current]="page"
+      [count]="count"
+      [total]="total"
+      (goTo)="onPageChange($event)"
+      (next)="onPageChange($event)"
+      (previous)="onPageChange($event)"
+    ></app-pagination>
+  </ng-container>
+</div>

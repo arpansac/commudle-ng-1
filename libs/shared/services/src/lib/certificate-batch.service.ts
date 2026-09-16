@@ -1,6 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ICertificateBatch, ICertificateBatchesIndexResponse } from '@commudle/shared-models';
+import {
+  ICertificateBatch,
+  ICertificateBatchesIndexResponse,
+  ICertificateCsvCommitResponse,
+  ICertificateCsvPreviewResponse,
+} from '@commudle/shared-models';
 import { Observable } from 'rxjs';
 import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
@@ -46,6 +51,28 @@ export class CertificateBatchService {
     return this.http.put<ICertificateBatch>(
       this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_BATCHES.UPDATE),
       { certificate_batch: batchData },
+      { params },
+    );
+  }
+
+  csvPreview(uuid: string, file: File): Observable<ICertificateCsvPreviewResponse> {
+    const params = new HttpParams().set('id', uuid);
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<ICertificateCsvPreviewResponse>(
+      this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_BATCHES.CSV_PREVIEW),
+      formData,
+      { params },
+    );
+  }
+
+  csvCommit(uuid: string, file: File): Observable<ICertificateCsvCommitResponse> {
+    const params = new HttpParams().set('id', uuid);
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<ICertificateCsvCommitResponse>(
+      this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_BATCHES.CSV_COMMIT),
+      formData,
       { params },
     );
   }
