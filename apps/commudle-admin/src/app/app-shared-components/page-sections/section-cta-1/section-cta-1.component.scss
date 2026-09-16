@@ -3,21 +3,23 @@
 }
 
 .base-layout {
-  min-height: 0;
-  position: relative;
-  z-index: 1;
+  @apply com-min-h-0 com-relative com-z-[1];
 }
 
-// Explicit overflow-y (the HTML already carries `com-overflow-x-hidden`) —
-// the decor layer below intentionally bleeds slightly past the section on
-// some viewports (the rocket is large and partly off-canvas by design).
-// Without this, per the CSS spec, leaving overflow-y as the default
-// `visible` while overflow-x is `hidden` makes the browser compute it as
-// `auto`, turning the section into a scroll container. Same fix as
-// section-hero-9 / the featured tool card earlier on this page.
+.section-container {
+  @apply com-px-4 md:com-px-6;
+}
+
+// Explicit overflow on both axes (the previous version only hid overflow-x
+// via an HTML class, leaving overflow-y as the browser default) — the
+// decor layer below intentionally bleeds slightly past the section on some
+// viewports (the rocket is large and partly off-canvas by design). Per the
+// CSS spec, leaving overflow-y `visible` while overflow-x is `hidden`
+// makes the browser compute overflow-y as `auto`, turning the section into
+// a scroll container. Same fix as section-hero-9 / the featured tool card
+// earlier on this page.
 .cta-section {
-  position: relative;
-  overflow-y: hidden;
+  @apply com-bg-Seashell com-py-14 md:com-py-20 com-overflow-hidden com-relative;
 }
 
 // ── Background decoration ─────────────────────────────────────────────────────
@@ -29,31 +31,19 @@
 // #6f22df = Blue-Violet.
 
 .cta-decor {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
+  @apply com-absolute com-inset-0 com-z-0 com-overflow-hidden com-pointer-events-none;
 
   &__blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(50px);
+    @apply com-absolute com-rounded-full com-blur-[50px];
 
     &--a {
-      width: 320px;
-      height: 320px;
-      top: -120px;
-      left: -80px;
-      background: rgba(51, 102, 255, 0.12);
+      @apply com-w-[320px] com-h-[320px] com-top-[-120px] com-left-[-80px];
+      @apply com-bg-[rgba(51,102,255,0.12)];
     }
 
     &--b {
-      width: 260px;
-      height: 260px;
-      bottom: -100px;
-      right: -60px;
-      background: rgba(111, 34, 223, 0.1);
+      @apply com-w-[260px] com-h-[260px] com-bottom-[-100px] com-right-[-60px];
+      @apply com-bg-[rgba(111,34,223,0.1)];
     }
   }
 
@@ -61,22 +51,29 @@
   // on a narrow screen) and only shown from `lg` up, per this project's
   // mobile-responsiveness rules for fixed-size decorative elements.
   &__rocket {
-    display: none;
+    @apply com-hidden;
 
     @screen lg {
-      display: block;
-      position: absolute;
-      bottom: -12%;
-      right: 2%;
-      font-size: 260px;
-      color: rgba(51, 102, 255, 0.08);
-      transform: rotate(-18deg);
+      @apply com-block com-absolute com-bottom-[-12%] com-right-[2%];
+      @apply com-text-[260px] com-text-[rgba(51,102,255,0.08)] com-rotate-[-18deg];
     }
   }
 }
 
+.cta-inner {
+  @apply com-flex com-flex-col com-items-center com-text-center;
+}
+
+.cta-heading {
+  @apply com-text-Page-Section-Header com-font-medium com-text-tYankees-Blue com-m-0 com-mb-3;
+}
+
+.cta-subtext {
+  @apply com-text-Paragraph-1 com-text-tAuro-Metal-Saurus com-m-0 com-max-w-xl;
+}
+
 .cta-buttons {
-  @apply com-flex com-flex-wrap com-justify-center com-gap-4;
+  @apply com-flex com-flex-wrap com-justify-center com-gap-4 com-mt-6;
 
   a {
     @apply com-w-full sm:com-w-auto;

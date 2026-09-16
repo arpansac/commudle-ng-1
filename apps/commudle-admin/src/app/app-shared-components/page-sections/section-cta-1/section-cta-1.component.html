@@ -1,4 +1,4 @@
-<div [attr.id]="config.fragmentId || null" class="cta-section com-bg-Seashell com-py-14 md:com-py-20 com-overflow-x-hidden">
+<div [attr.id]="config.fragmentId || null" class="cta-section">
   <!-- Purely decorative — soft colour blobs + a big watermark rocket, so the section doesn't read as bare/floating text on a flat surface. -->
   <div class="cta-decor" aria-hidden="true">
     <span class="cta-decor__blob cta-decor__blob--a"></span>
@@ -6,12 +6,9 @@
     <fa-icon [icon]="faRocket" class="cta-decor__rocket"></fa-icon>
   </div>
 
-  <div class="base-layout container com-px-4 md:com-px-6">
-    <div class="cta-inner com-flex com-flex-col com-items-center com-text-center">
-      <h2
-        class="com-text-Page-Section-Header com-font-medium com-text-tYankees-Blue com-m-0 com-mb-3"
-        [ngClass]="{ 'section-heading-anchor': config.fragmentId }"
-      >
+  <div class="base-layout container section-container">
+    <div class="cta-inner">
+      <h2 class="cta-heading" [ngClass]="{ 'section-heading-anchor': config.fragmentId }">
         {{ config.heading }}
         <a
           *ngIf="config.fragmentId"
@@ -23,11 +20,11 @@
           <fa-icon [icon]="faHashtag" class="anchor-icon-medium"></fa-icon>
         </a>
       </h2>
-      <p *ngIf="config.subtext" class="com-text-Paragraph-1 com-text-tAuro-Metal-Saurus com-m-0 com-max-w-xl">
+      <p *ngIf="config.subtext" class="cta-subtext">
         {{ config.subtext }}
       </p>
 
-      <div class="cta-buttons com-mt-6">
+      <div class="cta-buttons">
         <a
           *ngIf="config.primaryCta.routerLink; else primaryButton"
           [routerLink]="config.primaryCta.routerLink"

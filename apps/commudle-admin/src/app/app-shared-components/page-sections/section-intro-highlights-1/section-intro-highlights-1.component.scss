@@ -6,11 +6,32 @@
   min-height: 0;
 }
 
+.section-container {
+  @apply com-px-4 md:com-px-6;
+}
+
+.intro-section {
+  @apply com-bg-Alice-Blue-Dark com-py-12 md:com-py-16 com-overflow-hidden;
+}
+
+.intro-grid {
+  @apply com-grid com-grid-cols-1 lg:com-grid-cols-2 com-gap-8 lg:com-gap-12;
+}
+
 .intro-copy {
   @apply com-flex com-flex-col;
 }
 
+.intro-heading {
+  @apply com-text-Page-Section-Header com-font-medium com-text-tYankees-Blue com-m-0 com-mb-3;
+}
+
+.intro-body {
+  @apply com-text-Paragraph-1 com-text-tAuro-Metal-Saurus com-m-0;
+}
+
 .highlights {
+  @apply com-list-none com-p-0 com-m-0;
   @apply com-grid com-grid-cols-1 sm:com-grid-cols-3 lg:com-grid-cols-1 com-gap-6;
 }
 
@@ -19,9 +40,7 @@
 
   &__icon {
     @apply com-inline-flex com-items-center com-justify-center com-rounded-10 com-flex-shrink-0;
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
+    @apply com-w-10 com-h-10 com-text-base;
 
     // Colour rotation — each badge pairs a light tint background with a
     // saturated icon colour from the same family.
@@ -45,6 +64,14 @@
   &__body {
     @apply com-flex com-flex-col com-gap-1;
   }
+
+  &__title {
+    @apply com-text-Paragraph-1 com-font-semibold com-text-tYankees-Blue;
+  }
+
+  &__text {
+    @apply com-text-Paragraph-2 com-text-tAuro-Metal-Saurus;
+  }
 }
 
 // ── Decorative illustration ───────────────────────────────────────────────────
@@ -54,52 +81,29 @@
 // Purely decorative: aria-hidden, hidden below `lg`.
 
 .intro-illustration {
-  position: relative;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 320px;
-  height: 200px;
-  margin-top: 32px;
-  flex-shrink: 0;
+  @apply com-hidden lg:com-flex com-relative com-items-center com-justify-center;
+  @apply com-w-full com-max-w-[320px] com-h-[200px] com-mt-8 com-flex-shrink-0;
 
   &__blob {
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0.9;
+    @apply com-absolute com-rounded-full com-opacity-90;
 
     &--a {
-      @apply com-bg-primary-100;
-      width: 140px;
-      height: 140px;
-      top: 0;
-      left: 10%;
+      @apply com-bg-primary-100 com-w-[140px] com-h-[140px] com-top-0 com-left-[10%];
     }
 
     &--b {
-      @apply com-bg-Blond;
-      width: 90px;
-      height: 90px;
-      bottom: 0;
-      right: 12%;
+      @apply com-bg-Blond com-w-[90px] com-h-[90px] com-bottom-0 com-right-[12%];
     }
 
     &--c {
-      @apply com-bg-red-100;
-      width: 56px;
-      height: 56px;
-      top: 18%;
-      right: 0;
+      @apply com-bg-red-100 com-w-14 com-h-14 com-top-[18%] com-right-0;
     }
   }
 
   &__icon {
-    position: relative;
-    z-index: 1;
+    @apply com-relative com-z-[1];
     @apply com-inline-flex com-items-center com-justify-center com-rounded-full com-bg-white com-text-primary-600;
-    width: 76px;
-    height: 76px;
-    font-size: 28px;
-    box-shadow: 0 12px 30px -12px rgba(34, 43, 69, 0.25);
+    @apply com-w-[76px] com-h-[76px] com-text-[28px];
+    @apply com-shadow-[0_12px_30px_-12px_rgba(34,43,69,0.25)];
   }
 }

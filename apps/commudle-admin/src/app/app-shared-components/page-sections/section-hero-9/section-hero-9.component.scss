@@ -7,6 +7,10 @@
   min-height: 0;
 }
 
+.section-container {
+  @apply com-px-4 md:com-px-6;
+}
+
 // Explicit overflow-y (the HTML already carries `com-overflow-x-hidden`) on
 // purpose: per the CSS spec, if one axis is `hidden` and the other is left
 // `visible`, the browser computes the visible one as `auto` — silently
@@ -16,38 +20,47 @@
 // `.november/rules/` — same footgun hit and fixed once already on the
 // Vibeathon page's tool section).
 .hero-section {
-  overflow-y: hidden;
+  @apply com-bg-white com-overflow-hidden;
 }
 
 .hero-layout {
-  position: relative;
+  @apply com-relative com-grid com-grid-cols-1 com-items-center com-gap-8 lg:com-gap-12;
 
   @screen md {
     min-height: 480px;
   }
+
+  // Toggled from the template when `config.image` is set — see R1/rule-1 in
+  // section-fragment-links.md's sibling doc, section-component-styling.md.
+  &--with-image {
+    @apply md:com-grid-cols-2;
+  }
 }
 
 .hero-text {
-  @apply com-py-14 md:com-py-20 lg:com-py-24;
+  @apply com-flex com-flex-col com-gap-6 com-py-14 md:com-py-20 lg:com-py-24;
 }
 
 // primary-100 bg / primary-200 border / primary-700 text.
 .hero-badge {
-  @apply com-inline-flex com-items-center com-gap-2 com-rounded-full;
-  @apply com-bg-primary-100 com-text-primary-700 com-border com-border-primary-200;
-  padding: 6px 16px;
+  @apply com-inline-flex com-items-center com-gap-2 com-self-start com-rounded-full;
+  @apply com-bg-primary-100 com-text-primary-700 com-border com-border-primary-200 com-py-1.5 com-px-4;
+
+  &__label {
+    @apply com-text-Caption com-font-semibold;
+  }
 }
 
 .hero-heading {
-  @apply com-font-extrabold com-leading-tight;
+  @apply com-font-extrabold com-leading-tight com-m-0;
   @apply com-text-4xl md:com-text-5xl lg:com-text-Public-Page-CTA-Heading;
 
   &__line1 {
-    @apply com-text-Yankees-Blue;
+    @apply com-block com-text-Yankees-Blue;
   }
 
   &__line2 {
-    @apply com-text-Yankees-Blue;
+    @apply com-block com-text-Yankees-Blue;
 
     span {
       @apply com-text-primary-600;
@@ -55,8 +68,16 @@
   }
 }
 
+.hero-subtext {
+  @apply com-text-Paragraph-1 com-text-Auro-Metal-Saurus com-max-w-lg com-m-0;
+}
+
 .cta-buttons {
   @apply com-flex com-gap-4 com-flex-wrap;
+
+  &__play-icon {
+    @apply com-mr-2;
+  }
 
   button {
     @apply com-w-full sm:com-w-auto;
@@ -70,37 +91,30 @@
 // ── Right visual ─────────────────────────────────────────────────────────────
 
 .hero-visual {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @apply com-relative com-flex com-items-center com-justify-center;
 
   &__glow {
-    position: absolute;
-    width: 90%;
-    max-width: 460px;
+    @apply com-absolute com-w-[90%] com-max-w-[460px] com-rounded-full com-pointer-events-none;
+    // `aspect-ratio` has no working Tailwind utility in this project's
+    // build — see section-steps-1's __media for the full explanation.
     aspect-ratio: 1 / 1;
-    border-radius: 50%;
+    // Multi-stop radial gradient — not expressible as a Tailwind gradient
+    // utility (those only support a 2–3 stop from/via/to ramp), so this
+    // stays a plain CSS `background`, same exception `.signup-cta::before`
+    // takes in navbar.component.scss for the same reason.
     background: radial-gradient(circle, rgba(51, 102, 255, 0.12) 0%, rgba(51, 102, 255, 0.03) 55%, transparent 76%);
-    pointer-events: none;
   }
 
   // Shrink-wraps to the image's own rendered size — see the template
   // comment. This, not .hero-visual itself, is what the floating accents
   // below are positioned against.
   &__frame {
-    position: relative;
-    display: inline-flex;
-    max-width: 100%;
+    @apply com-relative com-inline-flex com-max-w-full;
   }
 
   &__img {
-    position: relative;
-    width: 100%;
-    max-width: 520px;
-    border-radius: 16px;
-    object-fit: cover;
-    box-shadow: 0 20px 45px -20px rgba(34, 43, 69, 0.28);
+    @apply com-relative com-w-full com-max-w-[520px] com-rounded-2xl com-object-cover;
+    @apply com-shadow-[0_20px_45px_-20px_rgba(34,43,69,0.28)];
   }
 }
 
@@ -110,86 +124,65 @@
 // box, so a small, fixed pixel offset (not a percentage of some larger
 // container) is what keeps each one hugging its corner instead of drifting
 // off toward the viewport edge. Entrance + float animation is GSAP (see
-// animateFloatingAccents()); layout/position here is CSS only.
+// animateFloatingAccents()); layout/position here is Tailwind-only.
 
 .floating-accents {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
+  @apply com-absolute com-inset-0 com-z-[2] com-pointer-events-none com-hidden lg:com-block;
 }
 
 .floating-accent {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  @apply com-bg-white com-rounded-full;
-  padding: 8px 10px;
-  box-shadow: 0 10px 24px -10px rgba(34, 43, 69, 0.3);
-  white-space: nowrap;
+  @apply com-absolute com-inline-flex com-items-center com-gap-2 com-bg-white com-rounded-full;
+  @apply com-py-2 com-px-2.5 com-whitespace-nowrap;
+  @apply com-shadow-[0_10px_24px_-10px_rgba(34,43,69,0.3)];
 
-  // Hex values map directly to tokens defined in tailwind.preset.js (same
-  // mapping convention as section-hero-4 / the featured-card glow):
-  //   primary-600 = #3366ff, Blue-Violet = #6f22df,
-  //   Infra-Red = #ff3d71,   Chrome-Yellow = #ffaa00
   &__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    font-size: 13px;
-    flex-shrink: 0;
-    color: #ffffff;
+    @apply com-inline-flex com-items-center com-justify-center com-flex-shrink-0;
+    @apply com-w-7 com-h-7 com-rounded-full com-text-[13px] com-text-tWhite;
   }
 
   &__label {
-    @apply com-text-Yankees-Blue;
-    padding-right: 4px;
+    @apply com-pr-1 com-text-Yankees-Blue;
   }
 
   // Icon-only badges (no label) drop the pill padding for a plain circle.
+  // Selector structure only — the declaration inside is still `@apply`.
   &:not(:has(.floating-accent__label)) {
-    padding: 4px;
+    @apply com-p-1;
   }
 
   // Small, fixed offsets (not percentages) — hugs the image corner
-  // regardless of the frame's size, instead of scaling out with it.
+  // regardless of the frame's size, instead of scaling out with it. Icon
+  // backgrounds use the real named tokens (not raw hex) they map to:
+  // primary-600, Infra-Red, Chrome-Yellow, Blue-Violet.
   &--pos-1 {
-    top: -14px;
-    left: -14px;
+    @apply com-top-[-14px] com-left-[-14px];
 
     .floating-accent__icon {
-      background: #3366ff;
+      @apply com-bg-primary-600;
     }
   }
 
   &--pos-2 {
-    top: -14px;
-    right: -14px;
+    @apply com-top-[-14px] com-right-[-14px];
 
     .floating-accent__icon {
-      background: #ff3d71;
+      @apply com-bg-Infra-Red;
     }
   }
 
   &--pos-3 {
-    bottom: -14px;
-    left: -14px;
+    @apply com-bottom-[-14px] com-left-[-14px];
 
     .floating-accent__icon {
-      background: #ffaa00;
+      @apply com-bg-Chrome-Yellow;
     }
   }
 
   &--pos-4 {
-    bottom: -14px;
-    right: -14px;
+    @apply com-bottom-[-14px] com-right-[-14px];
 
     .floating-accent__icon {
-      background: #6f22df;
+      @apply com-bg-Blue-Violet;
     }
   }
 }
@@ -197,24 +190,21 @@
 // ── Video dialog ─────────────────────────────────────────────────────────────
 
 .video-dialog {
-  width: min(90vw, 880px);
-  margin: 0;
+  @apply com-m-0;
+  width: min(90vw, 880px); // `min()` of a viewport unit isn't expressible as a Tailwind utility
 
   &__body {
-    padding: 0;
+    @apply com-p-0;
   }
 
   &__frame {
-    position: relative;
-    width: 100%;
+    @apply com-relative com-w-full;
+    // `aspect-ratio` has no working Tailwind utility in this project's
+    // build — see section-steps-1's __media for the full explanation.
     aspect-ratio: 16 / 9;
 
     iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
+      @apply com-absolute com-inset-0 com-w-full com-h-full com-border-0;
     }
   }
 }

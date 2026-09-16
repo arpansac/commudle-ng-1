@@ -54,12 +54,11 @@ const APP_URL = 'https://www.commudle.com';
 /** Minimum valid challenge name length (characters). */
 const MIN_NAME_LENGTH = 3;
 
-// TODO(vibeathon): replace with the real 2-min explainer video embed URL.
-const HERO_VIDEO_URL = 'https://www.youtube.com/embed/PLACEHOLDER_VIDEO_ID';
+const HERO_VIDEO_URL = 'https://www.youtube.com/embed/822R8DWw0aM';
 
-/** Hero photo — Commudle-hosted static asset. */
+/** Hero photo — Commudle-hosted static asset (lighter variant). */
 const HERO_IMAGE_URL =
-  'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMndHQ0E9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--54803a8363b8c4e9136b0f9acc5dafacc3b828c3/com_eb5b1c346eccb530_20260915133326.png';
+  'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNWNMQ0E9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--d0d0e019b138774e0a8876d02645329d46b4a699/com_5c2520d901c45647_20260916125424.jpeg';
 
 /** "How it works" step illustrations — Commudle-hosted static assets, one per step, in order. */
 const HOW_IT_WORKS_IMAGES = [

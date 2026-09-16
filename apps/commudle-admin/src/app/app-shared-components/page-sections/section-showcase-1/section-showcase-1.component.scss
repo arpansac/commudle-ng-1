@@ -6,8 +6,24 @@
   min-height: 0;
 }
 
+.section-container {
+  @apply com-px-4 md:com-px-6;
+}
+
+.showcase-section {
+  @apply com-bg-Seashell com-py-12 md:com-py-16 com-overflow-hidden;
+}
+
 .showcase-grid {
-  align-items: center;
+  @apply com-grid com-grid-cols-1 lg:com-grid-cols-2 com-gap-8 lg:com-gap-12 com-items-center;
+}
+
+.showcase-heading {
+  @apply com-text-Page-Section-Header com-font-medium com-text-tYankees-Blue com-m-0 com-mb-3;
+}
+
+.showcase-subtext {
+  @apply com-text-Paragraph-1 com-text-tAuro-Metal-Saurus com-m-0;
 }
 
 .stats {
@@ -16,10 +32,19 @@
 
 .stat {
   @apply com-flex com-flex-col com-gap-1;
+
+  &__value {
+    @apply com-text-Page-Heading com-font-bold com-text-primary-600;
+  }
+
+  &__label {
+    @apply com-text-Paragraph-2 com-text-tAuro-Metal-Saurus;
+  }
 }
 
 .chips-label {
   @apply com-uppercase com-tracking-widest com-mt-8 com-mb-3 com-m-0;
+  @apply com-text-Caption com-font-semibold com-text-tAuro-Metal-Saurus;
 }
 
 .chips {
@@ -29,6 +54,7 @@
 .chip {
   @apply com-inline-flex com-items-center com-rounded-full com-px-4 com-py-2;
   @apply com-bg-white com-text-primary-600 com-border com-border-primary-200;
+  @apply com-text-Paragraph-2 com-font-semibold com-no-underline;
 
   &:hover {
     @apply com-bg-primary-100;
@@ -63,6 +89,7 @@
 
   &__label {
     @apply com-uppercase com-tracking-widest com-mb-3 com-m-0;
+    @apply com-text-Caption com-font-semibold com-text-tAuro-Metal-Saurus;
   }
 
   &__row {
@@ -71,34 +98,27 @@
 }
 
 .showcase-logo {
-  @apply com-flex com-items-center com-justify-center com-rounded-10;
-  width: 112px;
-  height: 56px;
-  flex-shrink: 0;
+  @apply com-flex com-items-center com-justify-center com-rounded-10 com-flex-shrink-0;
+  @apply com-w-[112px] com-h-14;
 
   img {
-    max-width: 78%;
-    max-height: 56%;
-    object-fit: contain;
+    @apply com-max-w-[78%] com-max-h-[56%] com-object-contain;
   }
 
   &--placeholder {
-    @apply com-text-Cadet-Grey;
-    border: 1.5px dashed rgba(34, 43, 69, 0.18);
-    font-size: 18px;
+    @apply com-text-Cadet-Grey com-text-lg;
+    @apply com-border-[1.5px] com-border-dashed com-border-[rgba(34,43,69,0.18)];
   }
 
   &:not(&--placeholder) {
-    @apply com-bg-white;
-    box-shadow: 0 4px 12px -6px rgba(34, 43, 69, 0.18);
+    @apply com-bg-white com-shadow-[0_4px_12px_-6px_rgba(34,43,69,0.18)];
   }
 
   &--linked {
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    @apply com-transition-all com-duration-150 com-ease-in-out;
 
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 18px -8px rgba(34, 43, 69, 0.28);
+      @apply -com-translate-y-0.5 com-shadow-[0_8px_18px_-8px_rgba(34,43,69,0.28)];
     }
   }
 
@@ -110,7 +130,6 @@
   // needs to stay dark in light mode specifically, which is the opposite
   // of what a theme-aware "dark surface" token would give it.
   &.showcase-logo--dark {
-    @apply com-bg-tYankees-Blue;
-    box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.35);
+    @apply com-bg-tYankees-Blue com-shadow-[0_6px_16px_-8px_rgba(0,0,0,0.35)];
   }
 }

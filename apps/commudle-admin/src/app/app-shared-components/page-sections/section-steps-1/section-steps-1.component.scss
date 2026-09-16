@@ -6,7 +6,17 @@
   min-height: 0;
 }
 
+.section-container {
+  @apply com-px-4 md:com-px-6;
+}
+
+.steps-section {
+  @apply com-bg-white com-py-12 md:com-py-16 com-overflow-hidden;
+}
+
 .section-header {
+  @apply com-mb-10;
+
   &__eyebrow {
     @apply com-text-Caption com-font-semibold com-text-primary-600;
     @apply com-uppercase com-tracking-widest com-mb-3 com-block com-m-0;
@@ -22,98 +32,80 @@
 }
 
 .steps {
-  @apply com-grid com-gap-x-6 com-gap-y-10;
-  grid-template-columns: 1fr;
-
-  @screen sm {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @screen lg {
-    grid-template-columns: repeat(4, 1fr);
-  }
+  @apply com-grid com-grid-cols-1 sm:com-grid-cols-2 lg:com-grid-cols-4 com-gap-x-6 com-gap-y-10;
 }
 
 .step {
-  position: relative;
-  @apply com-flex com-flex-col com-items-start;
+  @apply com-relative com-flex com-flex-col com-items-start;
 
   // Numbered badge — coloured per step (green → yellow → orange → red,
   // rising intensity toward "done"; see STEP_PALETTE / colorFor()) instead
   // of a flat, repeated primary blue. The glow behind each one is the same
-  // colour at low opacity — hex values map directly to tokens in
-  // tailwind.preset.js: #00d68f = Caribbean-Green, #ffaa00 = Chrome-Yellow,
-  // #ff5c1e = Giants-Orange, #ff3d71 = Infra-Red.
+  // colour, via the token it's actually named after (Caribbean-Green,
+  // Chrome-Yellow, Giants-Orange, Infra-Red) rather than raw hex.
   &__num {
     @apply com-inline-flex com-items-center com-justify-center com-rounded-full com-flex-shrink-0;
     @apply com-text-tWhite com-text-Paragraph-1 com-font-bold;
-    width: 40px;
-    height: 40px;
-    position: relative;
-    z-index: 1;
-    margin-bottom: 12px;
+    @apply com-w-10 com-h-10 com-relative com-z-[1] com-mb-3;
 
     // When the step has a media image, the badge moves onto its top-left
     // corner instead of sitting above the card — a white ring keeps it
     // legible regardless of what's underneath it in that particular image.
     &--onmedia {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 2;
-      margin-bottom: 0;
-      border: 3px solid;
-      @apply com-border-white;
+      @apply com-absolute com-top-2.5 com-left-2.5 com-z-[2] com-mb-0;
+      @apply com-border-3 com-border-white;
     }
 
     &--green {
-      background: #00d68f;
-      box-shadow: 0 8px 18px -6px rgba(0, 214, 143, 0.55);
+      @apply com-bg-Caribbean-Green com-shadow-[0_8px_18px_-6px_rgba(0,214,143,0.55)];
     }
 
     &--yellow {
-      background: #ffaa00;
-      box-shadow: 0 8px 18px -6px rgba(255, 170, 0, 0.55);
+      @apply com-bg-Chrome-Yellow com-shadow-[0_8px_18px_-6px_rgba(255,170,0,0.55)];
     }
 
     &--orange {
-      background: #ff5c1e;
-      box-shadow: 0 8px 18px -6px rgba(255, 92, 30, 0.5);
+      @apply com-bg-Giants-Orange com-shadow-[0_8px_18px_-6px_rgba(255,92,30,0.5)];
     }
 
     &--red {
-      background: #ff3d71;
-      box-shadow: 0 8px 18px -6px rgba(255, 61, 113, 0.5);
+      @apply com-bg-Infra-Red com-shadow-[0_8px_18px_-6px_rgba(255,61,113,0.5)];
     }
   }
 
   &__card {
     @apply com-flex com-flex-col com-bg-white com-rounded-10 com-overflow-hidden;
     @apply com-border com-border-Bright-Gray;
-    width: 100%;
-    position: relative;
-    z-index: 1;
+    @apply com-w-full com-relative com-z-[1];
   }
 
   // Edge-to-edge illustration above the icon/title/text — only rendered
   // when the step config provides one; icon-only steps skip straight to
   // __body with no gap above it.
   &__media {
-    position: relative;
-    width: 100%;
+    @apply com-relative com-w-full com-overflow-hidden;
+    // `aspect-ratio` has no working Tailwind utility in this project's build
+    // (this install shadows/omits the core aspect-ratio utility in favour
+    // of the separate `@tailwindcss/aspect-ratio` plugin, which only
+    // provides the older `aspect-w-*`/`aspect-h-*` pair — not a drop-in
+    // replacement here) — genuine gap, stays plain CSS.
     aspect-ratio: 16 / 10;
-    overflow: hidden;
 
     img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+      @apply com-w-full com-h-full com-object-cover com-block;
     }
   }
 
   &__body {
     @apply com-flex com-flex-col com-gap-2 com-p-5;
+  }
+
+  &__title {
+    @apply com-text-Card-Subheading com-font-semibold com-text-Yankees-Blue;
+  }
+
+  &__text {
+    @apply com-text-Paragraph-2 com-text-Auro-Metal-Saurus;
   }
 
   // Icon badge — a proper contained circle (matching the icon-badge
@@ -125,41 +117,34 @@
   // avoid repeating primary blue yet again on this page).
   &__icon {
     @apply com-inline-flex com-items-center com-justify-center com-rounded-full com-flex-shrink-0;
-    width: 44px;
-    height: 44px;
-    font-size: 18px;
+    @apply com-w-11 com-h-11 com-text-lg;
 
     // When the step has a media image, the icon sits on the image's
     // bottom-left corner (inset, not flush to the edge) instead of in the
     // body — same white-ring treatment as __num--onmedia, for the same
     // reason: legible over whatever happens to be in that image there.
     &--onmedia {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      z-index: 2;
-      border: 3px solid;
-      @apply com-border-white;
+      @apply com-absolute com-bottom-2.5 com-left-2.5 com-z-[2];
+      @apply com-border-3 com-border-white;
     }
 
+    // Tint backgrounds have no dedicated named token (only the saturated
+    // colour does), so the background is the one arbitrary Tailwind value
+    // here; the icon colour itself still uses the real named token.
     &--green {
-      background: rgba(0, 214, 143, 0.14);
-      color: #00d68f;
+      @apply com-bg-[rgba(0,214,143,0.14)] com-text-Caribbean-Green;
     }
 
     &--yellow {
-      @apply com-bg-Blond;
-      color: #ffaa00;
+      @apply com-bg-Blond com-text-Chrome-Yellow;
     }
 
     &--orange {
-      background: rgba(255, 92, 30, 0.14);
-      color: #ff5c1e;
+      @apply com-bg-[rgba(255,92,30,0.14)] com-text-Giants-Orange;
     }
 
     &--red {
-      background: rgba(255, 61, 113, 0.14);
-      color: #ff3d71;
+      @apply com-bg-[rgba(255,61,113,0.14)] com-text-Infra-Red;
     }
   }
 }

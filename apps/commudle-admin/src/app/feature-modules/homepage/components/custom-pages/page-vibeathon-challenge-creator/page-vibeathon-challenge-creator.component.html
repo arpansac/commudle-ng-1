@@ -6,6 +6,14 @@
 
 <!-- ── Page body (the challenge-creator tool — logic unchanged, visually highlighted) ── -->
 <div id="create-your-challenge" class="page-body">
+  <!-- Sticky background watermark — stays pinned near the top of the viewport
+       while the step cards scroll past/over it, so the section keeps reading
+       as "this is where you start" for the whole time it's in view, not just
+       on first glance. Purely decorative. -->
+  <div class="page-body__watermark" aria-hidden="true">
+    <span class="page-body__watermark-text">Start Here</span>
+  </div>
+
   <div class="page-inner">
     <!-- Section header — makes sure this doesn't get missed while scrolling past it. -->
     <div class="tool-header">

@@ -1,14 +1,14 @@
-<div [attr.id]="config.fragmentId || null" class="com-bg-Ghost-White com-py-12 md:com-py-16 com-overflow-x-hidden">
-  <div class="base-layout container com-px-4 md:com-px-6">
-    <div class="faq-grid com-grid com-grid-cols-1 lg:com-grid-cols-3 com-gap-8 lg:com-gap-12">
+<div [attr.id]="config.fragmentId || null" class="faq-section">
+  <div class="base-layout container section-container">
+    <div class="faq-grid">
       <!-- ── Left rail ─────────────────────────────────────────────── -->
       <div class="faq-rail">
-        <p *ngIf="config.eyebrow" class="faq-rail__eyebrow com-text-Caption com-font-semibold com-text-primary-600">
+        <p *ngIf="config.eyebrow" class="faq-rail__eyebrow">
           {{ config.eyebrow }}
         </p>
         <h2
           *ngIf="config.heading"
-          class="faq-rail__heading com-text-Page-Section-Header com-font-medium com-text-Yankees-Blue"
+          class="faq-rail__heading"
           [ngClass]="{ 'section-heading-anchor': config.fragmentId }"
         >
           {{ config.heading }}
@@ -22,27 +22,23 @@
             <fa-icon [icon]="icons.faHashtag" class="anchor-icon-medium"></fa-icon>
           </a>
         </h2>
-        <p *ngIf="config.subtext" class="faq-rail__sub com-text-Paragraph-1 com-text-Auro-Metal-Saurus">
+        <p *ngIf="config.subtext" class="faq-rail__sub">
           {{ config.subtext }}
         </p>
 
         <div *ngIf="config.helpText || config.helpCta" class="faq-rail__help">
-          <p *ngIf="config.helpText" class="com-text-Paragraph-2 com-text-Auro-Metal-Saurus com-m-0">
+          <p *ngIf="config.helpText" class="faq-rail__help-text">
             {{ config.helpText }}
           </p>
-          <a
-            *ngIf="config.helpCta"
-            class="faq-rail__help-link com-text-Paragraph-2 com-font-semibold com-text-primary-600 com-no-underline"
-            [routerLink]="config.helpCta.routerLink"
-          >
+          <a *ngIf="config.helpCta" class="faq-rail__help-link" [routerLink]="config.helpCta.routerLink">
             {{ config.helpCta.label }}
-            <fa-icon [icon]="icons.faArrowRight" class="com-ml-1"></fa-icon>
+            <fa-icon [icon]="icons.faArrowRight" class="faq-rail__help-link-icon"></fa-icon>
           </a>
         </div>
       </div>
 
       <!-- ── Accordion ────────────────────────────────────────────── -->
-      <div class="faq-list com-col-span-1 lg:com-col-span-2">
+      <div class="faq-list">
         <commudle-faq [faqs]="config.faqs"></commudle-faq>
       </div>
     </div>

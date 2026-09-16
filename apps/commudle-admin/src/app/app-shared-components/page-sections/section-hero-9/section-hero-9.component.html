@@ -1,21 +1,18 @@
-<section class="hero-section com-bg-white com-overflow-x-hidden">
-  <div class="base-layout container com-px-4 md:com-px-6">
-    <div
-      class="hero-layout com-grid com-grid-cols-1 com-items-center com-gap-8 lg:com-gap-12"
-      [ngClass]="{ 'md:com-grid-cols-2': config.image }"
-    >
+<section class="hero-section">
+  <div class="base-layout container section-container">
+    <div class="hero-layout" [ngClass]="{ 'hero-layout--with-image': config.image }">
       <!-- ── Left: text ─────────────────────────────────────────────── -->
-      <div class="hero-text com-flex com-flex-col com-gap-6">
-        <div *ngIf="config.badge" class="hero-badge com-self-start">
-          <span class="com-text-Caption com-font-semibold">{{ config.badge }}</span>
+      <div class="hero-text">
+        <div *ngIf="config.badge" class="hero-badge">
+          <span class="hero-badge__label">{{ config.badge }}</span>
         </div>
 
-        <h1 class="hero-heading com-m-0">
-          <span class="hero-heading__line1 com-block" [innerHTML]="safeLine1"></span>
-          <span class="hero-heading__line2 com-block" [innerHTML]="safeLine2"></span>
+        <h1 class="hero-heading">
+          <span class="hero-heading__line1" [innerHTML]="safeLine1"></span>
+          <span class="hero-heading__line2" [innerHTML]="safeLine2"></span>
         </h1>
 
-        <p class="com-text-Paragraph-1 com-text-Auro-Metal-Saurus com-max-w-lg com-m-0">
+        <p class="hero-subtext">
           {{ config.subtext }}
         </p>
 
@@ -43,7 +40,7 @@
             type="button"
             (click)="openVideo()"
           >
-            <fa-icon [icon]="icons.faCirclePlay" class="com-mr-2"></fa-icon>{{ config.videoCta.label }}
+            <fa-icon [icon]="icons.faCirclePlay" class="cta-buttons__play-icon"></fa-icon>{{ config.videoCta.label }}
           </button>
         </div>
       </div>
@@ -62,11 +59,7 @@
           <img class="hero-visual__img" [src]="config.image.url" [alt]="config.image.alt" loading="eager" />
 
           <!-- Floating icon/text accents — purely decorative, GSAP-animated (see animateFloatingAccents()). -->
-          <div
-            *ngIf="config.floatingAccents?.length"
-            class="floating-accents com-hidden lg:com-block"
-            aria-hidden="true"
-          >
+          <div *ngIf="config.floatingAccents?.length" class="floating-accents" aria-hidden="true">
             <span
               *ngFor="let accent of config.floatingAccents; let i = index"
               #floatingAccent
@@ -74,7 +67,7 @@
               [ngClass]="positionFor(i)"
             >
               <span class="floating-accent__icon"><fa-icon [icon]="iconFor(accent.icon)"></fa-icon></span>
-              <span *ngIf="accent.label" class="floating-accent__label com-text-Paragraph-2 com-font-semibold">
+              <span *ngIf="accent.label" class="floating-accent__label">
                 {{ accent.label }}
               </span>
             </span>

@@ -1,6 +1,6 @@
-<div [attr.id]="config.fragmentId || null" class="com-bg-white com-py-12 md:com-py-16 com-overflow-x-hidden">
-  <div class="base-layout container com-px-4 md:com-px-6">
-    <div *ngIf="config.eyebrow || config.heading || config.subtext" class="section-header com-mb-10">
+<div [attr.id]="config.fragmentId || null" class="feature-grid-3-section">
+  <div class="base-layout container section-container">
+    <div *ngIf="config.eyebrow || config.heading || config.subtext" class="section-header">
       <p *ngIf="config.eyebrow" class="section-header__eyebrow">{{ config.eyebrow }}</p>
       <h2
         *ngIf="config.heading"
@@ -21,8 +21,8 @@
       <p *ngIf="config.subtext" class="section-header__sub">{{ config.subtext }}</p>
     </div>
 
-    <div class="cards com-grid com-grid-cols-1 sm:com-grid-cols-2 lg:com-grid-cols-4 com-gap-6">
-      <div *ngFor="let item of config.items" class="card com-rounded-10">
+    <div class="cards">
+      <div *ngFor="let item of config.items" class="card">
         <span class="card__pattern" aria-hidden="true"></span>
 
         <div *ngIf="item.image" class="card__media">
@@ -31,8 +31,8 @@
 
         <div class="card__body">
           <span class="card__icon" aria-hidden="true"><fa-icon [icon]="iconFor(item.icon)"></fa-icon></span>
-          <h3 class="card__title com-text-Card-Subheading com-text-tWhite com-mt-4 com-mb-2">{{ item.title }}</h3>
-          <p class="card__desc com-text-Paragraph-2 com-m-0">{{ item.description }}</p>
+          <h3 class="card__title">{{ item.title }}</h3>
+          <p class="card__desc">{{ item.description }}</p>
         </div>
       </div>
     </div>

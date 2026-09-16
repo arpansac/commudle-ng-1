@@ -1,11 +1,8 @@
-<div [attr.id]="config.fragmentId || null" class="com-bg-Seashell com-py-12 md:com-py-16 com-overflow-x-hidden">
-  <div class="base-layout container com-px-4 md:com-px-6">
-    <div class="showcase-grid com-grid com-grid-cols-1 lg:com-grid-cols-2 com-gap-8 lg:com-gap-12">
+<div [attr.id]="config.fragmentId || null" class="showcase-section">
+  <div class="base-layout container section-container">
+    <div class="showcase-grid">
       <div class="showcase-copy">
-        <h2
-          class="com-text-Page-Section-Header com-font-medium com-text-tYankees-Blue com-m-0 com-mb-3"
-          [ngClass]="{ 'section-heading-anchor': config.fragmentId }"
-        >
+        <h2 class="showcase-heading" [ngClass]="{ 'section-heading-anchor': config.fragmentId }">
           {{ config.heading }}
           <a
             *ngIf="config.fragmentId"
@@ -17,15 +14,12 @@
             <fa-icon [icon]="faHashtag" class="anchor-icon-medium"></fa-icon>
           </a>
         </h2>
-        <p *ngIf="config.subtext" class="com-text-Paragraph-1 com-text-tAuro-Metal-Saurus com-m-0">
+        <p *ngIf="config.subtext" class="showcase-subtext">
           {{ config.subtext }}
         </p>
 
         <div *ngIf="config.logos?.length" class="showcase-logos">
-          <p
-            *ngIf="config.logosLabel"
-            class="showcase-logos__label com-text-Caption com-font-semibold com-text-tAuro-Metal-Saurus"
-          >
+          <p *ngIf="config.logosLabel" class="showcase-logos__label">
             {{ config.logosLabel }}
           </p>
           <div class="showcase-logos__row">
@@ -49,19 +43,19 @@
       <div class="showcase-detail">
         <div *ngIf="config.stats?.length" class="stats">
           <div *ngFor="let stat of config.stats" class="stat">
-            <span class="stat__value com-text-Page-Heading com-font-bold com-text-primary-600">{{ stat.value }}</span>
-            <span class="stat__label com-text-Paragraph-2 com-text-tAuro-Metal-Saurus">{{ stat.label }}</span>
+            <span class="stat__value">{{ stat.value }}</span>
+            <span class="stat__label">{{ stat.label }}</span>
           </div>
         </div>
 
         <ng-container *ngIf="config.chips?.length">
-          <p *ngIf="config.chipsLabel" class="chips-label com-text-Caption com-font-semibold com-text-tAuro-Metal-Saurus">
+          <p *ngIf="config.chipsLabel" class="chips-label">
             {{ config.chipsLabel }}
           </p>
           <div class="chips">
             <a
               *ngFor="let chip of config.chips"
-              class="chip com-text-Paragraph-2 com-font-semibold com-no-underline"
+              class="chip"
               [routerLink]="chip.routerLink"
               [queryParams]="chip.queryParams || null"
             >
