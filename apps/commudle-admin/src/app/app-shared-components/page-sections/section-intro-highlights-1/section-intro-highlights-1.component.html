@@ -1,0 +1,48 @@
+<div [attr.id]="config.fragmentId || null" class="com-bg-Alice-Blue-Dark com-py-12 md:com-py-16 com-overflow-x-hidden">
+  <div class="base-layout container com-px-4 md:com-px-6">
+    <div class="intro-grid com-grid com-grid-cols-1 lg:com-grid-cols-2 com-gap-8 lg:com-gap-12">
+      <div class="intro-copy">
+        <h2
+          class="com-text-Page-Section-Header com-font-medium com-text-tYankees-Blue com-m-0 com-mb-3"
+          [ngClass]="{ 'section-heading-anchor': config.fragmentId }"
+        >
+          {{ config.heading }}
+          <a
+            *ngIf="config.fragmentId"
+            [routerLink]="'.'"
+            [fragment]="config.fragmentId"
+            class="anchor-link"
+            [attr.aria-label]="'Link to ' + config.heading + ' section'"
+          >
+            <fa-icon [icon]="faHashtag" class="anchor-icon-medium"></fa-icon>
+          </a>
+        </h2>
+        <p class="com-text-Paragraph-1 com-text-tAuro-Metal-Saurus com-m-0">{{ config.body }}</p>
+
+        <!-- Decorative illustration — fills the empty space below the copy on larger screens. -->
+        <div class="intro-illustration com-hidden lg:com-flex" aria-hidden="true">
+          <span class="intro-illustration__blob intro-illustration__blob--a"></span>
+          <span class="intro-illustration__blob intro-illustration__blob--b"></span>
+          <span class="intro-illustration__blob intro-illustration__blob--c"></span>
+          <span class="intro-illustration__icon">
+            <fa-icon [icon]="illustrationIcon"></fa-icon>
+          </span>
+        </div>
+      </div>
+
+      <ul class="highlights com-list-none com-p-0 com-m-0">
+        <li *ngFor="let h of config.highlights; let i = index" class="highlight">
+          <span class="highlight__icon" [ngClass]="paletteFor(i)" aria-hidden="true">
+            <fa-icon [icon]="iconFor(h.icon)"></fa-icon>
+          </span>
+          <span class="highlight__body">
+            <span class="highlight__title com-text-Paragraph-1 com-font-semibold com-text-tYankees-Blue">
+              {{ h.title }}
+            </span>
+            <span class="highlight__text com-text-Paragraph-2 com-text-tAuro-Metal-Saurus">{{ h.text }}</span>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

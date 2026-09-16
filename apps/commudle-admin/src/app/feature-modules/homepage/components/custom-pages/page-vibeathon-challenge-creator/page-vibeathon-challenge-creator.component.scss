@@ -4,9 +4,72 @@
 
 // ── Page body ─────────────────────────────────────────────────────────────────
 
+// This is the primary/starting action on the page, so it gets a livelier
+// gradient wash instead of the flat Ghost-White used elsewhere — distinct
+// from both the white hero and the pale-blue intro band above it.
 .page-body {
-  @apply com-bg-Ghost-White com-overflow-x-hidden;
+  @apply com-overflow-x-hidden;
+  position: relative;
   min-height: 40vh;
+  background: linear-gradient(180deg, #eef2ff 0%, #f8f9fd 55%, #ffffff 100%);
+
+  // The gradient above is a raw hex wash, not a theme-aware token, so it
+  // never flips in dark mode on its own — meanwhile the text inside this
+  // section (.tool-header, .success-section, etc.) uses theme-aware tokens
+  // like Yankees-Blue, which DO flip to near-white in dark mode. Without
+  // this override that's white text on this still-light background:
+  // invisible. `[data-theme='dark']` is set on <html> by DarkModeService,
+  // same pattern as navbar.component.scss.
+  :host-context([data-theme='dark']) & {
+    background: linear-gradient(180deg, #1a2036 0%, #1c1e26 55%, #121212 100%);
+  }
+}
+
+// ── Tool section header ──────────────────────────────────────────────────────
+//
+// Sits above the "Start here" badge so the section reads clearly even to
+// someone quickly scrolling past — this is the page's primary action.
+
+.tool-header {
+  @apply com-flex com-flex-col com-gap-3;
+
+  &__heading {
+    @apply com-text-Page-Section-Header com-font-bold com-text-Yankees-Blue com-m-0;
+  }
+
+  &__sub {
+    @apply com-text-Paragraph-1 com-text-Auro-Metal-Saurus com-m-0;
+  }
+}
+
+// ── "Start here" badge ──────────────────────────────────────────────────────
+
+.start-badge {
+  @apply com-inline-flex com-items-center com-gap-2 com-self-start com-rounded-full;
+  @apply com-bg-primary-100 com-text-primary-700 com-text-Paragraph-2 com-font-semibold;
+  @apply com-border com-border-primary-200;
+  padding: 6px 16px;
+
+  &__dot {
+    @apply com-bg-primary-600;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: start-badge-ping 1.8s ease-in-out infinite;
+  }
+}
+
+@keyframes start-badge-ping {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.6);
+    opacity: 0.5;
+  }
 }
 
 // Wider container (max-w-4xl = 56 rem) gives the 280 px QR column room alongside
@@ -52,6 +115,37 @@
   // Ensure card background covers the timeline line within each card
   position: relative;
   z-index: 1;
+}
+
+// ── Featured card (step 1 — the main action on the page) ──────────────────────
+//
+// A soft, slow-rotating blurred glow sits behind the card (GSAP-animated —
+// see ngAfterViewInit) and the card itself gets a stronger border + shadow so
+// it reads as the highlighted starting point of the page.
+
+.step-card-featured-wrap {
+  position: relative;
+
+  // Hex values map directly to tokens defined in tailwind.preset.js (same
+  // mapping convention as section-hero-4):
+  //   #3366ff = primary-500, #6f22df = Blue-Violet,
+  //   #ff3d71 = Infra-Red,   #ffaa00 = Chrome-Yellow
+  &__glow {
+    position: absolute;
+    inset: -18px;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: 24px;
+    filter: blur(28px);
+    opacity: 0.55;
+    background: conic-gradient(from 0deg, #3366ff 0%, #6f22df 30%, #ff3d71 55%, #ffaa00 75%, #3366ff 100%);
+  }
+}
+
+.step-card--featured {
+  @apply com-border-primary-200;
+  border-width: 1.5px;
+  box-shadow: 0 20px 45px -22px rgba(51, 102, 255, 0.35);
 }
 
 // Slide-up entrance — plays automatically when the element is inserted into the
@@ -113,6 +207,8 @@
 
 // Pulsing glow draws attention to the input before the user starts typing.
 // Uses opacity + transform only — performance-safe per styling guidelines.
+// Opacity/scale pulse (pre-focus attention grabber) — unchanged mechanics,
+// just no longer tied to a single flat colour (see the gradient below).
 @keyframes input-glow-pulse {
   0%,
   100% {
@@ -120,8 +216,23 @@
     transform: scale(1);
   }
   50% {
-    opacity: 1;
+    opacity: 0.75;
     transform: scale(1.01);
+  }
+}
+
+// Colour-cycles the gradient ring via `filter: hue-rotate`, not a
+// transform — rotating the ring itself (an inset:-3px pseudo-element)
+// would grow its effective bounding box every frame, which is exactly
+// what turned `.page-body` into an unwanted scroll container earlier on
+// this page (see the featured-card glow's comment). `filter` is
+// paint-only and can't do that.
+@keyframes input-glow-hue {
+  from {
+    filter: hue-rotate(0deg);
+  }
+  to {
+    filter: hue-rotate(360deg);
   }
 }
 
@@ -129,21 +240,29 @@
 .input-wrapper {
   position: relative;
 
-  // Glow ring rendered as a ::before pseudo-element — stops on focus.
+  // Glow ring rendered as a ::before pseudo-element — a Gemini-style
+  // multicolour sweep instead of a flat blue tint. Hex values map directly
+  // to tokens in tailwind.preset.js (same mapping convention used
+  // elsewhere on this page): #3366ff = primary-500, #6f22df = Blue-Violet,
+  // #ff3d71 = Infra-Red, #ffaa00 = Chrome-Yellow.
   &::before {
     content: '';
     position: absolute;
     inset: -3px;
     border-radius: 8px;
-    background: rgba(51, 102, 255, 0.14); // primary-500 at low opacity
     pointer-events: none;
     z-index: 0;
-    animation: input-glow-pulse 2s ease-in-out infinite;
+    background: conic-gradient(from 0deg, #3366ff, #6f22df, #ff3d71, #ffaa00, #3366ff);
+    filter: blur(1px);
+    animation: input-glow-pulse 2s ease-in-out infinite, input-glow-hue 6s linear infinite;
   }
 
+  // "Activated" state — like Gemini's input glow lighting up on mobile once
+  // you tap in: full-opacity, faster colour cycling, instead of just
+  // switching off.
   &:focus-within::before {
-    animation: none;
-    opacity: 0;
+    opacity: 1;
+    animation: input-glow-hue 2.5s linear infinite;
   }
 
   input {

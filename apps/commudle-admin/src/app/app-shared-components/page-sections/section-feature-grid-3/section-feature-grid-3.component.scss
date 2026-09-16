@@ -1,0 +1,113 @@
+:host {
+  display: block;
+}
+
+.base-layout {
+  min-height: 0;
+}
+
+.section-header {
+  &__eyebrow {
+    @apply com-text-Caption com-font-semibold com-text-primary-600;
+    @apply com-uppercase com-tracking-widest com-mb-3 com-block com-m-0;
+  }
+
+  &__heading {
+    @apply com-text-Page-Section-Header com-font-medium com-text-Yankees-Blue com-mb-3 com-m-0;
+  }
+
+  &__sub {
+    @apply com-text-Paragraph-1 com-text-Auro-Metal-Saurus com-max-w-xl com-m-0;
+  }
+}
+
+// Bold colour-card treatment — a solid brand gradient instead of a white
+// card with a small icon badge, echoing a social-card / app-showcase grid
+// look while staying entirely within the existing palette (primary-600 →
+// primary-700; no new colour introduced). Hex values map directly to
+// tokens in tailwind.preset.js, same mapping convention used elsewhere on
+// this page (section-hero-4, the featured-card glow): #3366ff = primary-600,
+// #2952cc = primary-700.
+.card {
+  @apply com-flex com-flex-col com-overflow-hidden com-relative;
+  height: 100%;
+  background: linear-gradient(155deg, #3366ff 0%, #2952cc 100%);
+  box-shadow: 0 20px 40px -22px rgba(41, 82, 204, 0.55);
+
+  // Two soft, blurred circles in translucent white — a subtle abstract
+  // texture (not a literal pattern image), positioned so they read
+  // through the gradient without competing with the card content.
+  &__pattern {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    &::before {
+      width: 140px;
+      height: 140px;
+      top: -50px;
+      right: -40px;
+    }
+
+    &::after {
+      width: 90px;
+      height: 90px;
+      bottom: -30px;
+      left: -20px;
+      background: rgba(255, 255, 255, 0.07);
+    }
+  }
+
+  &__media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  &__body {
+    @apply com-p-6 com-flex com-flex-col com-relative;
+    flex: 1;
+  }
+
+  // Frosted-glass badge — larger than the plain-icon-grid variant
+  // (feature-grid-2) on purpose, per the reference: the icon carries more
+  // visual weight on a bold card than a small icon does on a white one.
+  &__icon {
+    @apply com-inline-flex com-items-center com-justify-center com-rounded-10 com-flex-shrink-0;
+    @apply com-text-tWhite;
+    width: 56px;
+    height: 56px;
+    font-size: 26px;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+  }
+
+  // com-text-Card-Subheading has no paired line-height in the preset, so it
+  // falls back to the ambient (fairly loose) global line-height — fine for
+  // single-line titles, but visibly too airy once a longer title (e.g.
+  // "Companies & internal teams") wraps to two lines. Tighten locally.
+  &__title {
+    @apply com-font-semibold com-leading-tight;
+  }
+
+  &__desc {
+    color: rgba(255, 255, 255, 0.82);
+  }
+}

@@ -1,0 +1,104 @@
+<section class="hero-section com-bg-white com-overflow-x-hidden">
+  <div class="base-layout container com-px-4 md:com-px-6">
+    <div
+      class="hero-layout com-grid com-grid-cols-1 com-items-center com-gap-8 lg:com-gap-12"
+      [ngClass]="{ 'md:com-grid-cols-2': config.image }"
+    >
+      <!-- ── Left: text ─────────────────────────────────────────────── -->
+      <div class="hero-text com-flex com-flex-col com-gap-6">
+        <div *ngIf="config.badge" class="hero-badge com-self-start">
+          <span class="com-text-Caption com-font-semibold">{{ config.badge }}</span>
+        </div>
+
+        <h1 class="hero-heading com-m-0">
+          <span class="hero-heading__line1 com-block" [innerHTML]="safeLine1"></span>
+          <span class="hero-heading__line2 com-block" [innerHTML]="safeLine2"></span>
+        </h1>
+
+        <p class="com-text-Paragraph-1 com-text-Auro-Metal-Saurus com-max-w-lg com-m-0">
+          {{ config.subtext }}
+        </p>
+
+        <div class="cta-buttons">
+          <a
+            *ngIf="config.primaryCta.routerLink; else primaryButton"
+            [routerLink]="config.primaryCta.routerLink"
+            [queryParams]="config.primaryCta.queryParams || null"
+          >
+            <button nbButton status="primary" size="large" shape="semi-round">{{ config.primaryCta.label }}</button>
+          </a>
+          <ng-template #primaryButton>
+            <button nbButton status="primary" size="large" shape="semi-round" type="button" (click)="onPrimaryClick()">
+              {{ config.primaryCta.label }}
+            </button>
+          </ng-template>
+
+          <button
+            *ngIf="config.videoCta"
+            nbButton
+            status="basic"
+            outline
+            size="large"
+            shape="semi-round"
+            type="button"
+            (click)="openVideo()"
+          >
+            <fa-icon [icon]="icons.faCirclePlay" class="com-mr-2"></fa-icon>{{ config.videoCta.label }}
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Right: photo ──────────────────────────────────────────── -->
+      <div *ngIf="config.image" class="hero-visual">
+        <div class="hero-visual__glow" aria-hidden="true"></div>
+
+        <!--
+          __frame shrink-wraps exactly to the rendered image (not the taller
+          flex-centred .hero-visual box), so the floating accents below —
+          positioned against __frame — hug the photo's actual edges instead
+          of drifting off relative to empty space above/below it.
+        -->
+        <div class="hero-visual__frame">
+          <img class="hero-visual__img" [src]="config.image.url" [alt]="config.image.alt" loading="eager" />
+
+          <!-- Floating icon/text accents — purely decorative, GSAP-animated (see animateFloatingAccents()). -->
+          <div
+            *ngIf="config.floatingAccents?.length"
+            class="floating-accents com-hidden lg:com-block"
+            aria-hidden="true"
+          >
+            <span
+              *ngFor="let accent of config.floatingAccents; let i = index"
+              #floatingAccent
+              class="floating-accent"
+              [ngClass]="positionFor(i)"
+            >
+              <span class="floating-accent__icon"><fa-icon [icon]="iconFor(accent.icon)"></fa-icon></span>
+              <span *ngIf="accent.label" class="floating-accent__label com-text-Paragraph-2 com-font-semibold">
+                {{ accent.label }}
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Video dialog ─────────────────────────────────────────────────── -->
+<ng-template #videoDialog>
+  <nb-card class="video-dialog">
+    <nb-card-body class="video-dialog__body">
+      <div class="video-dialog__frame">
+        <iframe
+          *ngIf="safeVideoUrl"
+          [src]="safeVideoUrl"
+          title="Video"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

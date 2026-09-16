@@ -1,0 +1,88 @@
+:host {
+  display: block;
+}
+
+.base-layout {
+  min-height: 0;
+  position: relative;
+  z-index: 1;
+}
+
+// Explicit overflow-y (the HTML already carries `com-overflow-x-hidden`) —
+// the decor layer below intentionally bleeds slightly past the section on
+// some viewports (the rocket is large and partly off-canvas by design).
+// Without this, per the CSS spec, leaving overflow-y as the default
+// `visible` while overflow-x is `hidden` makes the browser compute it as
+// `auto`, turning the section into a scroll container. Same fix as
+// section-hero-9 / the featured tool card earlier on this page.
+.cta-section {
+  position: relative;
+  overflow-y: hidden;
+}
+
+// ── Background decoration ─────────────────────────────────────────────────────
+//
+// Two soft blurred colour blobs + one big, low-opacity rocket watermark.
+// Purely decorative (aria-hidden), sits behind .cta-inner via z-index.
+// Hex values map directly to tokens in tailwind.preset.js, same mapping
+// convention used elsewhere on this page: #3366ff = primary-500,
+// #6f22df = Blue-Violet.
+
+.cta-decor {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  &__blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(50px);
+
+    &--a {
+      width: 320px;
+      height: 320px;
+      top: -120px;
+      left: -80px;
+      background: rgba(51, 102, 255, 0.12);
+    }
+
+    &--b {
+      width: 260px;
+      height: 260px;
+      bottom: -100px;
+      right: -60px;
+      background: rgba(111, 34, 223, 0.1);
+    }
+  }
+
+  // Hidden by default (mobile-safe — a 260px icon has nowhere good to go
+  // on a narrow screen) and only shown from `lg` up, per this project's
+  // mobile-responsiveness rules for fixed-size decorative elements.
+  &__rocket {
+    display: none;
+
+    @screen lg {
+      display: block;
+      position: absolute;
+      bottom: -12%;
+      right: 2%;
+      font-size: 260px;
+      color: rgba(51, 102, 255, 0.08);
+      transform: rotate(-18deg);
+    }
+  }
+}
+
+.cta-buttons {
+  @apply com-flex com-flex-wrap com-justify-center com-gap-4;
+
+  a {
+    @apply com-w-full sm:com-w-auto;
+  }
+
+  button {
+    @apply com-w-full sm:com-w-auto;
+  }
+}
