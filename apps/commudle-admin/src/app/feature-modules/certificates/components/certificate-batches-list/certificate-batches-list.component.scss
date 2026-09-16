@@ -1,0 +1,37 @@
+.certificate-batches-list {
+  .list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    color: var(--text-hint-color);
+  }
+
+  .batches-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+      text-align: left;
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--divider-color);
+    }
+
+    td {
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--divider-color);
+    }
+
+    .batch-row {
+      cursor: pointer;
+
+      &:hover {
+        background: var(--background-basic-color-2);
+      }
+    }
+  }
+}

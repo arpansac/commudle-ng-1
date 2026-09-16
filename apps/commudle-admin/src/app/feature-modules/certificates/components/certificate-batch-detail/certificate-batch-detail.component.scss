@@ -1,0 +1,43 @@
+.certificate-batch-detail {
+  .detail-header {
+    margin-bottom: 1rem;
+
+    .meta-line {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 0.5rem;
+
+      .meta-item {
+        color: var(--text-hint-color);
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+    .stat-card {
+      flex: 1;
+      text-align: center;
+
+      .stat-value {
+        font-size: 1.75rem;
+        font-weight: 600;
+      }
+
+      .stat-label {
+        color: var(--text-hint-color);
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  .placeholder-section {
+    margin-bottom: 1rem;
+    color: var(--text-hint-color);
+  }
+}

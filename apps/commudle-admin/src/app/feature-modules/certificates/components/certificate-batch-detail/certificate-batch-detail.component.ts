@@ -1,0 +1,55 @@
+import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { NbBadgeModule, NbCardModule } from '@commudle/theme';
+import { ECertificateBatchStatus, ICertificateBatch } from '@commudle/shared-models';
+import { CertificateBatchService } from '@commudle/shared-services';
+import * as moment from 'moment';
+import { Subject, takeUntil } from 'rxjs';
+import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
+import { CertificateDesignPickerComponent } from '../certificate-design-picker/certificate-design-picker.component';
+
+@Component({
+  selector: 'commudle-certificate-batch-detail',
+  standalone: true,
+  imports: [CommonModule, NbCardModule, NbBadgeModule, SharedComponentsModule, CertificateDesignPickerComponent],
+  templateUrl: './certificate-batch-detail.component.html',
+  styleUrls: ['./certificate-batch-detail.component.scss'],
+})
+export class CertificateBatchDetailComponent implements OnInit, OnDestroy {
+  batch: ICertificateBatch;
+  isLoading = true;
+  moment = moment;
+  ECertificateBatchStatus = ECertificateBatchStatus;
+
+  private destroy$ = new Subject<void>();
+
+  constructor(private route: ActivatedRoute, private certificateBatchService: CertificateBatchService) {}
+
+  ngOnInit() {
+    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      const batchUuid = params.get('batch_uuid');
+      this.fetchBatch(batchUuid);
+    });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  fetchBatch(batchUuid: string) {
+    this.isLoading = true;
+    this.certificateBatchService
+      .fetchCertificateBatch(batchUuid)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((batch) => {
+        this.batch = batch;
+        this.isLoading = false;
+      });
+  }
+
+  statusLabel(status: ECertificateBatchStatus): string {
+    return ECertificateBatchStatus[status]?.toLowerCase() ?? 'unknown';
+  }
+}

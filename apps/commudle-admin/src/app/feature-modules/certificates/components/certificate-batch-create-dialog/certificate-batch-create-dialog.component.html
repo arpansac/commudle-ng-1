@@ -1,0 +1,61 @@
+<nb-card class="certificate-batch-create-dialog">
+  <nb-card-header class="com-flex com-justify-between com-items-center">
+    <span>New Certificate Batch</span>
+    <button ghost nbButton size="small" (click)="close()" shape="round">
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="batchForm" (ngSubmit)="onSubmit()">
+      <div class="form-field-container">
+        <label class="form-field"> Batch Name <span class="required">*</span> </label>
+        <input class="form-field" formControlName="name" nbInput fullWidth placeholder="e.g. Workshop 2026 Attendees" />
+        <commudle-alert
+          *ngIf="batchForm.get('name')?.touched && batchForm.get('name')?.errors?.['required']"
+          [error]="true"
+          errorMessage="Batch name is required"
+        ></commudle-alert>
+        <commudle-alert
+          *ngIf="batchForm.get('name')?.touched && batchForm.get('name')?.errors?.['maxlength']"
+          [error]="true"
+          errorMessage="Batch name cannot exceed 120 characters"
+        ></commudle-alert>
+      </div>
+
+      <div class="form-field-container">
+        <label class="form-field">Email Subject</label>
+        <input
+          class="form-field"
+          formControlName="email_subject"
+          nbInput
+          fullWidth
+          placeholder="Optional — can be set later"
+        />
+      </div>
+
+      <div class="form-field-container">
+        <label class="form-field">Email Body</label>
+        <textarea
+          class="form-field"
+          formControlName="email_body"
+          nbInput
+          fullWidth
+          rows="4"
+          placeholder="Optional — can be set later"
+        ></textarea>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <button
+      type="submit"
+      nbButton
+      status="primary"
+      fullWidth
+      [disabled]="batchForm.invalid || isSaving"
+      (click)="onSubmit()"
+    >
+      Create Batch
+    </button>
+  </nb-card-footer>
+</nb-card>

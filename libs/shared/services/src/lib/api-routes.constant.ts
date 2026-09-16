@@ -1231,4 +1231,16 @@ export const API_ROUTES = {
     CREATE: 'api/v2/round_mentor_slots', //POST
     UPDATE_STATUS: 'api/v2/round_mentor_slots/update_status', //PUT
   },
+
+  CERTIFICATE_BATCHES: {
+    INDEX: 'api/v2/certificate_batches', //GET
+    SHOW: 'api/v2/certificate_batches/show', //GET
+    CREATE: 'api/v2/certificate_batches', //POST
+    UPDATE: 'api/v2/certificate_batches', //PUT
+  },
+
+  CERTIFICATE_DESIGNS: {
+    INDEX: 'api/v2/certificate_designs', //GET
+    CREATE: 'api/v2/certificate_designs', //POST
+  },
 };

@@ -71,3 +71,5 @@ export * from './lib/round-mentor-slot.model';
 export * from './lib/round-mentor-slot-booking.model';
 export * from './lib/hms-hls.model';
 export * from './lib/hms-room-mode.enum';
+export * from './lib/certificate-batch.model';
+export * from './lib/certificate-design.model';

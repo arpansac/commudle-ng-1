@@ -1,0 +1,59 @@
+<div class="certificate-design-picker">
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+  <ng-container *ngIf="!isLoading">
+    <div *ngIf="isLocked" class="locked-notice">
+      This batch has already sent — the design is locked and can't be changed.
+    </div>
+
+    <div class="design-grid">
+      <div
+        *ngFor="let design of designs"
+        class="design-card"
+        [class.selected]="design.id === batch.design?.id"
+        [class.disabled]="isLocked"
+        (click)="selectDesign(design)"
+      >
+        <img [src]="design.background_image_url" [alt]="design.name" />
+        <div class="design-card-footer">
+          <span class="design-name">{{ design.name }}</span>
+          <span class="design-type" *ngIf="design.design_type === ECertificateDesignType.PRESET">Preset</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!isLocked" class="upload-section">
+      <button nbButton status="basic" size="small" (click)="toggleUploadForm()">
+        <nb-icon icon="upload-outline"></nb-icon> &nbsp; {{ showUploadForm ? 'Cancel' : 'Upload a new design' }}
+      </button>
+
+      <div *ngIf="showUploadForm" class="upload-form">
+        <div class="form-field-container">
+          <label class="form-field"> Design Name <span class="required">*</span> </label>
+          <input
+            class="form-field"
+            [formControl]="uploadForm.controls['name']"
+            nbInput
+            fullWidth
+            placeholder="e.g. 2026 Workshop Certificate"
+          />
+          <commudle-alert
+            *ngIf="uploadForm.get('name')?.touched && uploadForm.get('name')?.errors?.['required']"
+            [error]="true"
+            errorMessage="Design name is required"
+          ></commudle-alert>
+        </div>
+
+        <div class="form-field-container">
+          <label class="form-field"> Background Image <span class="required">*</span> </label>
+          <input type="file" accept="image/png,image/jpeg" (change)="onFileSelected($event)" />
+          <img *ngIf="selectedFilePreviewUrl" [src]="selectedFilePreviewUrl" class="preview-image" alt="Preview" />
+        </div>
+
+        <button nbButton status="primary" size="small" [disabled]="isSaving" (click)="uploadDesign()">
+          {{ isSaving ? 'Uploading...' : 'Upload & Use' }}
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</div>

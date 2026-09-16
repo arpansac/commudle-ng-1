@@ -1,0 +1,67 @@
+<div class="certificate-batch-detail">
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+  <ng-container *ngIf="!isLoading && batch">
+    <div class="detail-header">
+      <div>
+        <h1 class="page-title">{{ batch.name }}</h1>
+        <div class="meta-line">
+          <nb-badge [text]="statusLabel(batch.status)" status="info" position="static"></nb-badge>
+          <span class="meta-item">Created {{ moment(batch.created_at).format('DD MMM YYYY') }}</span>
+          <span class="meta-item" *ngIf="batch.locked_at"
+            >Locked {{ moment(batch.locked_at).format('DD MMM YYYY') }}</span
+          >
+          <span class="meta-item" *ngIf="batch.revoked_at"
+            >Revoked {{ moment(batch.revoked_at).format('DD MMM YYYY') }}</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <nb-card class="stat-card">
+        <nb-card-body>
+          <div class="stat-value">{{ batch.recipients_count }}</div>
+          <div class="stat-label">Recipients</div>
+        </nb-card-body>
+      </nb-card>
+      <nb-card class="stat-card">
+        <nb-card-body>
+          <div class="stat-value">{{ batch.sent_count }}</div>
+          <div class="stat-label">Sent</div>
+        </nb-card-body>
+      </nb-card>
+      <nb-card class="stat-card">
+        <nb-card-body>
+          <div class="stat-value">{{ batch.blocked_count }}</div>
+          <div class="stat-label">Blocked</div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+    <nb-card>
+      <nb-card-header>Design</nb-card-header>
+      <nb-card-body>
+        <commudle-certificate-design-picker
+          [batch]="batch"
+          (batchUpdated)="batch = $event"
+        ></commudle-certificate-design-picker>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card class="placeholder-section">
+      <nb-card-header>Recipients</nb-card-header>
+      <nb-card-body>Recipient upload and management — coming soon.</nb-card-body>
+    </nb-card>
+
+    <nb-card class="placeholder-section">
+      <nb-card-header>Variable Positioning</nb-card-header>
+      <nb-card-body>Canvas-based positioning — coming soon.</nb-card-body>
+    </nb-card>
+
+    <nb-card class="placeholder-section">
+      <nb-card-header>Send</nb-card-header>
+      <nb-card-body>Consent confirmation and sending — coming soon.</nb-card-body>
+    </nb-card>
+  </ng-container>
+</div>
