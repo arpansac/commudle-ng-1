@@ -93,7 +93,7 @@
     </div>
   </div>
 
-  <div main-column *ngIf="!isMobileView">
+  <div main-column *appBreakpoints="'>lg'">
     <app-skeleton-cards
       *ngIf="showSpinnerUpcoming"
       [ImageShapeCircle]="false"
