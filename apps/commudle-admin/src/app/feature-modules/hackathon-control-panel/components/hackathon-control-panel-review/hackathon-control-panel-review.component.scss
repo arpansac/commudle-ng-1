@@ -232,7 +232,7 @@ th {
   @apply com-w-auto com-mx-0 com-max-h-full md:com-max-h-[90dvh] md:com-w-800px com-flex com-flex-col com-overflow-hidden;
 
   com-card-header {
-    @apply com-flex com-flex-none;
+    @apply com-flex;
   }
 
   com-card-body {
