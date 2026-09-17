@@ -1,6 +1,6 @@
 .community-create {
   .cc-page-header {
-    @apply com-mb-0;
+    @apply com-flex com-gap-2 com-my-4 com-bg-white com-p-4 com-rounded-lg;
     .cc-page-title {
       @apply com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0;
     }
