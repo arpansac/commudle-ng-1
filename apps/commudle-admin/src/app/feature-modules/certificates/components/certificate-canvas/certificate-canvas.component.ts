@@ -3,21 +3,28 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { NbIconModule, NbInputModule, NbSelectModule } from '@commudle/theme';
+import { NbCheckboxModule, NbDialogService, NbIconModule, NbInputModule, NbSelectModule } from '@commudle/theme';
 import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { ICertificateBatch, ICertificateVariable, ICertificateVariableTextStyle } from '@commudle/shared-models';
 import { CertificateVariableService } from '@commudle/shared-services';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { Subject, takeUntil } from 'rxjs';
 import type KonvaNamespace from 'konva';
+import { CertificateVariableDefaultValueDialogComponent } from '../certificate-variable-default-value-dialog/certificate-variable-default-value-dialog.component';
+
+type VariableAction = 'default_value' | 'delete';
 
 const DEFAULT_TEXT_STYLE: ICertificateVariableTextStyle = {
   font: 'Helvetica',
@@ -43,10 +50,13 @@ export const CERTIFICATE_FONT_OPTIONS = ['Helvetica', 'Times-Roman', 'Courier'];
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     CommudleButtonModule,
     NbInputModule,
     NbSelectModule,
     NbIconModule,
+    NbCheckboxModule,
+    FontAwesomeModule,
     SharedComponentsModule,
   ],
   templateUrl: './certificate-canvas.component.html',
@@ -54,6 +64,7 @@ export const CERTIFICATE_FONT_OPTIONS = ['Helvetica', 'Times-Roman', 'Courier'];
 })
 export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() batch: ICertificateBatch;
+  @Output() variablesChanged = new EventEmitter<void>();
 
   @ViewChild('stageContainer', { static: false }) stageContainer: ElementRef<HTMLDivElement>;
 
@@ -63,6 +74,10 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
   isSaving = false;
   isDirty = false;
   fontOptions = CERTIFICATE_FONT_OPTIONS;
+
+  showAddForm = false;
+  addForm: FormGroup;
+  icons = { faPlus };
 
   private Konva: typeof KonvaNamespace;
   private stage: KonvaNamespace.Stage;
@@ -77,16 +92,18 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
   private destroy$ = new Subject<void>();
 
   constructor(
+    private fb: FormBuilder,
     private certificateVariableService: CertificateVariableService,
     private toastLogService: LibToastLogService,
-  ) {}
+    private dialogService: NbDialogService,
+  ) {
+    this.addForm = this.fb.group({
+      label: ['', Validators.required],
+    });
+  }
 
   get isLocked(): boolean {
     return !!this.batch?.locked_at;
-  }
-
-  get unplacedVariables(): ICertificateVariable[] {
-    return this.variables.filter((v) => v.keep && !v.positioned);
   }
 
   ngAfterViewInit() {
@@ -119,6 +136,20 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
         if (this.viewInitialized && this.batch?.design) {
           this.initCanvas();
         }
+      });
+  }
+
+  // Refreshes the variable list only - unlike fetchVariables(), doesn't
+  // re-run initCanvas() (which destroys and rebuilds the whole Konva
+  // stage). Used when another section (CSV upload) adds variables we
+  // don't already have rendered, so there's nothing on the canvas itself
+  // to redraw.
+  refreshVariablesList() {
+    this.certificateVariableService
+      .indexCertificateVariables(this.batch.uuid)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.variables = res.certificate_variables;
       });
   }
 
@@ -170,7 +201,7 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
       }
     });
 
-    this.variables.filter((v) => v.keep && v.positioned).forEach((variable) => this.renderBox(variable));
+    this.variables.filter((v) => v.positioned).forEach((variable) => this.renderBox(variable));
 
     this.layer.draw();
   }
@@ -214,6 +245,11 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
       this.select(variable, group);
     });
 
+    // Dragging doesn't fire a 'click' when the drag threshold is exceeded,
+    // so selecting only on click leaves a dragged box unselected - select
+    // as soon as the drag starts instead.
+    group.on('dragstart', () => this.select(variable, group));
+
     group.on('dragend', () => this.onBoxTransformed(variable, group, rect));
     group.on('transformend', () => this.onBoxTransformed(variable, group, rect));
 
@@ -242,8 +278,9 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
     group.scaleY(1);
     rect.width(width);
     rect.height(height);
-    this.boxesById.get(variable.id).text.width(width);
-    this.boxesById.get(variable.id).text.height(height);
+    const box = this.boxesById.get(variable.id);
+    box.text.width(width);
+    box.text.height(height);
 
     variable.positions = {
       x: group.x() / displayWidth,
@@ -285,9 +322,7 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
   }
 
   removeFromCanvas(variable: ICertificateVariable) {
-    const box = this.boxesById.get(variable.id);
-    box?.group.destroy();
-    this.boxesById.delete(variable.id);
+    this.destroyBox(variable.id);
     variable.positions = null;
     variable.positioned = false;
     if (this.selectedVariable?.id === variable.id) {
@@ -295,6 +330,110 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
     }
     this.isDirty = true;
     this.layer.draw();
+  }
+
+  toggleCanvasPlacement(variable: ICertificateVariable, placed: boolean) {
+    if (this.isLocked) {
+      return;
+    }
+    if (placed) {
+      this.addToCanvas(variable);
+    } else {
+      this.removeFromCanvas(variable);
+    }
+  }
+
+  private destroyBox(variableId: number) {
+    const box = this.boxesById.get(variableId);
+    box?.group.destroy();
+    this.boxesById.delete(variableId);
+  }
+
+  toggleAddForm() {
+    this.showAddForm = !this.showAddForm;
+    if (!this.showAddForm) {
+      this.addForm.reset();
+    }
+  }
+
+  addVariable() {
+    if (this.addForm.invalid) {
+      this.addForm.markAllAsTouched();
+      return;
+    }
+    this.certificateVariableService
+      .createCertificateVariable(this.batch.uuid, this.addForm.value)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (variable) => {
+          this.variables = [...this.variables, variable];
+          this.addForm.reset();
+          this.showAddForm = false;
+          this.variablesChanged.emit();
+        },
+        error: () => {
+          this.toastLogService.errorDialog('Could not add the variable');
+        },
+      });
+  }
+
+  onVariableAction(variable: ICertificateVariable, action: VariableAction | '') {
+    if (action === 'default_value') {
+      this.setDefaultValue(variable);
+    } else if (action === 'delete') {
+      this.deleteVariable(variable);
+    }
+  }
+
+  setDefaultValue(variable: ICertificateVariable) {
+    this.dialogService
+      .open(CertificateVariableDefaultValueDialogComponent, {
+        context: { label: variable.label, defaultValue: variable.default_value || '' },
+      })
+      .onClose.pipe(takeUntil(this.destroy$))
+      .subscribe((value: string | undefined) => {
+        if (value === undefined || value === variable.default_value) {
+          return;
+        }
+        this.certificateVariableService
+          .updateCertificateVariable(this.batch.uuid, variable.id, { default_value: value })
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (updated) => {
+              variable.default_value = updated.default_value;
+              variable.default_set = updated.default_set;
+            },
+            error: () => {
+              this.toastLogService.errorDialog('Could not update the default value');
+            },
+          });
+      });
+  }
+
+  deleteVariable(variable: ICertificateVariable) {
+    if (!confirm(`Remove the "${variable.label}" variable? This cannot be undone.`)) {
+      return;
+    }
+    this.certificateVariableService
+      .deleteCertificateVariable(this.batch.uuid, variable.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          if (variable.positioned) {
+            this.destroyBox(variable.id);
+            if (this.selectedVariable?.id === variable.id) {
+              this.deselect();
+            }
+            this.layer.draw();
+          }
+          this.variables = this.variables.filter((v) => v.id !== variable.id);
+          this.toastLogService.successDialog('Variable removed');
+          this.variablesChanged.emit();
+        },
+        error: () => {
+          this.toastLogService.errorDialog('Could not remove the variable');
+        },
+      });
   }
 
   updateStyle(patch: Partial<ICertificateVariableTextStyle>) {
@@ -311,7 +450,7 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
   }
 
   saveLayout() {
-    const placed = this.variables.filter((v) => v.keep && v.positioned);
+    const placed = this.variables.filter((v) => v.positioned);
     if (placed.length === 0) {
       return;
     }

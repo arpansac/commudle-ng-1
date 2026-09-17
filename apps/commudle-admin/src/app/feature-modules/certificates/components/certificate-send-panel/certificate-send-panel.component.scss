@@ -8,24 +8,40 @@
   }
 
   .pre-send {
-    @apply com-flex com-flex-col com-gap-4 com-items-start;
+    @apply com-flex com-flex-col com-gap-6 com-items-start com-w-full;
+
+    .send-subsection {
+      @apply com-flex com-flex-col com-gap-4 com-items-start com-w-full com-pb-6 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
+      &:last-child {
+        @apply com-pb-0 com-border-b-0;
+      }
+
+      .subsection-title {
+        @apply com-text-base com-font-semibold com-text-Yankees-Blue com-m-0;
+      }
+
+      .subsection-description {
+        @apply com-text-sm com-text-Auro-Metal-Saurus com-m-0 com--mt-2;
+      }
+    }
+
+    .email-field-container {
+      @apply com-w-full com-max-w-[28rem];
+
+      .email-field-label {
+        @apply com-block com-text-sm com-font-medium com-text-Yankees-Blue com-mb-1;
+      }
+
+      .email-field {
+        @apply com-w-full;
+      }
+    }
   }
 
   .progress-view {
-    .stats-row {
-      @apply com-flex com-flex-wrap com-gap-6 com-mb-4;
-
-      .stat {
-        @apply com-text-center;
-
-        .stat-value {
-          @apply com-block com-text-2xl com-font-semibold;
-        }
-
-        .stat-label {
-          @apply com-text-xs com-text-Auro-Metal-Saurus;
-        }
-      }
+    .delivery-funnel {
+      @apply com-block com-mb-4;
     }
 
     .row-list {

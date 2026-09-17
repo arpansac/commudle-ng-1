@@ -7,53 +7,70 @@
     </div>
 
     <div class="design-grid">
-      <div
-        *ngFor="let design of designs"
-        class="design-card"
-        [class.selected]="design.id === batch.design?.id"
-        [class.disabled]="isLocked"
-        (click)="selectDesign(design)"
-      >
-        <img [src]="design.background_image_url" [alt]="design.name" />
-        <div class="design-card-footer">
-          <span class="design-name">{{ design.name }}</span>
-          <span class="design-type" *ngIf="design.design_type === ECertificateDesignType.PRESET">Preset</span>
+      <div *ngIf="!isLocked" class="upload-tile" [class.active]="showUploadForm" (click)="toggleUploadForm()">
+        <nb-icon icon="plus-outline"></nb-icon>
+        <span>Upload a new design</span>
+      </div>
+
+      <div class="design-row">
+        <div
+          *ngFor="let design of pagedDesigns"
+          class="design-card"
+          [class.selected]="design.id === batch.design?.id"
+          [class.disabled]="isLocked"
+          (click)="selectDesign(design)"
+        >
+          <div class="design-thumb">
+            <img [src]="design.background_image_url" [alt]="design.name" />
+            <div class="selected-badge" *ngIf="design.id === batch.design?.id">
+              <nb-icon icon="checkmark-outline"></nb-icon>
+            </div>
+          </div>
+          <div class="design-card-footer">
+            <span class="design-name">{{ design.name }}</span>
+            <span class="design-type" *ngIf="design.design_type === ECertificateDesignType.PRESET">Preset</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <div *ngIf="!isLocked" class="upload-section">
-      <button comButton status="basic" size="small" (click)="toggleUploadForm()">
-        <nb-icon icon="upload-outline"></nb-icon> &nbsp; {{ showUploadForm ? 'Cancel' : 'Upload a new design' }}
-      </button>
+    <app-pagination
+      class="design-pagination"
+      *ngIf="designs.length > designPageSize"
+      [current]="designPage"
+      [count]="designPageSize"
+      [total]="designs.length"
+      (goTo)="onDesignPageChange($event)"
+      (next)="onDesignPageChange($event)"
+      (previous)="onDesignPageChange($event)"
+    ></app-pagination>
 
-      <div *ngIf="showUploadForm" class="upload-form">
-        <div class="form-field-container">
-          <label class="form-field"> Design Name <span class="required">*</span> </label>
-          <input
-            class="form-field"
-            [formControl]="uploadForm.controls['name']"
-            nbInput
-            fullWidth
-            placeholder="e.g. 2026 Workshop Certificate"
-          />
-          <commudle-alert
-            *ngIf="uploadForm.get('name')?.touched && uploadForm.get('name')?.errors?.['required']"
-            [error]="true"
-            errorMessage="Design name is required"
-          ></commudle-alert>
-        </div>
-
-        <div class="form-field-container">
-          <label class="form-field"> Background Image <span class="required">*</span> </label>
-          <input type="file" accept="image/png,image/jpeg" (change)="onFileSelected($event)" />
-          <img *ngIf="selectedFilePreviewUrl" [src]="selectedFilePreviewUrl" class="preview-image" alt="Preview" />
-        </div>
-
-        <button comButton status="primary" size="small" [disabled]="isSaving" (click)="uploadDesign()">
-          {{ isSaving ? 'Uploading...' : 'Upload & Use' }}
-        </button>
+    <div *ngIf="showUploadForm && !isLocked" class="upload-form">
+      <div class="form-field-container">
+        <label class="form-field"> Design Name <span class="required">*</span> </label>
+        <input
+          class="form-field"
+          [formControl]="uploadForm.controls['name']"
+          nbInput
+          fullWidth
+          placeholder="e.g. 2026 Workshop Certificate"
+        />
+        <commudle-alert
+          *ngIf="uploadForm.get('name')?.touched && uploadForm.get('name')?.errors?.['required']"
+          [error]="true"
+          errorMessage="Design name is required"
+        ></commudle-alert>
       </div>
+
+      <div class="form-field-container">
+        <label class="form-field"> Background Image <span class="required">*</span> </label>
+        <input type="file" accept="image/png,image/jpeg" (change)="onFileSelected($event)" />
+        <img *ngIf="selectedFilePreviewUrl" [src]="selectedFilePreviewUrl" class="preview-image" alt="Preview" />
+      </div>
+
+      <button comButton status="primary" size="small" [disabled]="isSaving" (click)="uploadDesign()">
+        {{ isSaving ? 'Uploading...' : 'Upload & Use' }}
+      </button>
     </div>
   </ng-container>
 </div>

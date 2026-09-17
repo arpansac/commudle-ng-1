@@ -46,6 +46,12 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
   selectedFilePreviewUrl: string | null = null;
   ECertificateDesignType = ECertificateDesignType;
 
+  // The designs endpoint returns the full list in one call (no page/count
+  // params in the frozen API contract), so this pages through the
+  // already-fetched array client-side rather than re-fetching per page.
+  designPage = 1;
+  readonly designPageSize = 4;
+
   private isBrowser: boolean;
   private imageWidth: number;
   private imageHeight: number;
@@ -79,6 +85,11 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
     return !!this.batch?.locked_at;
   }
 
+  get pagedDesigns(): ICertificateDesign[] {
+    const start = (this.designPage - 1) * this.designPageSize;
+    return this.designs.slice(start, start + this.designPageSize);
+  }
+
   fetchDesigns() {
     this.isLoading = true;
     this.certificateDesignService
@@ -86,8 +97,13 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         this.designs = res.certificate_designs;
+        this.designPage = 1;
         this.isLoading = false;
       });
+  }
+
+  onDesignPageChange(page: number) {
+    this.designPage = page;
   }
 
   selectDesign(design: ICertificateDesign) {
@@ -99,6 +115,8 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (updatedBatch) => {
+          this.resetUploadForm();
+          this.showUploadForm = false;
           this.toastLogService.successDialog('Design updated');
           this.batchUpdated.emit(updatedBatch);
         },
@@ -123,6 +141,9 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
     const file = input.files?.[0];
     if (!file) {
       return;
+    }
+    if (this.selectedFilePreviewUrl) {
+      URL.revokeObjectURL(this.selectedFilePreviewUrl);
     }
     this.selectedFile = file;
     this.selectedFilePreviewUrl = URL.createObjectURL(file);
@@ -155,6 +176,7 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
       next: (design) => {
         this.isSaving = false;
         this.designs = [design, ...this.designs];
+        this.designPage = 1;
         this.resetUploadForm();
         this.showUploadForm = false;
         this.selectDesign(design);
@@ -169,6 +191,9 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
   private resetUploadForm() {
     this.uploadForm.reset();
     this.selectedFile = null;
+    if (this.selectedFilePreviewUrl) {
+      URL.revokeObjectURL(this.selectedFilePreviewUrl);
+    }
     this.selectedFilePreviewUrl = null;
   }
 }

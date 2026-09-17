@@ -13,51 +13,69 @@
   <ng-container *ngIf="!isLoading">
     <div *ngIf="recipients.length === 0" class="empty-state">No recipients yet. Add one manually, or upload a CSV.</div>
 
-    <div class="recipients-table" *ngIf="recipients.length > 0">
-      <commudle-data-table [columns]="tableColumns" [rows]="tableRows" [config]="tableConfig"> </commudle-data-table>
-    </div>
+    <section class="recipient-list-container" *ngIf="recipients.length > 0">
+      <div class="table-wrapper">
+        <table class="recipients-table">
+          <thead>
+            <tr class="table-header-row">
+              <th>EMAIL</th>
+              <th>NAME</th>
+              <th *ngFor="let variable of variables">{{ variable.label }}</th>
+              <th>STATUS</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let recipient of recipients" class="recipient-row">
+              <td>{{ recipient.email }}</td>
+              <td>{{ recipient.name || '-' }}</td>
+              <td *ngFor="let variable of variables">{{ recipient.row_values?.[variable.key] || '-' }}</td>
+              <td>
+                <app-badge
+                  [text]="statusLabel(recipient.status) | titlecase"
+                  [fontSize]="'small'"
+                  [borderRadius]="'round'"
+                  [color]="statusColor(recipient.status)"
+                  [fontColor]="statusFontColor(recipient.status)"
+                ></app-badge>
+                <div class="skip-reason" *ngIf="recipient.skip_reason">{{ recipient.skip_reason }}</div>
+              </td>
+              <td class="actions">
+                <button
+                  *ngIf="canSendIndividually && recipient.sendable"
+                  ghost
+                  comButton
+                  size="tiny"
+                  status="success"
+                  (click)="sendOne(recipient)"
+                >
+                  <fa-icon [icon]="icons.faPaperPlane"></fa-icon>
+                </button>
+                <button ghost comButton size="tiny" (click)="openPreviewDialog(recipient)">
+                  <fa-icon [icon]="icons.faEye"></fa-icon>
+                </button>
+                <button ghost comButton size="tiny" (click)="openEditDialog(recipient)">
+                  <fa-icon [icon]="icons.faPen"></fa-icon>
+                </button>
+                <button ghost comButton size="tiny" status="danger" (click)="deleteRecipient(recipient)">
+                  <fa-icon [icon]="icons.faTrash"></fa-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-    <app-pagination
-      *ngIf="total > count"
-      [current]="page"
-      [count]="count"
-      [total]="total"
-      (goTo)="onPageChange($event)"
-      (next)="onPageChange($event)"
-      (previous)="onPageChange($event)"
-    ></app-pagination>
+      <app-pagination
+        class="pagination"
+        *ngIf="total > count"
+        [current]="page"
+        [count]="count"
+        [total]="total"
+        (goTo)="onPageChange($event)"
+        (next)="onPageChange($event)"
+        (previous)="onPageChange($event)"
+      ></app-pagination>
+    </section>
   </ng-container>
 </div>
-
-<ng-template #statusCell let-row="row">
-  <nb-badge
-    [text]="statusLabel(row.status)"
-    [status]="row.status === ECertificateRecipientStatus.BLOCKED ? 'danger' : 'info'"
-    position="static"
-  ></nb-badge>
-  <div class="skip-reason" *ngIf="row.skip_reason">{{ row.skip_reason }}</div>
-</ng-template>
-
-<ng-template #actionsCell let-row="row">
-  <div class="actions">
-    <button
-      *ngIf="canSendIndividually && row.recipient.sendable"
-      ghost
-      comButton
-      size="tiny"
-      status="success"
-      (click)="sendOne(row.recipient)"
-    >
-      <fa-icon [icon]="icons.faPaperPlane"></fa-icon>
-    </button>
-    <button ghost comButton size="tiny" (click)="openPreviewDialog(row.recipient)">
-      <fa-icon [icon]="icons.faEye"></fa-icon>
-    </button>
-    <button ghost comButton size="tiny" (click)="openEditDialog(row.recipient)">
-      <fa-icon [icon]="icons.faPen"></fa-icon>
-    </button>
-    <button ghost comButton size="tiny" status="danger" (click)="deleteRecipient(row.recipient)">
-      <fa-icon [icon]="icons.faTrash"></fa-icon>
-    </button>
-  </div>
-</ng-template>

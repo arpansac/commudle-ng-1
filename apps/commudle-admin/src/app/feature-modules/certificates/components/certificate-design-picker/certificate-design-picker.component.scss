@@ -4,55 +4,78 @@
   }
 
   .design-grid {
-    @apply com-grid com-gap-4 com-mb-4 com-grid-cols-[repeat(auto-fill,minmax(160px,1fr))];
+    @apply com-flex com-gap-4 com-mb-4 com-items-start;
+
+    .design-row {
+      @apply com-flex com-gap-4 com-flex-1 com-overflow-x-auto;
+    }
 
     .design-card {
-      @apply com-border-2 com-border-solid com-border-Bright-Gray com-rounded-lg com-overflow-hidden com-cursor-pointer;
-
-      &.selected {
-        @apply com-border-Azure;
-      }
+      @apply com-flex-none com-w-40 com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-overflow-hidden com-cursor-pointer;
 
       &.disabled {
         @apply com-cursor-not-allowed com-opacity-70;
       }
 
-      img {
-        @apply com-w-full com-object-cover com-aspect-[4/3];
+      .design-thumb {
+        @apply com-relative;
+
+        img {
+          @apply com-w-full com-object-cover com-aspect-[4/3];
+        }
+
+        .selected-badge {
+          @apply com-absolute com-top-2 com-right-2 com-w-6 com-h-6 com-rounded-full com-bg-Azure com-flex com-items-center com-justify-center com-text-white;
+        }
       }
 
       .design-card-footer {
         @apply com-flex com-items-center com-justify-between com-p-2;
 
         .design-name {
-          @apply com-text-sm;
+          @apply com-text-sm com-truncate;
         }
 
         .design-type {
-          @apply com-text-xs com-text-Auro-Metal-Saurus;
+          @apply com-text-xs com-text-Auro-Metal-Saurus com-flex-none;
         }
+      }
+    }
+
+    .upload-tile {
+      @apply com-flex-none com-w-40 com-aspect-[4/3] com-flex com-flex-col com-items-center com-justify-center com-gap-2 com-border-2 com-border-dashed com-border-Bright-Gray com-rounded-lg com-cursor-pointer com-text-Auro-Metal-Saurus com-text-sm com-font-medium com-text-center com-px-2;
+
+      nb-icon {
+        @apply com-text-2xl;
+      }
+
+      &.active,
+      &:hover {
+        @apply com-border-Azure com-text-Azure;
       }
     }
   }
 
-  .upload-section {
-    .upload-form {
-      @apply com-mt-4;
+  .design-pagination {
+    @apply com-mb-4;
+  }
 
-      .form-field-container {
-        @apply com-mb-4;
+  .upload-form {
+    @apply com-mt-4;
 
-        .form-field {
-          @apply com-block com-w-full com-mb-1;
-        }
+    .form-field-container {
+      @apply com-mb-4;
 
-        .required {
-          @apply com-text-red-500;
-        }
+      .form-field {
+        @apply com-block com-w-full com-mb-1;
+      }
 
-        .preview-image {
-          @apply com-max-w-[12rem] com-mt-2 com-rounded;
-        }
+      .required {
+        @apply com-text-red-500;
+      }
+
+      .preview-image {
+        @apply com-max-w-[12rem] com-mt-2 com-rounded;
       }
     }
   }

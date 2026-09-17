@@ -47,7 +47,15 @@ export class CertificateBatchService {
     );
   }
 
-  updateCertificateBatch(uuid: string, batchData: { certificate_design_id: number }): Observable<ICertificateBatch> {
+  updateCertificateBatch(
+    uuid: string,
+    batchData: Partial<{
+      name: string;
+      email_subject: string;
+      email_body: string;
+      certificate_design_id: number;
+    }>,
+  ): Observable<ICertificateBatch> {
     const params = new HttpParams().set('id', uuid);
     return this.http.put<ICertificateBatch>(
       this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_BATCHES.UPDATE),

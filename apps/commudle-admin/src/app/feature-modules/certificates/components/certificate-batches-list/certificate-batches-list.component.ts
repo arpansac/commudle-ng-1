@@ -1,17 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { NbBadgeModule, NbDialogService } from '@commudle/theme';
-import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
+import { NbDialogService } from '@commudle/theme';
+import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { ECertificateBatchStatus, ICertificateBatch, ICommunity } from '@commudle/shared-models';
 import { CertificateBatchService } from '@commudle/shared-services';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faAward } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import * as moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
-import { DataTableColumn, DataTableComponent, DataTableConfig, DataTableRow } from '../../../../app-shared-components/data-table/data-table.component';
 import { CertificateBatchCreateDialogComponent } from '../certificate-batch-create-dialog/certificate-batch-create-dialog.component';
+import {
+  CertificateDeliveryFunnelComponent,
+  ICertificateDeliveryFunnelSegment,
+} from '../certificate-delivery-funnel/certificate-delivery-funnel.component';
 
 @Component({
   selector: 'commudle-certificate-batches-list',
@@ -20,19 +23,14 @@ import { CertificateBatchCreateDialogComponent } from '../certificate-batch-crea
     CommonModule,
     RouterModule,
     CommudleButtonModule,
-    CommudleCardModule,
-    NbBadgeModule,
     FontAwesomeModule,
     SharedComponentsModule,
-    DataTableComponent,
+    CertificateDeliveryFunnelComponent,
   ],
   templateUrl: './certificate-batches-list.component.html',
   styleUrls: ['./certificate-batches-list.component.scss'],
 })
-export class CertificateBatchesListComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('nameCell') nameCellTemplate: TemplateRef<unknown>;
-  @ViewChild('statusCell') statusCellTemplate: TemplateRef<unknown>;
-
+export class CertificateBatchesListComponent implements OnInit, OnDestroy {
   community: ICommunity;
   batches: ICertificateBatch[] = [];
   isLoading = true;
@@ -43,11 +41,8 @@ export class CertificateBatchesListComponent implements OnInit, AfterViewInit, O
   ECertificateBatchStatus = ECertificateBatchStatus;
   icons = {
     faPlus,
+    faAward,
   };
-
-  tableColumns: DataTableColumn[] = [];
-  tableRows: DataTableRow[] = [];
-  tableConfig: DataTableConfig = { emptyMessage: 'No certificate batches yet.' };
 
   private destroy$ = new Subject<void>();
 
@@ -65,28 +60,13 @@ export class CertificateBatchesListComponent implements OnInit, AfterViewInit, O
     });
   }
 
-  ngAfterViewInit() {
-    this.buildTableColumns();
-  }
-
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  buildTableColumns() {
-    this.tableColumns = [
-      { key: 'name', title: 'Name', cellTemplate: this.nameCellTemplate },
-      { key: 'status', title: 'Status', cellTemplate: this.statusCellTemplate },
-      { key: 'recipients_count', title: 'Recipients' },
-      { key: 'sent_count', title: 'Sent' },
-      { key: 'created', title: 'Created' },
-    ];
-  }
-
   fetchBatches() {
     this.isLoading = true;
-    this.tableConfig = { ...this.tableConfig, loadingMessage: 'Loading batches...' };
     this.certificateBatchService
       .indexCertificateBatches(this.community.id, this.page, this.count)
       .pipe(takeUntil(this.destroy$))
@@ -95,15 +75,6 @@ export class CertificateBatchesListComponent implements OnInit, AfterViewInit, O
         this.page = res.page;
         this.total = res.total;
         this.isLoading = false;
-        this.tableRows = this.batches.map((batch) => ({
-          id: batch.uuid,
-          uuid: batch.uuid,
-          name: batch.name,
-          status: batch.status,
-          recipients_count: batch.recipients_count,
-          sent_count: batch.sent_count,
-          created: this.moment(batch.created_at).format('DD MMM YYYY'),
-        }));
       });
   }
 
@@ -114,6 +85,39 @@ export class CertificateBatchesListComponent implements OnInit, AfterViewInit, O
 
   statusLabel(status: ECertificateBatchStatus): string {
     return status ?? 'unknown';
+  }
+
+  statusColor(status: ECertificateBatchStatus): string {
+    switch (status) {
+      case ECertificateBatchStatus.READY:
+        return 'com-bg-blue-100';
+      case ECertificateBatchStatus.SENDING:
+        return 'com-bg-yellow-100';
+      case ECertificateBatchStatus.SENT:
+        return 'com-bg-green-100';
+      default:
+        return 'com-bg-gray-100';
+    }
+  }
+
+  statusFontColor(status: ECertificateBatchStatus): string {
+    switch (status) {
+      case ECertificateBatchStatus.READY:
+        return 'com-text-Ultramarine-Blue';
+      case ECertificateBatchStatus.SENDING:
+        return 'com-text-yellow-700';
+      case ECertificateBatchStatus.SENT:
+        return 'com-text-green-700';
+      default:
+        return 'com-text-gray-500';
+    }
+  }
+
+  sentSegments(batch: ICertificateBatch): ICertificateDeliveryFunnelSegment[] {
+    return [
+      { label: 'Sent', value: batch.sent_count, colorClass: 'com-bg-green-600' },
+      { label: '', value: batch.blocked_count, colorClass: 'com-bg-red-600' },
+    ];
   }
 
   openCreateDialog() {

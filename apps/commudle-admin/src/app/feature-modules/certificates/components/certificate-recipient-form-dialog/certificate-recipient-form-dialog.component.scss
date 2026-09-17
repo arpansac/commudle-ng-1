@@ -21,3 +21,23 @@
     @apply com-text-xs com-font-normal com-text-Auro-Metal-Saurus;
   }
 }
+
+.new-fields {
+  @apply com-mb-2;
+
+  .new-field-row {
+    @apply com-flex com-gap-2 com-items-center com-mb-2;
+
+    .new-field-label {
+      @apply com-w-2/5;
+    }
+
+    .new-field-value {
+      @apply com-flex-1;
+    }
+  }
+}
+
+.add-field-button {
+  @apply com-mb-4;
+}

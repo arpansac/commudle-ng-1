@@ -7,114 +7,152 @@
     <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
     <div class="canvas-layout">
-      <div class="unplaced-sidebar" *ngIf="!isLoading && unplacedVariables.length > 0">
-        <h4>Unplaced Variables</h4>
-        <button
-          *ngFor="let variable of unplacedVariables"
-          comButton
-          status="basic"
-          size="small"
-          class="unplaced-item"
-          [disabled]="isLocked"
-          (click)="addToCanvas(variable)"
+      <div class="variables-sidebar" *ngIf="!isLoading">
+        <h4>Variables</h4>
+
+        <div *ngIf="variables.length === 0" class="empty-variables">
+          No variables yet. Add one below, or upload a CSV.
+        </div>
+
+        <div
+          *ngFor="let variable of variables"
+          class="variable-item"
+          [class.placed]="variable.positioned"
+          [class.selected]="selectedVariable?.id === variable.id"
         >
-          {{ variable.label }}
+          <div class="variable-row">
+            <nb-checkbox
+              [checked]="variable.positioned"
+              [disabled]="isLocked"
+              (checkedChange)="toggleCanvasPlacement(variable, $event)"
+            >
+              {{ variable.label }}
+            </nb-checkbox>
+
+            <div class="variable-actions" [class.disabled]="isLocked">
+              <button ghost comButton size="tiny" tabindex="-1" [disabled]="isLocked" class="kebab-button">
+                <nb-icon icon="more-vertical"></nb-icon>
+              </button>
+              <select
+                class="variable-actions-select"
+                [disabled]="isLocked"
+                (change)="onVariableAction(variable, $any($event.target).value); $any($event.target).value = ''"
+              >
+                <option value="" disabled selected>Actions</option>
+                <option value="default_value">Set Default Value</option>
+                <option value="delete">Delete</option>
+              </select>
+            </div>
+          </div>
+          <div class="default-value-subtext" *ngIf="variable.default_value">Default: {{ variable.default_value }}</div>
+        </div>
+
+        <button
+          type="button"
+          class="add-variable-tile"
+          [class.active]="showAddForm"
+          (click)="toggleAddForm()"
+          [disabled]="isLocked"
+        >
+          <fa-icon [icon]="icons.faPlus"></fa-icon>
+          <span>{{ showAddForm ? 'Cancel' : 'Add Variable' }}</span>
         </button>
+
+        <form *ngIf="showAddForm" [formGroup]="addForm" (ngSubmit)="addVariable()" class="add-variable-form">
+          <input formControlName="label" nbInput fieldSize="small" fullWidth placeholder="Variable label" />
+          <button type="submit" comButton status="primary" size="small" [disabled]="addForm.invalid">Add</button>
+        </form>
       </div>
 
       <div class="stage-wrapper">
         <div #stageContainer class="stage-container"></div>
       </div>
 
-      <div class="style-panel" *ngIf="selectedVariable">
-        <h4>{{ selectedVariable.label }}</h4>
+      <div class="style-panel">
+        <ng-container *ngIf="selectedVariable; else noSelection">
+          <h4>{{ selectedVariable.label }}</h4>
 
-        <div class="style-field">
-          <label>Font</label>
-          <nb-select
-            [selected]="selectedVariable.text_style?.font || 'Helvetica'"
-            [disabled]="isLocked"
-            (selectedChange)="updateStyle({ font: $event })"
-            size="small"
-            fullWidth
-          >
-            <nb-option *ngFor="let font of fontOptions" [value]="font">{{ font }}</nb-option>
-          </nb-select>
-        </div>
+          <div class="style-field">
+            <label>Font</label>
+            <nb-select
+              [selected]="selectedVariable.text_style?.font || 'Helvetica'"
+              [disabled]="isLocked"
+              (selectedChange)="updateStyle({ font: $event })"
+              size="small"
+              fullWidth
+            >
+              <nb-option *ngFor="let font of fontOptions" [value]="font">{{ font }}</nb-option>
+            </nb-select>
+          </div>
 
-        <div class="style-field">
-          <label>Size</label>
-          <input
-            nbInput
-            fieldSize="small"
-            type="number"
-            min="6"
-            max="200"
-            [disabled]="isLocked"
-            [value]="selectedVariable.text_style?.size || 16"
-            (change)="updateStyle({ size: +$any($event.target).value })"
-          />
-        </div>
+          <div class="style-field">
+            <label>Size</label>
+            <input
+              nbInput
+              fieldSize="small"
+              type="number"
+              min="6"
+              max="200"
+              [disabled]="isLocked"
+              [value]="selectedVariable.text_style?.size || 16"
+              (change)="updateStyle({ size: +$any($event.target).value })"
+            />
+          </div>
 
-        <div class="style-field">
-          <label>Color</label>
-          <input
-            type="color"
-            [disabled]="isLocked"
-            [value]="'#' + (selectedVariable.text_style?.color || '000000')"
-            (change)="updateStyle({ color: $any($event.target).value.substring(1) })"
-          />
-        </div>
+          <div class="style-field">
+            <label>Color</label>
+            <input
+              type="color"
+              [disabled]="isLocked"
+              [value]="'#' + (selectedVariable.text_style?.color || '000000')"
+              (change)="updateStyle({ color: $any($event.target).value.substring(1) })"
+            />
+          </div>
 
-        <div class="style-field">
-          <label>Align</label>
-          <nb-select
-            [selected]="selectedVariable.text_style?.align || 'left'"
-            [disabled]="isLocked"
-            (selectedChange)="updateStyle({ align: $event })"
-            size="small"
-            fullWidth
-          >
-            <nb-option value="left">Left</nb-option>
-            <nb-option value="center">Center</nb-option>
-            <nb-option value="right">Right</nb-option>
-          </nb-select>
-        </div>
+          <div class="style-field">
+            <label>Align</label>
+            <nb-select
+              [selected]="selectedVariable.text_style?.align || 'left'"
+              [disabled]="isLocked"
+              (selectedChange)="updateStyle({ align: $event })"
+              size="small"
+              fullWidth
+            >
+              <nb-option value="left">Left</nb-option>
+              <nb-option value="center">Center</nb-option>
+              <nb-option value="right">Right</nb-option>
+            </nb-select>
+          </div>
 
-        <div class="style-field style-toggles">
-          <button
-            comButton
-            size="small"
-            [status]="selectedVariable.text_style?.weight === 'bold' ? 'primary' : 'basic'"
-            [disabled]="isLocked"
-            (click)="updateStyle({ weight: selectedVariable.text_style?.weight === 'bold' ? 'normal' : 'bold' })"
-          >
-            B
-          </button>
-          <button
-            comButton
-            size="small"
-            [status]="selectedVariable.text_style?.style === 'italic' ? 'primary' : 'basic'"
-            [disabled]="isLocked"
-            (click)="updateStyle({ style: selectedVariable.text_style?.style === 'italic' ? 'normal' : 'italic' })"
-          >
-            I
-          </button>
-        </div>
+          <div class="style-field style-toggles">
+            <button
+              comButton
+              size="small"
+              [status]="selectedVariable.text_style?.weight === 'bold' ? 'primary' : 'basic'"
+              [disabled]="isLocked"
+              (click)="updateStyle({ weight: selectedVariable.text_style?.weight === 'bold' ? 'normal' : 'bold' })"
+            >
+              B
+            </button>
+            <button
+              comButton
+              size="small"
+              [status]="selectedVariable.text_style?.style === 'italic' ? 'primary' : 'basic'"
+              [disabled]="isLocked"
+              (click)="updateStyle({ style: selectedVariable.text_style?.style === 'italic' ? 'normal' : 'italic' })"
+            >
+              I
+            </button>
+          </div>
+        </ng-container>
+
+        <ng-template #noSelection>
+          <p class="no-selection-hint">Select a placeholder to style it here.</p>
+        </ng-template>
       </div>
     </div>
 
     <div class="canvas-actions" *ngIf="!isLoading">
-      <button
-        *ngIf="selectedVariable"
-        comButton
-        status="basic"
-        size="small"
-        [disabled]="isLocked"
-        (click)="removeFromCanvas(selectedVariable)"
-      >
-        Remove "{{ selectedVariable.label }}" from canvas
-      </button>
       <button
         comButton
         status="primary"

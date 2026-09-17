@@ -42,6 +42,20 @@
           />
         </div>
       </ng-container>
+
+      <div class="new-fields" formArrayName="newFields">
+        <div class="new-field-row" *ngFor="let field of newFields.controls; let i = index" [formGroupName]="i">
+          <input class="new-field-label" formControlName="label" nbInput fieldSize="small" placeholder="Field name" />
+          <input class="new-field-value" formControlName="value" nbInput fieldSize="small" placeholder="Value" />
+          <button ghost comButton size="tiny" status="danger" type="button" (click)="removeField(i)">
+            <nb-icon icon="close"></nb-icon>
+          </button>
+        </div>
+      </div>
+
+      <button comButton status="basic" size="small" type="button" class="add-field-button" (click)="addField()">
+        <nb-icon icon="plus-outline"></nb-icon> &nbsp; Add Field
+      </button>
     </form>
   </com-card-body>
   <com-card-footer>

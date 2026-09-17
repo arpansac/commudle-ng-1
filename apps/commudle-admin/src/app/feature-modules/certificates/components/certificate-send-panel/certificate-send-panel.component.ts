@@ -1,20 +1,33 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NbCheckboxModule } from '@commudle/theme';
+import { NbCheckboxModule, NbInputModule, NbTooltipModule } from '@commudle/theme';
 import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { ECertificateBatchStatus, ICertificateBatch, ICertificateProgress } from '@commudle/shared-models';
 import { CertificateBatchService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { Subject, interval, takeUntil } from 'rxjs';
+import {
+  CertificateDeliveryFunnelComponent,
+  ICertificateDeliveryFunnelSegment,
+} from '../certificate-delivery-funnel/certificate-delivery-funnel.component';
 
 const POLL_INTERVAL_MS = 4000;
 
 @Component({
   selector: 'commudle-certificate-send-panel',
   standalone: true,
-  imports: [CommonModule, FormsModule, CommudleButtonModule, NbCheckboxModule, SharedComponentsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CommudleButtonModule,
+    NbCheckboxModule,
+    NbInputModule,
+    NbTooltipModule,
+    SharedComponentsModule,
+    CertificateDeliveryFunnelComponent,
+  ],
   templateUrl: './certificate-send-panel.component.html',
   styleUrls: ['./certificate-send-panel.component.scss'],
 })
@@ -25,8 +38,14 @@ export class CertificateSendPanelComponent implements OnChanges, OnDestroy {
   ECertificateBatchStatus = ECertificateBatchStatus;
   consentChecked = false;
   isSending = false;
+  isIssuing = false;
   isLoadingProgress = false;
   progress: ICertificateProgress | null = null;
+  emailSubject = '';
+  emailBody = '';
+  // No bulk "generate without emailing" endpoint exists yet - see the spec's
+  // Open Design Decisions ("Issue Certificates" bulk-generate endpoint).
+  issueTooltip = 'Needs backend support that does not exist yet - see the certificate-generation spec.';
 
   private destroy$ = new Subject<void>();
   private pollDestroy$ = new Subject<void>();
@@ -35,6 +54,10 @@ export class CertificateSendPanelComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.batch && this.batch) {
+      if (changes.batch.firstChange) {
+        this.emailSubject = this.batch.email_subject || '';
+        this.emailBody = this.batch.email_body || '';
+      }
       if (this.batch.status !== ECertificateBatchStatus.DRAFT) {
         this.fetchProgress();
       }
@@ -50,11 +73,49 @@ export class CertificateSendPanelComponent implements OnChanges, OnDestroy {
   }
 
   get canSend(): boolean {
-    return !!this.batch?.design && this.consentChecked && !this.isSending;
+    return (
+      !!this.batch?.design &&
+      this.consentChecked &&
+      !!this.emailSubject.trim() &&
+      !!this.emailBody.trim() &&
+      !this.isSending
+    );
   }
 
   get isRevoked(): boolean {
     return !!this.batch?.revoked_at;
+  }
+
+  get headlineSegments(): ICertificateDeliveryFunnelSegment[] {
+    if (!this.progress) {
+      return [];
+    }
+    return [
+      { label: 'Delivered', value: this.progress.totals.delivered, colorClass: 'com-bg-green-600' },
+      { label: '', value: this.progress.totals.blocked, colorClass: 'com-bg-red-600' },
+    ];
+  }
+
+  get metricSegments(): ICertificateDeliveryFunnelSegment[] {
+    if (!this.progress) {
+      return [];
+    }
+    return [
+      { label: 'Sent', value: this.progress.totals.sent, colorClass: 'com-bg-Ultramarine-Blue' },
+      { label: 'Delivered', value: this.progress.totals.delivered, colorClass: 'com-bg-green-600' },
+      { label: 'Opened', value: this.progress.totals.opened, colorClass: 'com-bg-yellow-600' },
+      { label: 'Clicked', value: this.progress.totals.clicked, colorClass: 'com-bg-purple-600' },
+    ];
+  }
+
+  get legendSegments(): ICertificateDeliveryFunnelSegment[] {
+    if (!this.progress) {
+      return [];
+    }
+    return [
+      { label: 'blocked', value: this.progress.totals.blocked, colorClass: 'com-bg-red-600' },
+      { label: 'skipped', value: this.progress.totals.skipped, colorClass: 'com-bg-gray-400' },
+    ];
   }
 
   fetchProgress() {
@@ -101,23 +162,48 @@ export class CertificateSendPanelComponent implements OnChanges, OnDestroy {
     this.fetchProgress();
   }
 
+  issueCertificates() {
+    // Placeholder until the backend has a bulk "generate without emailing"
+    // action queued on certificate_pdf - see the spec's Open Design
+    // Decisions. Deliberately not wired to sendBatch() or any existing
+    // endpoint, since none of them generate without also emailing.
+    this.toastLogService.warningDialog(
+      'Issuing certificates without emailing needs backend support that does not exist yet.',
+    );
+  }
+
   send() {
     if (!this.canSend) {
       return;
     }
     this.isSending = true;
     this.certificateBatchService
-      .sendBatch(this.batch.uuid)
+      .updateCertificateBatch(this.batch.uuid, {
+        email_subject: this.emailSubject.trim(),
+        email_body: this.emailBody.trim(),
+      })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: () => {
-          this.isSending = false;
-          this.toastLogService.successDialog('Sending started');
-          this.refreshBatchAndProgress();
+        next: (updated) => {
+          Object.assign(this.batch, updated);
+          this.certificateBatchService
+            .sendBatch(this.batch.uuid)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+              next: () => {
+                this.isSending = false;
+                this.toastLogService.successDialog('Sending started');
+                this.refreshBatchAndProgress();
+              },
+              error: (err) => {
+                this.isSending = false;
+                this.toastLogService.errorDialog(err?.error?.message || 'Could not start sending');
+              },
+            });
         },
-        error: (err) => {
+        error: () => {
           this.isSending = false;
-          this.toastLogService.errorDialog(err?.error?.message || 'Could not start sending');
+          this.toastLogService.errorDialog('Could not save the email subject/body before sending');
         },
       });
   }

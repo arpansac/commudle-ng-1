@@ -4,7 +4,34 @@
   <ng-container *ngIf="!isLoading && batch">
     <div class="detail-header">
       <div>
-        <h1 class="page-title">{{ batch.name }}</h1>
+        <div class="name-row" *ngIf="!isEditingName">
+          <h1 class="page-title">{{ batch.name }}</h1>
+          <button ghost comButton size="small" shape="round" (click)="startEditName()">
+            <nb-icon icon="edit-outline"></nb-icon>
+          </button>
+        </div>
+        <div class="name-row" *ngIf="isEditingName">
+          <input
+            class="name-input"
+            nbInput
+            fieldSize="medium"
+            [(ngModel)]="editedName"
+            (keydown.enter)="saveName()"
+            (keydown.escape)="cancelEditName()"
+            maxlength="120"
+            autofocus
+          />
+          <button
+            comButton
+            status="primary"
+            size="small"
+            [disabled]="!editedName?.trim() || isSavingName"
+            (click)="saveName()"
+          >
+            Save
+          </button>
+          <button ghost comButton size="small" (click)="cancelEditName()">Cancel</button>
+        </div>
         <div class="meta-line">
           <nb-badge [text]="statusLabel(batch.status)" status="info" position="static"></nb-badge>
           <span class="meta-item">Created {{ moment(batch.created_at).format('DD MMM YYYY') }}</span>
@@ -18,30 +45,46 @@
       </div>
     </div>
 
-    <div class="stats-row">
-      <com-card class="stat-card">
-        <com-card-body>
-          <div class="stat-value">{{ batch.recipients_count }}</div>
-          <div class="stat-label">Recipients</div>
-        </com-card-body>
-      </com-card>
-      <com-card class="stat-card">
-        <com-card-body>
-          <div class="stat-value">{{ batch.sent_count }}</div>
-          <div class="stat-label">Sent</div>
-        </com-card-body>
-      </com-card>
-      <com-card class="stat-card">
-        <com-card-body>
-          <div class="stat-value">{{ batch.blocked_count }}</div>
-          <div class="stat-label">Blocked</div>
-        </com-card-body>
-      </com-card>
-    </div>
+    <com-card class="stats-card">
+      <com-card-body>
+        <div class="stats-summary">
+          <div class="stats-numbers">
+            <div class="stat">
+              <div class="stat-value">{{ batch.recipients_count }}</div>
+              <div class="stat-label">Recipients</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">{{ batch.sent_count }}</div>
+              <div class="stat-label">Sent</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">{{ batch.blocked_count }}</div>
+              <div class="stat-label">Blocked</div>
+            </div>
+          </div>
+
+          <div class="send-progress">
+            <div class="send-progress-header">
+              <span>Send progress</span>
+              <span>{{ batch.sent_count }} / {{ batch.recipients_count }}</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-bar-fill" [style.width.%]="progressPercent"></div>
+            </div>
+          </div>
+        </div>
+      </com-card-body>
+    </com-card>
 
     <com-card>
-      <com-card-header>Design</com-card-header>
       <com-card-body>
+        <div class="step-heading">
+          <div class="step-title-row">
+            <div class="step-number">1</div>
+            <h3>Choose a design</h3>
+          </div>
+          <p class="step-description">Pick the certificate every recipient will receive, or upload your own.</p>
+        </div>
         <commudle-certificate-design-picker
           [batch]="batch"
           (batchUpdated)="batch = $event"
@@ -50,18 +93,14 @@
     </com-card>
 
     <com-card>
-      <com-card-header>Variables</com-card-header>
       <com-card-body>
-        <commudle-certificate-variables-panel
-          [batch]="batch"
-          (variablesChanged)="onVariablesChanged()"
-        ></commudle-certificate-variables-panel>
-      </com-card-body>
-    </com-card>
-
-    <com-card>
-      <com-card-header>Recipients</com-card-header>
-      <com-card-body>
+        <div class="step-heading">
+          <div class="step-title-row">
+            <div class="step-number">2</div>
+            <h3>Add recipients</h3>
+          </div>
+          <p class="step-description">Add people manually, or upload a CSV of everyone who should get a certificate.</p>
+        </div>
         <commudle-certificate-recipients-table
           [batch]="batch"
           (variablesChanged)="onVariablesChanged()"
@@ -70,15 +109,30 @@
     </com-card>
 
     <com-card>
-      <com-card-header>Variable Positioning</com-card-header>
       <com-card-body>
-        <commudle-certificate-canvas [batch]="batch"></commudle-certificate-canvas>
+        <div class="step-heading">
+          <div class="step-title-row">
+            <div class="step-number">3</div>
+            <h3>Position variables</h3>
+          </div>
+          <p class="step-description">Place each variable on the design and style how it looks on the certificate.</p>
+        </div>
+        <commudle-certificate-canvas
+          [batch]="batch"
+          (variablesChanged)="onVariablesChanged()"
+        ></commudle-certificate-canvas>
       </com-card-body>
     </com-card>
 
     <com-card>
-      <com-card-header>Send</com-card-header>
       <com-card-body>
+        <div class="step-heading">
+          <div class="step-title-row">
+            <div class="step-number">4</div>
+            <h3>Send</h3>
+          </div>
+          <p class="step-description">Issue the certificates, then confirm consent and email them to recipients.</p>
+        </div>
         <commudle-certificate-send-panel
           [batch]="batch"
           (batchUpdated)="onBatchUpdated($event)"

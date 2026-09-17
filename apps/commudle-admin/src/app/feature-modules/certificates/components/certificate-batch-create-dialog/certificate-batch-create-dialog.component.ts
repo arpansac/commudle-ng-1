@@ -39,8 +39,6 @@ export class CertificateBatchCreateDialogComponent implements OnInit {
   ngOnInit() {
     this.batchForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(120)]],
-      email_subject: [''],
-      email_body: [''],
     });
   }
 
@@ -52,8 +50,6 @@ export class CertificateBatchCreateDialogComponent implements OnInit {
 
     const formData = new FormData();
     formData.append('certificate_batch[name]', this.batchForm.value.name);
-    formData.append('certificate_batch[email_subject]', this.batchForm.value.email_subject);
-    formData.append('certificate_batch[email_body]', this.batchForm.value.email_body);
 
     this.isSaving = true;
     this.certificateBatchService.createCertificateBatch(this.communityId, formData).subscribe({

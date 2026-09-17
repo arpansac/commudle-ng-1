@@ -1,17 +1,6 @@
 import { CommonModule } from '@angular/common';
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Output,
-  SimpleChanges,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
-import { NbBadgeModule, NbDialogService, NbIconModule } from '@commudle/theme';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { NbDialogService, NbIconModule } from '@commudle/theme';
 import { CommudleButtonModule } from '@commudle/commudle-theme';
 import {
   ECertificateRecipientStatus,
@@ -25,7 +14,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { Subject, takeUntil } from 'rxjs';
-import { DataTableColumn, DataTableComponent, DataTableConfig, DataTableRow } from '../../../../app-shared-components/data-table/data-table.component';
 import { CertificateRecipientFormDialogComponent } from '../certificate-recipient-form-dialog/certificate-recipient-form-dialog.component';
 import { CertificateCsvUploadDialogComponent } from '../certificate-csv-upload-dialog/certificate-csv-upload-dialog.component';
 import { CertificateRecipientPreviewDialogComponent } from '../certificate-recipient-preview-dialog/certificate-recipient-preview-dialog.component';
@@ -33,24 +21,13 @@ import { CertificateRecipientPreviewDialogComponent } from '../certificate-recip
 @Component({
   selector: 'commudle-certificate-recipients-table',
   standalone: true,
-  imports: [
-    CommonModule,
-    CommudleButtonModule,
-    NbBadgeModule,
-    NbIconModule,
-    FontAwesomeModule,
-    SharedComponentsModule,
-    DataTableComponent,
-  ],
+  imports: [CommonModule, CommudleButtonModule, NbIconModule, FontAwesomeModule, SharedComponentsModule],
   templateUrl: './certificate-recipients-table.component.html',
   styleUrls: ['./certificate-recipients-table.component.scss'],
 })
-export class CertificateRecipientsTableComponent implements OnChanges, AfterViewInit, OnDestroy {
+export class CertificateRecipientsTableComponent implements OnChanges, OnDestroy {
   @Input() batch: ICertificateBatch;
   @Output() variablesChanged = new EventEmitter<void>();
-
-  @ViewChild('statusCell') statusCellTemplate: TemplateRef<unknown>;
-  @ViewChild('actionsCell') actionsCellTemplate: TemplateRef<unknown>;
 
   recipients: ICertificateRecipient[] = [];
   variables: ICertificateVariable[] = [];
@@ -61,11 +38,6 @@ export class CertificateRecipientsTableComponent implements OnChanges, AfterView
   ECertificateRecipientStatus = ECertificateRecipientStatus;
   icons = { faPlus, faPen, faTrash, faUpload, faEye, faPaperPlane };
 
-  tableColumns: DataTableColumn[] = [];
-  tableRows: DataTableRow[] = [];
-  tableConfig: DataTableConfig = { emptyMessage: 'No recipients yet.' };
-
-  private viewInitialized = false;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -82,44 +54,9 @@ export class CertificateRecipientsTableComponent implements OnChanges, AfterView
     }
   }
 
-  ngAfterViewInit() {
-    this.viewInitialized = true;
-    this.buildTableColumns();
-  }
-
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  buildTableColumns() {
-    if (!this.viewInitialized) {
-      return;
-    }
-    this.tableColumns = [
-      { key: 'email', title: 'Email' },
-      { key: 'name', title: 'Name' },
-      ...this.variables.map((variable) => ({ key: `var_${variable.key}`, title: variable.label })),
-      { key: 'status', title: 'Status', cellTemplate: this.statusCellTemplate },
-      { key: 'actions', title: '', cellTemplate: this.actionsCellTemplate },
-    ];
-  }
-
-  buildTableRows() {
-    this.tableRows = this.recipients.map((recipient) => {
-      const row: DataTableRow = {
-        id: recipient.id,
-        recipient,
-        email: recipient.email,
-        name: recipient.name || '-',
-        status: recipient.status,
-        skip_reason: recipient.skip_reason,
-      };
-      this.variables.forEach((variable) => {
-        row[`var_${variable.key}`] = recipient.row_values?.[variable.key] || '-';
-      });
-      return row;
-    });
   }
 
   fetchVariables() {
@@ -127,14 +64,18 @@ export class CertificateRecipientsTableComponent implements OnChanges, AfterView
       .indexCertificateVariables(this.batch.uuid)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        this.variables = res.certificate_variables.filter((v) => v.keep);
-        this.buildTableColumns();
-        this.buildTableRows();
+        this.variables = res.certificate_variables;
       });
   }
 
-  fetchRecipients() {
-    this.isLoading = true;
+  // showLoading is false for background refreshes after add/edit/delete/CSV
+  // upload - toggling isLoading there would hide the whole table behind the
+  // spinner (*ngIf="!isLoading") for an operation that only changed one row,
+  // producing a visible flicker each time.
+  fetchRecipients(showLoading = true) {
+    if (showLoading) {
+      this.isLoading = true;
+    }
     this.certificateRecipientService
       .indexCertificateRecipients(this.batch.uuid, this.page, this.count)
       .pipe(takeUntil(this.destroy$))
@@ -143,7 +84,6 @@ export class CertificateRecipientsTableComponent implements OnChanges, AfterView
         this.page = res.page;
         this.total = res.total;
         this.isLoading = false;
-        this.buildTableRows();
       });
   }
 
@@ -156,15 +96,57 @@ export class CertificateRecipientsTableComponent implements OnChanges, AfterView
     return status ?? 'unknown';
   }
 
+  statusColor(status: ECertificateRecipientStatus): string {
+    switch (status) {
+      case ECertificateRecipientStatus.QUEUED:
+      case ECertificateRecipientStatus.GENERATED:
+        return 'com-bg-blue-100';
+      case ECertificateRecipientStatus.SENT:
+      case ECertificateRecipientStatus.DELIVERED:
+        return 'com-bg-green-100';
+      case ECertificateRecipientStatus.SKIPPED:
+        return 'com-bg-yellow-100';
+      case ECertificateRecipientStatus.BOUNCED:
+      case ECertificateRecipientStatus.FAILED:
+      case ECertificateRecipientStatus.BLOCKED:
+        return 'com-bg-red-100';
+      default:
+        return 'com-bg-gray-100';
+    }
+  }
+
+  statusFontColor(status: ECertificateRecipientStatus): string {
+    switch (status) {
+      case ECertificateRecipientStatus.QUEUED:
+      case ECertificateRecipientStatus.GENERATED:
+        return 'com-text-Ultramarine-Blue';
+      case ECertificateRecipientStatus.SENT:
+      case ECertificateRecipientStatus.DELIVERED:
+        return 'com-text-green-700';
+      case ECertificateRecipientStatus.SKIPPED:
+        return 'com-text-yellow-700';
+      case ECertificateRecipientStatus.BOUNCED:
+      case ECertificateRecipientStatus.FAILED:
+      case ECertificateRecipientStatus.BLOCKED:
+        return 'com-text-Infra-Red';
+      default:
+        return 'com-text-gray-500';
+    }
+  }
+
   openAddDialog() {
     this.dialogService
       .open(CertificateRecipientFormDialogComponent, {
         context: { certificateBatchId: this.batch.uuid, variables: this.variables, recipient: null },
       })
       .onClose.pipe(takeUntil(this.destroy$))
-      .subscribe((recipient) => {
-        if (recipient) {
-          this.fetchRecipients();
+      .subscribe((result: { recipient: ICertificateRecipient; variablesAdded: boolean } | undefined) => {
+        if (result?.recipient) {
+          this.fetchRecipients(false);
+          if (result.variablesAdded) {
+            this.fetchVariables();
+            this.variablesChanged.emit();
+          }
         }
       });
   }
@@ -175,9 +157,13 @@ export class CertificateRecipientsTableComponent implements OnChanges, AfterView
         context: { certificateBatchId: this.batch.uuid, variables: this.variables, recipient },
       })
       .onClose.pipe(takeUntil(this.destroy$))
-      .subscribe((updated) => {
-        if (updated) {
-          this.fetchRecipients();
+      .subscribe((result: { recipient: ICertificateRecipient; variablesAdded: boolean } | undefined) => {
+        if (result?.recipient) {
+          this.fetchRecipients(false);
+          if (result.variablesAdded) {
+            this.fetchVariables();
+            this.variablesChanged.emit();
+          }
         }
       });
   }
@@ -191,7 +177,7 @@ export class CertificateRecipientsTableComponent implements OnChanges, AfterView
       .subscribe((result) => {
         if (result) {
           this.fetchVariables();
-          this.fetchRecipients();
+          this.fetchRecipients(false);
           this.variablesChanged.emit();
         }
       });
@@ -236,7 +222,7 @@ export class CertificateRecipientsTableComponent implements OnChanges, AfterView
       .subscribe({
         next: () => {
           this.toastLogService.successDialog('Recipient removed');
-          this.fetchRecipients();
+          this.fetchRecipients(false);
         },
         error: () => {
           this.toastLogService.errorDialog('Could not remove the recipient');
