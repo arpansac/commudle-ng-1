@@ -13,6 +13,7 @@ import {
   NbTagModule,
   NbUserModule,
 } from '@commudle/theme';
+import { CommudleCardModule } from '@commudle/commudle-theme';
 import { SearchBoxComponent } from './components/search-box/search-box.component';
 import { SearchPageComponent } from './components/search-page/search-page.component';
 import { SearchRoutingModule } from './search-routing.module';
@@ -57,6 +58,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     NbFormFieldModule,
     NbUserModule,
     NbCardModule,
+    CommudleCardModule,
     NbSpinnerModule,
     NbButtonModule,
     NbListModule,
