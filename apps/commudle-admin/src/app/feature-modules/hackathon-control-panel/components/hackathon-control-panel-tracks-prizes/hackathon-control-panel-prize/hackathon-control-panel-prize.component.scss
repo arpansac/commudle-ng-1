@@ -191,8 +191,7 @@ com-card-footer {
 }
 
 .prize-distribution-dialog {
-  @apply com-h-full com-w-[100dvw] com-mx-0;
-  @apply md:com-h-[90dvh] md:com-w-[70dvw];
+  @apply com-h-full com-w-[100dvw] com-mx-0 md:com-h-[90dvh] md:com-w-[70dvw] com-flex com-overflow-y-auto;
 
   com-card-header {
     .header-content {
