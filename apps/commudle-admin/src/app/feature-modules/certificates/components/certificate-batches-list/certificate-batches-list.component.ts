@@ -79,7 +79,7 @@ export class CertificateBatchesListComponent implements OnInit, OnDestroy {
   }
 
   statusLabel(status: ECertificateBatchStatus): string {
-    return ECertificateBatchStatus[status]?.toLowerCase() ?? 'unknown';
+    return status ?? 'unknown';
   }
 
   openCreateDialog() {

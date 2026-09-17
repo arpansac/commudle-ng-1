@@ -1,0 +1,9 @@
+.certificate-recipient-preview-dialog {
+  width: 45rem;
+  max-width: 90vw;
+
+  .pdf-object {
+    width: 100%;
+    height: calc(100vh - 220px);
+  }
+}

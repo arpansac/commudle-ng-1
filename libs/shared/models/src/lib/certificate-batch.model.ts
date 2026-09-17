@@ -1,10 +1,13 @@
 import { ICertificateDesign } from './certificate-design.model';
 
+// Rails enum accessors serialize as the string key, not the underlying
+// integer (e.g. `status: "draft"`, not `status: 0`) — these values must
+// match `enum status: {...}` on CertificateBatch exactly.
 export enum ECertificateBatchStatus {
-  DRAFT = 0,
-  READY = 1,
-  SENDING = 2,
-  SENT = 3,
+  DRAFT = 'draft',
+  READY = 'ready',
+  SENDING = 'sending',
+  SENT = 'sent',
 }
 
 export interface ICertificateBatch {

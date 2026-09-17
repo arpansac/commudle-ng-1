@@ -1,0 +1,77 @@
+.certificate-canvas {
+  .empty-state {
+    color: var(--text-hint-color);
+    padding: 1rem 0;
+  }
+
+  .locked-notice {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    background: var(--background-basic-color-2);
+    border-radius: 0.5rem;
+    color: var(--text-hint-color);
+  }
+
+  .canvas-layout {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+
+    .unplaced-sidebar {
+      flex: 0 0 12rem;
+
+      h4 {
+        margin-bottom: 0.5rem;
+      }
+
+      .unplaced-item {
+        display: block;
+        width: 100%;
+        margin-bottom: 0.5rem;
+        text-align: left;
+      }
+    }
+
+    .stage-wrapper {
+      flex: 1;
+      overflow: auto;
+
+      .stage-container {
+        display: inline-block;
+        border: 1px solid var(--divider-color);
+      }
+    }
+
+    .style-panel {
+      flex: 0 0 12rem;
+
+      h4 {
+        margin-bottom: 0.5rem;
+        word-break: break-word;
+      }
+
+      .style-field {
+        margin-bottom: 0.75rem;
+
+        label {
+          display: block;
+          font-size: 0.75rem;
+          color: var(--text-hint-color);
+          margin-bottom: 0.25rem;
+        }
+      }
+
+      .style-toggles {
+        display: flex;
+        gap: 0.5rem;
+      }
+    }
+  }
+
+  .canvas-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+  }
+}

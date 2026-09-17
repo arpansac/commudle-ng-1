@@ -8,13 +8,14 @@ import {
   ICertificateVariable,
 } from '@commudle/shared-models';
 import { CertificateRecipientService, CertificateVariableService } from '@commudle/shared-services';
-import { faPlus, faPen, faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faPen, faTrash, faUpload, faEye, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { Subject, takeUntil } from 'rxjs';
 import { CertificateRecipientFormDialogComponent } from '../certificate-recipient-form-dialog/certificate-recipient-form-dialog.component';
 import { CertificateCsvUploadDialogComponent } from '../certificate-csv-upload-dialog/certificate-csv-upload-dialog.component';
+import { CertificateRecipientPreviewDialogComponent } from '../certificate-recipient-preview-dialog/certificate-recipient-preview-dialog.component';
 
 @Component({
   selector: 'commudle-certificate-recipients-table',
@@ -42,7 +43,7 @@ export class CertificateRecipientsTableComponent implements OnChanges, OnDestroy
   count = 10;
   total = 0;
   ECertificateRecipientStatus = ECertificateRecipientStatus;
-  icons = { faPlus, faPen, faTrash, faUpload };
+  icons = { faPlus, faPen, faTrash, faUpload, faEye, faPaperPlane };
 
   private destroy$ = new Subject<void>();
 
@@ -93,7 +94,7 @@ export class CertificateRecipientsTableComponent implements OnChanges, OnDestroy
   }
 
   statusLabel(status: ECertificateRecipientStatus): string {
-    return ECertificateRecipientStatus[status]?.toLowerCase() ?? 'unknown';
+    return status ?? 'unknown';
   }
 
   openAddDialog() {
@@ -134,6 +135,35 @@ export class CertificateRecipientsTableComponent implements OnChanges, OnDestroy
           this.fetchRecipients();
           this.variablesChanged.emit();
         }
+      });
+  }
+
+  openPreviewDialog(recipient: ICertificateRecipient) {
+    if (!this.batch.design) {
+      this.toastLogService.warningDialog('Choose a design for this batch first');
+      return;
+    }
+    this.dialogService.open(CertificateRecipientPreviewDialogComponent, {
+      context: { certificateBatchId: this.batch.uuid, recipient },
+    });
+  }
+
+  get canSendIndividually(): boolean {
+    return !!this.batch.locked_at;
+  }
+
+  sendOne(recipient: ICertificateRecipient) {
+    this.certificateRecipientService
+      .sendOne(this.batch.uuid, recipient.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.toastLogService.successDialog(`Queued a send for ${recipient.email}`);
+          this.fetchRecipients();
+        },
+        error: (err) => {
+          this.toastLogService.errorDialog(err?.error?.message || 'Could not send to this recipient');
+        },
       });
   }
 

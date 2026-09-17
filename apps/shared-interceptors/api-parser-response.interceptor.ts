@@ -21,6 +21,9 @@ export class ApiParserResponseInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       map((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {
+          if (req.responseType !== 'json') {
+            return event;
+          }
           event = event.clone({
             body: event.body.data,
           });

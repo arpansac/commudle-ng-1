@@ -5,6 +5,7 @@ import {
   ICertificateBatchesIndexResponse,
   ICertificateCsvCommitResponse,
   ICertificateCsvPreviewResponse,
+  ICertificateProgress,
 } from '@commudle/shared-models';
 import { Observable } from 'rxjs';
 import { API_ROUTES } from './api-routes.constant';
@@ -73,6 +74,49 @@ export class CertificateBatchService {
     return this.http.post<ICertificateCsvCommitResponse>(
       this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_BATCHES.CSV_COMMIT),
       formData,
+      { params },
+    );
+  }
+
+  sendBatch(uuid: string): Observable<{ status: string; enqueued: boolean }> {
+    const params = new HttpParams().set('id', uuid);
+    return this.http.post<{ status: string; enqueued: boolean }>(
+      this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_BATCHES.SEND),
+      { consent_confirmed: true },
+      { params },
+    );
+  }
+
+  resendBatch(uuid: string): Observable<{ status: string; enqueued: boolean }> {
+    const params = new HttpParams().set('id', uuid);
+    return this.http.post<{ status: string; enqueued: boolean }>(
+      this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_BATCHES.RESEND),
+      {},
+      { params },
+    );
+  }
+
+  getProgress(uuid: string): Observable<ICertificateProgress> {
+    const params = new HttpParams().set('id', uuid);
+    return this.http.get<ICertificateProgress>(this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_BATCHES.PROGRESS), {
+      params,
+    });
+  }
+
+  revokeBatch(uuid: string): Observable<ICertificateBatch> {
+    const params = new HttpParams().set('id', uuid);
+    return this.http.post<ICertificateBatch>(
+      this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_BATCHES.REVOKE),
+      {},
+      { params },
+    );
+  }
+
+  unrevokeBatch(uuid: string): Observable<ICertificateBatch> {
+    const params = new HttpParams().set('id', uuid);
+    return this.http.post<ICertificateBatch>(
+      this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_BATCHES.UNREVOKE),
+      {},
       { params },
     );
   }

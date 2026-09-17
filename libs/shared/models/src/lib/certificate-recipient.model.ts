@@ -1,18 +1,21 @@
+// Rails enum accessors serialize as the string key, not the underlying
+// integer — these must match `enum source: {...}` / `enum status: {...}`
+// on CertificateRecipient exactly.
 export enum ECertificateRecipientSource {
-  CSV = 0,
-  MANUAL = 1,
+  CSV = 'csv',
+  MANUAL = 'manual',
 }
 
 export enum ECertificateRecipientStatus {
-  PENDING = 0,
-  QUEUED = 1,
-  GENERATED = 2,
-  SENT = 3,
-  DELIVERED = 4,
-  BOUNCED = 5,
-  FAILED = 6,
-  SKIPPED = 7,
-  BLOCKED = 8,
+  PENDING = 'pending',
+  QUEUED = 'queued',
+  GENERATED = 'generated',
+  SENT = 'sent',
+  DELIVERED = 'delivered',
+  BOUNCED = 'bounced',
+  FAILED = 'failed',
+  SKIPPED = 'skipped',
+  BLOCKED = 'blocked',
 }
 
 export interface ICertificateRecipientDelivery {

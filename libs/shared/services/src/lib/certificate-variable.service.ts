@@ -1,6 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ICertificateVariable, ICertificateVariablesIndexResponse } from '@commudle/shared-models';
+import {
+  ICertificateVariable,
+  ICertificateVariablePosition,
+  ICertificateVariablesIndexResponse,
+  ICertificateVariableTextStyle,
+} from '@commudle/shared-models';
 import { Observable } from 'rxjs';
 import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
@@ -40,6 +45,18 @@ export class CertificateVariableService {
     return this.http.put<ICertificateVariable>(
       this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_VARIABLES.UPDATE),
       { certificate_variable: variableData },
+      { params },
+    );
+  }
+
+  updateLayout(
+    certificateBatchId: string,
+    layouts: { id: number; positions: ICertificateVariablePosition; text_style: ICertificateVariableTextStyle }[],
+  ): Observable<ICertificateVariablesIndexResponse> {
+    const params = new HttpParams().set('certificate_batch_id', certificateBatchId);
+    return this.http.put<ICertificateVariablesIndexResponse>(
+      this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_VARIABLES.UPDATE_LAYOUT),
+      { layouts },
       { params },
     );
   }

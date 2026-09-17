@@ -69,14 +69,21 @@
       </nb-card-body>
     </nb-card>
 
-    <nb-card class="placeholder-section">
+    <nb-card>
       <nb-card-header>Variable Positioning</nb-card-header>
-      <nb-card-body>Canvas-based positioning — coming soon.</nb-card-body>
+      <nb-card-body>
+        <commudle-certificate-canvas [batch]="batch"></commudle-certificate-canvas>
+      </nb-card-body>
     </nb-card>
 
-    <nb-card class="placeholder-section">
+    <nb-card>
       <nb-card-header>Send</nb-card-header>
-      <nb-card-body>Consent confirmation and sending — coming soon.</nb-card-body>
+      <nb-card-body>
+        <commudle-certificate-send-panel
+          [batch]="batch"
+          (batchUpdated)="onBatchUpdated($event)"
+        ></commudle-certificate-send-panel>
+      </nb-card-body>
     </nb-card>
   </ng-container>
 </div>

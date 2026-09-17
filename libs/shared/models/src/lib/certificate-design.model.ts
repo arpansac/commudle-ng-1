@@ -1,6 +1,9 @@
+// Rails enum accessors serialize as the string key (e.g. "preset"), not
+// the underlying integer — must match `enum design_type: {...}` on
+// CertificateDesign exactly.
 export enum ECertificateDesignType {
-  PRESET = 0,
-  CUSTOM = 1,
+  PRESET = 'preset',
+  CUSTOM = 'custom',
 }
 
 export interface ICertificateDesign {

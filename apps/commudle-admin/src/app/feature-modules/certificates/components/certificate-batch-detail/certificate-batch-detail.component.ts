@@ -10,6 +10,8 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
 import { CertificateDesignPickerComponent } from '../certificate-design-picker/certificate-design-picker.component';
 import { CertificateRecipientsTableComponent } from '../certificate-recipients-table/certificate-recipients-table.component';
 import { CertificateVariablesPanelComponent } from '../certificate-variables-panel/certificate-variables-panel.component';
+import { CertificateCanvasComponent } from '../certificate-canvas/certificate-canvas.component';
+import { CertificateSendPanelComponent } from '../certificate-send-panel/certificate-send-panel.component';
 
 @Component({
   selector: 'commudle-certificate-batch-detail',
@@ -22,6 +24,8 @@ import { CertificateVariablesPanelComponent } from '../certificate-variables-pan
     CertificateDesignPickerComponent,
     CertificateRecipientsTableComponent,
     CertificateVariablesPanelComponent,
+    CertificateCanvasComponent,
+    CertificateSendPanelComponent,
   ],
   templateUrl: './certificate-batch-detail.component.html',
   styleUrls: ['./certificate-batch-detail.component.scss'],
@@ -60,7 +64,11 @@ export class CertificateBatchDetailComponent implements OnInit, OnDestroy {
   }
 
   statusLabel(status: ECertificateBatchStatus): string {
-    return ECertificateBatchStatus[status]?.toLowerCase() ?? 'unknown';
+    return status ?? 'unknown';
+  }
+
+  onBatchUpdated(batch: ICertificateBatch) {
+    this.batch = batch;
   }
 
   onVariablesChanged() {

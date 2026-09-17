@@ -37,6 +37,19 @@
             <div class="skip-reason" *ngIf="recipient.skip_reason">{{ recipient.skip_reason }}</div>
           </td>
           <td class="actions">
+            <button
+              *ngIf="canSendIndividually && recipient.sendable"
+              ghost
+              nbButton
+              size="tiny"
+              status="success"
+              (click)="sendOne(recipient)"
+            >
+              <fa-icon [icon]="icons.faPaperPlane"></fa-icon>
+            </button>
+            <button ghost nbButton size="tiny" (click)="openPreviewDialog(recipient)">
+              <fa-icon [icon]="icons.faEye"></fa-icon>
+            </button>
             <button ghost nbButton size="tiny" (click)="openEditDialog(recipient)">
               <fa-icon [icon]="icons.faPen"></fa-icon>
             </button>

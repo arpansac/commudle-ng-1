@@ -1,6 +1,8 @@
+// Rails enum accessors serialize as the string key, not the underlying
+// integer — must match `enum source: {...}` on CertificateVariable exactly.
 export enum ECertificateVariableSource {
-  CSV_HEADER = 0,
-  MANUAL = 1,
+  CSV_HEADER = 'csv_header',
+  MANUAL = 'manual',
 }
 
 export interface ICertificateVariableTextStyle {

@@ -1,0 +1,129 @@
+<div class="certificate-canvas">
+  <div *ngIf="!batch.design" class="empty-state">Choose a design above before positioning variables.</div>
+
+  <ng-container *ngIf="batch.design">
+    <div *ngIf="isLocked" class="locked-notice">This batch has already sent — positions and styling are locked.</div>
+
+    <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+    <div class="canvas-layout">
+      <div class="unplaced-sidebar" *ngIf="!isLoading && unplacedVariables.length > 0">
+        <h4>Unplaced Variables</h4>
+        <button
+          *ngFor="let variable of unplacedVariables"
+          nbButton
+          status="basic"
+          size="small"
+          class="unplaced-item"
+          [disabled]="isLocked"
+          (click)="addToCanvas(variable)"
+        >
+          {{ variable.label }}
+        </button>
+      </div>
+
+      <div class="stage-wrapper">
+        <div #stageContainer class="stage-container"></div>
+      </div>
+
+      <div class="style-panel" *ngIf="selectedVariable">
+        <h4>{{ selectedVariable.label }}</h4>
+
+        <div class="style-field">
+          <label>Font</label>
+          <nb-select
+            [selected]="selectedVariable.text_style?.font || 'Helvetica'"
+            [disabled]="isLocked"
+            (selectedChange)="updateStyle({ font: $event })"
+            size="small"
+            fullWidth
+          >
+            <nb-option *ngFor="let font of fontOptions" [value]="font">{{ font }}</nb-option>
+          </nb-select>
+        </div>
+
+        <div class="style-field">
+          <label>Size</label>
+          <input
+            nbInput
+            fieldSize="small"
+            type="number"
+            min="6"
+            max="200"
+            [disabled]="isLocked"
+            [value]="selectedVariable.text_style?.size || 16"
+            (change)="updateStyle({ size: +$any($event.target).value })"
+          />
+        </div>
+
+        <div class="style-field">
+          <label>Color</label>
+          <input
+            type="color"
+            [disabled]="isLocked"
+            [value]="'#' + (selectedVariable.text_style?.color || '000000')"
+            (change)="updateStyle({ color: $any($event.target).value.substring(1) })"
+          />
+        </div>
+
+        <div class="style-field">
+          <label>Align</label>
+          <nb-select
+            [selected]="selectedVariable.text_style?.align || 'left'"
+            [disabled]="isLocked"
+            (selectedChange)="updateStyle({ align: $event })"
+            size="small"
+            fullWidth
+          >
+            <nb-option value="left">Left</nb-option>
+            <nb-option value="center">Center</nb-option>
+            <nb-option value="right">Right</nb-option>
+          </nb-select>
+        </div>
+
+        <div class="style-field style-toggles">
+          <button
+            nbButton
+            size="small"
+            [status]="selectedVariable.text_style?.weight === 'bold' ? 'primary' : 'basic'"
+            [disabled]="isLocked"
+            (click)="updateStyle({ weight: selectedVariable.text_style?.weight === 'bold' ? 'normal' : 'bold' })"
+          >
+            B
+          </button>
+          <button
+            nbButton
+            size="small"
+            [status]="selectedVariable.text_style?.style === 'italic' ? 'primary' : 'basic'"
+            [disabled]="isLocked"
+            (click)="updateStyle({ style: selectedVariable.text_style?.style === 'italic' ? 'normal' : 'italic' })"
+          >
+            I
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="canvas-actions" *ngIf="!isLoading">
+      <button
+        *ngIf="selectedVariable"
+        nbButton
+        status="basic"
+        size="small"
+        [disabled]="isLocked"
+        (click)="removeFromCanvas(selectedVariable)"
+      >
+        Remove "{{ selectedVariable.label }}" from canvas
+      </button>
+      <button
+        nbButton
+        status="primary"
+        size="small"
+        [disabled]="!isDirty || isSaving || isLocked"
+        (click)="saveLayout()"
+      >
+        {{ isSaving ? 'Saving...' : 'Save Layout' }}
+      </button>
+    </div>
+  </ng-container>
+</div>

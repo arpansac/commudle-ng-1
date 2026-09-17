@@ -76,3 +76,4 @@ export * from './lib/certificate-design.model';
 export * from './lib/certificate-variable.model';
 export * from './lib/certificate-recipient.model';
 export * from './lib/certificate-csv.model';
+export * from './lib/certificate-progress.model';

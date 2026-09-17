@@ -1,0 +1,79 @@
+<div class="certificate-send-panel">
+  <div *ngIf="isRevoked" class="revoked-notice">
+    This batch is revoked — every certificate in it 404s on its public page.
+  </div>
+
+  <div
+    *ngIf="batch.status === ECertificateBatchStatus.DRAFT || batch.status === ECertificateBatchStatus.READY"
+    class="pre-send"
+  >
+    <div *ngIf="!batch.design" class="hint-text">Choose a design above before sending.</div>
+
+    <nb-checkbox [(ngModel)]="consentChecked"> I have consent to email these recipients </nb-checkbox>
+
+    <button nbButton status="primary" size="medium" [disabled]="!canSend" (click)="send()">
+      {{ isSending ? 'Starting...' : 'Send Certificates' }}
+    </button>
+  </div>
+
+  <div
+    *ngIf="batch.status === ECertificateBatchStatus.SENDING || batch.status === ECertificateBatchStatus.SENT"
+    class="progress-view"
+  >
+    <div *ngIf="batch.status === ECertificateBatchStatus.SENDING" class="hint-text">
+      Sending in progress — this refreshes automatically.
+    </div>
+
+    <app-loading-spinner *ngIf="isLoadingProgress && !progress"></app-loading-spinner>
+
+    <div class="stats-row" *ngIf="progress">
+      <div class="stat">
+        <span class="stat-value">{{ progress.totals.recipients }}</span>
+        <span class="stat-label">Recipients</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">{{ progress.totals.sent }}</span>
+        <span class="stat-label">Sent</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">{{ progress.totals.delivered }}</span>
+        <span class="stat-label">Delivered</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">{{ progress.totals.opened }}</span>
+        <span class="stat-label">Opened</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">{{ progress.totals.clicked }}</span>
+        <span class="stat-label">Clicked</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">{{ progress.totals.blocked }}</span>
+        <span class="stat-label">Blocked</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">{{ progress.totals.skipped }}</span>
+        <span class="stat-label">Skipped</span>
+      </div>
+    </div>
+
+    <div class="row-list" *ngIf="progress && progress.blocked.length > 0">
+      <h4>Blocked</h4>
+      <div class="row-item" *ngFor="let row of progress.blocked">{{ row.email }} — {{ row.reason }}</div>
+    </div>
+
+    <div class="row-list" *ngIf="progress && progress.skipped.length > 0">
+      <h4>Skipped</h4>
+      <div class="row-item" *ngFor="let row of progress.skipped">{{ row.email }} — {{ row.reason }}</div>
+    </div>
+
+    <div class="actions" *ngIf="batch.status === ECertificateBatchStatus.SENT">
+      <button nbButton status="basic" size="small" [disabled]="isSending" (click)="resend()">
+        {{ isSending ? 'Starting...' : 'Resend Batch' }}
+      </button>
+      <button nbButton status="danger" size="small" ghost (click)="toggleRevoke()">
+        {{ isRevoked ? 'Un-revoke Batch' : 'Revoke Batch' }}
+      </button>
+    </div>
+  </div>
+</div>

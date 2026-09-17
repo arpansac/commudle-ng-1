@@ -1240,6 +1240,11 @@ export const API_ROUTES = {
     CSV_PREVIEW: 'api/v2/certificate_batches/csv_preview', //POST
     CSV_COMMIT: 'api/v2/certificate_batches/csv_commit', //POST
     SAMPLE_CSV: 'api/v2/certificate_batches/sample_csv', //GET
+    SEND: 'api/v2/certificate_batches/send', //POST
+    RESEND: 'api/v2/certificate_batches/resend', //POST
+    REVOKE: 'api/v2/certificate_batches/revoke', //POST
+    UNREVOKE: 'api/v2/certificate_batches/unrevoke', //POST
+    PROGRESS: 'api/v2/certificate_batches/progress', //GET
   },
 
   CERTIFICATE_DESIGNS: {
@@ -1251,6 +1256,7 @@ export const API_ROUTES = {
     INDEX: 'api/v2/certificate_variables', //GET
     CREATE: 'api/v2/certificate_variables', //POST
     UPDATE: 'api/v2/certificate_variables', //PUT
+    UPDATE_LAYOUT: 'api/v2/certificate_variables/update_layout', //PUT
     DELETE: 'api/v2/certificate_variables', //DELETE
   },
 
@@ -1259,5 +1265,7 @@ export const API_ROUTES = {
     CREATE: 'api/v2/certificate_recipients', //POST
     UPDATE: 'api/v2/certificate_recipients', //PUT
     DELETE: 'api/v2/certificate_recipients', //DELETE
+    PREVIEW: 'api/v2/certificate_recipients/preview', //GET, raw application/pdf
+    SEND_ONE: 'api/v2/certificate_recipients/send_one', //POST
   },
 };

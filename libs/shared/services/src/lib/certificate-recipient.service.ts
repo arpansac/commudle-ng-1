@@ -63,4 +63,21 @@ export class CertificateRecipientService {
       { params },
     );
   }
+
+  sendOne(certificateBatchId: string, recipientId: number): Observable<{ status: string; enqueued: boolean }> {
+    const params = new HttpParams().set('certificate_batch_id', certificateBatchId).set('id', recipientId);
+    return this.http.post<{ status: string; enqueued: boolean }>(
+      this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_RECIPIENTS.SEND_ONE),
+      {},
+      { params },
+    );
+  }
+
+  previewPdf(certificateBatchId: string, recipientId: number): Observable<Blob> {
+    const params = new HttpParams().set('certificate_batch_id', certificateBatchId).set('id', recipientId);
+    return this.http.get(this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_RECIPIENTS.PREVIEW), {
+      params,
+      responseType: 'blob',
+    });
+  }
 }
