@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { NbButtonModule, NbCardModule, NbDialogRef, NbIconModule } from '@commudle/theme';
+import { NbDialogRef, NbIconModule } from '@commudle/theme';
+import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 import { ICertificateCsvCommitResponse, ICertificateCsvPreviewResponse } from '@commudle/shared-models';
 import { CertificateBatchService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
@@ -9,7 +10,7 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
 @Component({
   selector: 'commudle-certificate-csv-upload-dialog',
   standalone: true,
-  imports: [CommonModule, NbCardModule, NbButtonModule, NbIconModule, SharedComponentsModule],
+  imports: [CommonModule, CommudleCardModule, CommudleButtonModule, NbIconModule, SharedComponentsModule],
   templateUrl: './certificate-csv-upload-dialog.component.html',
   styleUrls: ['./certificate-csv-upload-dialog.component.scss'],
 })

@@ -1,37 +1,23 @@
 .certificate-batches-list {
+  @apply com-p-4 md:com-p-6 com-bg-white com-min-h-screen com-rounded-10 com-overflow-hidden;
+
   .list-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1rem;
+    @apply com-flex com-justify-between md:com-items-center md:com-mb-6 com-mb-4 com-flex-col md:com-flex-row com-gap-4;
+
+    .page-title {
+      @apply com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0;
+    }
   }
 
   .empty-state {
-    text-align: center;
-    color: var(--text-hint-color);
+    @apply com-text-center com-text-Auro-Metal-Saurus;
   }
 
   .batches-table {
-    width: 100%;
-    border-collapse: collapse;
-
-    th {
-      text-align: left;
-      padding: 0.5rem;
-      border-bottom: 1px solid var(--divider-color);
-    }
-
-    td {
-      padding: 0.5rem;
-      border-bottom: 1px solid var(--divider-color);
-    }
-
-    .batch-row {
-      cursor: pointer;
-
-      &:hover {
-        background: var(--background-basic-color-2);
-      }
-    }
+    @apply com-w-full;
   }
+}
+
+.name-link {
+  @apply com-no-underline com-text-Azure;
 }

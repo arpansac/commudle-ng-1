@@ -3,7 +3,7 @@
 
   <ng-container *ngIf="!isLoading">
     <div *ngIf="isLocked" class="locked-notice">
-      This batch has already sent — the design is locked and can't be changed.
+      This batch has already sent - the design is locked and can't be changed.
     </div>
 
     <div class="design-grid">
@@ -23,7 +23,7 @@
     </div>
 
     <div *ngIf="!isLocked" class="upload-section">
-      <button nbButton status="basic" size="small" (click)="toggleUploadForm()">
+      <button comButton status="basic" size="small" (click)="toggleUploadForm()">
         <nb-icon icon="upload-outline"></nb-icon> &nbsp; {{ showUploadForm ? 'Cancel' : 'Upload a new design' }}
       </button>
 
@@ -50,7 +50,7 @@
           <img *ngIf="selectedFilePreviewUrl" [src]="selectedFilePreviewUrl" class="preview-image" alt="Preview" />
         </div>
 
-        <button nbButton status="primary" size="small" [disabled]="isSaving" (click)="uploadDesign()">
+        <button comButton status="primary" size="small" [disabled]="isSaving" (click)="uploadDesign()">
           {{ isSaving ? 'Uploading...' : 'Upload & Use' }}
         </button>
       </div>

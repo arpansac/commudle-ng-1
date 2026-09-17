@@ -1,52 +1,35 @@
 .certificate-design-picker {
   .locked-notice {
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    background: var(--background-basic-color-2);
-    border-radius: 0.5rem;
-    color: var(--text-hint-color);
+    @apply com-p-3 com-mb-4 com-bg-Anti-Flash com-rounded-lg com-text-Auro-Metal-Saurus;
   }
 
   .design-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1rem;
+    @apply com-grid com-gap-4 com-mb-4 com-grid-cols-[repeat(auto-fill,minmax(160px,1fr))];
 
     .design-card {
-      border: 2px solid var(--divider-color);
-      border-radius: 0.5rem;
-      overflow: hidden;
-      cursor: pointer;
+      @apply com-border-2 com-border-solid com-border-Bright-Gray com-rounded-lg com-overflow-hidden com-cursor-pointer;
 
       &.selected {
-        border-color: var(--color-primary-default);
+        @apply com-border-Azure;
       }
 
       &.disabled {
-        cursor: not-allowed;
-        opacity: 0.7;
+        @apply com-cursor-not-allowed com-opacity-70;
       }
 
       img {
-        width: 100%;
-        aspect-ratio: 4 / 3;
-        object-fit: cover;
+        @apply com-w-full com-object-cover com-aspect-[4/3];
       }
 
       .design-card-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.5rem;
+        @apply com-flex com-items-center com-justify-between com-p-2;
 
         .design-name {
-          font-size: 0.875rem;
+          @apply com-text-sm;
         }
 
         .design-type {
-          font-size: 0.75rem;
-          color: var(--text-hint-color);
+          @apply com-text-xs com-text-Auro-Metal-Saurus;
         }
       }
     }
@@ -54,25 +37,21 @@
 
   .upload-section {
     .upload-form {
-      margin-top: 1rem;
+      @apply com-mt-4;
 
       .form-field-container {
-        margin-bottom: 1rem;
+        @apply com-mb-4;
 
         .form-field {
-          display: block;
-          width: 100%;
-          margin-bottom: 0.25rem;
+          @apply com-block com-w-full com-mb-1;
         }
 
         .required {
-          color: var(--color-danger-default);
+          @apply com-text-red-500;
         }
 
         .preview-image {
-          max-width: 12rem;
-          margin-top: 0.5rem;
-          border-radius: 0.25rem;
+          @apply com-max-w-[12rem] com-mt-2 com-rounded;
         }
       }
     }

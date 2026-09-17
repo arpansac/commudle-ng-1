@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NbButtonModule, NbCardModule, NbDialogRef, NbIconModule, NbInputModule } from '@commudle/theme';
+import { NbDialogRef, NbIconModule, NbInputModule } from '@commudle/theme';
+import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 import { ICertificateBatch } from '@commudle/shared-models';
 import { CertificateBatchService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
@@ -13,8 +14,8 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    NbCardModule,
-    NbButtonModule,
+    CommudleCardModule,
+    CommudleButtonModule,
     NbInputModule,
     NbIconModule,
     SharedComponentsModule,

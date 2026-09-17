@@ -2,7 +2,7 @@
   <div *ngIf="!batch.design" class="empty-state">Choose a design above before positioning variables.</div>
 
   <ng-container *ngIf="batch.design">
-    <div *ngIf="isLocked" class="locked-notice">This batch has already sent — positions and styling are locked.</div>
+    <div *ngIf="isLocked" class="locked-notice">This batch has already sent - positions and styling are locked.</div>
 
     <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
@@ -11,7 +11,7 @@
         <h4>Unplaced Variables</h4>
         <button
           *ngFor="let variable of unplacedVariables"
-          nbButton
+          comButton
           status="basic"
           size="small"
           class="unplaced-item"
@@ -83,7 +83,7 @@
 
         <div class="style-field style-toggles">
           <button
-            nbButton
+            comButton
             size="small"
             [status]="selectedVariable.text_style?.weight === 'bold' ? 'primary' : 'basic'"
             [disabled]="isLocked"
@@ -92,7 +92,7 @@
             B
           </button>
           <button
-            nbButton
+            comButton
             size="small"
             [status]="selectedVariable.text_style?.style === 'italic' ? 'primary' : 'basic'"
             [disabled]="isLocked"
@@ -107,7 +107,7 @@
     <div class="canvas-actions" *ngIf="!isLoading">
       <button
         *ngIf="selectedVariable"
-        nbButton
+        comButton
         status="basic"
         size="small"
         [disabled]="isLocked"
@@ -116,7 +116,7 @@
         Remove "{{ selectedVariable.label }}" from canvas
       </button>
       <button
-        nbButton
+        comButton
         status="primary"
         size="small"
         [disabled]="!isDirty || isSaving || isLocked"

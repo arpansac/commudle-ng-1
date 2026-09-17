@@ -1,11 +1,11 @@
-<nb-card class="certificate-batch-create-dialog">
-  <nb-card-header class="com-flex com-justify-between com-items-center">
+<com-card class="certificate-batch-create-dialog">
+  <com-card-header class="dialog-header">
     <span>New Certificate Batch</span>
-    <button ghost nbButton size="small" (click)="close()" shape="round">
+    <button ghost comButton size="small" (click)="close()" shape="round">
       <nb-icon icon="close"></nb-icon>
     </button>
-  </nb-card-header>
-  <nb-card-body>
+  </com-card-header>
+  <com-card-body>
     <form [formGroup]="batchForm" (ngSubmit)="onSubmit()">
       <div class="form-field-container">
         <label class="form-field"> Batch Name <span class="required">*</span> </label>
@@ -29,7 +29,7 @@
           formControlName="email_subject"
           nbInput
           fullWidth
-          placeholder="Optional — can be set later"
+          placeholder="Optional - can be set later"
         />
       </div>
 
@@ -41,15 +41,15 @@
           nbInput
           fullWidth
           rows="4"
-          placeholder="Optional — can be set later"
+          placeholder="Optional - can be set later"
         ></textarea>
       </div>
     </form>
-  </nb-card-body>
-  <nb-card-footer>
+  </com-card-body>
+  <com-card-footer>
     <button
       type="submit"
-      nbButton
+      comButton
       status="primary"
       fullWidth
       [disabled]="batchForm.invalid || isSaving"
@@ -57,5 +57,5 @@
     >
       Create Batch
     </button>
-  </nb-card-footer>
-</nb-card>
+  </com-card-footer>
+</com-card>

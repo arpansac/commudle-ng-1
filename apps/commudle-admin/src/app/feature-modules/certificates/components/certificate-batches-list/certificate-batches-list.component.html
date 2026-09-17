@@ -1,7 +1,7 @@
 <div class="certificate-batches-list">
   <div class="list-header">
     <h1 class="page-title">Certificates</h1>
-    <button nbButton status="primary" size="medium" (click)="openCreateDialog()">
+    <button comButton status="primary" size="medium" (click)="openCreateDialog()">
       <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; New Batch
     </button>
   </div>
@@ -9,36 +9,13 @@
   <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
   <ng-container *ngIf="!isLoading">
-    <nb-card *ngIf="batches.length === 0">
-      <nb-card-body class="empty-state"> No certificate batches yet. Create one to get started. </nb-card-body>
-    </nb-card>
+    <com-card *ngIf="batches.length === 0">
+      <com-card-body class="empty-state"> No certificate batches yet. Create one to get started. </com-card-body>
+    </com-card>
 
-    <nb-card *ngIf="batches.length > 0">
-      <nb-card-body>
-        <table class="batches-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Status</th>
-              <th>Recipients</th>
-              <th>Sent</th>
-              <th>Created</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let batch of batches" [routerLink]="[batch.uuid]" class="batch-row">
-              <td>{{ batch.name }}</td>
-              <td>
-                <nb-badge [text]="statusLabel(batch.status)" status="info" position="static"></nb-badge>
-              </td>
-              <td>{{ batch.recipients_count }}</td>
-              <td>{{ batch.sent_count }}</td>
-              <td>{{ moment(batch.created_at).format('DD MMM YYYY') }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </nb-card-body>
-    </nb-card>
+    <div class="batches-table" *ngIf="batches.length > 0">
+      <commudle-data-table [columns]="tableColumns" [rows]="tableRows" [config]="tableConfig"> </commudle-data-table>
+    </div>
 
     <app-pagination
       *ngIf="total > count"
@@ -51,3 +28,11 @@
     ></app-pagination>
   </ng-container>
 </div>
+
+<ng-template #nameCell let-row="row">
+  <a [routerLink]="[row.uuid]" class="name-link">{{ row.name }}</a>
+</ng-template>
+
+<ng-template #statusCell let-row="row">
+  <nb-badge [text]="statusLabel(row.status)" status="info" position="static"></nb-badge>
+</ng-template>

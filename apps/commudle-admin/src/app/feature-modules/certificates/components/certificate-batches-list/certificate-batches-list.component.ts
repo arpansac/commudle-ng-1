@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { NbButtonModule, NbCardModule, NbBadgeModule, NbDialogService } from '@commudle/theme';
+import { NbBadgeModule, NbDialogService } from '@commudle/theme';
+import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 import { ECertificateBatchStatus, ICertificateBatch, ICommunity } from '@commudle/shared-models';
 import { CertificateBatchService } from '@commudle/shared-services';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +10,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import * as moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
+import { DataTableColumn, DataTableComponent, DataTableConfig, DataTableRow } from '../../../../app-shared-components/data-table/data-table.component';
 import { CertificateBatchCreateDialogComponent } from '../certificate-batch-create-dialog/certificate-batch-create-dialog.component';
 
 @Component({
@@ -17,16 +19,20 @@ import { CertificateBatchCreateDialogComponent } from '../certificate-batch-crea
   imports: [
     CommonModule,
     RouterModule,
-    NbButtonModule,
-    NbCardModule,
+    CommudleButtonModule,
+    CommudleCardModule,
     NbBadgeModule,
     FontAwesomeModule,
     SharedComponentsModule,
+    DataTableComponent,
   ],
   templateUrl: './certificate-batches-list.component.html',
   styleUrls: ['./certificate-batches-list.component.scss'],
 })
-export class CertificateBatchesListComponent implements OnInit, OnDestroy {
+export class CertificateBatchesListComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('nameCell') nameCellTemplate: TemplateRef<unknown>;
+  @ViewChild('statusCell') statusCellTemplate: TemplateRef<unknown>;
+
   community: ICommunity;
   batches: ICertificateBatch[] = [];
   isLoading = true;
@@ -38,6 +44,10 @@ export class CertificateBatchesListComponent implements OnInit, OnDestroy {
   icons = {
     faPlus,
   };
+
+  tableColumns: DataTableColumn[] = [];
+  tableRows: DataTableRow[] = [];
+  tableConfig: DataTableConfig = { emptyMessage: 'No certificate batches yet.' };
 
   private destroy$ = new Subject<void>();
 
@@ -55,13 +65,28 @@ export class CertificateBatchesListComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngAfterViewInit() {
+    this.buildTableColumns();
+  }
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
+  buildTableColumns() {
+    this.tableColumns = [
+      { key: 'name', title: 'Name', cellTemplate: this.nameCellTemplate },
+      { key: 'status', title: 'Status', cellTemplate: this.statusCellTemplate },
+      { key: 'recipients_count', title: 'Recipients' },
+      { key: 'sent_count', title: 'Sent' },
+      { key: 'created', title: 'Created' },
+    ];
+  }
+
   fetchBatches() {
     this.isLoading = true;
+    this.tableConfig = { ...this.tableConfig, loadingMessage: 'Loading batches...' };
     this.certificateBatchService
       .indexCertificateBatches(this.community.id, this.page, this.count)
       .pipe(takeUntil(this.destroy$))
@@ -70,6 +95,15 @@ export class CertificateBatchesListComponent implements OnInit, OnDestroy {
         this.page = res.page;
         this.total = res.total;
         this.isLoading = false;
+        this.tableRows = this.batches.map((batch) => ({
+          id: batch.uuid,
+          uuid: batch.uuid,
+          name: batch.name,
+          status: batch.status,
+          recipients_count: batch.recipients_count,
+          sent_count: batch.sent_count,
+          created: this.moment(batch.created_at).format('DD MMM YYYY'),
+        }));
       });
   }
 

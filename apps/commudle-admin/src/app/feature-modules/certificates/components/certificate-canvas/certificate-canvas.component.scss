@@ -1,77 +1,57 @@
 .certificate-canvas {
   .empty-state {
-    color: var(--text-hint-color);
-    padding: 1rem 0;
+    @apply com-text-Auro-Metal-Saurus com-py-4;
   }
 
   .locked-notice {
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    background: var(--background-basic-color-2);
-    border-radius: 0.5rem;
-    color: var(--text-hint-color);
+    @apply com-p-3 com-mb-4 com-bg-Anti-Flash com-rounded-lg com-text-Auro-Metal-Saurus;
   }
 
   .canvas-layout {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
+    @apply com-flex com-gap-4 com-items-start;
 
     .unplaced-sidebar {
-      flex: 0 0 12rem;
+      @apply com-flex-none com-w-48;
 
       h4 {
-        margin-bottom: 0.5rem;
+        @apply com-mb-2;
       }
 
       .unplaced-item {
-        display: block;
-        width: 100%;
-        margin-bottom: 0.5rem;
-        text-align: left;
+        @apply com-block com-w-full com-mb-2 com-text-left;
       }
     }
 
     .stage-wrapper {
-      flex: 1;
-      overflow: auto;
+      @apply com-flex-1 com-overflow-auto;
 
       .stage-container {
-        display: inline-block;
-        border: 1px solid var(--divider-color);
+        @apply com-inline-block com-border com-border-solid com-border-Bright-Gray;
       }
     }
 
     .style-panel {
-      flex: 0 0 12rem;
+      @apply com-flex-none com-w-48;
 
       h4 {
-        margin-bottom: 0.5rem;
-        word-break: break-word;
+        @apply com-mb-2 com-break-words;
       }
 
       .style-field {
-        margin-bottom: 0.75rem;
+        @apply com-mb-3;
 
         label {
-          display: block;
-          font-size: 0.75rem;
-          color: var(--text-hint-color);
-          margin-bottom: 0.25rem;
+          @apply com-block com-text-xs com-text-Auro-Metal-Saurus com-mb-1;
         }
       }
 
       .style-toggles {
-        display: flex;
-        gap: 0.5rem;
+        @apply com-flex com-gap-2;
       }
     }
   }
 
   .canvas-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1rem;
+    @apply com-flex com-justify-between com-items-center com-mt-4;
   }
 }

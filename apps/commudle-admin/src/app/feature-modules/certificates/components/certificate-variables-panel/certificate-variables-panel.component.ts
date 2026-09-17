@@ -1,7 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NbButtonModule, NbCheckboxModule, NbIconModule, NbInputModule } from '@commudle/theme';
+import { NbCheckboxModule, NbIconModule, NbInputModule } from '@commudle/theme';
+import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { ICertificateBatch, ICertificateVariable } from '@commudle/shared-models';
 import { CertificateVariableService } from '@commudle/shared-services';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +21,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { Subject, takeUntil } from 'rxjs';
+import { DataTableColumn, DataTableComponent, DataTableConfig, DataTableRow } from '../../../../app-shared-components/data-table/data-table.component';
 
 @Component({
   selector: 'commudle-certificate-variables-panel',
@@ -16,19 +29,25 @@ import { Subject, takeUntil } from 'rxjs';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    NbButtonModule,
+    CommudleButtonModule,
     NbInputModule,
     NbCheckboxModule,
     NbIconModule,
     FontAwesomeModule,
     SharedComponentsModule,
+    DataTableComponent,
   ],
   templateUrl: './certificate-variables-panel.component.html',
   styleUrls: ['./certificate-variables-panel.component.scss'],
 })
-export class CertificateVariablesPanelComponent implements OnChanges, OnDestroy {
+export class CertificateVariablesPanelComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input() batch: ICertificateBatch;
   @Output() variablesChanged = new EventEmitter<void>();
+
+  @ViewChild('labelCell') labelCellTemplate: TemplateRef<unknown>;
+  @ViewChild('defaultValueCell') defaultValueCellTemplate: TemplateRef<unknown>;
+  @ViewChild('keepCell') keepCellTemplate: TemplateRef<unknown>;
+  @ViewChild('deleteCell') deleteCellTemplate: TemplateRef<unknown>;
 
   variables: ICertificateVariable[] = [];
   isLoading = true;
@@ -36,6 +55,11 @@ export class CertificateVariablesPanelComponent implements OnChanges, OnDestroy 
   addForm: FormGroup;
   icons = { faPlus, faTrash };
 
+  tableColumns: DataTableColumn[] = [];
+  tableRows: DataTableRow[] = [];
+  tableConfig: DataTableConfig = { emptyMessage: 'No variables yet.' };
+
+  private viewInitialized = false;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -55,9 +79,30 @@ export class CertificateVariablesPanelComponent implements OnChanges, OnDestroy 
     }
   }
 
+  ngAfterViewInit() {
+    this.viewInitialized = true;
+    this.buildTableColumns();
+  }
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  buildTableColumns() {
+    if (!this.viewInitialized) {
+      return;
+    }
+    this.tableColumns = [
+      { key: 'label', title: 'Label', cellTemplate: this.labelCellTemplate },
+      { key: 'default_value', title: 'Default Value', cellTemplate: this.defaultValueCellTemplate },
+      { key: 'keep', title: 'Keep', cellTemplate: this.keepCellTemplate },
+      { key: 'delete', title: '', cellTemplate: this.deleteCellTemplate },
+    ];
+  }
+
+  buildTableRows() {
+    this.tableRows = this.variables.map((variable) => ({ id: variable.id, variable }));
   }
 
   fetchVariables() {
@@ -68,6 +113,8 @@ export class CertificateVariablesPanelComponent implements OnChanges, OnDestroy 
       .subscribe((res) => {
         this.variables = res.certificate_variables;
         this.isLoading = false;
+        this.buildTableColumns();
+        this.buildTableRows();
       });
   }
 
@@ -133,6 +180,7 @@ export class CertificateVariablesPanelComponent implements OnChanges, OnDestroy 
       .subscribe({
         next: () => {
           this.variables = this.variables.filter((v) => v.id !== variable.id);
+          this.buildTableRows();
           this.toastLogService.successDialog('Variable removed');
           this.variablesChanged.emit();
         },
@@ -160,6 +208,7 @@ export class CertificateVariablesPanelComponent implements OnChanges, OnDestroy 
       .subscribe({
         next: (variable) => {
           this.variables = [...this.variables, variable];
+          this.buildTableRows();
           this.addForm.reset();
           this.showAddForm = false;
           this.variablesChanged.emit();

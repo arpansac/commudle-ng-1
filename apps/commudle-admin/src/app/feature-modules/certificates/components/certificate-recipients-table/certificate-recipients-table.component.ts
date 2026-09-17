@@ -1,6 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
-import { NbBadgeModule, NbButtonModule, NbCardModule, NbDialogService, NbIconModule } from '@commudle/theme';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
+import { NbBadgeModule, NbDialogService, NbIconModule } from '@commudle/theme';
+import { CommudleButtonModule } from '@commudle/commudle-theme';
 import {
   ECertificateRecipientStatus,
   ICertificateBatch,
@@ -13,6 +25,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { Subject, takeUntil } from 'rxjs';
+import { DataTableColumn, DataTableComponent, DataTableConfig, DataTableRow } from '../../../../app-shared-components/data-table/data-table.component';
 import { CertificateRecipientFormDialogComponent } from '../certificate-recipient-form-dialog/certificate-recipient-form-dialog.component';
 import { CertificateCsvUploadDialogComponent } from '../certificate-csv-upload-dialog/certificate-csv-upload-dialog.component';
 import { CertificateRecipientPreviewDialogComponent } from '../certificate-recipient-preview-dialog/certificate-recipient-preview-dialog.component';
@@ -22,19 +35,22 @@ import { CertificateRecipientPreviewDialogComponent } from '../certificate-recip
   standalone: true,
   imports: [
     CommonModule,
-    NbCardModule,
-    NbButtonModule,
+    CommudleButtonModule,
     NbBadgeModule,
     NbIconModule,
     FontAwesomeModule,
     SharedComponentsModule,
+    DataTableComponent,
   ],
   templateUrl: './certificate-recipients-table.component.html',
   styleUrls: ['./certificate-recipients-table.component.scss'],
 })
-export class CertificateRecipientsTableComponent implements OnChanges, OnDestroy {
+export class CertificateRecipientsTableComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input() batch: ICertificateBatch;
   @Output() variablesChanged = new EventEmitter<void>();
+
+  @ViewChild('statusCell') statusCellTemplate: TemplateRef<unknown>;
+  @ViewChild('actionsCell') actionsCellTemplate: TemplateRef<unknown>;
 
   recipients: ICertificateRecipient[] = [];
   variables: ICertificateVariable[] = [];
@@ -45,6 +61,11 @@ export class CertificateRecipientsTableComponent implements OnChanges, OnDestroy
   ECertificateRecipientStatus = ECertificateRecipientStatus;
   icons = { faPlus, faPen, faTrash, faUpload, faEye, faPaperPlane };
 
+  tableColumns: DataTableColumn[] = [];
+  tableRows: DataTableRow[] = [];
+  tableConfig: DataTableConfig = { emptyMessage: 'No recipients yet.' };
+
+  private viewInitialized = false;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -61,9 +82,44 @@ export class CertificateRecipientsTableComponent implements OnChanges, OnDestroy
     }
   }
 
+  ngAfterViewInit() {
+    this.viewInitialized = true;
+    this.buildTableColumns();
+  }
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  buildTableColumns() {
+    if (!this.viewInitialized) {
+      return;
+    }
+    this.tableColumns = [
+      { key: 'email', title: 'Email' },
+      { key: 'name', title: 'Name' },
+      ...this.variables.map((variable) => ({ key: `var_${variable.key}`, title: variable.label })),
+      { key: 'status', title: 'Status', cellTemplate: this.statusCellTemplate },
+      { key: 'actions', title: '', cellTemplate: this.actionsCellTemplate },
+    ];
+  }
+
+  buildTableRows() {
+    this.tableRows = this.recipients.map((recipient) => {
+      const row: DataTableRow = {
+        id: recipient.id,
+        recipient,
+        email: recipient.email,
+        name: recipient.name || '-',
+        status: recipient.status,
+        skip_reason: recipient.skip_reason,
+      };
+      this.variables.forEach((variable) => {
+        row[`var_${variable.key}`] = recipient.row_values?.[variable.key] || '-';
+      });
+      return row;
+    });
   }
 
   fetchVariables() {
@@ -72,6 +128,8 @@ export class CertificateRecipientsTableComponent implements OnChanges, OnDestroy
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         this.variables = res.certificate_variables.filter((v) => v.keep);
+        this.buildTableColumns();
+        this.buildTableRows();
       });
   }
 
@@ -85,6 +143,7 @@ export class CertificateRecipientsTableComponent implements OnChanges, OnDestroy
         this.page = res.page;
         this.total = res.total;
         this.isLoading = false;
+        this.buildTableRows();
       });
   }
 

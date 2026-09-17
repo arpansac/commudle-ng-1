@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NbButtonModule, NbCardModule, NbCheckboxModule } from '@commudle/theme';
+import { NbCheckboxModule } from '@commudle/theme';
+import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { ECertificateBatchStatus, ICertificateBatch, ICertificateProgress } from '@commudle/shared-models';
 import { CertificateBatchService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
@@ -13,7 +14,7 @@ const POLL_INTERVAL_MS = 4000;
 @Component({
   selector: 'commudle-certificate-send-panel',
   standalone: true,
-  imports: [CommonModule, FormsModule, NbCardModule, NbButtonModule, NbCheckboxModule, SharedComponentsModule],
+  imports: [CommonModule, FormsModule, CommudleButtonModule, NbCheckboxModule, SharedComponentsModule],
   templateUrl: './certificate-send-panel.component.html',
   styleUrls: ['./certificate-send-panel.component.scss'],
 })
@@ -87,7 +88,7 @@ export class CertificateSendPanelComponent implements OnChanges, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((freshBatch) => {
         // Mutate in place (same object reference) rather than emitting a new
-        // object — sibling sections bind [batch]="batch" too, and a new
+        // object - sibling sections bind [batch]="batch" too, and a new
         // reference re-fires their ngOnChanges, causing a full refetch/flash
         // in every section on every poll tick. Mutating keeps this panel's
         // own bindings live without disturbing anything else.

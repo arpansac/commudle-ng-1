@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { NbButtonModule, NbCardModule, NbDialogRef, NbIconModule } from '@commudle/theme';
+import { NbDialogRef, NbIconModule } from '@commudle/theme';
+import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 import { ICertificateRecipient } from '@commudle/shared-models';
 import { CertificateRecipientService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
@@ -10,7 +11,14 @@ import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 @Component({
   selector: 'commudle-certificate-recipient-preview-dialog',
   standalone: true,
-  imports: [CommonModule, NbCardModule, NbButtonModule, NbIconModule, SharedComponentsModule, SharedPipesModule],
+  imports: [
+    CommonModule,
+    CommudleCardModule,
+    CommudleButtonModule,
+    NbIconModule,
+    SharedComponentsModule,
+    SharedPipesModule,
+  ],
   templateUrl: './certificate-recipient-preview-dialog.component.html',
   styleUrls: ['./certificate-recipient-preview-dialog.component.scss'],
 })
@@ -36,7 +44,7 @@ export class CertificateRecipientPreviewDialogComponent implements OnInit, OnDes
       },
       error: () => {
         this.isLoading = false;
-        this.errorMessage = 'Could not generate a preview — make sure a design is chosen for this batch.';
+        this.errorMessage = 'Could not generate a preview - make sure a design is chosen for this batch.';
         this.toastLogService.errorDialog(this.errorMessage);
       },
     });

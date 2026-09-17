@@ -1,15 +1,15 @@
-<nb-card class="certificate-csv-upload-dialog">
-  <nb-card-header class="com-flex com-justify-between com-items-center">
+<com-card class="certificate-csv-upload-dialog">
+  <com-card-header class="dialog-header">
     <span>Upload Recipients CSV</span>
-    <button ghost nbButton size="small" (click)="close()" shape="round">
+    <button ghost comButton size="small" (click)="close()" shape="round">
       <nb-icon icon="close"></nb-icon>
     </button>
-  </nb-card-header>
-  <nb-card-body>
+  </com-card-header>
+  <com-card-body>
     <ng-container *ngIf="!selectedFile">
       <p class="hint-text">
         The CSV must include an <strong>email</strong> column. Any other column becomes a variable you can place on the
-        certificate — new headers create new variables automatically.
+        certificate - new headers create new variables automatically.
       </p>
       <input type="file" accept=".csv,text/csv" (change)="onFileSelected($event)" />
       <commudle-alert *ngIf="errorMessage" [error]="true" [errorMessage]="errorMessage"></commudle-alert>
@@ -41,11 +41,11 @@
         <h4>Missing Columns</h4>
         <ul>
           <li *ngFor="let col of preview.missing_columns" [class.blocking]="!col.has_default">
-            {{ col.label }} —
+            {{ col.label }} -
             {{
               col.has_default
                 ? 'will use its default value for every row'
-                : 'has no default set — go to Variables and set one before uploading'
+                : 'has no default set - go to Variables and set one before uploading'
             }}
           </li>
         </ul>
@@ -56,7 +56,7 @@
           [error]="true"
           [errorMessage]="
             preview.rejected.missing_email_rows.length +
-            ' row(s) missing an email were rejected — the whole file was still processed for the rest'
+            ' row(s) missing an email were rejected - the whole file was still processed for the rest'
           "
         ></commudle-alert>
       </div>
@@ -65,17 +65,17 @@
         <commudle-alert
           [info]="true"
           [message]="
-            preview.duplicate_emails_in_file.length + ' duplicate email(s) in the file — first occurrence wins'
+            preview.duplicate_emails_in_file.length + ' duplicate email(s) in the file - first occurrence wins'
           "
         ></commudle-alert>
       </div>
 
-      <button nbButton status="basic" size="small" (click)="reset()">Choose a different file</button>
+      <button comButton status="basic" size="small" (click)="reset()">Choose a different file</button>
     </ng-container>
-  </nb-card-body>
-  <nb-card-footer *ngIf="preview">
+  </com-card-body>
+  <com-card-footer *ngIf="preview">
     <button
-      nbButton
+      comButton
       status="primary"
       fullWidth
       [disabled]="hasBlockingMissingColumns || isCommitting"
@@ -83,5 +83,5 @@
     >
       {{ isCommitting ? 'Uploading...' : 'Confirm & Upload' }}
     </button>
-  </nb-card-footer>
-</nb-card>
+  </com-card-footer>
+</com-card>

@@ -1,43 +1,39 @@
 .certificate-batch-detail {
+  @apply com-p-4 md:com-p-6 com-bg-white com-min-h-screen com-rounded-10 com-overflow-hidden;
+
   .detail-header {
-    margin-bottom: 1rem;
+    @apply com-mb-4;
+
+    .page-title {
+      @apply com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0;
+    }
 
     .meta-line {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 0.5rem;
+      @apply com-flex com-items-center com-gap-4 com-mt-2;
 
       .meta-item {
-        color: var(--text-hint-color);
-        font-size: 0.875rem;
+        @apply com-text-Auro-Metal-Saurus com-text-sm;
       }
     }
   }
 
   .stats-row {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    @apply com-flex com-gap-4 com-mb-6;
 
     .stat-card {
-      flex: 1;
-      text-align: center;
+      @apply com-flex-1 com-text-center;
 
       .stat-value {
-        font-size: 1.75rem;
-        font-weight: 600;
+        @apply com-text-[1.75rem] com-font-semibold;
       }
 
       .stat-label {
-        color: var(--text-hint-color);
-        font-size: 0.875rem;
+        @apply com-text-Auro-Metal-Saurus com-text-sm;
       }
     }
   }
 
   .placeholder-section {
-    margin-bottom: 1rem;
-    color: var(--text-hint-color);
+    @apply com-mb-4 com-text-Auro-Metal-Saurus;
   }
 }

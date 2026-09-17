@@ -9,7 +9,8 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { NbButtonModule, NbCardModule, NbIconModule, NbInputModule, NbSelectModule } from '@commudle/theme';
+import { NbIconModule, NbInputModule, NbSelectModule } from '@commudle/theme';
+import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { ICertificateBatch, ICertificateVariable, ICertificateVariableTextStyle } from '@commudle/shared-models';
 import { CertificateVariableService } from '@commudle/shared-services';
 import { FormsModule } from '@angular/forms';
@@ -32,7 +33,7 @@ const DEFAULT_BOX_HEIGHT = 0.08;
 const MAX_CANVAS_WIDTH = 800;
 
 // Only Prawn's built-in fonts are wired on the backend so far (see spec's Open
-// Design Decisions — broad-Unicode font bundling is still an open item), so
+// Design Decisions - broad-Unicode font bundling is still an open item), so
 // the picker is limited to what can actually render.
 export const CERTIFICATE_FONT_OPTIONS = ['Helvetica', 'Times-Roman', 'Courier'];
 
@@ -42,8 +43,7 @@ export const CERTIFICATE_FONT_OPTIONS = ['Helvetica', 'Times-Roman', 'Courier'];
   imports: [
     CommonModule,
     FormsModule,
-    NbCardModule,
-    NbButtonModule,
+    CommudleButtonModule,
     NbInputModule,
     NbSelectModule,
     NbIconModule,

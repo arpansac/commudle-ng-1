@@ -19,71 +19,71 @@
     </div>
 
     <div class="stats-row">
-      <nb-card class="stat-card">
-        <nb-card-body>
+      <com-card class="stat-card">
+        <com-card-body>
           <div class="stat-value">{{ batch.recipients_count }}</div>
           <div class="stat-label">Recipients</div>
-        </nb-card-body>
-      </nb-card>
-      <nb-card class="stat-card">
-        <nb-card-body>
+        </com-card-body>
+      </com-card>
+      <com-card class="stat-card">
+        <com-card-body>
           <div class="stat-value">{{ batch.sent_count }}</div>
           <div class="stat-label">Sent</div>
-        </nb-card-body>
-      </nb-card>
-      <nb-card class="stat-card">
-        <nb-card-body>
+        </com-card-body>
+      </com-card>
+      <com-card class="stat-card">
+        <com-card-body>
           <div class="stat-value">{{ batch.blocked_count }}</div>
           <div class="stat-label">Blocked</div>
-        </nb-card-body>
-      </nb-card>
+        </com-card-body>
+      </com-card>
     </div>
 
-    <nb-card>
-      <nb-card-header>Design</nb-card-header>
-      <nb-card-body>
+    <com-card>
+      <com-card-header>Design</com-card-header>
+      <com-card-body>
         <commudle-certificate-design-picker
           [batch]="batch"
           (batchUpdated)="batch = $event"
         ></commudle-certificate-design-picker>
-      </nb-card-body>
-    </nb-card>
+      </com-card-body>
+    </com-card>
 
-    <nb-card>
-      <nb-card-header>Variables</nb-card-header>
-      <nb-card-body>
+    <com-card>
+      <com-card-header>Variables</com-card-header>
+      <com-card-body>
         <commudle-certificate-variables-panel
           [batch]="batch"
           (variablesChanged)="onVariablesChanged()"
         ></commudle-certificate-variables-panel>
-      </nb-card-body>
-    </nb-card>
+      </com-card-body>
+    </com-card>
 
-    <nb-card>
-      <nb-card-header>Recipients</nb-card-header>
-      <nb-card-body>
+    <com-card>
+      <com-card-header>Recipients</com-card-header>
+      <com-card-body>
         <commudle-certificate-recipients-table
           [batch]="batch"
           (variablesChanged)="onVariablesChanged()"
         ></commudle-certificate-recipients-table>
-      </nb-card-body>
-    </nb-card>
+      </com-card-body>
+    </com-card>
 
-    <nb-card>
-      <nb-card-header>Variable Positioning</nb-card-header>
-      <nb-card-body>
+    <com-card>
+      <com-card-header>Variable Positioning</com-card-header>
+      <com-card-body>
         <commudle-certificate-canvas [batch]="batch"></commudle-certificate-canvas>
-      </nb-card-body>
-    </nb-card>
+      </com-card-body>
+    </com-card>
 
-    <nb-card>
-      <nb-card-header>Send</nb-card-header>
-      <nb-card-body>
+    <com-card>
+      <com-card-header>Send</com-card-header>
+      <com-card-body>
         <commudle-certificate-send-panel
           [batch]="batch"
           (batchUpdated)="onBatchUpdated($event)"
         ></commudle-certificate-send-panel>
-      </nb-card-body>
-    </nb-card>
+      </com-card-body>
+    </com-card>
   </ng-container>
 </div>

@@ -1,11 +1,11 @@
-<nb-card class="certificate-recipient-preview-dialog">
-  <nb-card-header class="com-flex com-justify-between com-items-center">
-    <span>Preview — {{ recipient.email }}</span>
-    <button ghost nbButton size="small" (click)="close()" shape="round">
+<com-card class="certificate-recipient-preview-dialog">
+  <com-card-header class="dialog-header">
+    <span>Preview - {{ recipient.email }}</span>
+    <button ghost comButton size="small" (click)="close()" shape="round">
       <nb-icon icon="close"></nb-icon>
     </button>
-  </nb-card-header>
-  <nb-card-body>
+  </com-card-header>
+  <com-card-body>
     <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
     <commudle-alert *ngIf="errorMessage" [error]="true" [errorMessage]="errorMessage"></commudle-alert>
@@ -16,5 +16,5 @@
       type="application/pdf"
       class="pdf-object"
     ></object>
-  </nb-card-body>
-</nb-card>
+  </com-card-body>
+</com-card>

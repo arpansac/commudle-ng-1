@@ -1,48 +1,43 @@
 .certificate-csv-upload-dialog {
-  width: 32rem;
-  max-width: 90vw;
+  @apply com-w-[32rem] com-max-w-[90vw];
+}
 
-  .hint-text {
-    color: var(--text-hint-color);
-    font-size: 0.875rem;
-    margin-bottom: 0.75rem;
-  }
+.dialog-header {
+  @apply com-flex com-justify-between com-items-center;
+}
 
-  .preview-summary {
-    display: flex;
-    gap: 1.5rem;
-    margin-bottom: 1rem;
+.hint-text {
+  @apply com-text-Auro-Metal-Saurus com-text-sm com-mb-3;
+}
 
-    .summary-row {
-      text-align: center;
+.preview-summary {
+  @apply com-flex com-gap-6 com-mb-4;
 
-      .summary-value {
-        display: block;
-        font-size: 1.5rem;
-        font-weight: 600;
-      }
+  .summary-row {
+    @apply com-text-center;
 
-      .summary-label {
-        font-size: 0.75rem;
-        color: var(--text-hint-color);
-      }
-    }
-  }
-
-  .preview-section {
-    margin-bottom: 1rem;
-
-    h4 {
-      margin-bottom: 0.25rem;
+    .summary-value {
+      @apply com-block com-text-2xl com-font-semibold;
     }
 
-    ul {
-      margin: 0;
-      padding-left: 1.25rem;
+    .summary-label {
+      @apply com-text-xs com-text-Auro-Metal-Saurus;
+    }
+  }
+}
 
-      li.blocking {
-        color: var(--text-danger-color);
-      }
+.preview-section {
+  @apply com-mb-4;
+
+  h4 {
+    @apply com-mb-1;
+  }
+
+  ul {
+    @apply com-m-0 com-pl-5;
+
+    li.blocking {
+      @apply com-text-red-500;
     }
   }
 }

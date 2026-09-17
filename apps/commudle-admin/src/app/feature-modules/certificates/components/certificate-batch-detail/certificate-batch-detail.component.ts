@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NbBadgeModule, NbCardModule } from '@commudle/theme';
+import { NbBadgeModule } from '@commudle/theme';
+import { CommudleCardModule } from '@commudle/commudle-theme';
 import { ECertificateBatchStatus, ICertificateBatch } from '@commudle/shared-models';
 import { CertificateBatchService } from '@commudle/shared-services';
 import * as moment from 'moment';
@@ -18,7 +19,7 @@ import { CertificateSendPanelComponent } from '../certificate-send-panel/certifi
   standalone: true,
   imports: [
     CommonModule,
-    NbCardModule,
+    CommudleCardModule,
     NbBadgeModule,
     SharedComponentsModule,
     CertificateDesignPickerComponent,

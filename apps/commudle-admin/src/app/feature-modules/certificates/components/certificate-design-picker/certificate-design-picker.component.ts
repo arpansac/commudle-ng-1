@@ -11,7 +11,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NbButtonModule, NbCardModule, NbIconModule, NbInputModule } from '@commudle/theme';
+import { NbIconModule, NbInputModule } from '@commudle/theme';
+import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { ECertificateDesignType, ICertificateBatch, ICertificateDesign } from '@commudle/shared-models';
 import { CertificateBatchService, CertificateDesignService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
@@ -24,8 +25,7 @@ import { Subject, takeUntil } from 'rxjs';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    NbCardModule,
-    NbButtonModule,
+    CommudleButtonModule,
     NbInputModule,
     NbIconModule,
     SharedComponentsModule,

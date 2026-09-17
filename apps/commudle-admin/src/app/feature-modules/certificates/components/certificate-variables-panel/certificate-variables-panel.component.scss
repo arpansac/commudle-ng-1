@@ -1,34 +1,17 @@
 .certificate-variables-panel {
   .empty-state {
-    color: var(--text-hint-color);
-    margin-bottom: 1rem;
+    @apply com-text-Auro-Metal-Saurus com-mb-4;
   }
 
   .variables-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1rem;
-
-    th {
-      text-align: left;
-      padding: 0.5rem;
-      border-bottom: 1px solid var(--divider-color);
-    }
-
-    td {
-      padding: 0.5rem;
-      border-bottom: 1px solid var(--divider-color);
-    }
-
-    .cell-input {
-      width: 100%;
-    }
+    @apply com-w-full com-mb-4;
   }
 
   .add-variable-form {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 1rem;
-    align-items: center;
+    @apply com-flex com-gap-2 com-mt-4 com-items-center;
   }
+}
+
+.cell-input {
+  @apply com-w-full;
 }

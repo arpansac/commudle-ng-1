@@ -1,6 +1,6 @@
 <div class="certificate-send-panel">
   <div *ngIf="isRevoked" class="revoked-notice">
-    This batch is revoked — every certificate in it 404s on its public page.
+    This batch is revoked - every certificate in it 404s on its public page.
   </div>
 
   <div
@@ -11,7 +11,7 @@
 
     <nb-checkbox [(ngModel)]="consentChecked"> I have consent to email these recipients </nb-checkbox>
 
-    <button nbButton status="primary" size="medium" [disabled]="!canSend" (click)="send()">
+    <button comButton status="primary" size="medium" [disabled]="!canSend" (click)="send()">
       {{ isSending ? 'Starting...' : 'Send Certificates' }}
     </button>
   </div>
@@ -21,7 +21,7 @@
     class="progress-view"
   >
     <div *ngIf="batch.status === ECertificateBatchStatus.SENDING" class="hint-text">
-      Sending in progress — this refreshes automatically.
+      Sending in progress - this refreshes automatically.
     </div>
 
     <app-loading-spinner *ngIf="isLoadingProgress && !progress"></app-loading-spinner>
@@ -59,19 +59,19 @@
 
     <div class="row-list" *ngIf="progress && progress.blocked.length > 0">
       <h4>Blocked</h4>
-      <div class="row-item" *ngFor="let row of progress.blocked">{{ row.email }} — {{ row.reason }}</div>
+      <div class="row-item" *ngFor="let row of progress.blocked">{{ row.email }} - {{ row.reason }}</div>
     </div>
 
     <div class="row-list" *ngIf="progress && progress.skipped.length > 0">
       <h4>Skipped</h4>
-      <div class="row-item" *ngFor="let row of progress.skipped">{{ row.email }} — {{ row.reason }}</div>
+      <div class="row-item" *ngFor="let row of progress.skipped">{{ row.email }} - {{ row.reason }}</div>
     </div>
 
     <div class="actions" *ngIf="batch.status === ECertificateBatchStatus.SENT">
-      <button nbButton status="basic" size="small" [disabled]="isSending" (click)="resend()">
+      <button comButton status="basic" size="small" [disabled]="isSending" (click)="resend()">
         {{ isSending ? 'Starting...' : 'Resend Batch' }}
       </button>
-      <button nbButton status="danger" size="small" ghost (click)="toggleRevoke()">
+      <button comButton status="danger" size="small" ghost (click)="toggleRevoke()">
         {{ isRevoked ? 'Un-revoke Batch' : 'Revoke Batch' }}
       </button>
     </div>
