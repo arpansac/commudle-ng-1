@@ -9,7 +9,7 @@
       .container {
         .one-column-layout {
           .header {
-            @apply com-mb-3;
+            @apply com-mb-3 com-mx-2;
             .form-name {
               @apply com-text-2xl com-font-semibold com-my-1 com-text-center com-text-Yankees-Blue;
             }
@@ -35,7 +35,9 @@
               }
             }
           }
-
+          .profile-form-card {
+            @apply com-mx-2;
+          }
           .data-form-fill-body {
             max-width: 920px;
             margin: 0 auto;

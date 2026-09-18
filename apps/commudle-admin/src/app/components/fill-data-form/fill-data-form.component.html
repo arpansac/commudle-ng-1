@@ -35,7 +35,7 @@
             </com-card-body>
           </com-card>
 
-          <com-card *ngIf="showProfileForm">
+          <com-card *ngIf="showProfileForm" class="profile-form-card">
             <com-card-header> Let's Update Your Basic Profile! </com-card-header>
             <com-card-body>
               <div>
@@ -43,7 +43,7 @@
               </div>
             </com-card-body>
           </com-card>
-          <com-card *ngIf="dataFormEntity.user_details && currentUser">
+          <com-card *ngIf="dataFormEntity.user_details && currentUser" class="profile-form-card">
             <com-card-body>
               <commudle-user-details-form
                 [userFormDetails]="dataFormEntity.user_details"
