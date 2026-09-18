@@ -11,6 +11,7 @@ import {
   ICommunityChannel,
   IHackathonTeam,
   IHackathonUserResponse,
+  IHackathonTrack,
 } from '@commudle/shared-models';
 import { AuthService, ToastrService, SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
@@ -42,6 +43,7 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
   community: ICommunity;
   subscriptions: Subscription[] = [];
   userTeamDetails: IHackathonTeam[];
+  hackathonTracks: IHackathonTrack[] = [];
   hrgId: number;
   EDbModels: EDbModels;
   EDiscussionType = EDiscussionType;
@@ -78,6 +80,7 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
       this.activatedRoute.parent.data.subscribe((data) => {
         this.hackathon = data.hackathon;
         this.community = data.community;
+        this.fetchHackathonTracks();
         if (this.hackathon.participate_types === EParticipateTypes.TEAM) {
           this.hasTeammateOption = true;
         }
@@ -107,6 +110,15 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  fetchHackathonTracks() {
+    this.hackathonService
+      .pIndexHackathonTracks(this.hackathon.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: IHackathonTrack[]) => {
+        this.hackathonTracks = data || [];
+      });
   }
 
   getHackathonCurrentRegistrationDetails() {
@@ -215,10 +227,19 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
 
   shouldShowProblemStatementPrompt(): boolean {
     if (!this.selectedTeam) return false;
-    return (
-      this.selectedTeam.registration_status === EHackathonRegistrationStatus.ACCEPTED &&
-      !this.selectedTeam.problem_statement
-    );
+    if (this.selectedTeam.registration_status !== EHackathonRegistrationStatus.ACCEPTED) return false;
+    if (this.hackathonTracks.length === 0) {
+      return false;
+    }
+
+    const hasSelectedTrack = !!this.selectedTeam.track;
+    if (!hasSelectedTrack) {
+      return true;
+    }
+    const selectedTrack = this.hackathonTracks.find((track) => track.id == this.selectedTeam.track.id);
+    const trackHasProblemStatements = (selectedTrack?.hackathon_problem_statements?.length ?? 0) > 0;
+    const hasSelectedProblemStatement = !!this.selectedTeam.problem_statement;
+    return trackHasProblemStatements && !hasSelectedProblemStatement;
   }
 
   openProblemStatementDialog() {
