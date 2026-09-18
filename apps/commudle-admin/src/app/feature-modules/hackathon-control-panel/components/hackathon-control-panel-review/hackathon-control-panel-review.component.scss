@@ -229,10 +229,16 @@ th {
 }
 
 .response-dialog-box {
-  @apply com-w-auto com-mx-0 com-max-h-full md:com-h-[90dvh] md:com-w-800px;
-  com-card-body {
-    @apply com-overflow-x-hidden;
+  @apply com-w-auto com-mx-0 com-max-h-full md:com-max-h-[90dvh] md:com-w-800px com-flex com-flex-col com-overflow-hidden;
+
+  com-card-header {
+    @apply com-flex;
   }
+
+  com-card-body {
+    @apply com-flex com-min-h-0 com-overflow-x-hidden com-overflow-y-auto com-scrollbar-hide;
+  }
+
   .action-buttons {
     > div {
       @apply com-flex com-gap-3;
