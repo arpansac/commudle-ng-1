@@ -71,6 +71,10 @@
                 @apply com-block com-w-full;
               }
             }
+
+            &.actions-column {
+              @apply com-w-8;
+            }
           }
         }
       }
@@ -87,5 +91,20 @@
 
   &:hover {
     @apply com-border-b com-border-solid com-border-Yankees-Blue;
+  }
+}
+
+.batch-actions {
+  @apply com-relative com-inline-flex com-items-center com-flex-shrink-0;
+
+  .kebab-button {
+    @apply com-pointer-events-none;
+  }
+
+  // Same invisible-native-select-over-an-icon pattern as
+  // certificate-canvas's variable actions menu - opens the browser's
+  // native dropdown directly on click/tap, no custom overlay to manage.
+  .batch-actions-select {
+    @apply com-absolute com-inset-0 com-w-full com-h-full com-opacity-0 com-cursor-pointer com-m-0 com-p-0 com-border-0;
   }
 }

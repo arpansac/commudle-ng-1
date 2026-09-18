@@ -34,6 +34,7 @@
               <th>RECIPIENTS</th>
               <th>SENT</th>
               <th>CREATED</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -61,6 +62,20 @@
                 ></commudle-certificate-delivery-funnel>
               </td>
               <td class="date-column">{{ moment(batch.created_at).format('DD MMM YYYY') }}</td>
+              <td class="actions-column">
+                <div class="batch-actions">
+                  <button ghost comButton size="tiny" tabindex="-1" class="kebab-button">
+                    <nb-icon icon="more-vertical"></nb-icon>
+                  </button>
+                  <select
+                    class="batch-actions-select"
+                    (change)="onBatchAction(batch, $any($event.target).value); $any($event.target).value = ''"
+                  >
+                    <option value="" disabled selected>Actions</option>
+                    <option value="delete">Delete</option>
+                  </select>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>

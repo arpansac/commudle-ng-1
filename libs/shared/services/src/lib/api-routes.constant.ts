@@ -1237,6 +1237,7 @@ export const API_ROUTES = {
     SHOW: 'api/v2/certificate_batches/show', //GET
     CREATE: 'api/v2/certificate_batches', //POST
     UPDATE: 'api/v2/certificate_batches', //PUT
+    DELETE: 'api/v2/certificate_batches', //DELETE
     CSV_PREVIEW: 'api/v2/certificate_batches/csv_preview', //POST
     CSV_COMMIT: 'api/v2/certificate_batches/csv_commit', //POST
     SAMPLE_CSV: 'api/v2/certificate_batches/sample_csv', //GET

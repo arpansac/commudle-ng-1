@@ -32,6 +32,7 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { CertificateRecipientFormDialogComponent } from '../certificate-recipient-form-dialog/certificate-recipient-form-dialog.component';
 import { CertificateCsvUploadDialogComponent } from '../certificate-csv-upload-dialog/certificate-csv-upload-dialog.component';
 import { CertificateRecipientPreviewDialogComponent } from '../certificate-recipient-preview-dialog/certificate-recipient-preview-dialog.component';
+import { openCertificateConfirmDialog } from '../certificate-confirm-dialog/certificate-confirm-dialog.component';
 
 const ISSUED_STATUSES = [
   ECertificateRecipientStatus.GENERATED,
@@ -313,24 +314,30 @@ export class CertificateRecipientsTableComponent implements OnInit, OnChanges, O
     if (this.selectedIds.size === 0) {
       return;
     }
-    if (!confirm(`Resend to the ${this.selectedIds.size} selected recipient(s)?`)) {
-      return;
-    }
-    this.isResendingSelected = true;
-    this.certificateBatchService
-      .resendBatch(this.batch.uuid, { recipient_ids: Array.from(this.selectedIds) })
+    openCertificateConfirmDialog(this.dialogService, {
+      message: `Resend to the ${this.selectedIds.size} selected recipient(s)?`,
+    })
       .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.isResendingSelected = false;
-          this.toastLogService.successDialog('Resending to selected recipients started');
-          this.clearSelection();
-          this.fetchRecipients(false);
-        },
-        error: (err) => {
-          this.isResendingSelected = false;
-          this.toastLogService.errorDialog(err?.error?.message || 'Could not resend to the selected recipients');
-        },
+      .subscribe((confirmed) => {
+        if (!confirmed) {
+          return;
+        }
+        this.isResendingSelected = true;
+        this.certificateBatchService
+          .resendBatch(this.batch.uuid, { recipient_ids: Array.from(this.selectedIds) })
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.isResendingSelected = false;
+              this.toastLogService.successDialog('Resending to selected recipients started');
+              this.clearSelection();
+              this.fetchRecipients(false);
+            },
+            error: (err) => {
+              this.isResendingSelected = false;
+              this.toastLogService.errorDialog(err?.error?.message || 'Could not resend to the selected recipients');
+            },
+          });
       });
   }
 
@@ -338,20 +345,24 @@ export class CertificateRecipientsTableComponent implements OnInit, OnChanges, O
     const message = ISSUED_STATUSES.includes(recipient.status)
       ? `Remove ${recipient.email} from this batch? This also revokes their certificate - it will no longer be viewable, and this cannot be undone.`
       : `Remove ${recipient.email} from this batch? This cannot be undone.`;
-    if (!confirm(message)) {
-      return;
-    }
-    this.certificateRecipientService
-      .deleteCertificateRecipient(this.batch.uuid, recipient.id)
+    openCertificateConfirmDialog(this.dialogService, { message, danger: true })
       .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.toastLogService.successDialog('Recipient removed');
-          this.fetchRecipients(false);
-        },
-        error: () => {
-          this.toastLogService.errorDialog('Could not remove the recipient');
-        },
+      .subscribe((confirmed) => {
+        if (!confirmed) {
+          return;
+        }
+        this.certificateRecipientService
+          .deleteCertificateRecipient(this.batch.uuid, recipient.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.toastLogService.successDialog('Recipient removed');
+              this.fetchRecipients(false);
+            },
+            error: () => {
+              this.toastLogService.errorDialog('Could not remove the recipient');
+            },
+          });
       });
   }
 
@@ -378,20 +389,24 @@ export class CertificateRecipientsTableComponent implements OnInit, OnChanges, O
     const message = isRevoked
       ? `Un-revoke the certificate for ${recipient.email}? It becomes publicly viewable again.`
       : `Revoke the certificate for ${recipient.email}? Their certificate's public page 404s until un-revoked.`;
-    if (!confirm(message)) {
-      return;
-    }
-    const action = isRevoked
-      ? this.certificateRecipientService.unrevokeCertificateRecipient(this.batch.uuid, recipient.id)
-      : this.certificateRecipientService.revokeCertificateRecipient(this.batch.uuid, recipient.id);
-    action.pipe(takeUntil(this.destroy$)).subscribe({
-      next: (updated) => {
-        recipient.revoked_at = updated.revoked_at;
-        this.toastLogService.successDialog(isRevoked ? 'Un-revoked' : 'Revoked');
-      },
-      error: () => {
-        this.toastLogService.errorDialog('Could not update the revoke status');
-      },
-    });
+    openCertificateConfirmDialog(this.dialogService, { message })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((confirmed) => {
+        if (!confirmed) {
+          return;
+        }
+        const action = isRevoked
+          ? this.certificateRecipientService.unrevokeCertificateRecipient(this.batch.uuid, recipient.id)
+          : this.certificateRecipientService.revokeCertificateRecipient(this.batch.uuid, recipient.id);
+        action.pipe(takeUntil(this.destroy$)).subscribe({
+          next: (updated) => {
+            recipient.revoked_at = updated.revoked_at;
+            this.toastLogService.successDialog(isRevoked ? 'Un-revoked' : 'Revoked');
+          },
+          error: () => {
+            this.toastLogService.errorDialog('Could not update the revoke status');
+          },
+        });
+      });
   }
 }

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NbCheckboxModule, NbInputModule } from '@commudle/theme';
+import { NbCheckboxModule, NbDialogService, NbInputModule } from '@commudle/theme';
 import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { ECertificateBatchStatus, ICertificateBatch, ICertificateProgress } from '@commudle/shared-models';
 import { CertificateBatchService } from '@commudle/shared-services';
@@ -12,6 +12,7 @@ import {
   CertificateDeliveryFunnelComponent,
   ICertificateDeliveryFunnelSegment,
 } from '../certificate-delivery-funnel/certificate-delivery-funnel.component';
+import { openCertificateConfirmDialog } from '../certificate-confirm-dialog/certificate-confirm-dialog.component';
 
 const POLL_INTERVAL_MS = 4000;
 
@@ -47,7 +48,11 @@ export class CertificateSendPanelComponent implements OnChanges, OnDestroy {
   private destroy$ = new Subject<void>();
   private pollDestroy$ = new Subject<void>();
 
-  constructor(private certificateBatchService: CertificateBatchService, private toastLogService: LibToastLogService) {}
+  constructor(
+    private certificateBatchService: CertificateBatchService,
+    private toastLogService: LibToastLogService,
+    private dialogService: NbDialogService,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.batch && this.batch) {
@@ -216,65 +221,81 @@ export class CertificateSendPanelComponent implements OnChanges, OnDestroy {
   }
 
   resend() {
-    if (!confirm('Resend this batch? This re-emails every non-revoked recipient.')) {
-      return;
-    }
-    this.isSending = true;
-    this.certificateBatchService
-      .resendBatch(this.batch.uuid)
+    openCertificateConfirmDialog(this.dialogService, {
+      message: 'Resend this batch? This re-emails every non-revoked recipient.',
+    })
       .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.isSending = false;
-          this.toastLogService.successDialog('Resending started');
-          this.refreshBatchAndProgress();
-        },
-        error: (err) => {
-          this.isSending = false;
-          this.toastLogService.errorDialog(err?.error?.message || 'Could not resend');
-        },
+      .subscribe((confirmed) => {
+        if (!confirmed) {
+          return;
+        }
+        this.isSending = true;
+        this.certificateBatchService
+          .resendBatch(this.batch.uuid)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.isSending = false;
+              this.toastLogService.successDialog('Resending started');
+              this.refreshBatchAndProgress();
+            },
+            error: (err) => {
+              this.isSending = false;
+              this.toastLogService.errorDialog(err?.error?.message || 'Could not resend');
+            },
+          });
       });
   }
 
   resendUnsentOnly() {
-    if (!confirm('Resend only to recipients who have not received a certificate yet?')) {
-      return;
-    }
-    this.isResendingUnsentOnly = true;
-    this.certificateBatchService
-      .resendBatch(this.batch.uuid, { unsent_only: true })
+    openCertificateConfirmDialog(this.dialogService, {
+      message: 'Resend only to recipients who have not received a certificate yet?',
+    })
       .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.isResendingUnsentOnly = false;
-          this.toastLogService.successDialog('Resending to unsent recipients started');
-          this.refreshBatchAndProgress();
-        },
-        error: (err) => {
-          this.isResendingUnsentOnly = false;
-          this.toastLogService.errorDialog(err?.error?.message || 'Could not resend');
-        },
+      .subscribe((confirmed) => {
+        if (!confirmed) {
+          return;
+        }
+        this.isResendingUnsentOnly = true;
+        this.certificateBatchService
+          .resendBatch(this.batch.uuid, { unsent_only: true })
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.isResendingUnsentOnly = false;
+              this.toastLogService.successDialog('Resending to unsent recipients started');
+              this.refreshBatchAndProgress();
+            },
+            error: (err) => {
+              this.isResendingUnsentOnly = false;
+              this.toastLogService.errorDialog(err?.error?.message || 'Could not resend');
+            },
+          });
       });
   }
 
   toggleRevoke() {
-    const action = this.isRevoked
-      ? this.certificateBatchService.unrevokeBatch(this.batch.uuid)
-      : this.certificateBatchService.revokeBatch(this.batch.uuid);
-    const confirmMessage = this.isRevoked
+    const message = this.isRevoked
       ? 'Un-revoke this batch? All its certificates become publicly viewable again.'
       : 'Revoke this whole batch? Every certificate in it 404s on its public page until un-revoked.';
-    if (!confirm(confirmMessage)) {
-      return;
-    }
-    action.pipe(takeUntil(this.destroy$)).subscribe({
-      next: (batch) => {
-        this.toastLogService.successDialog(this.isRevoked ? 'Un-revoked' : 'Revoked');
-        this.batchUpdated.emit(batch);
-      },
-      error: () => {
-        this.toastLogService.errorDialog('Could not update the revoke status');
-      },
-    });
+    openCertificateConfirmDialog(this.dialogService, { message })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((confirmed) => {
+        if (!confirmed) {
+          return;
+        }
+        const action = this.isRevoked
+          ? this.certificateBatchService.unrevokeBatch(this.batch.uuid)
+          : this.certificateBatchService.revokeBatch(this.batch.uuid);
+        action.pipe(takeUntil(this.destroy$)).subscribe({
+          next: (batch) => {
+            this.toastLogService.successDialog(this.isRevoked ? 'Un-revoked' : 'Revoked');
+            this.batchUpdated.emit(batch);
+          },
+          error: () => {
+            this.toastLogService.errorDialog('Could not update the revoke status');
+          },
+        });
+      });
   }
 }

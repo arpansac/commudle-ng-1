@@ -64,6 +64,13 @@ export class CertificateBatchService {
     );
   }
 
+  deleteCertificateBatch(uuid: string): Observable<{ deleted: boolean }> {
+    const params = new HttpParams().set('id', uuid);
+    return this.http.delete<{ deleted: boolean }>(this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_BATCHES.DELETE), {
+      params,
+    });
+  }
+
   csvPreview(uuid: string, file: File): Observable<ICertificateCsvPreviewResponse> {
     const params = new HttpParams().set('id', uuid);
     const formData = new FormData();

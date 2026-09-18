@@ -23,6 +23,7 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
 import { Subject, takeUntil } from 'rxjs';
 import type KonvaNamespace from 'konva';
 import { CertificateVariableDefaultValueDialogComponent } from '../certificate-variable-default-value-dialog/certificate-variable-default-value-dialog.component';
+import { openCertificateConfirmDialog } from '../certificate-confirm-dialog/certificate-confirm-dialog.component';
 
 type VariableAction = 'default_value' | 'delete';
 
@@ -404,28 +405,35 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
   }
 
   deleteVariable(variable: ICertificateVariable) {
-    if (!confirm(`Remove the "${variable.label}" variable? This cannot be undone.`)) {
-      return;
-    }
-    this.certificateVariableService
-      .deleteCertificateVariable(this.batch.uuid, variable.id)
+    openCertificateConfirmDialog(this.dialogService, {
+      message: `Remove the "${variable.label}" variable? This cannot be undone.`,
+      danger: true,
+    })
       .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          if (variable.positioned) {
-            this.destroyBox(variable.id);
-            if (this.selectedVariable?.id === variable.id) {
-              this.deselect();
-            }
-            this.layer.draw();
-          }
-          this.variables = this.variables.filter((v) => v.id !== variable.id);
-          this.toastLogService.successDialog('Variable removed');
-          this.variablesChanged.emit();
-        },
-        error: () => {
-          this.toastLogService.errorDialog('Could not remove the variable');
-        },
+      .subscribe((confirmed) => {
+        if (!confirmed) {
+          return;
+        }
+        this.certificateVariableService
+          .deleteCertificateVariable(this.batch.uuid, variable.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              if (variable.positioned) {
+                this.destroyBox(variable.id);
+                if (this.selectedVariable?.id === variable.id) {
+                  this.deselect();
+                }
+                this.layer.draw();
+              }
+              this.variables = this.variables.filter((v) => v.id !== variable.id);
+              this.toastLogService.successDialog('Variable removed');
+              this.variablesChanged.emit();
+            },
+            error: () => {
+              this.toastLogService.errorDialog('Could not remove the variable');
+            },
+          });
       });
   }
 

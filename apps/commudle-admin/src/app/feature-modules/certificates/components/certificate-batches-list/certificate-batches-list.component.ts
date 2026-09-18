@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { NbDialogService } from '@commudle/theme';
+import { NbDialogService, NbIconModule } from '@commudle/theme';
 import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { ECertificateBatchStatus, ICertificateBatch, ICommunity } from '@commudle/shared-models';
 import { CertificateBatchService } from '@commudle/shared-services';
 import { faPlus, faAward } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import * as moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
@@ -15,6 +16,9 @@ import {
   CertificateDeliveryFunnelComponent,
   ICertificateDeliveryFunnelSegment,
 } from '../certificate-delivery-funnel/certificate-delivery-funnel.component';
+import { openCertificateConfirmDialog } from '../certificate-confirm-dialog/certificate-confirm-dialog.component';
+
+type BatchAction = 'delete';
 
 @Component({
   selector: 'commudle-certificate-batches-list',
@@ -23,6 +27,7 @@ import {
     CommonModule,
     RouterModule,
     CommudleButtonModule,
+    NbIconModule,
     FontAwesomeModule,
     SharedComponentsModule,
     CertificateDeliveryFunnelComponent,
@@ -51,6 +56,7 @@ export class CertificateBatchesListComponent implements OnInit, OnDestroy {
     private router: Router,
     private certificateBatchService: CertificateBatchService,
     private dialogService: NbDialogService,
+    private toastLogService: LibToastLogService,
   ) {}
 
   ngOnInit() {
@@ -130,6 +136,38 @@ export class CertificateBatchesListComponent implements OnInit, OnDestroy {
         if (batch) {
           this.router.navigate([batch.uuid], { relativeTo: this.route });
         }
+      });
+  }
+
+  onBatchAction(batch: ICertificateBatch, action: BatchAction | '') {
+    if (action === 'delete') {
+      this.deleteBatch(batch);
+    }
+  }
+
+  deleteBatch(batch: ICertificateBatch) {
+    openCertificateConfirmDialog(this.dialogService, {
+      title: 'Delete this batch?',
+      message: `Delete "${batch.name}"? This revokes every certificate already issued under it, and cannot be undone.`,
+      danger: true,
+    })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((confirmed) => {
+        if (!confirmed) {
+          return;
+        }
+        this.certificateBatchService
+          .deleteCertificateBatch(batch.uuid)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.toastLogService.successDialog('Batch deleted');
+              this.fetchBatches();
+            },
+            error: (err) => {
+              this.toastLogService.errorDialog(err?.error?.message || 'Could not delete the batch');
+            },
+          });
       });
   }
 }
