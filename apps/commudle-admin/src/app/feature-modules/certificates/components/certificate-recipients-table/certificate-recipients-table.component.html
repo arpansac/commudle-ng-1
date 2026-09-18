@@ -1,23 +1,44 @@
 <div class="certificate-recipients-table">
   <div class="table-header">
-    <button comButton status="basic" size="small" (click)="openCsvUploadDialog()">
-      <fa-icon [icon]="icons.faUpload"></fa-icon> &nbsp; Upload CSV
-    </button>
-    <button comButton status="primary" size="small" (click)="openAddDialog()">
-      <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add Recipient
-    </button>
+    <form [formGroup]="searchForm" class="search-form">
+      <input formControlName="q" nbInput fieldSize="small" placeholder="Search by name or email" />
+    </form>
+    <div class="table-header-actions">
+      <button comButton status="basic" size="small" (click)="openCsvUploadDialog()">
+        <fa-icon [icon]="icons.faUpload"></fa-icon> &nbsp; Upload CSV
+      </button>
+      <button comButton status="primary" size="small" (click)="openAddDialog()">
+        <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add Recipient
+      </button>
+    </div>
   </div>
 
   <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
   <ng-container *ngIf="!isLoading">
-    <div *ngIf="recipients.length === 0" class="empty-state">No recipients yet. Add one manually, or upload a CSV.</div>
+    <div *ngIf="recipients.length === 0" class="empty-state">
+      {{ query ? 'No recipients match "' + query + '".' : 'No recipients yet. Add one manually, or upload a CSV.' }}
+    </div>
 
     <section class="recipient-list-container" *ngIf="recipients.length > 0">
+      <div class="bulk-actions" *ngIf="selectedIds.size > 0">
+        <span class="bulk-actions-count">{{ selectedIds.size }} selected</span>
+        <button comButton status="basic" size="small" [disabled]="isResendingSelected" (click)="resendSelected()">
+          {{ isResendingSelected ? 'Starting...' : 'Resend to Selected' }}
+        </button>
+        <button ghost comButton size="small" (click)="clearSelection()">Clear</button>
+      </div>
+
       <div class="table-wrapper">
         <table class="recipients-table">
           <thead>
             <tr class="table-header-row">
+              <th class="select-column">
+                <nb-checkbox
+                  [checked]="isAllOnPageSelected"
+                  (checkedChange)="toggleSelectAllOnPage($event)"
+                ></nb-checkbox>
+              </th>
               <th>EMAIL</th>
               <th>NAME</th>
               <th *ngFor="let variable of variables">{{ variable.label }}</th>
@@ -27,6 +48,12 @@
           </thead>
           <tbody>
             <tr *ngFor="let recipient of recipients" class="recipient-row">
+              <td class="select-column">
+                <nb-checkbox
+                  [checked]="isSelected(recipient)"
+                  (checkedChange)="toggleSelect(recipient, $event)"
+                ></nb-checkbox>
+              </td>
               <td>{{ recipient.email }}</td>
               <td>{{ recipient.name || '-' }}</td>
               <td *ngFor="let variable of variables">{{ recipient.row_values?.[variable.key] || '-' }}</td>
@@ -39,6 +66,7 @@
                   [fontColor]="statusFontColor(recipient.status)"
                 ></app-badge>
                 <div class="skip-reason" *ngIf="recipient.skip_reason">{{ recipient.skip_reason }}</div>
+                <div class="revoked-tag" *ngIf="recipient.revoked_at">Revoked</div>
               </td>
               <td class="actions">
                 <button
@@ -51,11 +79,42 @@
                 >
                   <fa-icon [icon]="icons.faPaperPlane"></fa-icon>
                 </button>
-                <button ghost comButton size="tiny" (click)="openPreviewDialog(recipient)">
+                <button
+                  *ngIf="batch.design && recipient.sendable"
+                  ghost
+                  comButton
+                  size="tiny"
+                  (click)="generateOne(recipient)"
+                >
+                  <fa-icon [icon]="icons.faCertificate"></fa-icon>
+                </button>
+                <button *ngIf="!isIssued(recipient)" ghost comButton size="tiny" (click)="openPreviewDialog(recipient)">
                   <fa-icon [icon]="icons.faEye"></fa-icon>
                 </button>
+                <a
+                  *ngIf="isIssued(recipient)"
+                  [href]="certificateViewUrl(recipient)"
+                  target="_blank"
+                  rel="noopener"
+                  ghost
+                  comButton
+                  size="tiny"
+                  class="view-certificate-link"
+                >
+                  <fa-icon [icon]="icons.faDownload"></fa-icon>
+                </a>
                 <button ghost comButton size="tiny" (click)="openEditDialog(recipient)">
                   <fa-icon [icon]="icons.faPen"></fa-icon>
+                </button>
+                <button
+                  *ngIf="canToggleRevoke(recipient)"
+                  ghost
+                  comButton
+                  size="tiny"
+                  [status]="recipient.revoked_at ? 'basic' : 'danger'"
+                  (click)="toggleRecipientRevoke(recipient)"
+                >
+                  <fa-icon [icon]="icons.faBan"></fa-icon>
                 </button>
                 <button ghost comButton size="tiny" status="danger" (click)="deleteRecipient(recipient)">
                   <fa-icon [icon]="icons.faTrash"></fa-icon>

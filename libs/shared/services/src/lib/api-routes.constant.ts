@@ -1245,6 +1245,7 @@ export const API_ROUTES = {
     REVOKE: 'api/v2/certificate_batches/revoke', //POST
     UNREVOKE: 'api/v2/certificate_batches/unrevoke', //POST
     PROGRESS: 'api/v2/certificate_batches/progress', //GET
+    ISSUE: 'api/v2/certificate_batches/issue', //POST
   },
 
   CERTIFICATE_DESIGNS: {
@@ -1267,5 +1268,15 @@ export const API_ROUTES = {
     DELETE: 'api/v2/certificate_recipients', //DELETE
     PREVIEW: 'api/v2/certificate_recipients/preview', //GET, raw application/pdf
     SEND_ONE: 'api/v2/certificate_recipients/send_one', //POST
+    GENERATE_ONE: 'api/v2/certificate_recipients/generate_one', //POST
+    REVOKE: 'api/v2/certificate_recipients/revoke', //POST
+    UNREVOKE: 'api/v2/certificate_recipients/unrevoke', //POST
+  },
+
+  // Public, no auth - the real, permanently-stored certificate (as opposed
+  // to certificate_recipients/preview, which re-renders a throwaway copy).
+  CERTIFICATES: {
+    VERIFY: 'api/v2/certificates/verify', //GET, ?uuid=
+    DOWNLOAD: 'api/v2/certificates/download', //GET, ?uuid=, raw application/pdf
   },
 };

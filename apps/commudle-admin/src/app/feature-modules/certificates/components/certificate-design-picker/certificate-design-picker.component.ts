@@ -11,13 +11,17 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NbIconModule, NbInputModule } from '@commudle/theme';
+import { NbDialogService, NbIconModule, NbInputModule } from '@commudle/theme';
 import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { ECertificateDesignType, ICertificateBatch, ICertificateDesign } from '@commudle/shared-models';
 import { CertificateBatchService, CertificateDesignService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { Subject, takeUntil } from 'rxjs';
+import {
+  CertificateReissueDialogComponent,
+  ECertificateReissueScope,
+} from '../certificate-reissue-dialog/certificate-reissue-dialog.component';
 
 @Component({
   selector: 'commudle-certificate-design-picker',
@@ -62,6 +66,7 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
     private certificateDesignService: CertificateDesignService,
     private certificateBatchService: CertificateBatchService,
     private toastLogService: LibToastLogService,
+    private dialogService: NbDialogService,
     @Inject(PLATFORM_ID) platformId: object,
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -79,10 +84,6 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  get isLocked(): boolean {
-    return !!this.batch?.locked_at;
   }
 
   get pagedDesigns(): ICertificateDesign[] {
@@ -107,9 +108,14 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
   }
 
   selectDesign(design: ICertificateDesign) {
-    if (this.isLocked || design.id === this.batch.design?.id) {
+    if (design.id === this.batch.design?.id) {
       return;
     }
+    // A design can be swapped even after some certificates were already
+    // issued under the old one - those PDFs are permanent, stored bytes
+    // that never change on their own, so a swap only matters for
+    // recipients if the organizer explicitly asks to reissue.
+    const hadPreviousDesign = !!this.batch.design;
     this.certificateBatchService
       .updateCertificateBatch(this.batch.uuid, { certificate_design_id: design.id })
       .pipe(takeUntil(this.destroy$))
@@ -119,10 +125,42 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
           this.showUploadForm = false;
           this.toastLogService.successDialog('Design updated');
           this.batchUpdated.emit(updatedBatch);
+          if (hadPreviousDesign && updatedBatch.recipients_count > 0) {
+            this.promptReissue(updatedBatch);
+          }
         },
         error: () => {
           this.toastLogService.errorDialog('Could not update the design');
         },
+      });
+  }
+
+  private promptReissue(batch: ICertificateBatch) {
+    this.dialogService
+      .open(CertificateReissueDialogComponent)
+      .onClose.pipe(takeUntil(this.destroy$))
+      .subscribe((scope: ECertificateReissueScope | undefined) => {
+        if (scope === 'all') {
+          this.certificateBatchService
+            .resendBatch(batch.uuid)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+              next: () => this.toastLogService.successDialog('Reissuing the new design to all recipients'),
+              error: (err) =>
+                this.toastLogService.errorDialog(err?.error?.message || 'Could not reissue to all recipients'),
+            });
+        } else if (scope === 'unissued') {
+          this.certificateBatchService
+            .issueBatch(batch.uuid)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+              next: () => this.toastLogService.successDialog('Issuing the new design to not-yet-issued recipients'),
+              error: (err) =>
+                this.toastLogService.errorDialog(err?.error?.message || 'Could not issue to the remaining recipients'),
+            });
+        } else if (scope === 'specific') {
+          this.toastLogService.successDialog('Select recipients in the table below, then use "Resend to Selected"');
+        }
       });
   }
 

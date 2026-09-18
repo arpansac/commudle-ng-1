@@ -59,3 +59,15 @@ export interface ICertificateRecipientsIndexResponse {
   count: number;
   total: number;
 }
+
+// GET /api/v2/certificates/verify?uuid= - public, no auth. Whitelisted
+// fields only, matches PublicCertificateSerializer on the backend.
+export interface ICertificatePublicRecipient {
+  uuid: string;
+  recipient_name: string | null;
+  title: string;
+  issued_on: string | null;
+  issuer: { type: string; name: string | null; slug: string | null } | null;
+  pdf_url: string | null;
+  profile: { username: string; name: string | null } | null;
+}

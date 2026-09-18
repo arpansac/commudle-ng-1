@@ -102,10 +102,6 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
     });
   }
 
-  get isLocked(): boolean {
-    return !!this.batch?.locked_at;
-  }
-
   ngAfterViewInit() {
     this.viewInitialized = true;
     if (this.batch?.design) {
@@ -215,7 +211,7 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
     const group = new this.Konva.Group({
       x: pos.x * displayWidth,
       y: pos.y * displayHeight,
-      draggable: !this.isLocked,
+      draggable: true,
     });
 
     const rect = new this.Konva.Rect({
@@ -333,9 +329,6 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
   }
 
   toggleCanvasPlacement(variable: ICertificateVariable, placed: boolean) {
-    if (this.isLocked) {
-      return;
-    }
     if (placed) {
       this.addToCanvas(variable);
     } else {

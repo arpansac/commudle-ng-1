@@ -86,19 +86,34 @@ export class CertificateBatchService {
     );
   }
 
-  sendBatch(uuid: string): Observable<{ status: string; enqueued: boolean }> {
+  sendBatch(
+    uuid: string,
+    selection?: { recipient_ids?: number[]; unsent_only?: boolean },
+  ): Observable<{ status: string; enqueued: boolean }> {
     const params = new HttpParams().set('id', uuid);
     return this.http.post<{ status: string; enqueued: boolean }>(
       this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_BATCHES.SEND),
-      { consent_confirmed: true },
+      { consent_confirmed: true, ...selection },
       { params },
     );
   }
 
-  resendBatch(uuid: string): Observable<{ status: string; enqueued: boolean }> {
+  resendBatch(
+    uuid: string,
+    selection?: { recipient_ids?: number[]; unsent_only?: boolean },
+  ): Observable<{ status: string; enqueued: boolean }> {
     const params = new HttpParams().set('id', uuid);
     return this.http.post<{ status: string; enqueued: boolean }>(
       this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_BATCHES.RESEND),
+      { ...selection },
+      { params },
+    );
+  }
+
+  issueBatch(uuid: string): Observable<{ status: string; enqueued: boolean }> {
+    const params = new HttpParams().set('id', uuid);
+    return this.http.post<{ status: string; enqueued: boolean }>(
+      this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_BATCHES.ISSUE),
       {},
       { params },
     );

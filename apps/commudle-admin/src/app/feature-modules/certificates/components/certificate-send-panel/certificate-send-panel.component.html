@@ -20,7 +20,6 @@
         status="basic"
         size="medium"
         [disabled]="!batch.design || isIssuing"
-        [nbTooltip]="issueTooltip"
         (click)="issueCertificates()"
       >
         {{ isIssuing ? 'Issuing...' : 'Issue Certificates' }}
@@ -96,6 +95,16 @@
     <div class="actions" *ngIf="batch.status === ECertificateBatchStatus.SENT">
       <button comButton status="basic" size="small" [disabled]="isSending" (click)="resend()">
         {{ isSending ? 'Starting...' : 'Resend Batch' }}
+      </button>
+      <button
+        comButton
+        status="basic"
+        size="small"
+        ghost
+        [disabled]="isResendingUnsentOnly"
+        (click)="resendUnsentOnly()"
+      >
+        {{ isResendingUnsentOnly ? 'Starting...' : 'Resend to Unsent Only' }}
       </button>
       <button comButton status="danger" size="small" ghost (click)="toggleRevoke()">
         {{ isRevoked ? 'Un-revoke Batch' : 'Revoke Batch' }}

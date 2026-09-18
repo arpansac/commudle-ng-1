@@ -2,8 +2,6 @@
   <div *ngIf="!batch.design" class="empty-state">Choose a design above before positioning variables.</div>
 
   <ng-container *ngIf="batch.design">
-    <div *ngIf="isLocked" class="locked-notice">This batch has already sent - positions and styling are locked.</div>
-
     <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
     <div class="canvas-layout">
@@ -21,21 +19,16 @@
           [class.selected]="selectedVariable?.id === variable.id"
         >
           <div class="variable-row">
-            <nb-checkbox
-              [checked]="variable.positioned"
-              [disabled]="isLocked"
-              (checkedChange)="toggleCanvasPlacement(variable, $event)"
-            >
+            <nb-checkbox [checked]="variable.positioned" (checkedChange)="toggleCanvasPlacement(variable, $event)">
               {{ variable.label }}
             </nb-checkbox>
 
-            <div class="variable-actions" [class.disabled]="isLocked">
-              <button ghost comButton size="tiny" tabindex="-1" [disabled]="isLocked" class="kebab-button">
+            <div class="variable-actions">
+              <button ghost comButton size="tiny" tabindex="-1" class="kebab-button">
                 <nb-icon icon="more-vertical"></nb-icon>
               </button>
               <select
                 class="variable-actions-select"
-                [disabled]="isLocked"
                 (change)="onVariableAction(variable, $any($event.target).value); $any($event.target).value = ''"
               >
                 <option value="" disabled selected>Actions</option>
@@ -47,13 +40,7 @@
           <div class="default-value-subtext" *ngIf="variable.default_value">Default: {{ variable.default_value }}</div>
         </div>
 
-        <button
-          type="button"
-          class="add-variable-tile"
-          [class.active]="showAddForm"
-          (click)="toggleAddForm()"
-          [disabled]="isLocked"
-        >
+        <button type="button" class="add-variable-tile" [class.active]="showAddForm" (click)="toggleAddForm()">
           <fa-icon [icon]="icons.faPlus"></fa-icon>
           <span>{{ showAddForm ? 'Cancel' : 'Add Variable' }}</span>
         </button>
@@ -76,7 +63,6 @@
             <label>Font</label>
             <nb-select
               [selected]="selectedVariable.text_style?.font || 'Helvetica'"
-              [disabled]="isLocked"
               (selectedChange)="updateStyle({ font: $event })"
               size="small"
               fullWidth
@@ -93,7 +79,6 @@
               type="number"
               min="6"
               max="200"
-              [disabled]="isLocked"
               [value]="selectedVariable.text_style?.size || 16"
               (change)="updateStyle({ size: +$any($event.target).value })"
             />
@@ -103,7 +88,6 @@
             <label>Color</label>
             <input
               type="color"
-              [disabled]="isLocked"
               [value]="'#' + (selectedVariable.text_style?.color || '000000')"
               (change)="updateStyle({ color: $any($event.target).value.substring(1) })"
             />
@@ -113,7 +97,6 @@
             <label>Align</label>
             <nb-select
               [selected]="selectedVariable.text_style?.align || 'left'"
-              [disabled]="isLocked"
               (selectedChange)="updateStyle({ align: $event })"
               size="small"
               fullWidth
@@ -129,7 +112,6 @@
               comButton
               size="small"
               [status]="selectedVariable.text_style?.weight === 'bold' ? 'primary' : 'basic'"
-              [disabled]="isLocked"
               (click)="updateStyle({ weight: selectedVariable.text_style?.weight === 'bold' ? 'normal' : 'bold' })"
             >
               B
@@ -138,7 +120,6 @@
               comButton
               size="small"
               [status]="selectedVariable.text_style?.style === 'italic' ? 'primary' : 'basic'"
-              [disabled]="isLocked"
               (click)="updateStyle({ style: selectedVariable.text_style?.style === 'italic' ? 'normal' : 'italic' })"
             >
               I
@@ -153,13 +134,7 @@
     </div>
 
     <div class="canvas-actions" *ngIf="!isLoading">
-      <button
-        comButton
-        status="primary"
-        size="small"
-        [disabled]="!isDirty || isSaving || isLocked"
-        (click)="saveLayout()"
-      >
+      <button comButton status="primary" size="small" [disabled]="!isDirty || isSaving" (click)="saveLayout()">
         {{ isSaving ? 'Saving...' : 'Save Layout' }}
       </button>
     </div>

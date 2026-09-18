@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
-import { NbDialogService, NbIconModule } from '@commudle/theme';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { NbCheckboxModule, NbDialogService, NbIconModule, NbInputModule } from '@commudle/theme';
 import { CommudleButtonModule } from '@commudle/commudle-theme';
 import {
   ECertificateRecipientStatus,
@@ -8,24 +9,53 @@ import {
   ICertificateRecipient,
   ICertificateVariable,
 } from '@commudle/shared-models';
-import { CertificateRecipientService, CertificateVariableService } from '@commudle/shared-services';
-import { faPlus, faPen, faTrash, faUpload, faEye, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import {
+  CertificateBatchService,
+  CertificateRecipientService,
+  CertificateVariableService,
+} from '@commudle/shared-services';
+import {
+  faPlus,
+  faPen,
+  faTrash,
+  faUpload,
+  faEye,
+  faPaperPlane,
+  faBan,
+  faCertificate,
+  faDownload,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { CertificateRecipientFormDialogComponent } from '../certificate-recipient-form-dialog/certificate-recipient-form-dialog.component';
 import { CertificateCsvUploadDialogComponent } from '../certificate-csv-upload-dialog/certificate-csv-upload-dialog.component';
 import { CertificateRecipientPreviewDialogComponent } from '../certificate-recipient-preview-dialog/certificate-recipient-preview-dialog.component';
 
+const ISSUED_STATUSES = [
+  ECertificateRecipientStatus.GENERATED,
+  ECertificateRecipientStatus.SENT,
+  ECertificateRecipientStatus.DELIVERED,
+];
+
 @Component({
   selector: 'commudle-certificate-recipients-table',
   standalone: true,
-  imports: [CommonModule, CommudleButtonModule, NbIconModule, FontAwesomeModule, SharedComponentsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    CommudleButtonModule,
+    NbIconModule,
+    NbInputModule,
+    NbCheckboxModule,
+    FontAwesomeModule,
+    SharedComponentsModule,
+  ],
   templateUrl: './certificate-recipients-table.component.html',
   styleUrls: ['./certificate-recipients-table.component.scss'],
 })
-export class CertificateRecipientsTableComponent implements OnChanges, OnDestroy {
+export class CertificateRecipientsTableComponent implements OnInit, OnChanges, OnDestroy {
   @Input() batch: ICertificateBatch;
   @Output() variablesChanged = new EventEmitter<void>();
 
@@ -35,17 +65,29 @@ export class CertificateRecipientsTableComponent implements OnChanges, OnDestroy
   page = 1;
   count = 10;
   total = 0;
+  query = '';
+  searchForm: FormGroup;
+  selectedIds = new Set<number>();
+  isResendingSelected = false;
   ECertificateRecipientStatus = ECertificateRecipientStatus;
-  icons = { faPlus, faPen, faTrash, faUpload, faEye, faPaperPlane };
+  icons = { faPlus, faPen, faTrash, faUpload, faEye, faPaperPlane, faBan, faCertificate, faDownload };
 
   private destroy$ = new Subject<void>();
 
   constructor(
+    private fb: FormBuilder,
     private certificateRecipientService: CertificateRecipientService,
     private certificateVariableService: CertificateVariableService,
+    private certificateBatchService: CertificateBatchService,
     private dialogService: NbDialogService,
     private toastLogService: LibToastLogService,
-  ) {}
+  ) {
+    this.searchForm = this.fb.group({ q: [''] });
+  }
+
+  ngOnInit() {
+    this.search();
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.batch && this.batch) {
@@ -57,6 +99,18 @@ export class CertificateRecipientsTableComponent implements OnChanges, OnDestroy
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  search() {
+    this.searchForm
+      .get('q')
+      .valueChanges.pipe(debounceTime(500), takeUntil(this.destroy$))
+      .subscribe((value: string) => {
+        this.query = value?.trim() || '';
+        this.page = 1;
+        this.clearSelection();
+        this.fetchRecipients(false);
+      });
   }
 
   fetchVariables() {
@@ -77,7 +131,7 @@ export class CertificateRecipientsTableComponent implements OnChanges, OnDestroy
       this.isLoading = true;
     }
     this.certificateRecipientService
-      .indexCertificateRecipients(this.batch.uuid, this.page, this.count)
+      .indexCertificateRecipients(this.batch.uuid, this.page, this.count, undefined, this.query || undefined)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         this.recipients = res.certificate_recipients;
@@ -89,6 +143,7 @@ export class CertificateRecipientsTableComponent implements OnChanges, OnDestroy
 
   onPageChange(page: number) {
     this.page = page;
+    this.clearSelection();
     this.fetchRecipients();
   }
 
@@ -212,8 +267,78 @@ export class CertificateRecipientsTableComponent implements OnChanges, OnDestroy
       });
   }
 
+  generateOne(recipient: ICertificateRecipient) {
+    this.certificateRecipientService
+      .generateOne(this.batch.uuid, recipient.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.toastLogService.successDialog(`Generating a certificate for ${recipient.email}`);
+          this.fetchRecipients(false);
+        },
+        error: (err) => {
+          this.toastLogService.errorDialog(err?.error?.message || 'Could not generate this certificate');
+        },
+      });
+  }
+
+  // Selection is for selective resend - see resendSelected(). Cleared on
+  // any page/search change since a selected id might not exist on the new
+  // page, and there's no cross-page "select all" concept here.
+  isSelected(recipient: ICertificateRecipient): boolean {
+    return this.selectedIds.has(recipient.id);
+  }
+
+  get isAllOnPageSelected(): boolean {
+    return this.recipients.length > 0 && this.recipients.every((r) => this.selectedIds.has(r.id));
+  }
+
+  toggleSelect(recipient: ICertificateRecipient, checked: boolean) {
+    if (checked) {
+      this.selectedIds.add(recipient.id);
+    } else {
+      this.selectedIds.delete(recipient.id);
+    }
+  }
+
+  toggleSelectAllOnPage(checked: boolean) {
+    this.recipients.forEach((r) => (checked ? this.selectedIds.add(r.id) : this.selectedIds.delete(r.id)));
+  }
+
+  clearSelection() {
+    this.selectedIds.clear();
+  }
+
+  resendSelected() {
+    if (this.selectedIds.size === 0) {
+      return;
+    }
+    if (!confirm(`Resend to the ${this.selectedIds.size} selected recipient(s)?`)) {
+      return;
+    }
+    this.isResendingSelected = true;
+    this.certificateBatchService
+      .resendBatch(this.batch.uuid, { recipient_ids: Array.from(this.selectedIds) })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.isResendingSelected = false;
+          this.toastLogService.successDialog('Resending to selected recipients started');
+          this.clearSelection();
+          this.fetchRecipients(false);
+        },
+        error: (err) => {
+          this.isResendingSelected = false;
+          this.toastLogService.errorDialog(err?.error?.message || 'Could not resend to the selected recipients');
+        },
+      });
+  }
+
   deleteRecipient(recipient: ICertificateRecipient) {
-    if (!confirm(`Remove ${recipient.email} from this batch? This action cannot be undone.`)) {
+    const message = ISSUED_STATUSES.includes(recipient.status)
+      ? `Remove ${recipient.email} from this batch? This also revokes their certificate - it will no longer be viewable, and this cannot be undone.`
+      : `Remove ${recipient.email} from this batch? This cannot be undone.`;
+    if (!confirm(message)) {
       return;
     }
     this.certificateRecipientService
@@ -228,5 +353,45 @@ export class CertificateRecipientsTableComponent implements OnChanges, OnDestroy
           this.toastLogService.errorDialog('Could not remove the recipient');
         },
       });
+  }
+
+  canToggleRevoke(recipient: ICertificateRecipient): boolean {
+    return !!recipient.revoked_at || ISSUED_STATUSES.includes(recipient.status);
+  }
+
+  // Once a recipient's certificate is actually issued, "Preview" (which
+  // re-renders a throwaway copy every time) is misleading - it should link
+  // to the real, permanently-stored one instead. Hidden if revoked too,
+  // since the link would just 404.
+  isIssued(recipient: ICertificateRecipient): boolean {
+    return ISSUED_STATUSES.includes(recipient.status) && !recipient.revoked_at;
+  }
+
+  // Links to the public verify/view page, not the raw PDF - lets a viewer
+  // see who issued it and confirm it's genuine before downloading.
+  certificateViewUrl(recipient: ICertificateRecipient): string {
+    return `/certificates/verify/${recipient.uuid}`;
+  }
+
+  toggleRecipientRevoke(recipient: ICertificateRecipient) {
+    const isRevoked = !!recipient.revoked_at;
+    const message = isRevoked
+      ? `Un-revoke the certificate for ${recipient.email}? It becomes publicly viewable again.`
+      : `Revoke the certificate for ${recipient.email}? Their certificate's public page 404s until un-revoked.`;
+    if (!confirm(message)) {
+      return;
+    }
+    const action = isRevoked
+      ? this.certificateRecipientService.unrevokeCertificateRecipient(this.batch.uuid, recipient.id)
+      : this.certificateRecipientService.revokeCertificateRecipient(this.batch.uuid, recipient.id);
+    action.pipe(takeUntil(this.destroy$)).subscribe({
+      next: (updated) => {
+        recipient.revoked_at = updated.revoked_at;
+        this.toastLogService.successDialog(isRevoked ? 'Un-revoked' : 'Revoked');
+      },
+      error: () => {
+        this.toastLogService.errorDialog('Could not update the revoke status');
+      },
+    });
   }
 }

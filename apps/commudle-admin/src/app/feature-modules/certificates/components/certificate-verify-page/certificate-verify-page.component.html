@@ -1,0 +1,63 @@
+<div class="certificate-verify-page">
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+  <commudle-alert
+    *ngIf="!isLoading && notFound"
+    [error]="true"
+    errorMessage="This certificate could not be found. It may have been revoked, or the link may be incorrect."
+  ></commudle-alert>
+
+  <com-card class="verify-card" *ngIf="!isLoading && recipient">
+    <com-card-body>
+      <div class="verified-tag">
+        <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
+        Verified Certificate
+      </div>
+
+      <h1 class="recipient-name">{{ recipient.recipient_name || 'This certificate' }}</h1>
+      <p class="certificate-title">
+        has been issued the certificate for<br /><strong>{{ recipient.title }}</strong>
+      </p>
+
+      <div class="meta-row" *ngIf="recipient.issuer">
+        <span class="meta-label">Issued by</span>
+        <span class="meta-value">{{ recipient.issuer.name || recipient.issuer.type }}</span>
+      </div>
+      <div class="meta-row" *ngIf="recipient.issued_on">
+        <span class="meta-label">Issued on</span>
+        <span class="meta-value">{{ recipient.issued_on | date : 'mediumDate' }}</span>
+      </div>
+
+      <a
+        *ngIf="recipient.profile"
+        class="profile-link"
+        [href]="'/users/' + recipient.profile.username"
+        target="_blank"
+        rel="noopener"
+      >
+        <fa-icon [icon]="icons.faUser"></fa-icon>
+        View {{ recipient.profile.name || recipient.profile.username }}'s profile
+      </a>
+
+      <a
+        *ngIf="recipient.pdf_url"
+        comButton
+        status="primary"
+        size="small"
+        class="download-btn"
+        [href]="recipient.pdf_url"
+        target="_blank"
+        rel="noopener"
+      >
+        <fa-icon [icon]="icons.faDownload"></fa-icon> &nbsp; Download Certificate
+      </a>
+
+      <object
+        *ngIf="recipient.pdf_url"
+        [attr.data]="recipient.pdf_url | safe : 'resourceUrl'"
+        type="application/pdf"
+        class="pdf-object"
+      ></object>
+    </com-card-body>
+  </com-card>
+</div>

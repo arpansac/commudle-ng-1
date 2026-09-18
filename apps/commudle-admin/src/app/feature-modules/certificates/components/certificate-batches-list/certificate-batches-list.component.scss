@@ -36,10 +36,10 @@
       @apply com-overflow-scroll;
 
       .batches-table {
-        @apply com-w-full com-border-collapse;
+        @apply com-w-full com-border-collapse com-bg-gray-50;
 
         .table-header {
-          @apply com-border-0 com-border-solid com-border-b com-border-Bright-Gray;
+          @apply com-border-0 com-border-solid com-border-b com-border-Bright-Gray com-bg-white;
 
           th {
             @apply com-px-4 com-py-2 com-text-left com-text-xs com-font-semibold com-text-gray-500;

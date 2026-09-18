@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NbCheckboxModule, NbInputModule, NbTooltipModule } from '@commudle/theme';
+import { NbCheckboxModule, NbInputModule } from '@commudle/theme';
 import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { ECertificateBatchStatus, ICertificateBatch, ICertificateProgress } from '@commudle/shared-models';
 import { CertificateBatchService } from '@commudle/shared-services';
@@ -24,7 +24,6 @@ const POLL_INTERVAL_MS = 4000;
     CommudleButtonModule,
     NbCheckboxModule,
     NbInputModule,
-    NbTooltipModule,
     SharedComponentsModule,
     CertificateDeliveryFunnelComponent,
   ],
@@ -39,13 +38,11 @@ export class CertificateSendPanelComponent implements OnChanges, OnDestroy {
   consentChecked = false;
   isSending = false;
   isIssuing = false;
+  isResendingUnsentOnly = false;
   isLoadingProgress = false;
   progress: ICertificateProgress | null = null;
   emailSubject = '';
   emailBody = '';
-  // No bulk "generate without emailing" endpoint exists yet - see the spec's
-  // Open Design Decisions ("Issue Certificates" bulk-generate endpoint).
-  issueTooltip = 'Needs backend support that does not exist yet - see the certificate-generation spec.';
 
   private destroy$ = new Subject<void>();
   private pollDestroy$ = new Subject<void>();
@@ -163,13 +160,23 @@ export class CertificateSendPanelComponent implements OnChanges, OnDestroy {
   }
 
   issueCertificates() {
-    // Placeholder until the backend has a bulk "generate without emailing"
-    // action queued on certificate_pdf - see the spec's Open Design
-    // Decisions. Deliberately not wired to sendBatch() or any existing
-    // endpoint, since none of them generate without also emailing.
-    this.toastLogService.warningDialog(
-      'Issuing certificates without emailing needs backend support that does not exist yet.',
-    );
+    if (!this.batch?.design || this.isIssuing) {
+      return;
+    }
+    this.isIssuing = true;
+    this.certificateBatchService
+      .issueBatch(this.batch.uuid)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.isIssuing = false;
+          this.toastLogService.successDialog('Issuing certificates - this runs in the background.');
+        },
+        error: (err) => {
+          this.isIssuing = false;
+          this.toastLogService.errorDialog(err?.error?.message || 'Could not start issuing certificates');
+        },
+      });
   }
 
   send() {
@@ -224,6 +231,27 @@ export class CertificateSendPanelComponent implements OnChanges, OnDestroy {
         },
         error: (err) => {
           this.isSending = false;
+          this.toastLogService.errorDialog(err?.error?.message || 'Could not resend');
+        },
+      });
+  }
+
+  resendUnsentOnly() {
+    if (!confirm('Resend only to recipients who have not received a certificate yet?')) {
+      return;
+    }
+    this.isResendingUnsentOnly = true;
+    this.certificateBatchService
+      .resendBatch(this.batch.uuid, { unsent_only: true })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.isResendingUnsentOnly = false;
+          this.toastLogService.successDialog('Resending to unsent recipients started');
+          this.refreshBatchAndProgress();
+        },
+        error: (err) => {
+          this.isResendingUnsentOnly = false;
           this.toastLogService.errorDialog(err?.error?.message || 'Could not resend');
         },
       });

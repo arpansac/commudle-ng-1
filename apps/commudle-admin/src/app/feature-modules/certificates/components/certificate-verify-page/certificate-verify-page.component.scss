@@ -1,0 +1,43 @@
+.certificate-verify-page {
+  @apply com-max-w-3xl com-mx-auto com-py-12 com-px-4;
+}
+
+.verify-card {
+  @apply com-text-center;
+}
+
+.verified-tag {
+  @apply com-inline-flex com-items-center com-gap-2 com-bg-green-100 com-text-green-700 com-px-3 com-py-1 com-rounded-full com-text-sm com-font-medium com-mb-4;
+}
+
+.recipient-name {
+  @apply com-text-2xl com-font-semibold com-text-Yankees-Blue com-mb-2;
+}
+
+.certificate-title {
+  @apply com-text-Auro-Metal-Saurus com-mb-6;
+}
+
+.meta-row {
+  @apply com-flex com-justify-center com-gap-2 com-text-sm com-mb-1;
+}
+
+.meta-label {
+  @apply com-text-Auro-Metal-Saurus;
+}
+
+.meta-value {
+  @apply com-text-Yankees-Blue com-font-medium;
+}
+
+.profile-link {
+  @apply com-flex com-items-center com-justify-center com-gap-2 com-text-Ultramarine-Blue com-text-sm com-mt-4;
+}
+
+.download-btn {
+  @apply com-inline-flex com-items-center com-mt-6 com-mb-6;
+}
+
+.pdf-object {
+  @apply com-w-full com-h-[80vh] com-border com-border-Bright-Gray com-rounded;
+}

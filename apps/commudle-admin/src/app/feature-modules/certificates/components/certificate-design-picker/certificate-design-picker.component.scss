@@ -1,8 +1,4 @@
 .certificate-design-picker {
-  .locked-notice {
-    @apply com-p-3 com-mb-4 com-bg-Anti-Flash com-rounded-lg com-text-Auro-Metal-Saurus;
-  }
-
   .design-grid {
     @apply com-flex com-gap-4 com-mb-4 com-items-start;
 
@@ -12,10 +8,6 @@
 
     .design-card {
       @apply com-flex-none com-w-40 com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-overflow-hidden com-cursor-pointer;
-
-      &.disabled {
-        @apply com-cursor-not-allowed com-opacity-70;
-      }
 
       .design-thumb {
         @apply com-relative;

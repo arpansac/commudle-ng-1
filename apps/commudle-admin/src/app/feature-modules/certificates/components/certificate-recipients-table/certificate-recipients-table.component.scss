@@ -1,6 +1,18 @@
 .certificate-recipients-table {
   .table-header {
-    @apply com-flex com-justify-end com-gap-2 com-mb-4;
+    @apply com-flex com-flex-col md:com-flex-row com-justify-between md:com-items-center com-gap-3 com-mb-4;
+
+    .search-form {
+      @apply com-w-full md:com-max-w-[20rem];
+
+      input {
+        @apply com-w-full;
+      }
+    }
+
+    .table-header-actions {
+      @apply com-flex com-gap-2 com-flex-none;
+    }
   }
 
   .empty-state {
@@ -10,17 +22,29 @@
   .recipient-list-container {
     @apply com-w-full;
 
+    .bulk-actions {
+      @apply com-flex com-items-center com-gap-3 com-mb-3 com-p-3 com-bg-blue-50 com-rounded-lg;
+
+      .bulk-actions-count {
+        @apply com-text-sm com-font-medium com-text-Yankees-Blue;
+      }
+    }
+
     .table-wrapper {
       @apply com-overflow-scroll;
 
       .recipients-table {
-        @apply com-w-full com-border-collapse;
+        @apply com-w-full com-border-collapse com-bg-gray-50;
 
         .table-header-row {
-          @apply com-border-0 com-border-solid com-border-b com-border-Bright-Gray;
+          @apply com-border-0 com-border-solid com-border-b com-border-Bright-Gray com-bg-white;
 
           th {
             @apply com-px-4 com-py-2 com-text-left com-text-xs com-font-semibold com-text-gray-500;
+
+            &.select-column {
+              @apply com-w-8 com-px-2;
+            }
           }
         }
 
@@ -37,6 +61,10 @@
             &.actions {
               @apply com-whitespace-nowrap;
             }
+
+            &.select-column {
+              @apply com-w-8 com-px-2;
+            }
           }
         }
       }
@@ -50,4 +78,8 @@
 
 .skip-reason {
   @apply com-text-xs com-text-red-500 com-mt-1;
+}
+
+.revoked-tag {
+  @apply com-text-xs com-font-semibold com-text-red-500 com-uppercase com-tracking-wide com-mt-1;
 }

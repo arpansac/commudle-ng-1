@@ -3,10 +3,6 @@
     @apply com-text-Auro-Metal-Saurus com-py-4;
   }
 
-  .locked-notice {
-    @apply com-p-3 com-mb-4 com-bg-Anti-Flash com-rounded-lg com-text-Auro-Metal-Saurus;
-  }
-
   .canvas-layout {
     @apply com-flex com-items-start;
 
@@ -58,10 +54,6 @@
           // by a genuine user interaction on the element itself).
           .variable-actions-select {
             @apply com-absolute com-inset-0 com-w-full com-h-full com-opacity-0 com-cursor-pointer com-m-0 com-p-0 com-border-0;
-          }
-
-          &.disabled .variable-actions-select {
-            @apply com-cursor-not-allowed;
           }
         }
 
