@@ -88,7 +88,7 @@
         <div class="categories">
           <div class="category">
             <div *ngIf="sidebarExpanded" class="category-heading">
-              <span>EVENT SETUP</span>
+              <span>SET UP</span>
             </div>
             <a
               class="action-button"
@@ -113,10 +113,37 @@
               </div>
               <div *ngIf="sidebarExpanded" class="heading">Location & Agenda</div>
             </a>
+            <a [routerLink]="['volunteers']" [routerLinkActive]="'active'" class="action-button">
+              <div class="icon">
+                <fa-icon [icon]="icons.faUsers"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Team</div>
+            </a>
           </div>
           <div class="category">
             <div *ngIf="sidebarExpanded" class="category-heading">
-              <span>MORE</span>
+              <span>PROMOTE</span>
+            </div>
+            <a
+              [routerLink]="['/communities', community.slug, 'events', event.slug]"
+              target="_blank"
+              class="action-button public-event-page"
+            >
+              <div class="icon">
+                <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Public Event Page</div>
+            </a>
+            <a [routerLink]="['collaborations']" [routerLinkActive]="'active'" class="action-button">
+              <div class="icon">
+                <fa-icon [icon]="icons.faHandshakeSimple"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Sponsors & Collabs</div>
+            </a>
+          </div>
+          <div class="category">
+            <div *ngIf="sidebarExpanded" class="category-heading">
+              <span>RUN</span>
             </div>
             <a
               *ngIf="event.event_status.name !== EEventStatuses.DRAFT"
@@ -129,38 +156,11 @@
               </div>
               <div *ngIf="sidebarExpanded" class="heading">Send Updates</div>
             </a>
-            <a [routerLink]="['collaborations']" [routerLinkActive]="'active'" class="action-button">
-              <div class="icon">
-                <fa-icon [icon]="icons.faHandshakeSimple"></fa-icon>
-              </div>
-              <div *ngIf="sidebarExpanded" class="heading">Sponsors & Collabs</div>
-            </a>
-            <a [routerLink]="['volunteers']" [routerLinkActive]="'active'" class="action-button">
-              <div class="icon">
-                <fa-icon [icon]="icons.faUsers"></fa-icon>
-              </div>
-              <div *ngIf="sidebarExpanded" class="heading">Team</div>
-            </a>
             <a (click)="sendEmails()" class="action-button">
               <div class="icon">
                 <fa-icon [icon]="icons.faPaperPlane"></fa-icon>
               </div>
               <div *ngIf="sidebarExpanded" class="heading">Send Emails</div>
-            </a>
-          </div>
-          <div class="category">
-            <div *ngIf="sidebarExpanded" class="category-heading">
-              <div>LINKS</div>
-            </div>
-            <a
-              [routerLink]="['/communities', community.slug, 'events', event.slug]"
-              target="_blank"
-              class="action-button public-event-page"
-            >
-              <div class="icon">
-                <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
-              </div>
-              <div *ngIf="sidebarExpanded" class="heading">Public Event Page</div>
             </a>
             <a
               [routerLink]="['/admin', 'communities', community.slug, 'event-dashboard', event.slug, 'scan-entry-pass']"
@@ -175,7 +175,7 @@
           </div>
           <div class="category">
             <div *ngIf="sidebarExpanded" class="category-heading">
-              <div>INSIGHTS</div>
+              <span>REVIEW</span>
             </div>
             <a [routerLink]="['stats']" class="action-button stats" [routerLinkActive]="'active'">
               <div class="icon">
