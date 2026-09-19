@@ -1,4 +1,5 @@
 .survey-header {
+  @apply com-flex com-justify-between com-items-center com-px-2 com-mb-4;
   h4 {
     margin: 0;
   }

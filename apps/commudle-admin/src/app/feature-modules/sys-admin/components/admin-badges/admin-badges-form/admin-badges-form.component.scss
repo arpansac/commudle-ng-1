@@ -1,6 +1,10 @@
 @import './apps/commudle-admin/src/assets/styles/variables';
 
 .admin-badges-form {
+  @apply com-mt-4 com-flex;
+  com-card-header {
+    @apply com-flex com-items-center;
+  }
   com-card-body {
     .form-fields {
       label,
