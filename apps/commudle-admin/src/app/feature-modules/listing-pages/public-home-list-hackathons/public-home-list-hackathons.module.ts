@@ -12,6 +12,7 @@ import { SkeletonCardsComponent } from 'apps/commudle-admin/src/app/feature-modu
 import { PublicHomeListSpeakersModule } from 'apps/commudle-admin/src/app/feature-modules/listing-pages/public-home-list-speakers/public-home-list-speakers.module';
 import { NbIconModule, NbButtonModule } from '@commudle/theme';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
 @NgModule({
   declarations: [PublicHomeListHackathonsHomeageComponent],
   imports: [
@@ -28,6 +29,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     NbIconModule,
     NbButtonModule,
     FontAwesomeModule,
+    SharedDirectivesModule,
   ],
   exports: [PublicHomeListHackathonsHomeageComponent],
 })
