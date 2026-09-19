@@ -20,9 +20,21 @@
         <span class="toggle-slider"></span>
       </label>
     </div>
+
     <div class="router-tab">
-      <nb-route-tabset [tabs]="tabs"></nb-route-tabset>
+      <a routerLink="./" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <div class="route-tab-option">
+          <span>Tracks</span>
+        </div>
+      </a>
+      <a routerLink="./prizes" routerLinkActive="active">
+        <div class="route-tab-option">
+          <span>Prizes</span>
+        </div>
+      </a>
     </div>
+
+    <router-outlet></router-outlet>
   </com-card-body>
 </com-card>
 
