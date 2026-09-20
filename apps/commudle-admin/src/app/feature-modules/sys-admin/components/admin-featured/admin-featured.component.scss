@@ -1,0 +1,27 @@
+com-card {
+  @apply com-mt-4;
+}
+
+.route-tabs {
+  @apply com-top-0 com-flex com-items-center com-gap-3 com-mb-4 com-border-0 com-border-b com-border-Bright-Gray com-border-solid com-overflow-x-auto com-scrollbar-hide;
+
+  a {
+    @apply com-text-gunmetal com-p-0 com-shrink-0;
+    text-align: center;
+    border: none;
+    text-decoration: none;
+  }
+
+  .route-tab-option {
+    @apply com-flex com-items-center com-gap-2 com-text-sm com-font-medium com-h-fit com-m-0 com-px-2 com-py-2 com-cursor-pointer com-no-underline;
+    cursor: pointer;
+  }
+
+  .active {
+    @apply com-border-0 com-border-b-[4px] com-border-Azure com-text-Azure com-border-solid;
+  }
+}
+
+.route-tab-content {
+  @apply com-flex-1 com-min-h-0;
+}
