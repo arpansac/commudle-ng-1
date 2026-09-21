@@ -37,6 +37,10 @@
       @apply com-max-w-full com-max-h-[10rem] com-object-contain com-rounded;
     }
   }
+
+  .file-constraints-hint {
+    @apply com-block com-text-xs com-text-Auro-Metal-Saurus com-mt-1;
+  }
 }
 
 .dialog-footer {

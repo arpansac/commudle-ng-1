@@ -17,6 +17,10 @@ import {
   CertificateReissueDialogComponent,
   ECertificateReissueScope,
 } from '../certificate-reissue-dialog/certificate-reissue-dialog.component';
+import {
+  CertificateResendDialogComponent,
+  ICertificateResendDialogResult,
+} from '../certificate-resend-dialog/certificate-resend-dialog.component';
 
 const POLL_INTERVAL_MS = 4000;
 
@@ -249,54 +253,88 @@ export class CertificateSendPanelComponent implements OnChanges, OnDestroy {
   }
 
   resend() {
-    openCertificateConfirmDialog(this.dialogService, {
-      message: 'Resend this batch? This re-emails every non-revoked recipient.',
-    })
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((confirmed) => {
-        if (!confirmed) {
-          return;
-        }
-        this.isSending = true;
-        this.certificateBatchService
-          .resendBatch(this.batch.uuid)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: () => {
-              this.isSending = false;
-              this.toastLogService.successDialog('Resending started');
-              this.refreshBatchAndProgress();
-            },
-            error: (err) => {
-              this.isSending = false;
-              this.toastLogService.errorDialog(err?.error?.message || 'Could not resend');
-            },
-          });
-      });
+    this.openResendDialog({
+      title: 'Resend certificates',
+      confirmLabel: 'Resend',
+      unsentOnly: false,
+    });
   }
 
   resendUnsentOnly() {
-    openCertificateConfirmDialog(this.dialogService, {
-      message: 'Resend only to recipients who have not received a certificate yet?',
-    })
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((confirmed) => {
-        if (!confirmed) {
+    this.openResendDialog({
+      title: 'Resend to unsent recipients only',
+      confirmLabel: 'Resend',
+      unsentOnly: true,
+    });
+  }
+
+  // Lets the organizer see exactly what went out - including on the very
+  // first send, not just before a resend - without being able to change it
+  // (editing here wouldn't do anything: the email already sent).
+  viewSentContent() {
+    this.dialogService.open(CertificateResendDialogComponent, {
+      context: {
+        title: 'Email content sent',
+        emailSubject: this.batch.email_subject || '',
+        emailBody: this.batch.email_body || '',
+        readOnly: true,
+      },
+    });
+  }
+
+  // resend/resend_unsent_only on the backend just re-fire the worker with
+  // whatever email_subject/email_body are already saved on the batch -
+  // there's no single-call "update and resend". So an edit here first goes
+  // through updateCertificateBatch, then the resend call, same two-step
+  // `send()` already does for the very first send.
+  private openResendDialog(options: { title: string; confirmLabel: string; unsentOnly: boolean }) {
+    this.dialogService
+      .open(CertificateResendDialogComponent, {
+        context: {
+          title: options.title,
+          emailSubject: this.batch.email_subject || '',
+          emailBody: this.batch.email_body || '',
+          confirmLabel: options.confirmLabel,
+        },
+        closeOnBackdropClick: false,
+        closeOnEsc: false,
+      })
+      .onClose.pipe(takeUntil(this.destroy$))
+      .subscribe((result: ICertificateResendDialogResult | undefined) => {
+        if (!result) {
           return;
         }
-        this.isResendingUnsentOnly = true;
+        const isSendingFlag = options.unsentOnly ? 'isResendingUnsentOnly' : 'isSending';
+        this[isSendingFlag] = true;
         this.certificateBatchService
-          .resendBatch(this.batch.uuid, { unsent_only: true })
+          .updateCertificateBatch(this.batch.uuid, {
+            email_subject: result.emailSubject,
+            email_body: result.emailBody,
+          })
           .pipe(takeUntil(this.destroy$))
           .subscribe({
-            next: () => {
-              this.isResendingUnsentOnly = false;
-              this.toastLogService.successDialog('Resending to unsent recipients started');
-              this.refreshBatchAndProgress();
+            next: (updated) => {
+              Object.assign(this.batch, updated);
+              this.certificateBatchService
+                .resendBatch(this.batch.uuid, options.unsentOnly ? { unsent_only: true } : undefined)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                  next: () => {
+                    this[isSendingFlag] = false;
+                    this.toastLogService.successDialog(
+                      options.unsentOnly ? 'Resending to unsent recipients started' : 'Resending started',
+                    );
+                    this.refreshBatchAndProgress();
+                  },
+                  error: (err) => {
+                    this[isSendingFlag] = false;
+                    this.toastLogService.errorDialog(err?.error?.message || 'Could not resend');
+                  },
+                });
             },
-            error: (err) => {
-              this.isResendingUnsentOnly = false;
-              this.toastLogService.errorDialog(err?.error?.message || 'Could not resend');
+            error: () => {
+              this[isSendingFlag] = false;
+              this.toastLogService.errorDialog('Could not save the email subject/body before resending');
             },
           });
       });

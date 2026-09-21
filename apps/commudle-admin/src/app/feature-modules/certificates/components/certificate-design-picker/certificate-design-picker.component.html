@@ -20,6 +20,19 @@
             <div class="selected-badge" *ngIf="design.id === batch.design?.id">
               <nb-icon icon="checkmark-outline"></nb-icon>
             </div>
+            <div *ngIf="design.design_type !== ECertificateDesignType.PRESET" class="design-actions">
+              <button ghost comButton size="tiny" tabindex="-1" class="kebab-button">
+                <nb-icon icon="more-vertical"></nb-icon>
+              </button>
+              <select
+                class="design-actions-select"
+                (click)="$event.stopPropagation()"
+                (change)="onDesignAction(design, $any($event.target).value, $event); $any($event.target).value = ''"
+              >
+                <option value="" disabled selected>Actions</option>
+                <option value="delete">Delete</option>
+              </select>
+            </div>
           </div>
           <div class="design-card-footer">
             <span class="design-name">{{ design.name }}</span>

@@ -8,6 +8,9 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { Subject, takeUntil } from 'rxjs';
 import { CertificateUploadDesignDialogComponent } from '../certificate-upload-design-dialog/certificate-upload-design-dialog.component';
+import { openCertificateConfirmDialog } from '../certificate-confirm-dialog/certificate-confirm-dialog.component';
+
+type DesignAction = 'delete';
 
 @Component({
   selector: 'commudle-certificate-design-picker',
@@ -123,6 +126,55 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
         this.designs = [design, ...this.designs].slice(0, this.designPageSize);
         this.designTotal += 1;
         this.selectDesign(design);
+      });
+  }
+
+  onDesignAction(design: ICertificateDesign, action: DesignAction | '', event: Event) {
+    // The card itself is clickable (selects the design) - the select's own
+    // click listener already stops that bubbling, but the change event
+    // still needs to be kept from doing so too.
+    event.stopPropagation();
+    if (action === 'delete') {
+      this.deleteDesign(design);
+    }
+  }
+
+  deleteDesign(design: ICertificateDesign) {
+    openCertificateConfirmDialog(this.dialogService, {
+      message: `Delete "${design.name}"? If it's already been used by a sent batch, it'll be archived instead (hidden from this picker, but kept for that batch's existing certificates) rather than deleted outright.`,
+      danger: true,
+    })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((confirmed) => {
+        if (!confirmed) {
+          return;
+        }
+        this.certificateDesignService
+          .deleteCertificateDesign(design.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (result) => {
+              this.designs = this.designs.filter((d) => d.id !== design.id);
+              this.designTotal = Math.max(0, this.designTotal - 1);
+              this.toastLogService.successDialog(
+                result.archived
+                  ? `"${design.name}" was already in use, so it's been archived instead of deleted`
+                  : `"${design.name}" deleted`,
+              );
+              // A hard delete nullifies certificate_design_id server-side
+              // for any batch using it - reflect that locally so this
+              // batch's own !batch.design guards recompute. An archive
+              // doesn't touch the batch's assignment - it stays usable for
+              // whichever batch already had it selected, just hidden from
+              // the picker for new selections.
+              if (result.deleted && design.id === this.batch.design?.id) {
+                this.batchUpdated.emit({ ...this.batch, design: null, certificate_design_id: null });
+              }
+            },
+            error: (err) => {
+              this.toastLogService.errorDialog(err?.error?.message || 'Could not delete this design');
+            },
+          });
       });
   }
 }

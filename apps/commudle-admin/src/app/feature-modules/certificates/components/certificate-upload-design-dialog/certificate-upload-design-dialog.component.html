@@ -35,6 +35,7 @@
         </ng-container>
         <img *ngIf="selectedFilePreviewUrl" [src]="selectedFilePreviewUrl" class="preview-image" alt="Preview" />
       </div>
+      <span class="file-constraints-hint">JPEG, JPG, or PNG - up to {{ maxFileSizeLabel }}</span>
       <input
         #fileInput
         type="file"

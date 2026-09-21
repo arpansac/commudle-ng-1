@@ -3,29 +3,37 @@
     This batch is revoked - every certificate in it 404s on its public page.
   </div>
 
+  <div *ngIf="!batch.design" class="hint-text">Choose a design above before issuing or sending.</div>
+
+  <!-- Issuing is independent of send status - it never touches
+  batch.status, so unlike the Send subsection below it stays available in
+  every status, not just DRAFT/READY. Re-running it after some recipients
+  are already issued (e.g. new recipients added after a first issue, or a
+  changed design) re-prompts via issueCertificates() -> the reissue-scope
+  dialog for "everyone" vs "only unissued". -->
+  <div class="send-subsection issue-subsection">
+    <h4 class="subsection-title">Issue Certificates</h4>
+    <p class="subsection-description">
+      Generate a real, verifiable certificate for every recipient in this batch, independent of emailing them - useful
+      if you want certificates to exist and be viewable before (or without) sending any email. Safe to run again later -
+      if some recipients are already issued (e.g. new recipients were added, or the design changed), you'll be asked
+      whether to issue only the remaining ones or reissue everyone.
+    </p>
+    <button
+      comButton
+      status="info"
+      size="medium"
+      [disabled]="!batch.design || isIssuing || isRevoked"
+      (click)="issueCertificates()"
+    >
+      {{ isIssuing ? 'Issuing...' : 'Issue Certificates' }}
+    </button>
+  </div>
+
   <div
     *ngIf="batch.status === ECertificateBatchStatus.DRAFT || batch.status === ECertificateBatchStatus.READY"
     class="pre-send"
   >
-    <div *ngIf="!batch.design" class="hint-text">Choose a design above before sending.</div>
-
-    <div class="send-subsection">
-      <h4 class="subsection-title">Issue Certificates</h4>
-      <p class="subsection-description">
-        Generate a real, verifiable certificate for every recipient in this batch, independent of emailing them - useful
-        if you want certificates to exist and be viewable before (or without) sending any email.
-      </p>
-      <button
-        comButton
-        status="info"
-        size="medium"
-        [disabled]="!batch.design || isIssuing"
-        (click)="issueCertificates()"
-      >
-        {{ isIssuing ? 'Issuing...' : 'Issue Certificates' }}
-      </button>
-    </div>
-
     <div class="send-subsection">
       <h4 class="subsection-title">Send</h4>
       <p class="subsection-description">Email each recipient their certificate.</p>
@@ -69,6 +77,10 @@
     <div *ngIf="batch.status === ECertificateBatchStatus.SENDING" class="hint-text">
       Sending in progress - this refreshes automatically.
     </div>
+
+    <button ghost comButton size="small" class="view-content-button" (click)="viewSentContent()">
+      View email content sent
+    </button>
 
     <app-loading-spinner *ngIf="isLoadingProgress && !progress"></app-loading-spinner>
 

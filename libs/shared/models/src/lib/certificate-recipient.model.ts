@@ -50,6 +50,7 @@ export interface ICertificateRecipient {
   missing_required_keys?: string[];
   sendable?: boolean;
   pdf_url?: string | null;
+  thumbnail_url?: string | null;
   deliveries?: ICertificateRecipientDelivery[];
   // Frontend-only UI flag - true while the synchronous generate_one request
   // is in flight for this row, not part of the API response.

@@ -50,6 +50,10 @@
             &.select-column {
               @apply com-w-8 com-px-2;
             }
+
+            &.thumbnail-column {
+              @apply com-w-14 com-px-2;
+            }
           }
         }
 
@@ -70,6 +74,10 @@
             &.select-column {
               @apply com-w-8 com-px-2;
             }
+
+            &.thumbnail-column {
+              @apply com-w-14 com-px-2;
+            }
           }
         }
       }
@@ -87,4 +95,12 @@
 
 .revoked-tag {
   @apply com-text-xs com-font-semibold com-text-red-500 com-uppercase com-tracking-wide com-mt-1;
+}
+
+.missing-values-warning {
+  @apply com-text-yellow-600 com-ml-2 com-cursor-help com-align-middle;
+}
+
+.certificate-thumbnail {
+  @apply com-w-12 com-h-8 com-object-cover com-rounded com-border com-border-solid com-border-Bright-Gray com-bg-white;
 }

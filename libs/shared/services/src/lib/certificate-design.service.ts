@@ -35,4 +35,17 @@ export class CertificateDesignService {
       { params },
     );
   }
+
+  // Not always a real delete - the backend soft-archives instead
+  // (`{ archived: true }`) if the design is already used by a sent/locked
+  // batch, to avoid breaking already-issued certificates' history. A
+  // fresh, never-locked design gets a real (paranoid) delete
+  // (`{ deleted: true }`). Callers should branch on the response key.
+  deleteCertificateDesign(designId: number): Observable<{ deleted?: boolean; archived?: boolean }> {
+    const params = new HttpParams().set('id', designId);
+    return this.http.delete<{ deleted?: boolean; archived?: boolean }>(
+      this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_DESIGNS.DELETE),
+      { params },
+    );
+  }
 }

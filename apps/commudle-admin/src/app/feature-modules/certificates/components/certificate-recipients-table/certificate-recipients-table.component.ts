@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { NbCheckboxModule, NbDialogService, NbIconModule, NbInputModule } from '@commudle/theme';
+import { NbCheckboxModule, NbDialogService, NbIconModule, NbInputModule, NbTooltipModule } from '@commudle/theme';
 import { CommudleButtonModule } from '@commudle/commudle-theme';
 import {
   ECertificateRecipientStatus,
@@ -27,6 +27,7 @@ import {
   faSpinner,
   faRedo,
   faUndo,
+  faExclamationTriangle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
@@ -53,6 +54,7 @@ const ISSUED_STATUSES = [
     NbIconModule,
     NbInputModule,
     NbCheckboxModule,
+    NbTooltipModule,
     FontAwesomeModule,
     SharedComponentsModule,
   ],
@@ -88,6 +90,7 @@ export class CertificateRecipientsTableComponent implements OnInit, OnChanges, O
     faSpinner,
     faRedo,
     faUndo,
+    faExclamationTriangle,
   };
 
   private destroy$ = new Subject<void>();
@@ -279,14 +282,28 @@ export class CertificateRecipientsTableComponent implements OnInit, OnChanges, O
     return !!this.batch.locked_at;
   }
 
+  // Revoking a batch only stamps certificate_batches.revoked_at - it
+  // doesn't cascade to each recipient's own revoked_at, so this checks
+  // the batch separately from recipient.revoked_at (individual revoke).
+  // Every certificate in a revoked batch 404s on its public page (see the
+  // banner in certificate-send-panel), so send/generate/reissue/download
+  // would all be misleading to offer here.
+  get isBatchRevoked(): boolean {
+    return !!this.batch.revoked_at;
+  }
+
+  // send_one is fire-and-forget (enqueued on Sidekiq, no finished recipient
+  // in the response) - unlike generate_one/reissueOne there's nothing to
+  // Object.assign back, so this just optimistically marks the row queued
+  // locally instead of refetching the whole table for one row's change.
   sendOne(recipient: ICertificateRecipient) {
     this.certificateRecipientService
       .sendOne(this.batch.uuid, recipient.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
+          recipient.status = ECertificateRecipientStatus.QUEUED;
           this.toastLogService.successDialog(`Queued a send for ${recipient.email}`);
-          this.fetchRecipients();
         },
         error: (err) => {
           this.toastLogService.errorDialog(err?.error?.message || 'Could not send to this recipient');
@@ -482,6 +499,23 @@ export class CertificateRecipientsTableComponent implements OnInit, OnChanges, O
   // since the link would just 404.
   isIssued(recipient: ICertificateRecipient): boolean {
     return ISSUED_STATUSES.includes(recipient.status) && !recipient.revoked_at;
+  }
+
+  // recipient.sendable is false when a required variable's cell is blank,
+  // but the API doesn't send back which ones - computed here instead,
+  // mirroring CertificateRecipient#missing_required_values on the backend
+  // exactly (rendered + positioned + no default + blank cell), using the
+  // same `variables` already loaded for the table's columns.
+  missingValueLabels(recipient: ICertificateRecipient): string[] {
+    return this.variables
+      .filter((variable) => variable.keep && variable.positioned && !variable.default_set)
+      .filter((variable) => !(recipient.row_values?.[variable.key] || '').trim())
+      .map((variable) => variable.label || variable.key);
+  }
+
+  missingValuesTooltip(recipient: ICertificateRecipient): string {
+    const labels = this.missingValueLabels(recipient);
+    return `Missing required value${labels.length === 1 ? '' : 's'}: ${labels.join(', ')}`;
   }
 
   // Links to the public verify/view page, not the raw PDF - lets a viewer

@@ -1,6 +1,18 @@
 .certificate-batch-detail {
   @apply com-p-4 md:com-p-6 com-bg-white com-min-h-screen com-rounded-10 com-overflow-hidden com-flex com-flex-col com-gap-6;
 
+  .back-link {
+    @apply com-inline-flex com-items-center com-gap-1 com-w-fit com-text-sm com-text-Auro-Metal-Saurus com-no-underline;
+
+    nb-icon {
+      @apply com-text-base;
+    }
+
+    &:hover {
+      @apply com-text-Azure;
+    }
+  }
+
   .detail-header {
     @apply com-mb-0;
 

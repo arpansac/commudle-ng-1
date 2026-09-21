@@ -19,6 +19,22 @@
         .selected-badge {
           @apply com-absolute com-top-2 com-right-2 com-w-6 com-h-6 com-rounded-full com-bg-Azure com-flex com-items-center com-justify-center com-text-white;
         }
+
+        .design-actions {
+          @apply com-absolute com-top-2 com-left-2 com-inline-flex com-items-center com-bg-white com-rounded-full com-shadow;
+
+          .kebab-button {
+            @apply com-pointer-events-none;
+          }
+
+          // Same invisible-native-select-over-an-icon pattern as
+          // certificate-batches-list's row actions menu - opens the
+          // browser's native dropdown directly on click/tap, no custom
+          // overlay to manage.
+          .design-actions-select {
+            @apply com-absolute com-inset-0 com-w-full com-h-full com-opacity-0 com-cursor-pointer com-m-0 com-p-0 com-border-0;
+          }
+        }
       }
 
       .design-card-footer {

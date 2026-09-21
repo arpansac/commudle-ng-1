@@ -2,6 +2,11 @@
   <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
   <ng-container *ngIf="!isLoading && batch">
+    <a class="back-link" routerLink="../">
+      <nb-icon icon="arrow-back-outline"></nb-icon>
+      All batches
+    </a>
+
     <div class="detail-header">
       <div>
         <div class="name-row" *ngIf="!isEditingName">

@@ -8,6 +8,8 @@ import { CertificateDesignService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 
+const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
+
 @Component({
   selector: 'commudle-certificate-upload-design-dialog',
   standalone: true,
@@ -26,6 +28,8 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
 export class CertificateUploadDesignDialogComponent implements OnInit, OnDestroy {
   @Input() issuerId: number;
   @Input() defaultName = '';
+
+  readonly maxFileSizeLabel = '5MB';
 
   uploadForm: FormGroup;
   selectedFile: File | null = null;
@@ -93,7 +97,11 @@ export class CertificateUploadDesignDialogComponent implements OnInit, OnDestroy
       return;
     }
     if (!['image/png', 'image/jpeg'].includes(file.type)) {
-      this.toastLogService.warningDialog('Please choose a PNG or JPEG image');
+      this.toastLogService.warningDialog('Please choose a JPEG, JPG, or PNG image');
+      return;
+    }
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      this.toastLogService.warningDialog(`This image is too large - please choose one under ${this.maxFileSizeLabel}`);
       return;
     }
     if (this.selectedFilePreviewUrl) {

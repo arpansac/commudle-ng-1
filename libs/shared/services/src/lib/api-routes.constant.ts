@@ -1252,6 +1252,7 @@ export const API_ROUTES = {
   CERTIFICATE_DESIGNS: {
     INDEX: 'api/v2/certificate_designs', //GET
     CREATE: 'api/v2/certificate_designs', //POST
+    DELETE: 'api/v2/certificate_designs', //DELETE
   },
 
   CERTIFICATE_VARIABLES: {

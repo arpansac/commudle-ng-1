@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { NbIconModule, NbInputModule } from '@commudle/theme';
 import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 import { ECertificateBatchStatus, ICertificateBatch } from '@commudle/shared-models';
@@ -21,6 +21,7 @@ import { CertificateSendPanelComponent } from '../certificate-send-panel/certifi
   imports: [
     CommonModule,
     FormsModule,
+    RouterModule,
     CommudleCardModule,
     CommudleButtonModule,
     NbIconModule,
