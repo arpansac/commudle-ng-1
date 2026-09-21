@@ -7,6 +7,7 @@ import { CertificateRecipientService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
+import { SkeletonPdfPreviewComponent } from '../../../skeleton-screens/components/skeleton-pdf-preview/skeleton-pdf-preview.component';
 
 @Component({
   selector: 'commudle-certificate-recipient-preview-dialog',
@@ -18,6 +19,7 @@ import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
     NbIconModule,
     SharedComponentsModule,
     SharedPipesModule,
+    SkeletonPdfPreviewComponent,
   ],
   templateUrl: './certificate-recipient-preview-dialog.component.html',
   styleUrls: ['./certificate-recipient-preview-dialog.component.scss'],

@@ -105,6 +105,10 @@
         label {
           @apply com-block com-text-xs com-text-Auro-Metal-Saurus com-mb-1;
         }
+
+        select {
+          @apply com-w-full com-border com-border-solid com-border-Bright-Gray com-rounded com-px-2 com-py-1 com-text-sm com-bg-white;
+        }
       }
 
       .style-toggles {

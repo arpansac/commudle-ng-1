@@ -33,7 +33,13 @@
           <button ghost comButton size="small" (click)="cancelEditName()">Cancel</button>
         </div>
         <div class="meta-line">
-          <nb-badge [text]="statusLabel(batch.status)" status="info" position="static"></nb-badge>
+          <app-badge
+            [text]="statusLabel(batch.status) | titlecase"
+            [fontSize]="'small'"
+            [borderRadius]="'round'"
+            [color]="statusColor(batch.status)"
+            [fontColor]="statusFontColor(batch.status)"
+          ></app-badge>
           <span class="meta-item">Created {{ moment(batch.created_at).format('DD MMM YYYY') }}</span>
           <span class="meta-item" *ngIf="batch.locked_at"
             >Locked {{ moment(batch.locked_at).format('DD MMM YYYY') }}</span

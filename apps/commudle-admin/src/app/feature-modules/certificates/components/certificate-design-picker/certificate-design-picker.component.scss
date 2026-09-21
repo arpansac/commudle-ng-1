@@ -41,7 +41,6 @@
         @apply com-text-2xl;
       }
 
-      &.active,
       &:hover {
         @apply com-border-Azure com-text-Azure;
       }
@@ -50,25 +49,5 @@
 
   .design-pagination {
     @apply com-mb-4;
-  }
-
-  .upload-form {
-    @apply com-mt-4;
-
-    .form-field-container {
-      @apply com-mb-4;
-
-      .form-field {
-        @apply com-block com-w-full com-mb-1;
-      }
-
-      .required {
-        @apply com-text-red-500;
-      }
-
-      .preview-image {
-        @apply com-max-w-[12rem] com-mt-2 com-rounded;
-      }
-    }
   }
 }

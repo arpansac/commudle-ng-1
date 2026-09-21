@@ -14,8 +14,10 @@ export class CertificateDesignService {
   indexCertificateDesigns(
     kommunityId?: number | string,
     filter: 'presets' | 'own' | 'all' = 'all',
+    page = 1,
+    count = 4,
   ): Observable<ICertificateDesignsIndexResponse> {
-    let params = new HttpParams().set('filter', filter);
+    let params = new HttpParams().set('filter', filter).set('page', page).set('count', count);
     if (kommunityId) {
       params = params.set('kommunity_id', kommunityId);
     }

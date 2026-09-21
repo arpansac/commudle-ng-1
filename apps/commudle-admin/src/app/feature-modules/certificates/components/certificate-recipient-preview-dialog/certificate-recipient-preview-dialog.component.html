@@ -5,8 +5,8 @@
       <nb-icon icon="close"></nb-icon>
     </button>
   </com-card-header>
-  <com-card-body>
-    <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+  <com-card-body class="dialog-body">
+    <app-skeleton-pdf-preview *ngIf="isLoading" class="pdf-object"></app-skeleton-pdf-preview>
 
     <commudle-alert *ngIf="errorMessage" [error]="true" [errorMessage]="errorMessage"></commudle-alert>
 

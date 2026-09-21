@@ -61,14 +61,12 @@
 
           <div class="style-field">
             <label>Font</label>
-            <nb-select
-              [selected]="selectedVariable.text_style?.font || 'Helvetica'"
-              (selectedChange)="updateStyle({ font: $event })"
-              size="small"
-              fullWidth
+            <select
+              [value]="selectedVariable.text_style?.font || 'Helvetica'"
+              (change)="updateStyle({ font: $any($event.target).value })"
             >
-              <nb-option *ngFor="let font of fontOptions" [value]="font">{{ font }}</nb-option>
-            </nb-select>
+              <option *ngFor="let font of fontOptions" [value]="font">{{ font }}</option>
+            </select>
           </div>
 
           <div class="style-field">
@@ -80,7 +78,7 @@
               min="6"
               max="200"
               [value]="selectedVariable.text_style?.size || 16"
-              (change)="updateStyle({ size: +$any($event.target).value })"
+              (input)="updateStyle({ size: +$any($event.target).value })"
             />
           </div>
 
@@ -89,22 +87,20 @@
             <input
               type="color"
               [value]="'#' + (selectedVariable.text_style?.color || '000000')"
-              (change)="updateStyle({ color: $any($event.target).value.substring(1) })"
+              (input)="updateStyle({ color: $any($event.target).value.substring(1) })"
             />
           </div>
 
           <div class="style-field">
             <label>Align</label>
-            <nb-select
-              [selected]="selectedVariable.text_style?.align || 'left'"
-              (selectedChange)="updateStyle({ align: $event })"
-              size="small"
-              fullWidth
+            <select
+              [value]="selectedVariable.text_style?.align || 'left'"
+              (change)="updateStyle({ align: $any($event.target).value })"
             >
-              <nb-option value="left">Left</nb-option>
-              <nb-option value="center">Center</nb-option>
-              <nb-option value="right">Right</nb-option>
-            </nb-select>
+              <option value="left">Left</option>
+              <option value="center">Center</option>
+              <option value="right">Right</option>
+            </select>
           </div>
 
           <div class="style-field style-toggles">

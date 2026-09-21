@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { NbBadgeModule, NbIconModule, NbInputModule } from '@commudle/theme';
+import { NbIconModule, NbInputModule } from '@commudle/theme';
 import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 import { ECertificateBatchStatus, ICertificateBatch } from '@commudle/shared-models';
 import { CertificateBatchService } from '@commudle/shared-services';
@@ -23,7 +23,6 @@ import { CertificateSendPanelComponent } from '../certificate-send-panel/certifi
     FormsModule,
     CommudleCardModule,
     CommudleButtonModule,
-    NbBadgeModule,
     NbIconModule,
     NbInputModule,
     SharedComponentsModule,
@@ -81,6 +80,32 @@ export class CertificateBatchDetailComponent implements OnInit, OnDestroy {
 
   statusLabel(status: ECertificateBatchStatus): string {
     return status ?? 'unknown';
+  }
+
+  statusColor(status: ECertificateBatchStatus): string {
+    switch (status) {
+      case ECertificateBatchStatus.READY:
+        return 'com-bg-blue-100';
+      case ECertificateBatchStatus.SENDING:
+        return 'com-bg-yellow-100';
+      case ECertificateBatchStatus.SENT:
+        return 'com-bg-green-100';
+      default:
+        return 'com-bg-gray-100';
+    }
+  }
+
+  statusFontColor(status: ECertificateBatchStatus): string {
+    switch (status) {
+      case ECertificateBatchStatus.READY:
+        return 'com-text-Ultramarine-Blue';
+      case ECertificateBatchStatus.SENDING:
+        return 'com-text-yellow-700';
+      case ECertificateBatchStatus.SENT:
+        return 'com-text-green-700';
+      default:
+        return 'com-text-gray-500';
+    }
   }
 
   get progressPercent(): number {

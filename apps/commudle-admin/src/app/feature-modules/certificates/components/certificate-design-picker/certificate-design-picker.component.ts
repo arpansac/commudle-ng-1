@@ -1,39 +1,18 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Output,
-  PLATFORM_ID,
-  SimpleChanges,
-} from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NbDialogService, NbIconModule, NbInputModule } from '@commudle/theme';
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { NbDialogService, NbIconModule } from '@commudle/theme';
 import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { ECertificateDesignType, ICertificateBatch, ICertificateDesign } from '@commudle/shared-models';
 import { CertificateBatchService, CertificateDesignService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { Subject, takeUntil } from 'rxjs';
-import {
-  CertificateReissueDialogComponent,
-  ECertificateReissueScope,
-} from '../certificate-reissue-dialog/certificate-reissue-dialog.component';
+import { CertificateUploadDesignDialogComponent } from '../certificate-upload-design-dialog/certificate-upload-design-dialog.component';
 
 @Component({
   selector: 'commudle-certificate-design-picker',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    CommudleButtonModule,
-    NbInputModule,
-    NbIconModule,
-    SharedComponentsModule,
-  ],
+  imports: [CommonModule, CommudleButtonModule, NbIconModule, SharedComponentsModule],
   templateUrl: './certificate-design-picker.component.html',
   styleUrls: ['./certificate-design-picker.component.scss'],
 })
@@ -43,40 +22,31 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
 
   designs: ICertificateDesign[] = [];
   isLoading = true;
-  isSaving = false;
-  showUploadForm = false;
-  uploadForm: FormGroup;
-  selectedFile: File | null = null;
-  selectedFilePreviewUrl: string | null = null;
   ECertificateDesignType = ECertificateDesignType;
 
-  // The designs endpoint returns the full list in one call (no page/count
-  // params in the frozen API contract), so this pages through the
-  // already-fetched array client-side rather than re-fetching per page.
   designPage = 1;
+  designTotal = 0;
   readonly designPageSize = 4;
 
-  private isBrowser: boolean;
-  private imageWidth: number;
-  private imageHeight: number;
   private destroy$ = new Subject<void>();
+  // The parent reassigns `batch` (a new reference, same uuid) after every
+  // update - e.g. selectDesign() below emits batchUpdated right after a
+  // fresh upload. Refetching the whole list on every such reassignment
+  // would blow away the just-uploaded design and flash the loading
+  // spinner, so this only fetches when the batch actually changes.
+  private loadedBatchUuid: string;
 
   constructor(
-    private fb: FormBuilder,
     private certificateDesignService: CertificateDesignService,
     private certificateBatchService: CertificateBatchService,
     private toastLogService: LibToastLogService,
     private dialogService: NbDialogService,
-    @Inject(PLATFORM_ID) platformId: object,
-  ) {
-    this.isBrowser = isPlatformBrowser(platformId);
-    this.uploadForm = this.fb.group({
-      name: ['', [Validators.required, Validators.maxLength(120)]],
-    });
-  }
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.batch && this.batch) {
+    if (changes.batch && this.batch && this.batch.uuid !== this.loadedBatchUuid) {
+      this.loadedBatchUuid = this.batch.uuid;
+      this.designPage = 1;
       this.fetchDesigns();
     }
   }
@@ -86,25 +56,21 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
     this.destroy$.complete();
   }
 
-  get pagedDesigns(): ICertificateDesign[] {
-    const start = (this.designPage - 1) * this.designPageSize;
-    return this.designs.slice(start, start + this.designPageSize);
-  }
-
   fetchDesigns() {
     this.isLoading = true;
     this.certificateDesignService
-      .indexCertificateDesigns(this.batch.issuer_id, 'all')
+      .indexCertificateDesigns(this.batch.issuer_id, 'all', this.designPage, this.designPageSize)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        this.designs = res.certificate_designs;
-        this.designPage = 1;
+        this.designs = res.values;
+        this.designTotal = res.total;
         this.isLoading = false;
       });
   }
 
   onDesignPageChange(page: number) {
     this.designPage = page;
+    this.fetchDesigns();
   }
 
   selectDesign(design: ICertificateDesign) {
@@ -114,19 +80,22 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
     // A design can be swapped even after some certificates were already
     // issued under the old one - those PDFs are permanent, stored bytes
     // that never change on their own, so a swap only matters for
-    // recipients if the organizer explicitly asks to reissue.
+    // recipients if the organizer explicitly reissues them (via "Issue
+    // Certificates" or the per-recipient "Reissue" button). No prompt or
+    // scope choice here - just a heads-up that existing certificates
+    // weren't touched by this swap.
     const hadPreviousDesign = !!this.batch.design;
     this.certificateBatchService
       .updateCertificateBatch(this.batch.uuid, { certificate_design_id: design.id })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (updatedBatch) => {
-          this.resetUploadForm();
-          this.showUploadForm = false;
           this.toastLogService.successDialog('Design updated');
           this.batchUpdated.emit(updatedBatch);
-          if (hadPreviousDesign && updatedBatch.recipients_count > 0) {
-            this.promptReissue(updatedBatch);
+          if (hadPreviousDesign && (updatedBatch.sent_count > 0 || updatedBatch.generated_count > 0)) {
+            this.toastLogService.warningDialog(
+              'Existing issued certificates will not be changed unless you reissue them',
+            );
           }
         },
         error: () => {
@@ -135,103 +104,25 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
       });
   }
 
-  private promptReissue(batch: ICertificateBatch) {
+  openUploadDialog() {
     this.dialogService
-      .open(CertificateReissueDialogComponent)
+      .open(CertificateUploadDesignDialogComponent, {
+        context: { issuerId: this.batch.issuer_id, defaultName: this.batch.name },
+      })
       .onClose.pipe(takeUntil(this.destroy$))
-      .subscribe((scope: ECertificateReissueScope | undefined) => {
-        if (scope === 'all') {
-          this.certificateBatchService
-            .resendBatch(batch.uuid)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-              next: () => this.toastLogService.successDialog('Reissuing the new design to all recipients'),
-              error: (err) =>
-                this.toastLogService.errorDialog(err?.error?.message || 'Could not reissue to all recipients'),
-            });
-        } else if (scope === 'unissued') {
-          this.certificateBatchService
-            .issueBatch(batch.uuid)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-              next: () => this.toastLogService.successDialog('Issuing the new design to not-yet-issued recipients'),
-              error: (err) =>
-                this.toastLogService.errorDialog(err?.error?.message || 'Could not issue to the remaining recipients'),
-            });
-        } else if (scope === 'specific') {
-          this.toastLogService.successDialog('Select recipients in the table below, then use "Resend to Selected"');
+      .subscribe((design: ICertificateDesign | undefined) => {
+        if (!design) {
+          return;
         }
-      });
-  }
-
-  toggleUploadForm() {
-    this.showUploadForm = !this.showUploadForm;
-    if (!this.showUploadForm) {
-      this.resetUploadForm();
-    }
-  }
-
-  onFileSelected(event: Event) {
-    if (!this.isBrowser) {
-      return;
-    }
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-    if (!file) {
-      return;
-    }
-    if (this.selectedFilePreviewUrl) {
-      URL.revokeObjectURL(this.selectedFilePreviewUrl);
-    }
-    this.selectedFile = file;
-    this.selectedFilePreviewUrl = URL.createObjectURL(file);
-
-    const img = new Image();
-    img.onload = () => {
-      this.imageWidth = img.naturalWidth;
-      this.imageHeight = img.naturalHeight;
-    };
-    img.src = this.selectedFilePreviewUrl;
-  }
-
-  uploadDesign() {
-    if (this.uploadForm.invalid || !this.selectedFile) {
-      this.uploadForm.markAllAsTouched();
-      if (!this.selectedFile) {
-        this.toastLogService.warningDialog('Please choose a background image');
-      }
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('certificate_design[name]', this.uploadForm.value.name);
-    formData.append('certificate_design[image_width]', String(this.imageWidth));
-    formData.append('certificate_design[image_height]', String(this.imageHeight));
-    formData.append('background_image', this.selectedFile);
-
-    this.isSaving = true;
-    this.certificateDesignService.createCertificateDesign(this.batch.issuer_id, formData).subscribe({
-      next: (design) => {
-        this.isSaving = false;
-        this.designs = [design, ...this.designs];
+        // Prepend locally rather than refetching (see the "mutate locally,
+        // don't refetch" note elsewhere in this feature) - but with real
+        // server-side pagination now in place, page 1 can only ever hold
+        // `designPageSize` items, so cap it the same way a fresh fetch of
+        // page 1 would.
         this.designPage = 1;
-        this.resetUploadForm();
-        this.showUploadForm = false;
+        this.designs = [design, ...this.designs].slice(0, this.designPageSize);
+        this.designTotal += 1;
         this.selectDesign(design);
-      },
-      error: () => {
-        this.isSaving = false;
-        this.toastLogService.errorDialog('Could not upload the design');
-      },
-    });
-  }
-
-  private resetUploadForm() {
-    this.uploadForm.reset();
-    this.selectedFile = null;
-    if (this.selectedFilePreviewUrl) {
-      URL.revokeObjectURL(this.selectedFilePreviewUrl);
-    }
-    this.selectedFilePreviewUrl = null;
+      });
   }
 }

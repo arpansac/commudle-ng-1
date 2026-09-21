@@ -45,9 +45,16 @@ export class CertificateRecipientFormDialogComponent implements OnInit {
     return !!this.recipient;
   }
 
+  // `name` is a dual-purpose variable (see saveRecipient) - its value always
+  // mirrors the fixed "Name" field above, so it gets no input of its own
+  // here to avoid a confusing duplicate field.
+  get positionableVariables(): ICertificateVariable[] {
+    return this.variables.filter((variable) => variable.key !== 'name');
+  }
+
   ngOnInit() {
     const rowValuesGroup: { [key: string]: [string] } = {};
-    this.variables.forEach((variable) => {
+    this.positionableVariables.forEach((variable) => {
       rowValuesGroup[variable.key] = [this.recipient?.row_values?.[variable.key] ?? ''];
     });
 
@@ -85,7 +92,10 @@ export class CertificateRecipientFormDialogComponent implements OnInit {
     }
 
     this.isSaving = true;
-    const newFieldValues = this.newFields.value as { label: string; value: string }[];
+    const newFieldValues = [...this.newFields.value, ...this.dualPurposeNameField()] as {
+      label: string;
+      value: string;
+    }[];
     this.createNewFields(newFieldValues).subscribe({
       next: (createdVariables) => {
         this.saveRecipient(newFieldValues, createdVariables);
@@ -95,6 +105,22 @@ export class CertificateRecipientFormDialogComponent implements OnInit {
         this.toastLogService.errorDialog('Could not add the new field(s)');
       },
     });
+  }
+
+  // Mirrors CSV upload's dual-purpose "name" column (Certificates::CsvUploadService):
+  // `name` is copied onto the recipient AND becomes a positionable variable.
+  // Only needs creating once per batch - if some earlier recipient (CSV or
+  // manual) already established it, this is a no-op.
+  private get hasNameVariable(): boolean {
+    return this.variables.some((variable) => variable.key === 'name');
+  }
+
+  private dualPurposeNameField(): { label: string; value: string }[] {
+    const name = this.recipientForm.value.name?.trim();
+    if (!name || this.hasNameVariable) {
+      return [];
+    }
+    return [{ label: 'Name', value: name }];
   }
 
   private createNewFields(newFieldValues: { label: string; value: string }[]) {
@@ -114,6 +140,12 @@ export class CertificateRecipientFormDialogComponent implements OnInit {
     createdVariables.forEach((variable, index) => {
       rowValues[variable.key] = newFieldValues[index].value;
     });
+    // Keep the positioned "name" variable's value in lockstep with the
+    // fixed Name field above, whether it already existed or was just
+    // created by dualPurposeNameField() - there's no separate input for it.
+    if (this.hasNameVariable || createdVariables.some((variable) => variable.key === 'name')) {
+      rowValues.name = formValue.name?.trim() ?? '';
+    }
 
     const request = this.isEditMode
       ? this.certificateRecipientService.updateCertificateRecipient(this.certificateBatchId, this.recipient.id, {

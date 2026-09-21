@@ -23,6 +23,7 @@ export interface ICertificateBatch {
   recipients_count: number;
   sent_count: number;
   blocked_count: number;
+  generated_count: number;
   certificate_design_id: number | null;
   email_subject?: string | null;
   email_body?: string | null;
@@ -32,7 +33,7 @@ export interface ICertificateBatch {
 }
 
 export interface ICertificateBatchesIndexResponse {
-  certificate_batches: ICertificateBatch[];
+  values: ICertificateBatch[];
   page: number;
   count: number;
   total: number;

@@ -117,11 +117,11 @@ export class CertificateBatchService {
     );
   }
 
-  issueBatch(uuid: string): Observable<{ status: string; enqueued: boolean }> {
+  issueBatch(uuid: string, options?: { force?: boolean }): Observable<{ status: string; enqueued: boolean }> {
     const params = new HttpParams().set('id', uuid);
     return this.http.post<{ status: string; enqueued: boolean }>(
       this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_BATCHES.ISSUE),
-      {},
+      { ...options },
       { params },
     );
   }

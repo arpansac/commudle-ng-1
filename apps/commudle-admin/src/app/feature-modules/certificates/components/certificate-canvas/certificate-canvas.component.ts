@@ -11,7 +11,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { NbCheckboxModule, NbDialogService, NbIconModule, NbInputModule, NbSelectModule } from '@commudle/theme';
+import { NbCheckboxModule, NbDialogService, NbIconModule, NbInputModule } from '@commudle/theme';
 import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { ICertificateBatch, ICertificateVariable, ICertificateVariableTextStyle } from '@commudle/shared-models';
 import { CertificateVariableService } from '@commudle/shared-services';
@@ -40,6 +40,17 @@ const DEFAULT_BOX_WIDTH = 0.25;
 const DEFAULT_BOX_HEIGHT = 0.08;
 const MAX_CANVAS_WIDTH = 800;
 
+// `text_style.size` is sent to the backend as a literal Prawn point size,
+// and the PDF page is always exactly the design image's native pixel
+// dimensions (1 image pixel = 1 PDF point, no server-side scaling) - so a
+// flat default here would look wildly different across a 400px-tall vs a
+// 4000px-tall design. Deriving it from this design's own image_height
+// keeps a newly placed variable's text proportionate to its box
+// regardless of the uploaded image's resolution.
+const DEFAULT_FONT_SIZE_RATIO = 0.035;
+const MIN_DEFAULT_FONT_SIZE = 12;
+const MAX_DEFAULT_FONT_SIZE = 200;
+
 // Only Prawn's built-in fonts are wired on the backend so far (see spec's Open
 // Design Decisions - broad-Unicode font bundling is still an open item), so
 // the picker is limited to what can actually render.
@@ -54,7 +65,6 @@ export const CERTIFICATE_FONT_OPTIONS = ['Helvetica', 'Times-Roman', 'Courier'];
     ReactiveFormsModule,
     CommudleButtonModule,
     NbInputModule,
-    NbSelectModule,
     NbIconModule,
     NbCheckboxModule,
     FontAwesomeModule,
@@ -91,6 +101,16 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
   private scale = 1;
   private viewInitialized = false;
   private destroy$ = new Subject<void>();
+  // `batch` is shared across every sibling tab (design picker, recipients
+  // table, this canvas) via a single [batch]="batch" binding at the parent,
+  // and gets reassigned to a new object reference whenever ANY of them
+  // emits an update - not just when this batch's variables actually
+  // changed. Refetching on every such reassignment would silently discard
+  // an in-progress, not-yet-saved style/position edit (isDirty local state)
+  // the moment an unrelated tab action fires. Only refetch when the batch
+  // or its chosen design has actually changed.
+  private loadedBatchUuid: string;
+  private loadedDesignId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -111,8 +131,24 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.batch && this.batch) {
+    if (!changes.batch || !this.batch) {
+      return;
+    }
+    const designId = this.batch.design?.id ?? null;
+    if (this.batch.uuid !== this.loadedBatchUuid) {
+      this.loadedDesignId = designId;
       this.fetchVariables();
+      return;
+    }
+    // Same batch, but a new design was chosen elsewhere - the canvas needs
+    // rebuilding against the new background/dimensions, but the variables
+    // themselves haven't changed server-side, so there's no need to (and
+    // shouldn't) refetch/discard any in-progress local edit for this.
+    if (designId !== this.loadedDesignId) {
+      this.loadedDesignId = designId;
+      if (this.viewInitialized && this.batch.design) {
+        this.initCanvas();
+      }
     }
   }
 
@@ -124,6 +160,7 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
 
   fetchVariables() {
     this.isLoading = true;
+    this.loadedBatchUuid = this.batch.uuid;
     this.certificateVariableService
       .indexCertificateVariables(this.batch.uuid)
       .pipe(takeUntil(this.destroy$))
@@ -188,7 +225,16 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
 
     this.transformer = new this.Konva.Transformer({
       rotateEnabled: false,
-      enabledAnchors: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
+      enabledAnchors: [
+        'top-left',
+        'top-right',
+        'bottom-left',
+        'bottom-right',
+        'top-center',
+        'bottom-center',
+        'middle-left',
+        'middle-right',
+      ],
     });
     this.layer.add(this.transformer);
 
@@ -254,7 +300,7 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
   }
 
   private applyStyleToText(text: KonvaNamespace.Text, style: ICertificateVariableTextStyle) {
-    text.fontSize(style.size || 16);
+    text.fontSize((style.size || 16) * this.scale);
     text.fontFamily(style.font || 'Helvetica');
     text.fontStyle(
       `${style.weight === 'bold' ? 'bold' : ''} ${style.style === 'italic' ? 'italic' : ''}`.trim() || 'normal',
@@ -311,11 +357,19 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
       width: DEFAULT_BOX_WIDTH,
       height: DEFAULT_BOX_HEIGHT,
     };
-    variable.text_style = variable.text_style || { ...DEFAULT_TEXT_STYLE };
+    variable.text_style = variable.text_style || {
+      ...DEFAULT_TEXT_STYLE,
+      size: this.defaultFontSize(),
+    };
     variable.positioned = true;
     this.renderBox(variable);
     this.isDirty = true;
     this.layer.draw();
+  }
+
+  private defaultFontSize(): number {
+    const size = Math.round(this.batch.design.image_height * DEFAULT_FONT_SIZE_RATIO);
+    return Math.min(MAX_DEFAULT_FONT_SIZE, Math.max(MIN_DEFAULT_FONT_SIZE, size));
   }
 
   removeFromCanvas(variable: ICertificateVariable) {
@@ -463,10 +517,18 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (res) => {
+        next: () => {
+          // Deliberately not swapping `this.variables` for the response
+          // body here - the server echoes back exactly what was just sent
+          // (no transformation happens server-side), and replacing it with
+          // freshly-deserialized objects would orphan `selectedVariable`
+          // and every Konva box's click handler (both still reference the
+          // pre-save objects), silently breaking every toggle made after
+          // the first successful save - it would keep mutating the
+          // orphaned object while every future save re-sent this stale
+          // snapshot forever.
           this.isSaving = false;
           this.isDirty = false;
-          this.variables = res.certificate_variables;
           this.toastLogService.successDialog('Layout saved');
         },
         error: () => {

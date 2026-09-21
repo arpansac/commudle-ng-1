@@ -28,7 +28,7 @@
       </div>
 
       <ng-container formGroupName="row_values">
-        <div class="form-field-container" *ngFor="let variable of variables">
+        <div class="form-field-container" *ngFor="let variable of positionableVariables">
           <label class="form-field">
             {{ variable.label }}
             <span class="hint" *ngIf="variable.default_value">(default: {{ variable.default_value }})</span>

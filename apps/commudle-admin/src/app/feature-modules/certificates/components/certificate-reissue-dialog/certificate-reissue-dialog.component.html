@@ -1,14 +1,14 @@
 <com-card class="certificate-reissue-dialog">
   <com-card-header class="dialog-header">
-    <span>Apply the new design</span>
+    <span>Issue Certificates</span>
     <button ghost comButton size="small" (click)="close()" shape="round">
       <nb-icon icon="close"></nb-icon>
     </button>
   </com-card-header>
   <com-card-body>
     <p class="dialog-hint">
-      Some recipients may already have a certificate issued under the previous design. Issued certificates are never
-      changed automatically - choose who should get the new one.
+      Some recipients already have a certificate issued. Existing certificates are never changed automatically - choose
+      who should be issued the current design.
     </p>
 
     <button type="button" class="reissue-option" (click)="choose('unissued')">
@@ -19,11 +19,6 @@
     <button type="button" class="reissue-option" (click)="choose('all')">
       <span class="option-title">All recipients</span>
       <span class="option-description">Re-issues everyone under the new design, including anyone already issued.</span>
-    </button>
-
-    <button type="button" class="reissue-option" (click)="choose('specific')">
-      <span class="option-title">Choose specific recipients</span>
-      <span class="option-description">Select recipients yourself in the table below, then resend to just them.</span>
     </button>
   </com-card-body>
   <com-card-footer>

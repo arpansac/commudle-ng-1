@@ -4,6 +4,9 @@
       <input formControlName="q" nbInput fieldSize="small" placeholder="Search by name or email" />
     </form>
     <div class="table-header-actions">
+      <button ghost comButton size="small" title="Refresh" [disabled]="isLoading" (click)="fetchRecipients()">
+        <fa-icon [icon]="icons.faRedo" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+      </button>
       <button comButton status="basic" size="small" (click)="openCsvUploadDialog()">
         <fa-icon [icon]="icons.faUpload"></fa-icon> &nbsp; Upload CSV
       </button>
@@ -26,6 +29,9 @@
         <button comButton status="basic" size="small" [disabled]="isResendingSelected" (click)="resendSelected()">
           {{ isResendingSelected ? 'Starting...' : 'Resend to Selected' }}
         </button>
+        <button comButton status="danger" size="small" [disabled]="isDeletingSelected" (click)="deleteSelected()">
+          {{ isDeletingSelected ? 'Removing...' : 'Delete Selected' }}
+        </button>
         <button ghost comButton size="small" (click)="clearSelection()">Clear</button>
       </div>
 
@@ -41,7 +47,7 @@
               </th>
               <th>EMAIL</th>
               <th>NAME</th>
-              <th *ngFor="let variable of variables">{{ variable.label }}</th>
+              <th *ngFor="let variable of tableVariables">{{ variable.label }}</th>
               <th>STATUS</th>
               <th></th>
             </tr>
@@ -56,7 +62,7 @@
               </td>
               <td>{{ recipient.email }}</td>
               <td>{{ recipient.name || '-' }}</td>
-              <td *ngFor="let variable of variables">{{ recipient.row_values?.[variable.key] || '-' }}</td>
+              <td *ngFor="let variable of tableVariables">{{ recipient.row_values?.[variable.key] || '-' }}</td>
               <td>
                 <app-badge
                   [text]="statusLabel(recipient.status) | titlecase"
@@ -75,20 +81,34 @@
                   comButton
                   size="tiny"
                   status="success"
+                  title="Send certificate"
                   (click)="sendOne(recipient)"
                 >
                   <fa-icon [icon]="icons.faPaperPlane"></fa-icon>
                 </button>
                 <button
-                  *ngIf="batch.design && recipient.sendable"
+                  *ngIf="!isIssued(recipient) && batch.design && recipient.sendable"
                   ghost
                   comButton
                   size="tiny"
+                  status="info"
+                  [disabled]="recipient.isGenerating"
+                  title="Generate certificate"
                   (click)="generateOne(recipient)"
                 >
-                  <fa-icon [icon]="icons.faCertificate"></fa-icon>
+                  <fa-icon
+                    [icon]="recipient.isGenerating ? icons.faSpinner : icons.faCertificate"
+                    [animation]="recipient.isGenerating ? 'spin' : undefined"
+                  ></fa-icon>
                 </button>
-                <button *ngIf="!isIssued(recipient)" ghost comButton size="tiny" (click)="openPreviewDialog(recipient)">
+                <button
+                  *ngIf="!isIssued(recipient)"
+                  ghost
+                  comButton
+                  size="tiny"
+                  title="Preview certificate"
+                  (click)="openPreviewDialog(recipient)"
+                >
                   <fa-icon [icon]="icons.faEye"></fa-icon>
                 </button>
                 <a
@@ -100,10 +120,26 @@
                   comButton
                   size="tiny"
                   class="view-certificate-link"
+                  title="Download certificate"
                 >
                   <fa-icon [icon]="icons.faDownload"></fa-icon>
                 </a>
-                <button ghost comButton size="tiny" (click)="openEditDialog(recipient)">
+                <button
+                  *ngIf="isIssued(recipient) && batch.design"
+                  ghost
+                  comButton
+                  size="tiny"
+                  status="warning"
+                  [disabled]="recipient.isGenerating"
+                  title="Reissue with current design"
+                  (click)="reissueOne(recipient)"
+                >
+                  <fa-icon
+                    [icon]="recipient.isGenerating ? icons.faSpinner : icons.faRedo"
+                    [animation]="recipient.isGenerating ? 'spin' : undefined"
+                  ></fa-icon>
+                </button>
+                <button ghost comButton size="tiny" title="Edit recipient" (click)="openEditDialog(recipient)">
                   <fa-icon [icon]="icons.faPen"></fa-icon>
                 </button>
                 <button
@@ -112,11 +148,19 @@
                   comButton
                   size="tiny"
                   [status]="recipient.revoked_at ? 'basic' : 'danger'"
+                  [title]="recipient.revoked_at ? 'Unrevoke certificate' : 'Revoke certificate'"
                   (click)="toggleRecipientRevoke(recipient)"
                 >
-                  <fa-icon [icon]="icons.faBan"></fa-icon>
+                  <fa-icon [icon]="recipient.revoked_at ? icons.faUndo : icons.faBan"></fa-icon>
                 </button>
-                <button ghost comButton size="tiny" status="danger" (click)="deleteRecipient(recipient)">
+                <button
+                  ghost
+                  comButton
+                  size="tiny"
+                  status="danger"
+                  title="Delete recipient"
+                  (click)="deleteRecipient(recipient)"
+                >
                   <fa-icon [icon]="icons.faTrash"></fa-icon>
                 </button>
               </td>

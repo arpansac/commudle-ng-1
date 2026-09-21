@@ -3,13 +3,15 @@ import { Component } from '@angular/core';
 import { NbDialogRef, NbIconModule } from '@commudle/theme';
 import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 
-export type ECertificateReissueScope = 'all' | 'unissued' | 'specific';
+export type ECertificateReissueScope = 'all' | 'unissued';
 
-// Shown after a batch's design (or variable layout) changes once some
-// recipients may already have a permanently-stored certificate under the
-// old design. A previously-issued PDF is never touched automatically -
-// the organizer has to explicitly choose who gets re-rendered under the
-// new one.
+// Shown from "Issue Certificates" when some recipients already have a
+// permanently-stored certificate (possibly under a since-changed design).
+// A previously-issued PDF is never touched automatically - the organizer
+// has to explicitly choose who gets (re)issued. No "choose specific
+// recipients" option here - there's no bulk "issue to selected" action,
+// and the per-recipient "Reissue with current design" button in the
+// recipients table already covers that case directly.
 @Component({
   selector: 'commudle-certificate-reissue-dialog',
   standalone: true,

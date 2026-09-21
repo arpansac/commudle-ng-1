@@ -24,11 +24,14 @@ import {
   faBan,
   faCertificate,
   faDownload,
+  faSpinner,
+  faRedo,
+  faUndo,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
-import { Subject, debounceTime, takeUntil } from 'rxjs';
+import { Subject, debounceTime, forkJoin, takeUntil } from 'rxjs';
 import { CertificateRecipientFormDialogComponent } from '../certificate-recipient-form-dialog/certificate-recipient-form-dialog.component';
 import { CertificateCsvUploadDialogComponent } from '../certificate-csv-upload-dialog/certificate-csv-upload-dialog.component';
 import { CertificateRecipientPreviewDialogComponent } from '../certificate-recipient-preview-dialog/certificate-recipient-preview-dialog.component';
@@ -70,8 +73,22 @@ export class CertificateRecipientsTableComponent implements OnInit, OnChanges, O
   searchForm: FormGroup;
   selectedIds = new Set<number>();
   isResendingSelected = false;
+  isDeletingSelected = false;
   ECertificateRecipientStatus = ECertificateRecipientStatus;
-  icons = { faPlus, faPen, faTrash, faUpload, faEye, faPaperPlane, faBan, faCertificate, faDownload };
+  icons = {
+    faPlus,
+    faPen,
+    faTrash,
+    faUpload,
+    faEye,
+    faPaperPlane,
+    faBan,
+    faCertificate,
+    faDownload,
+    faSpinner,
+    faRedo,
+    faUndo,
+  };
 
   private destroy$ = new Subject<void>();
 
@@ -135,7 +152,7 @@ export class CertificateRecipientsTableComponent implements OnInit, OnChanges, O
       .indexCertificateRecipients(this.batch.uuid, this.page, this.count, undefined, this.query || undefined)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        this.recipients = res.certificate_recipients;
+        this.recipients = res.values;
         this.page = res.page;
         this.total = res.total;
         this.isLoading = false;
@@ -249,6 +266,15 @@ export class CertificateRecipientsTableComponent implements OnInit, OnChanges, O
     });
   }
 
+  // `name` is a dual-purpose variable (see certificate-recipient-form-dialog) -
+  // it's already shown via the fixed NAME column below, so it's dropped here
+  // to avoid a redundant duplicate column. It still belongs in `variables`
+  // itself (unfiltered) for the canvas/dialogs, where it needs to stay
+  // positionable like any other variable.
+  get tableVariables(): ICertificateVariable[] {
+    return this.variables.filter((variable) => variable.key !== 'name');
+  }
+
   get canSendIndividually(): boolean {
     return !!this.batch.locked_at;
   }
@@ -268,18 +294,57 @@ export class CertificateRecipientsTableComponent implements OnInit, OnChanges, O
       });
   }
 
+  // Synchronous now - the API returns the finished recipient (status,
+  // generated_at, uuid) in the response, so the row is updated in place and
+  // the button swaps to "Download" immediately, without refetching the table.
   generateOne(recipient: ICertificateRecipient) {
+    recipient.isGenerating = true;
     this.certificateRecipientService
       .generateOne(this.batch.uuid, recipient.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: () => {
-          this.toastLogService.successDialog(`Generating a certificate for ${recipient.email}`);
-          this.fetchRecipients(false);
+        next: (updated) => {
+          recipient.isGenerating = false;
+          Object.assign(recipient, updated);
+          this.toastLogService.successDialog(`Generated a certificate for ${recipient.email}`);
         },
         error: (err) => {
+          recipient.isGenerating = false;
           this.toastLogService.errorDialog(err?.error?.message || 'Could not generate this certificate');
         },
+      });
+  }
+
+  // Same generate_one endpoint as generateOne() - it re-renders and
+  // re-attaches the PDF unconditionally (Active Storage purges the old
+  // blob on attach), so it doubles as "reissue against the current design"
+  // for a recipient who was already issued under a since-changed design.
+  // Confirmed first since it permanently replaces the existing certificate.
+  reissueOne(recipient: ICertificateRecipient) {
+    openCertificateConfirmDialog(this.dialogService, {
+      message: `Reissue the certificate for ${recipient.email} using the current design? This permanently replaces their existing certificate.`,
+      danger: true,
+    })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((confirmed) => {
+        if (!confirmed) {
+          return;
+        }
+        recipient.isGenerating = true;
+        this.certificateRecipientService
+          .generateOne(this.batch.uuid, recipient.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (updated) => {
+              recipient.isGenerating = false;
+              Object.assign(recipient, updated);
+              this.toastLogService.successDialog(`Reissued the certificate for ${recipient.email}`);
+            },
+            error: (err) => {
+              recipient.isGenerating = false;
+              this.toastLogService.errorDialog(err?.error?.message || 'Could not reissue this certificate');
+            },
+          });
       });
   }
 
@@ -336,6 +401,47 @@ export class CertificateRecipientsTableComponent implements OnInit, OnChanges, O
             error: (err) => {
               this.isResendingSelected = false;
               this.toastLogService.errorDialog(err?.error?.message || 'Could not resend to the selected recipients');
+            },
+          });
+      });
+  }
+
+  // No bulk-delete endpoint exists (same as revoke) - loops the existing
+  // per-recipient DELETE, same pattern as resendSelected() loops send_one
+  // via the batch-level recipient_ids param, just without a batch-level
+  // equivalent to delegate to here.
+  deleteSelected() {
+    if (this.selectedIds.size === 0) {
+      return;
+    }
+    const ids = Array.from(this.selectedIds);
+    const anyIssued = this.recipients.some((r) => ids.includes(r.id) && ISSUED_STATUSES.includes(r.status));
+    const message = anyIssued
+      ? `Remove the ${ids.length} selected recipient(s) from this batch? This also revokes any of their already-issued certificates - they will no longer be viewable, and this cannot be undone.`
+      : `Remove the ${ids.length} selected recipient(s) from this batch? This cannot be undone.`;
+    openCertificateConfirmDialog(this.dialogService, { message, danger: true })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((confirmed) => {
+        if (!confirmed) {
+          return;
+        }
+        this.isDeletingSelected = true;
+        forkJoin(ids.map((id) => this.certificateRecipientService.deleteCertificateRecipient(this.batch.uuid, id)))
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.isDeletingSelected = false;
+              this.toastLogService.successDialog('Selected recipients removed');
+              this.clearSelection();
+              this.fetchRecipients(false);
+            },
+            error: (err) => {
+              this.isDeletingSelected = false;
+              this.toastLogService.errorDialog(
+                err?.error?.message || 'Could not remove some of the selected recipients',
+              );
+              this.clearSelection();
+              this.fetchRecipients(false);
             },
           });
       });

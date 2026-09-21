@@ -51,10 +51,13 @@ export interface ICertificateRecipient {
   sendable?: boolean;
   pdf_url?: string | null;
   deliveries?: ICertificateRecipientDelivery[];
+  // Frontend-only UI flag - true while the synchronous generate_one request
+  // is in flight for this row, not part of the API response.
+  isGenerating?: boolean;
 }
 
 export interface ICertificateRecipientsIndexResponse {
-  certificate_recipients: ICertificateRecipient[];
+  values: ICertificateRecipient[];
   page: number;
   count: number;
   total: number;

@@ -77,7 +77,7 @@ export class CertificateBatchesListComponent implements OnInit, OnDestroy {
       .indexCertificateBatches(this.community.id, this.page, this.count)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        this.batches = res.certificate_batches;
+        this.batches = res.values;
         this.page = res.page;
         this.total = res.total;
         this.isLoading = false;
@@ -162,7 +162,8 @@ export class CertificateBatchesListComponent implements OnInit, OnDestroy {
           .subscribe({
             next: () => {
               this.toastLogService.successDialog('Batch deleted');
-              this.fetchBatches();
+              this.batches = this.batches.filter((b) => b.uuid !== batch.uuid);
+              this.total -= 1;
             },
             error: (err) => {
               this.toastLogService.errorDialog(err?.error?.message || 'Could not delete the batch');

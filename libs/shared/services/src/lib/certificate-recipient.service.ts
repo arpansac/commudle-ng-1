@@ -77,9 +77,9 @@ export class CertificateRecipientService {
     );
   }
 
-  generateOne(certificateBatchId: string, recipientId: number): Observable<{ status: string; enqueued: boolean }> {
+  generateOne(certificateBatchId: string, recipientId: number): Observable<ICertificateRecipient> {
     const params = new HttpParams().set('certificate_batch_id', certificateBatchId).set('id', recipientId);
-    return this.http.post<{ status: string; enqueued: boolean }>(
+    return this.http.post<ICertificateRecipient>(
       this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_RECIPIENTS.GENERATE_ONE),
       {},
       { params },

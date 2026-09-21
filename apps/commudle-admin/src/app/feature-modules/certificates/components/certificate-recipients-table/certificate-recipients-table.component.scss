@@ -1,4 +1,9 @@
 .certificate-recipients-table {
+  // The table swaps out for a spinner on every refresh (*ngIf="isLoading")
+  // - without a floor here the whole section collapses to the spinner's
+  // height then jumps back, reading as a flicker rather than a refresh.
+  @apply com-min-h-[20rem];
+
   .table-header {
     @apply com-flex com-flex-col md:com-flex-row com-justify-between md:com-items-center com-gap-3 com-mb-4;
 

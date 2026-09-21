@@ -18,9 +18,11 @@ export interface ICertificateDesign {
   created_at?: string;
   updated_at?: string;
   is_preset?: boolean;
-  background_image?: { id: number; url: string } | null;
 }
 
 export interface ICertificateDesignsIndexResponse {
-  certificate_designs: ICertificateDesign[];
+  values: ICertificateDesign[];
+  page: number;
+  count: number;
+  total: number;
 }

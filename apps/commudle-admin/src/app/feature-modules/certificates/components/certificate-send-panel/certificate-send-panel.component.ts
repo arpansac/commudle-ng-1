@@ -13,6 +13,10 @@ import {
   ICertificateDeliveryFunnelSegment,
 } from '../certificate-delivery-funnel/certificate-delivery-funnel.component';
 import { openCertificateConfirmDialog } from '../certificate-confirm-dialog/certificate-confirm-dialog.component';
+import {
+  CertificateReissueDialogComponent,
+  ECertificateReissueScope,
+} from '../certificate-reissue-dialog/certificate-reissue-dialog.component';
 
 const POLL_INTERVAL_MS = 4000;
 
@@ -168,14 +172,38 @@ export class CertificateSendPanelComponent implements OnChanges, OnDestroy {
     if (!this.batch?.design || this.isIssuing) {
       return;
     }
+    // Some recipients may already have a certificate from an earlier
+    // "Issue Certificates" run under a since-changed design - ask which
+    // ones should be (re)issued, same prompt already used for the
+    // send/resend flow. Nothing to ask if no one's been issued yet.
+    if (this.batch.generated_count > 0) {
+      this.dialogService
+        .open(CertificateReissueDialogComponent)
+        .onClose.pipe(takeUntil(this.destroy$))
+        .subscribe((scope: ECertificateReissueScope | undefined) => {
+          if (scope === 'all') {
+            this.runIssueBatch({ force: true });
+          } else if (scope === 'unissued') {
+            this.runIssueBatch();
+          }
+        });
+      return;
+    }
+    this.runIssueBatch();
+  }
+
+  private runIssueBatch(options?: { force?: boolean }) {
     this.isIssuing = true;
     this.certificateBatchService
-      .issueBatch(this.batch.uuid)
+      .issueBatch(this.batch.uuid, options)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.isIssuing = false;
-          this.toastLogService.successDialog('Issuing certificates - this runs in the background.');
+          this.toastLogService.successDialog(
+            'Issuing certificates in the background - use the refresh button on the recipients table below to check progress.',
+            4000,
+          );
         },
         error: (err) => {
           this.isIssuing = false;
