@@ -132,9 +132,7 @@
       }
 
       com-card-body {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
+        @apply com-flex com-flex-wrap com-flex-row com-justify-around;
 
         .chart-container {
           padding: 1rem 0;
