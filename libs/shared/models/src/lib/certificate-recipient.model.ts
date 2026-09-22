@@ -73,5 +73,15 @@ export interface ICertificatePublicRecipient {
   issued_on: string | null;
   issuer: { type: string; name: string | null; slug: string | null } | null;
   pdf_url: string | null;
+  thumbnail_url: string | null;
   profile: { username: string; name: string | null } | null;
+}
+
+// GET /api/v2/certificates?username= - public, no auth. Same
+// PublicCertificateSerializer shape as verify, paginated.
+export interface ICertificatePublicRecipientsIndexResponse {
+  values: ICertificatePublicRecipient[];
+  page: number;
+  count: number;
+  total: number;
 }

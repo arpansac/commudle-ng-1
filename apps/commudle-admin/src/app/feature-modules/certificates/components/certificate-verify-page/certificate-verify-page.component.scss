@@ -14,6 +14,17 @@
   @apply com-text-Auro-Metal-Saurus com-mb-8;
 }
 
+// .two-column-layout itself defines no gap (apps/commudle-admin/src/assets/
+// styles/grid.scss) - other pages that use it get their spacing from
+// per-column padding/borders instead (see listing-pages-layout.component.scss).
+// Scoped here rather than adding a gap to the shared grid class, since that's
+// used by many other pages this shouldn't affect.
+.two-column-layout {
+  @screen lg {
+    @apply com-gap-4;
+  }
+}
+
 .verified-banner {
   @apply com-flex com-items-center com-gap-3 com-bg-green-50 com-rounded-lg com-p-4 com-mb-6;
 
@@ -82,8 +93,10 @@
 // Fixed to an A4-landscape-ish ratio (most certificate designs are
 // landscape) so the frame holds its shape as the window resizes, instead
 // of the old vh-based height that stretched taller/shorter with viewport.
+// Fills the main-column's own width (no separate max-width cap) now that
+// the column itself is sized deliberately via .two-column-layout.medium.
 .pdf-frame {
-  @apply com-w-full com-max-w-2xl com-mx-auto com-aspect-[1.414] com-rounded-lg com-overflow-hidden com-shadow-lg com-bg-Yankees-Blue com-p-3;
+  @apply com-w-full com-aspect-[1.414] com-rounded-lg com-overflow-hidden com-shadow-lg com-bg-Yankees-Blue com-p-3;
 }
 
 .pdf-object {

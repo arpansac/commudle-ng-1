@@ -1280,6 +1280,7 @@ export const API_ROUTES = {
   // Public, no auth - the real, permanently-stored certificate (as opposed
   // to certificate_recipients/preview, which re-renders a throwaway copy).
   CERTIFICATES: {
+    INDEX: 'api/v2/certificates', //GET, ?username=&page=&count=, public no auth
     VERIFY: 'api/v2/certificates/verify', //GET, ?uuid=
     DOWNLOAD: 'api/v2/certificates/download', //GET, ?uuid=, raw application/pdf
   },

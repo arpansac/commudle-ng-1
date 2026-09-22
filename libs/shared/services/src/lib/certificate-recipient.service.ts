@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import {
   EHttpContextFlag,
   ICertificatePublicRecipient,
+  ICertificatePublicRecipientsIndexResponse,
   ICertificateRecipient,
   ICertificateRecipientsIndexResponse,
 } from '@commudle/shared-models';
@@ -151,6 +152,22 @@ export class CertificateRecipientService {
     return this.http.get<ICertificatePublicRecipient>(this.baseApiService.getRoute(API_ROUTES.CERTIFICATES.VERIFY), {
       params,
     });
+  }
+
+  // Public, no auth - every certificate a user's been issued, for the
+  // "Certificates" section on their public profile. Same
+  // PublicCertificateSerializer shape as verifyCertificate() above, just
+  // paginated across all of that user's certificates instead of one.
+  indexPublicCertificates(
+    username: string,
+    page = 1,
+    count = 10,
+  ): Observable<ICertificatePublicRecipientsIndexResponse> {
+    const params = new HttpParams().set('username', username).set('page', page).set('count', count);
+    return this.http.get<ICertificatePublicRecipientsIndexResponse>(
+      this.baseApiService.getRoute(API_ROUTES.CERTIFICATES.INDEX),
+      { params },
+    );
   }
 
   revokeCertificateRecipient(certificateBatchId: string, recipientId: number): Observable<ICertificateRecipient> {
