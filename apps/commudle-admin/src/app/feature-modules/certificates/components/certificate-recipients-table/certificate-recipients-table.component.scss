@@ -24,6 +24,10 @@
     @apply com-text-center com-text-Auro-Metal-Saurus com-py-4;
   }
 
+  .no-email-banner {
+    @apply com-p-3 com-mb-4 com-bg-yellow-50 com-rounded-lg com-text-yellow-700 com-text-sm;
+  }
+
   .recipient-list-container {
     @apply com-w-full;
 

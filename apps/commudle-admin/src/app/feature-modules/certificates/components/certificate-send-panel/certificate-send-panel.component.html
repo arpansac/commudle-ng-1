@@ -6,11 +6,13 @@
   <div *ngIf="!batch.design" class="hint-text">Choose a design above before issuing or sending.</div>
 
   <!-- Issuing is independent of send status - it never touches
-  batch.status, so unlike the Send subsection below it stays available in
+  batch.status, so unlike the Send subsection below it stays visible in
   every status, not just DRAFT/READY. Re-running it after some recipients
   are already issued (e.g. new recipients added after a first issue, or a
   changed design) re-prompts via issueCertificates() -> the reissue-scope
-  dialog for "everyone" vs "only unissued". -->
+  dialog for "everyone" vs "only unissued". Disabled (not hidden) while
+  SENDING, so a reissue can't regenerate a certificate mid-send that
+  recipients may already have been emailed. -->
   <div class="send-subsection issue-subsection">
     <h4 class="subsection-title">Issue Certificates</h4>
     <p class="subsection-description">
@@ -23,7 +25,9 @@
       comButton
       status="info"
       size="medium"
-      [disabled]="!batch.design || isIssuing || isRevoked"
+      [disabled]="!batch.design || isIssuing || isRevoked || batch.status === ECertificateBatchStatus.SENDING"
+      nbTooltip="Wait until the current send finishes before reissuing"
+      [nbTooltipDisabled]="batch.status !== ECertificateBatchStatus.SENDING"
       (click)="issueCertificates()"
     >
       {{ isIssuing ? 'Issuing...' : 'Issue Certificates' }}
@@ -46,6 +50,7 @@
           fullWidth
           fieldSize="small"
           [(ngModel)]="emailSubject"
+          (ngModelChange)="batch.email_subject = $event"
           placeholder="e.g. Your certificate is ready"
         />
       </div>
@@ -58,6 +63,7 @@
           fullWidth
           rows="4"
           [(ngModel)]="emailBody"
+          (ngModelChange)="batch.email_body = $event"
           placeholder="The message recipients see in the email"
         ></textarea>
       </div>

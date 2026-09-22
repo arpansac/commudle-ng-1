@@ -16,6 +16,11 @@
     </div>
   </div>
 
+  <div class="no-email-banner" *ngIf="!isLoading && noEmailCount > 0">
+    {{ noEmailCount }} recipient{{ noEmailCount === 1 ? '' : 's' }} on this page have no email address and can't be sent
+    a certificate.
+  </div>
+
   <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
   <ng-container *ngIf="!isLoading">
@@ -26,8 +31,10 @@
     <section class="recipient-list-container" *ngIf="recipients.length > 0">
       <div class="bulk-actions" *ngIf="selectedIds.size > 0">
         <span class="bulk-actions-count">{{ selectedIds.size }} selected</span>
-        <button comButton status="basic" size="small" [disabled]="isResendingSelected" (click)="resendSelected()">
-          {{ isResendingSelected ? 'Starting...' : 'Resend to Selected' }}
+        <button comButton status="basic" size="small" [disabled]="isSendingSelected" (click)="sendSelected()">
+          {{
+            isSendingSelected ? 'Starting...' : batch.consent_confirmed_at ? 'Resend to Selected' : 'Send to Selected'
+          }}
         </button>
         <button comButton status="danger" size="small" [disabled]="isDeletingSelected" (click)="deleteSelected()">
           {{ isDeletingSelected ? 'Removing...' : 'Delete Selected' }}
@@ -99,7 +106,7 @@
                 <div class="skip-reason" *ngIf="recipient.skip_reason">{{ recipient.skip_reason }}</div>
                 <div class="revoked-tag" *ngIf="recipient.revoked_at || isBatchRevoked">Revoked</div>
                 <fa-icon
-                  *ngIf="recipient.sendable === false"
+                  *ngIf="missingValueLabels(recipient).length > 0"
                   class="missing-values-warning"
                   [icon]="icons.faExclamationTriangle"
                   [nbTooltip]="missingValuesTooltip(recipient)"
@@ -112,7 +119,7 @@
                   comButton
                   size="tiny"
                   status="success"
-                  title="Generate certificate and send by email"
+                  nbTooltip="Generate certificate and send by email"
                   (click)="sendOne(recipient)"
                 >
                   <fa-icon [icon]="icons.faPaperPlane"></fa-icon>
@@ -124,7 +131,7 @@
                   size="tiny"
                   status="info"
                   [disabled]="recipient.isGenerating"
-                  title="Generate certificate"
+                  nbTooltip="Generate certificate"
                   (click)="generateOne(recipient)"
                 >
                   <fa-icon
@@ -137,7 +144,7 @@
                   ghost
                   comButton
                   size="tiny"
-                  title="Preview certificate"
+                  nbTooltip="Preview certificate"
                   (click)="openPreviewDialog(recipient)"
                 >
                   <fa-icon [icon]="icons.faEye"></fa-icon>
@@ -151,7 +158,7 @@
                   comButton
                   size="tiny"
                   class="view-certificate-link"
-                  title="Download certificate"
+                  nbTooltip="Download certificate"
                 >
                   <fa-icon [icon]="icons.faDownload"></fa-icon>
                 </a>
@@ -162,7 +169,7 @@
                   size="tiny"
                   status="warning"
                   [disabled]="recipient.isGenerating"
-                  title="Reissue with current design"
+                  nbTooltip="Reissue with current design"
                   (click)="reissueOne(recipient)"
                 >
                   <fa-icon
@@ -170,7 +177,7 @@
                     [animation]="recipient.isGenerating ? 'spin' : undefined"
                   ></fa-icon>
                 </button>
-                <button ghost comButton size="tiny" title="Edit recipient" (click)="openEditDialog(recipient)">
+                <button ghost comButton size="tiny" nbTooltip="Edit recipient" (click)="openEditDialog(recipient)">
                   <fa-icon [icon]="icons.faPen"></fa-icon>
                 </button>
                 <button
@@ -179,7 +186,7 @@
                   comButton
                   size="tiny"
                   [status]="recipient.revoked_at ? 'basic' : 'danger'"
-                  [title]="recipient.revoked_at ? 'Unrevoke certificate' : 'Revoke certificate'"
+                  [nbTooltip]="recipient.revoked_at ? 'Unrevoke certificate' : 'Revoke certificate'"
                   (click)="toggleRecipientRevoke(recipient)"
                 >
                   <fa-icon [icon]="recipient.revoked_at ? icons.faUndo : icons.faBan"></fa-icon>
@@ -189,7 +196,7 @@
                   comButton
                   size="tiny"
                   status="danger"
-                  title="Delete recipient"
+                  nbTooltip="Delete recipient"
                   (click)="deleteRecipient(recipient)"
                 >
                   <fa-icon [icon]="icons.faTrash"></fa-icon>

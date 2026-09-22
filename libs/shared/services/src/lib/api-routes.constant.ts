@@ -1247,6 +1247,7 @@ export const API_ROUTES = {
     UNREVOKE: 'api/v2/certificate_batches/unrevoke', //POST
     PROGRESS: 'api/v2/certificate_batches/progress', //GET
     ISSUE: 'api/v2/certificate_batches/issue', //POST
+    MISSING_VALUES_PREVIEW: 'api/v2/certificate_batches/missing_values_preview', //GET
   },
 
   CERTIFICATE_DESIGNS: {
@@ -1268,6 +1269,7 @@ export const API_ROUTES = {
     CREATE: 'api/v2/certificate_recipients', //POST
     UPDATE: 'api/v2/certificate_recipients', //PUT
     DELETE: 'api/v2/certificate_recipients', //DELETE
+    SHOW: 'api/v2/certificate_recipients/show', //GET
     PREVIEW: 'api/v2/certificate_recipients/preview', //GET, raw application/pdf
     SEND_ONE: 'api/v2/certificate_recipients/send_one', //POST
     GENERATE_ONE: 'api/v2/certificate_recipients/generate_one', //POST

@@ -175,15 +175,42 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
 
   // Refreshes the variable list only - unlike fetchVariables(), doesn't
   // re-run initCanvas() (which destroys and rebuilds the whole Konva
-  // stage). Used when another section (CSV upload) adds variables we
-  // don't already have rendered, so there's nothing on the canvas itself
-  // to redraw.
+  // stage). Used when another section (CSV upload, add/delete variable)
+  // changes the variable set we don't already have rendered, so there's
+  // nothing on the canvas itself to redraw.
+  //
+  // Merges rather than replaces wholesale: toggling a variable's canvas
+  // placement (addToCanvas()/removeFromCanvas()/onBoxTransformed()) only
+  // mutates `positioned`/`positions`/`text_style` locally and sets
+  // isDirty - nothing is saved until saveLayout() runs. A plain
+  // `this.variables = res.certificate_variables` here would silently
+  // overwrite any such unsaved toggle with the server's last-saved value
+  // the moment a variable was added/deleted elsewhere, discarding the
+  // organizer's pending edit without any indication it happened. While
+  // isDirty is true, this keeps the locally-held placement fields for
+  // every variable that still exists server-side, and only lets the
+  // server's data through for genuinely new/removed variables.
   refreshVariablesList() {
     this.certificateVariableService
       .indexCertificateVariables(this.batch.uuid)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        this.variables = res.certificate_variables;
+        if (!this.isDirty) {
+          this.variables = res.certificate_variables;
+          return;
+        }
+        const existingById = new Map(this.variables.map((variable) => [variable.id, variable]));
+        this.variables = res.certificate_variables.map((fresh) => {
+          const existing = existingById.get(fresh.id);
+          return existing
+            ? {
+                ...fresh,
+                positioned: existing.positioned,
+                positions: existing.positions,
+                text_style: existing.text_style,
+              }
+            : fresh;
+        });
       });
   }
 

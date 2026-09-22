@@ -1,4 +1,5 @@
 export * from './lib/attached-file.model';
+export * from './lib/http-context-tokens.model';
 export * from './lib/badge.model';
 export * from './lib/community.model';
 export * from './lib/community-auth-token.model';

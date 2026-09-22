@@ -148,8 +148,16 @@ export class CertificateBatchDetailComponent implements OnInit, OnDestroy {
       });
   }
 
+  // Merges rather than reassigns `this.batch` - every section binds
+  // [batch]="batch", so swapping the reference re-fires ngOnChanges
+  // everywhere (a full recipients-table refetch/spinner flash, a canvas
+  // Konva stage rebuild, etc.) even for an update as small as picking a
+  // design. Centralizing the merge here means no individual emitter (design
+  // picker, send panel, ...) has to remember to mutate-in-place itself -
+  // whatever object they emit, it only ever gets folded into the one shared
+  // instance.
   onBatchUpdated(batch: ICertificateBatch) {
-    this.batch = batch;
+    Object.assign(this.batch, batch);
   }
 
   onVariablesChanged() {

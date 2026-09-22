@@ -6,19 +6,33 @@
     </button>
   </com-card-header>
   <com-card-body>
-    <p class="dialog-hint">
-      Some recipients already have a certificate issued. Existing certificates are never changed automatically - choose
-      who should be issued the current design.
+    <p class="dialog-hint" *ngIf="hasNew; else noNewHint">
+      {{ newCount }} new recipient{{ newCount === 1 ? '' : 's' }} {{ newCount === 1 ? 'has' : 'have' }} not been issued
+      a certificate yet. Existing certificates are never changed automatically - choose who should be issued the current
+      design.
     </p>
+    <ng-template #noNewHint>
+      <p class="dialog-hint">
+        All {{ alreadyIssuedCount }} recipient{{ alreadyIssuedCount === 1 ? '' : 's' }} already
+        {{ alreadyIssuedCount === 1 ? 'has' : 'have' }}
+        a certificate issued. Existing certificates are never changed automatically - reissuing replaces them under the
+        current design.
+      </p>
+    </ng-template>
 
-    <button type="button" class="reissue-option" (click)="choose('unissued')">
-      <span class="option-title">Only recipients not yet issued</span>
-      <span class="option-description">Anyone already issued a certificate keeps their existing one as-is.</span>
+    <button type="button" class="reissue-option" *ngIf="hasNew" (click)="choose('unissued')">
+      <span class="option-title">Issue only to new attendees</span>
+      <span class="option-description"
+        >Only the {{ newCount }} new entr{{ newCount === 1 ? 'y' : 'ies' }} in the recipient list get a certificate.
+        Anyone already issued keeps their existing one as-is.</span
+      >
     </button>
 
     <button type="button" class="reissue-option" (click)="choose('all')">
-      <span class="option-title">All recipients</span>
-      <span class="option-description">Re-issues everyone under the new design, including anyone already issued.</span>
+      <span class="option-title">{{ hasNew ? 'Issue to everyone' : 'Reissue to everyone' }}</span>
+      <span class="option-description"
+        >Re-issues everyone under the current design, including anyone already issued.</span
+      >
     </button>
   </com-card-body>
   <com-card-footer>

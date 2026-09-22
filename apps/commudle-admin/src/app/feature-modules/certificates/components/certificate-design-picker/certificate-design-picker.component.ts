@@ -32,11 +32,12 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
   readonly designPageSize = 4;
 
   private destroy$ = new Subject<void>();
-  // The parent reassigns `batch` (a new reference, same uuid) after every
-  // update - e.g. selectDesign() below emits batchUpdated right after a
-  // fresh upload. Refetching the whole list on every such reassignment
-  // would blow away the just-uploaded design and flash the loading
-  // spinner, so this only fetches when the batch actually changes.
+  // The parent merges emitted updates into the same `batch` reference
+  // (see certificate-batch-detail's onBatchUpdated()), so ngOnChanges
+  // normally won't refire from this component's own batchUpdated emits.
+  // This guard is for the case that still legitimately changes the
+  // reference - navigating to a different batch entirely - so a fresh
+  // fetch only happens then, not on every local update.
   private loadedBatchUuid: string;
 
   constructor(

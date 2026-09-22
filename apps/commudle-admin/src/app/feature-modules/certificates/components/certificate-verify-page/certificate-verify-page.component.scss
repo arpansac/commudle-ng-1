@@ -1,43 +1,95 @@
 .certificate-verify-page {
-  @apply com-max-w-3xl com-mx-auto com-py-12 com-px-4;
+  @apply com-py-12 com-px-4;
 }
 
-.verify-card {
-  @apply com-text-center;
+.page-eyebrow {
+  @apply com-block com-text-xs com-font-semibold com-text-Auro-Metal-Saurus com-uppercase com-tracking-wide com-mb-2;
 }
 
-.verified-tag {
-  @apply com-inline-flex com-items-center com-gap-2 com-bg-green-100 com-text-green-700 com-px-3 com-py-1 com-rounded-full com-text-sm com-font-medium com-mb-4;
+.page-title {
+  @apply com-text-3xl com-font-bold com-text-Yankees-Blue com-m-0 com-mb-2;
 }
 
-.recipient-name {
-  @apply com-text-2xl com-font-semibold com-text-Yankees-Blue com-mb-2;
+.page-description {
+  @apply com-text-Auro-Metal-Saurus com-mb-8;
 }
 
-.certificate-title {
-  @apply com-text-Auro-Metal-Saurus com-mb-6;
+.verified-banner {
+  @apply com-flex com-items-center com-gap-3 com-bg-green-50 com-rounded-lg com-p-4 com-mb-6;
+
+  .verified-icon {
+    @apply com-flex-none com-w-8 com-h-8 com-rounded-full com-bg-green-600 com-text-white com-flex com-items-center com-justify-center;
+  }
+
+  .verified-title {
+    @apply com-font-semibold com-text-green-700;
+  }
+
+  .verified-subtitle {
+    @apply com-text-sm com-text-green-700 com-opacity-80;
+  }
 }
 
-.meta-row {
-  @apply com-flex com-justify-center com-gap-2 com-text-sm com-mb-1;
+.info-list {
+  @apply com-flex com-flex-col com-gap-4;
 }
 
-.meta-label {
-  @apply com-text-Auro-Metal-Saurus;
+.info-row,
+.detail-row {
+  @apply com-flex com-items-start com-gap-3;
 }
 
-.meta-value {
-  @apply com-text-Yankees-Blue com-font-medium;
+.info-icon {
+  @apply com-flex-none com-w-9 com-h-9 com-rounded-full com-bg-gray-100 com-text-Auro-Metal-Saurus com-flex com-items-center com-justify-center;
+}
+
+.info-label {
+  @apply com-text-sm com-text-Auro-Metal-Saurus;
+}
+
+.info-value {
+  @apply com-font-semibold com-text-Yankees-Blue;
+}
+
+.verify-divider {
+  @apply com-border-0 com-border-t com-border-solid com-border-Bright-Gray com-my-6;
+}
+
+.detail-list {
+  @apply com-flex com-flex-col com-gap-4 com-mb-6;
+
+  .detail-body {
+    @apply com-flex-1 com-min-w-0;
+  }
+}
+
+.detail-value-box {
+  @apply com-flex com-items-center com-justify-between com-gap-2 com-bg-gray-100 com-rounded com-px-3 com-py-2 com-mt-1;
+
+  .detail-value-text {
+    @apply com-text-sm com-text-Yankees-Blue com-truncate;
+  }
+}
+
+.action-btn {
+  @apply com-flex com-items-center com-justify-center com-mb-3;
 }
 
 .profile-link {
-  @apply com-flex com-items-center com-justify-center com-gap-2 com-text-Ultramarine-Blue com-text-sm com-mt-4;
+  @apply com-block com-text-Ultramarine-Blue com-text-sm com-mt-0.5;
 }
 
-.download-btn {
-  @apply com-inline-flex com-items-center com-mt-6 com-mb-6;
+// Fixed to an A4-landscape-ish ratio (most certificate designs are
+// landscape) so the frame holds its shape as the window resizes, instead
+// of the old vh-based height that stretched taller/shorter with viewport.
+.pdf-frame {
+  @apply com-w-full com-max-w-2xl com-mx-auto com-aspect-[1.414] com-rounded-lg com-overflow-hidden com-shadow-lg com-bg-Yankees-Blue com-p-3;
 }
 
 .pdf-object {
-  @apply com-w-full com-h-[80vh] com-border com-border-Bright-Gray com-rounded;
+  @apply com-block com-w-full com-h-full com-rounded com-bg-white;
+}
+
+.pdf-loading {
+  @apply com-w-full com-h-full com-rounded com-bg-white com-flex com-items-center com-justify-center;
 }

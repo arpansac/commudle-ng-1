@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NbDialogRef, NbIconModule } from '@commudle/theme';
 import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 
@@ -12,6 +12,9 @@ export type ECertificateReissueScope = 'all' | 'unissued';
 // recipients" option here - there's no bulk "issue to selected" action,
 // and the per-recipient "Reissue with current design" button in the
 // recipients table already covers that case directly.
+//
+// newCount/alreadyIssuedCount (gdgapp's generated_count, 2026-09-22) drive
+// which option(s) are offered - see hasNew below.
 @Component({
   selector: 'commudle-certificate-reissue-dialog',
   standalone: true,
@@ -20,7 +23,17 @@ export type ECertificateReissueScope = 'all' | 'unissued';
   styleUrls: ['./certificate-reissue-dialog.component.scss'],
 })
 export class CertificateReissueDialogComponent {
+  @Input() newCount = 0;
+  @Input() alreadyIssuedCount = 0;
+
   constructor(private dialogRef: NbDialogRef<CertificateReissueDialogComponent>) {}
+
+  // When nobody's new (everyone in the batch already has a certificate),
+  // "issue only to new attendees" would target no one - not worth offering
+  // as a distinct choice, so only the single reissue-everyone option shows.
+  get hasNew(): boolean {
+    return this.newCount > 0;
+  }
 
   choose(scope: ECertificateReissueScope) {
     this.dialogRef.close(scope);

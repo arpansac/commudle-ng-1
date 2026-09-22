@@ -1,6 +1,7 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
+  EHttpContextFlag,
   ICertificatePublicRecipient,
   ICertificateRecipient,
   ICertificateRecipientsIndexResponse,
@@ -60,6 +61,18 @@ export class CertificateRecipientService {
     );
   }
 
+  // Single-recipient read, scoped by certificate_batch_id + id like
+  // update/delete already are (gdgapp added 2026-09-22, no id path segment -
+  // same query-param pattern as every other recipient action here). Used to
+  // poll a recipient's real status after send_one, since that endpoint is
+  // fire-and-forget and never returns the finished recipient itself.
+  showCertificateRecipient(certificateBatchId: string, recipientId: number): Observable<ICertificateRecipient> {
+    const params = new HttpParams().set('certificate_batch_id', certificateBatchId).set('id', recipientId);
+    return this.http.get<ICertificateRecipient>(this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_RECIPIENTS.SHOW), {
+      params,
+    });
+  }
+
   deleteCertificateRecipient(certificateBatchId: string, recipientId: number): Observable<{ deleted: boolean }> {
     const params = new HttpParams().set('certificate_batch_id', certificateBatchId).set('id', recipientId);
     return this.http.delete<{ deleted: boolean }>(
@@ -68,21 +81,38 @@ export class CertificateRecipientService {
     );
   }
 
-  sendOne(certificateBatchId: string, recipientId: number): Observable<{ status: string; enqueued: boolean }> {
+  // confirmMissingValues=true retries past the 422 the API returns when the
+  // row has a blank value with no default - see missing_keys in the error
+  // response's `data`. SKIP_ERROR_TOAST since the caller always shows its
+  // own targeted error UI for this (a confirm dialog on missing_keys, a
+  // plain toast otherwise) - without it, ApiParserResponseInterceptor's own
+  // global toast fires too, showing the error twice.
+  sendOne(
+    certificateBatchId: string,
+    recipientId: number,
+    confirmMissingValues = false,
+  ): Observable<{ status: string; enqueued: boolean }> {
     const params = new HttpParams().set('certificate_batch_id', certificateBatchId).set('id', recipientId);
     return this.http.post<{ status: string; enqueued: boolean }>(
       this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_RECIPIENTS.SEND_ONE),
-      {},
-      { params },
+      { confirm_missing_values: confirmMissingValues },
+      { params, context: new HttpContext().set(EHttpContextFlag.SKIP_ERROR_TOAST, true) },
     );
   }
 
-  generateOne(certificateBatchId: string, recipientId: number): Observable<ICertificateRecipient> {
+  // Same confirmMissingValues behavior as sendOne() - 422s with missing_keys
+  // first, retry with confirmMissingValues=true to render anyway. Same
+  // SKIP_ERROR_TOAST reasoning as sendOne() above.
+  generateOne(
+    certificateBatchId: string,
+    recipientId: number,
+    confirmMissingValues = false,
+  ): Observable<ICertificateRecipient> {
     const params = new HttpParams().set('certificate_batch_id', certificateBatchId).set('id', recipientId);
     return this.http.post<ICertificateRecipient>(
       this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_RECIPIENTS.GENERATE_ONE),
-      {},
-      { params },
+      { confirm_missing_values: confirmMissingValues },
+      { params, context: new HttpContext().set(EHttpContextFlag.SKIP_ERROR_TOAST, true) },
     );
   }
 
@@ -99,6 +129,19 @@ export class CertificateRecipientService {
   // URL, not an HttpClient call - meant for a direct <a href> link.
   certificateDownloadUrl(recipientUuid: string): string {
     return `${this.baseApiService.getRoute(API_ROUTES.CERTIFICATES.DOWNLOAD)}?uuid=${recipientUuid}`;
+  }
+
+  // Same endpoint as certificateDownloadUrl(), fetched as bytes instead of
+  // linked directly - for embedding inline (e.g. the verify page's <object>
+  // preview), where a direct link to the raw URL would be subject to
+  // Content-Disposition/X-Frame-Options on the response. A JS-level fetch
+  // sidesteps both, same pattern as previewPdf() + URL.createObjectURL().
+  downloadCertificatePdf(recipientUuid: string): Observable<Blob> {
+    const params = new HttpParams().set('uuid', recipientUuid);
+    return this.http.get(this.baseApiService.getRoute(API_ROUTES.CERTIFICATES.DOWNLOAD), {
+      params,
+      responseType: 'blob',
+    });
   }
 
   // Public verification page - no auth. 404s if the recipient/batch is

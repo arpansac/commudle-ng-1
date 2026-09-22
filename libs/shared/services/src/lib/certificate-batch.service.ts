@@ -5,6 +5,7 @@ import {
   ICertificateBatchesIndexResponse,
   ICertificateCsvCommitResponse,
   ICertificateCsvPreviewResponse,
+  ICertificateMissingValuesPreview,
   ICertificateProgress,
 } from '@commudle/shared-models';
 import { Observable } from 'rxjs';
@@ -122,6 +123,28 @@ export class CertificateBatchService {
     return this.http.post<{ status: string; enqueued: boolean }>(
       this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_BATCHES.ISSUE),
       { ...options },
+      { params },
+    );
+  }
+
+  // Read-only - meant to be called right before a Send/Resend with the same
+  // recipient_ids/unsent_only selection that's about to be sent, so the
+  // confirm dialog lists exactly who'd be affected.
+  missingValuesPreview(
+    uuid: string,
+    selection?: { recipient_ids?: number[]; unsent_only?: boolean },
+  ): Observable<ICertificateMissingValuesPreview> {
+    let params = new HttpParams().set('id', uuid);
+    if (selection?.recipient_ids) {
+      selection.recipient_ids.forEach((id) => {
+        params = params.append('recipient_ids[]', id);
+      });
+    }
+    if (selection?.unsent_only) {
+      params = params.set('unsent_only', true);
+    }
+    return this.http.get<ICertificateMissingValuesPreview>(
+      this.baseApiService.getRoute(API_ROUTES.CERTIFICATE_BATCHES.MISSING_VALUES_PREVIEW),
       { params },
     );
   }
