@@ -1,6 +1,6 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, Inject, Input, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NbDialogRef, NbIconModule, NbInputModule } from '@commudle/theme';
 import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 import { ICertificateDesign } from '@commudle/shared-models';
@@ -31,7 +31,11 @@ export class CertificateUploadDesignDialogComponent implements OnInit, OnDestroy
 
   readonly maxFileSizeLabel = '5MB';
 
-  uploadForm: FormGroup;
+  // Untyped `FormGroup` here would widen uploadForm.controls['name'] to
+  // AbstractControl - the template's [formControl] binding requires the
+  // concrete FormControl type, so this needs the explicit generic rather
+  // than relying on fb.group()'s own type inference to flow through.
+  uploadForm: FormGroup<{ name: FormControl<string> }>;
   selectedFile: File | null = null;
   selectedFilePreviewUrl: string | null = null;
   isDragging = false;
