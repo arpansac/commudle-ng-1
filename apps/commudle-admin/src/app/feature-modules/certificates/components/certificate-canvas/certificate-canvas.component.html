@@ -63,9 +63,10 @@
             <label>Font</label>
             <select
               [value]="selectedVariable.text_style?.font || 'Helvetica'"
+              [style.fontFamily]="selectedVariable.text_style?.font || 'Helvetica'"
               (change)="updateStyle({ font: $any($event.target).value })"
             >
-              <option *ngFor="let font of fontOptions" [value]="font">{{ font }}</option>
+              <option *ngFor="let font of fontOptions" [value]="font" [style.fontFamily]="font">{{ font }}</option>
             </select>
           </div>
 

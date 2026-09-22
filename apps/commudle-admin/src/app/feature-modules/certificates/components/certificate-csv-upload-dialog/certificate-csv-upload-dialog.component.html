@@ -11,7 +11,26 @@
         The CSV must include an <strong>email</strong> column. Any other column becomes a variable you can place on the
         certificate - new headers create new variables automatically.
       </p>
-      <input type="file" accept=".csv,text/csv" (change)="onFileSelected($event)" />
+
+      <div
+        class="dropzone"
+        [class.dragging]="isDragging"
+        (click)="onDropzoneClick(fileInput)"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)"
+      >
+        <nb-icon icon="cloud-upload-outline"></nb-icon>
+        <span>Drag and drop a CSV file, or click to choose a file</span>
+      </div>
+      <input
+        #fileInput
+        type="file"
+        accept=".csv,text/csv"
+        class="hidden-file-input"
+        (change)="onFileSelected($event)"
+      />
+
       <commudle-alert *ngIf="errorMessage" [error]="true" [errorMessage]="errorMessage"></commudle-alert>
     </ng-container>
 

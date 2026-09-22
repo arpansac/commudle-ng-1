@@ -51,10 +51,22 @@ const DEFAULT_FONT_SIZE_RATIO = 0.035;
 const MIN_DEFAULT_FONT_SIZE = 12;
 const MAX_DEFAULT_FONT_SIZE = 200;
 
-// Only Prawn's built-in fonts are wired on the backend so far (see spec's Open
-// Design Decisions - broad-Unicode font bundling is still an open item), so
-// the picker is limited to what can actually render.
-export const CERTIFICATE_FONT_OPTIONS = ['Helvetica', 'Times-Roman', 'Courier'];
+// Limited to whatever Certificates::PdfRenderer (gdgapp) can actually
+// render - the 3 Prawn built-ins plus 5 bundled TTF families registered via
+// font_families.update() (AVAILABLE_FONTS in pdf_renderer.rb, 2026-09-22).
+// Broad-Unicode/non-Latin fallback is still a separate, unaddressed open
+// item (see spec's Open Design Decisions). Names must match AVAILABLE_FONTS
+// exactly - Prawn resolves purely by this string.
+export const CERTIFICATE_FONT_OPTIONS = [
+  'Helvetica',
+  'Times-Roman',
+  'Courier',
+  'Playfair Display',
+  'Open Sans',
+  'Great Vibes',
+  'JetBrains Mono',
+  'Cinzel',
+];
 
 @Component({
   selector: 'commudle-certificate-canvas',
@@ -75,6 +87,14 @@ export const CERTIFICATE_FONT_OPTIONS = ['Helvetica', 'Times-Roman', 'Courier'];
 })
 export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() batch: ICertificateBatch;
+  // certificate-batch-detail's onBatchUpdated() merges updates into the
+  // shared `batch` object in place rather than reassigning it (so picking a
+  // design doesn't flash the recipients table) - which means `batch` itself
+  // never changes reference, so ngOnChanges below can't detect a new design
+  // from that input alone. This is bound separately, straight off
+  // `batch.design?.id`, purely so its primitive value change (compared by
+  // value, not reference) gives ngOnChanges something to actually fire on.
+  @Input() designId: number | null = null;
   @Output() variablesChanged = new EventEmitter<void>();
 
   @ViewChild('stageContainer', { static: false }) stageContainer: ElementRef<HTMLDivElement>;
@@ -102,13 +122,11 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
   private viewInitialized = false;
   private destroy$ = new Subject<void>();
   // `batch` is shared across every sibling tab (design picker, recipients
-  // table, this canvas) via a single [batch]="batch" binding at the parent,
-  // and gets reassigned to a new object reference whenever ANY of them
-  // emits an update - not just when this batch's variables actually
-  // changed. Refetching on every such reassignment would silently discard
-  // an in-progress, not-yet-saved style/position edit (isDirty local state)
-  // the moment an unrelated tab action fires. Only refetch when the batch
-  // or its chosen design has actually changed.
+  // table, this canvas) via a single [batch]="batch" binding at the parent.
+  // Refetching on every update to it (or every designId change) would
+  // silently discard an in-progress, not-yet-saved style/position edit
+  // (isDirty local state) the moment an unrelated tab action fires. Only
+  // refetch when the batch or its chosen design has actually changed.
   private loadedBatchUuid: string;
   private loadedDesignId: number | null = null;
 
@@ -131,7 +149,7 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!changes.batch || !this.batch) {
+    if ((!changes.batch && !changes.designId) || !this.batch) {
       return;
     }
     const designId = this.batch.design?.id ?? null;
@@ -219,6 +237,12 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
       const mod = await import('konva');
       this.Konva = mod.default;
     }
+    // Konva draws text onto a <canvas>, not the DOM - it gets none of the
+    // browser's automatic FOUT/FOIT redraw-on-font-ready behavior. If a
+    // webfont (see index.html) hasn't actually finished loading yet, a
+    // Text node drawn now is stuck on the fallback font until something
+    // manually redraws it later, which nothing here otherwise does.
+    await this.ensureFontsLoaded();
     this.stage?.destroy();
     this.boxesById.clear();
 
@@ -274,6 +298,27 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
     this.variables.filter((v) => v.positioned).forEach((variable) => this.renderBox(variable));
 
     this.layer.draw();
+  }
+
+  // document.fonts.load() explicitly requests each family used by a
+  // positioned variable's text_style and waits for it - CSS-only
+  // (index.html's <link>) declares the @font-face but doesn't force the
+  // browser to actually fetch the file until something on the page renders
+  // with it, which a <canvas> draw doesn't count as. Best-effort: a font
+  // that fails to load just falls back to the browser default in this
+  // preview only - the real PDF render on gdgapp is unaffected either way.
+  private async ensureFontsLoaded() {
+    if (typeof document === 'undefined' || !('fonts' in document)) {
+      return;
+    }
+    const families = new Set(
+      this.variables.filter((v) => v.positioned).map((v) => (v.text_style || DEFAULT_TEXT_STYLE).font),
+    );
+    try {
+      await Promise.all(Array.from(families).map((family) => document.fonts.load(`16px "${family}"`)));
+    } catch {
+      // best-effort, see comment above
+    }
   }
 
   private renderBox(variable: ICertificateVariable) {

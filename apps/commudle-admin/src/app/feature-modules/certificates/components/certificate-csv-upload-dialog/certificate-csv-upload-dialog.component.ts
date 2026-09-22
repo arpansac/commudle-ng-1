@@ -21,6 +21,7 @@ export class CertificateCsvUploadDialogComponent {
   preview: ICertificateCsvPreviewResponse | null = null;
   isLoading = false;
   isCommitting = false;
+  isDragging = false;
   errorMessage: string | null = null;
 
   constructor(
@@ -33,10 +34,38 @@ export class CertificateCsvUploadDialogComponent {
     return this.preview?.missing_columns?.some((col) => !col.has_default) ?? false;
   }
 
+  onDropzoneClick(fileInput: HTMLInputElement) {
+    fileInput.click();
+  }
+
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
+    this.setFile(input.files?.[0]);
+    input.value = '';
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = true;
+  }
+
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+    this.setFile(event.dataTransfer?.files?.[0]);
+  }
+
+  private setFile(file: File | undefined) {
     if (!file) {
+      return;
+    }
+    if (!file.name.toLowerCase().endsWith('.csv') && file.type !== 'text/csv') {
+      this.errorMessage = 'Please choose a CSV file';
       return;
     }
     this.selectedFile = file;

@@ -130,6 +130,7 @@
         </div>
         <commudle-certificate-canvas
           [batch]="batch"
+          [designId]="batch.design?.id ?? null"
           (variablesChanged)="onVariablesChanged()"
         ></commudle-certificate-canvas>
       </com-card-body>
