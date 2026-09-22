@@ -1,6 +1,7 @@
 @import './apps/commudle-admin/src/assets/styles/variables';
 
 .admin-assets-list {
+  @apply com-mt-4;
   com-card-header {
     @media screen and (max-width: $tab-width) {
       @apply com-flex-col;
