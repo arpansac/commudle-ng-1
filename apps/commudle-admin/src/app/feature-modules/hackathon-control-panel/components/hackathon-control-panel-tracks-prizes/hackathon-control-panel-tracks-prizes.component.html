@@ -21,8 +21,19 @@
       </label>
     </div>
     <div class="router-tab">
-      <nb-route-tabset [tabs]="tabs"></nb-route-tabset>
+      <a routerLink="./" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <div class="route-tab-option">
+          <span>TRACKS</span>
+        </div>
+      </a>
+      <a routerLink="./prizes" routerLinkActive="active">
+        <div class="route-tab-option">
+          <span>PRIZES</span>
+        </div>
+      </a>
     </div>
+
+    <router-outlet></router-outlet>
   </com-card-body>
 </com-card>
 
