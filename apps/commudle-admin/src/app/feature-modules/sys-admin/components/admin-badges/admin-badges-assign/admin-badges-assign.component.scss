@@ -2,6 +2,9 @@
 
 .admin-badges-assign {
   @apply com-mt-4;
+  com-card-header {
+    @apply com-flex com-items-center com-justify-between;
+  }
   com-card-body {
     .form-fields {
       width: 100%;
