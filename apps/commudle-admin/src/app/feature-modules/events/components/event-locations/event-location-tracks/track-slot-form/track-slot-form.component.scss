@@ -1,7 +1,7 @@
 com-card {
-  @apply com-w-[30dvw] com-max-h-[90dvh] com-overflow-y-auto com-flex;
+  @apply com-w-[30dvw] com-max-h-[90dvh] com-overflow-y-auto com-flex com-justify-between;
   com-card-header {
-    @apply com-flex;
+    @apply com-flex com-justify-between;
   }
   com-card-body {
     @apply com-px-3 com-scrollbar-hide com-flex;
