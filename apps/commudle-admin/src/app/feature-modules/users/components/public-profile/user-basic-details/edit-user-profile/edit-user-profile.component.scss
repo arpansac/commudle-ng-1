@@ -14,16 +14,19 @@
         text-align: center;
         border: none;
         text-decoration: none;
+
+        @media screen and (max-width: 768px) {
+          @apply com-shrink-0;
+        }
       }
 
       .profile-navbar-menu-option {
         @apply com-flex com-items-center com-gap-2 com-text-xs com-font-medium com-h-fit com-m-0 com-px-2 com-py-2 com-cursor-pointer com-no-underline com-whitespace-nowrap md:com-text-sm md:com-py-0;
         cursor: pointer;
+      }
 
-        &:hover {
-          @apply com-bg-blue-50;
-          transition: background-color 0.2s ease;
-        }
+      @media screen and (max-width: 768px) {
+        @apply com-overflow-x-auto com-whitespace-nowrap;
       }
 
       .active {
