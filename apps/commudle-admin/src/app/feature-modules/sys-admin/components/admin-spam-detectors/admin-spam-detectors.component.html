@@ -380,14 +380,14 @@
 
 <!-- Confirmation Dialog -->
 <ng-template #spamDetectorFormDialog let-data let-ref="dialogRef">
-  <nb-card class="confirm-dialog-card">
-    <nb-card-header class="confirm-dialog-header">
+  <com-card class="confirm-dialog-card">
+    <com-card-header class="confirm-dialog-header">
       <span>Confirm Decision</span>
       <button ghost nbButton size="small" (click)="ref.close(false)" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
-    </nb-card-header>
-    <nb-card-body class="confirm-dialog-body">
+    </com-card-header>
+    <com-card-body class="confirm-dialog-body">
       <div class="confirm-dialog-icon-row">
         <div
           class="confirm-icon-circle"
@@ -406,8 +406,8 @@
         </ng-container>
       </p>
       <p class="confirm-sub">This action will update the spam decision for this content.</p>
-    </nb-card-body>
-    <nb-card-footer class="confirm-dialog-footer">
+    </com-card-body>
+    <com-card-footer class="confirm-dialog-footer">
       <button nbButton status="basic" size="small" (click)="ref.close(false)">Cancel</button>
       <button
         nbButton
@@ -417,6 +417,6 @@
       >
         {{ data.selectedValue === 'true' ? 'Confirm Spam' : 'Confirm Safe' }}
       </button>
-    </nb-card-footer>
-  </nb-card>
+    </com-card-footer>
+  </com-card>
 </ng-template>
