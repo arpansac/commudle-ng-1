@@ -45,7 +45,6 @@ import { HackathonRegisteredCardComponent } from 'apps/commudle-admin/src/app/ap
     // Nebular
     NbIconModule,
     NbCardModule,
-    CommudleCardModule,
     NbSpinnerModule,
     NbToggleModule,
     NbButtonModule,
