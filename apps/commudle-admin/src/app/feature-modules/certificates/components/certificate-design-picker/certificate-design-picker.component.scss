@@ -3,7 +3,7 @@
     @apply com-flex com-gap-4 com-mb-4 com-items-start;
 
     .design-row {
-      @apply com-flex com-gap-4 com-flex-1 com-overflow-x-auto;
+      @apply com-flex com-gap-4 com-flex-1 com-min-w-0 com-overflow-x-auto;
     }
 
     .design-card {

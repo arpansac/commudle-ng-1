@@ -32,7 +32,7 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
 
   designPage = 1;
   designTotal = 0;
-  readonly designPageSize = 4;
+  readonly designPageSize = 5;
 
   private destroy$ = new Subject<void>();
   // The parent merges emitted updates into the same `batch` reference

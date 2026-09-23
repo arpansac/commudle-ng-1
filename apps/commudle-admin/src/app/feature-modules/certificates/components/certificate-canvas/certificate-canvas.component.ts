@@ -575,16 +575,17 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
     this.isDirty = true;
   }
 
+  // Sends every variable's current state, not just the positioned ones -
+  // update_layout on the backend only touches ids present in the payload,
+  // so a variable just removed from the canvas (positions set to null
+  // locally) must still be included here, or its old position is never
+  // cleared server-side and it keeps rendering on the actual PDF.
   saveLayout() {
-    const placed = this.variables.filter((v) => v.positioned);
-    if (placed.length === 0) {
-      return;
-    }
     this.isSaving = true;
     this.certificateVariableService
       .updateLayout(
         this.batch.uuid,
-        placed.map((v) => ({ id: v.id, positions: v.positions, text_style: v.text_style })),
+        this.variables.map((v) => ({ id: v.id, positions: v.positions, text_style: v.text_style })),
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe({
