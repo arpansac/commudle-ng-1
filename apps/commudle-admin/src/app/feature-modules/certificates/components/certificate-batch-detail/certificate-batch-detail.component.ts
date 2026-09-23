@@ -4,12 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { NbInputModule } from '@commudle/theme';
 import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
-import { ECertificateBatchStatus, ICertificateBatch } from '@commudle/shared-models';
+import { ECertificateBatchStatus, ICertificateBatch, IFaq } from '@commudle/shared-models';
 import { CertificateBatchService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import * as moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
+import { SharedComponentsModule as LibSharedComponentsModule } from '@commudle/shared-components';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowLeft, faPen } from '@fortawesome/free-solid-svg-icons';
 import { CertificateDesignPickerComponent } from '../certificate-design-picker/certificate-design-picker.component';
@@ -28,6 +29,7 @@ import { CertificateSendPanelComponent } from '../certificate-send-panel/certifi
     CommudleButtonModule,
     NbInputModule,
     SharedComponentsModule,
+    LibSharedComponentsModule,
     FontAwesomeModule,
     CertificateDesignPickerComponent,
     CertificateRecipientsTableComponent,
@@ -50,6 +52,54 @@ export class CertificateBatchDetailComponent implements OnInit, OnDestroy {
   isEditingName = false;
   isSavingName = false;
   editedName = '';
+
+  faqs: IFaq[] = [
+    {
+      question: 'What are "variables"?',
+      answer:
+        'A variable is a placeholder value that changes per recipient, like name, course, or date. They come from your CSV columns, or you can add one manually. "email" is always a fixed recipient field, never a variable, and "name" is dual-purpose - it fills the recipient\'s name and can also be positioned on the design like any other variable.',
+    },
+    {
+      question: 'What does "positioning" a variable do, and why would I leave one unpositioned?',
+      answer:
+        'Dragging a variable onto the design in step 3 is what makes it actually render on the certificate. A variable that\'s never dragged onto the design (or has "keep" unchecked) stays in your data but never draws on the PDF and never blocks sending, even if some recipients have no value for it.',
+    },
+    {
+      question: 'What does a default value do?',
+      answer:
+        'If you set a default value for a variable, any recipient whose row is blank for that field uses the default instead - so you only need to fill in exceptions, not every row.',
+    },
+    {
+      question: 'What do the icons on this page mean?',
+      answer:
+        "The plus icon adds a design, recipient, or field. The pencil renames the batch. The checkmark marks the currently selected design. The three-dot menu opens a row's more-actions menu. The eye previews a certificate. The upload arrow sends a design image or CSV up; the download arrow pulls a generated PDF down. The paper plane sends certificates by email. The circular arrows are reissue/resend vs. revoke/unrevoke. The trash can deletes. The warning triangle flags a missing required value. The spinner shows work in progress. The back arrow goes back to the batches list, and the ban icon marks a revoked or blocked recipient.",
+    },
+    {
+      question: 'What are the steps to generate a certificate?',
+      answer:
+        '1) Create a batch. 2) Choose or upload a design. 3) Add recipients, by CSV or manually - this is also where variables get defined. 4) Drag each variable onto the design and style its text. 5) Issue certificates (renders the PDFs, no email) and/or Send them (renders and emails). 6) Track delivery status, and resend or revoke as needed.',
+    },
+    {
+      question: "What's the difference between Issue and Send?",
+      answer:
+        'Issue only renders and stores each certificate as a PDF - no email goes out. Send does the same render, then also emails it. This lets you have certificates ready to view or download (e.g. linked from an event page) well before, or entirely without, emailing anyone.',
+    },
+    {
+      question: 'What happens if I revoke or delete a recipient or batch?',
+      answer:
+        "Revoke is reversible and immediately hides the certificate from its public verify page and profile listing - you can unrevoke it later. Delete is permanent: if the recipient or batch was ever sent, deleting it revokes it first, so it can't quietly become public again if it's ever restored.",
+    },
+    {
+      question: "Can I change the design after I've already sent certificates?",
+      answer:
+        "Yes. Swapping the design only affects certificates generated or sent after the change - any PDF that's already been issued stays exactly as it was.",
+    },
+    {
+      question: 'What happens if a recipient is missing a required value?',
+      answer:
+        "Before sending, you'll be shown which recipients are missing a value that would render blank on their certificate. You can choose to skip just those recipients, or proceed anyway and send them with that field left empty.",
+    },
+  ];
 
   private destroy$ = new Subject<void>();
 
