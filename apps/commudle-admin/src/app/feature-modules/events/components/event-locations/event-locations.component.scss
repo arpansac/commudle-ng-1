@@ -52,7 +52,7 @@
       }
     }
 
-    nb-card-header {
+    com-card-header {
       display: flex;
       justify-content: flex-start;
 
@@ -106,7 +106,7 @@
 }
 
 .confirmation-dialog-box {
-  nb-card-header {
+  com-card-header {
     @apply com-flex com-items-center com-justify-between;
 
     .confirmation-heading {
