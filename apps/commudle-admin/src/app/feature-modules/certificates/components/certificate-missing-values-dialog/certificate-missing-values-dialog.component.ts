@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { NbDialogRef, NbIconModule } from '@commudle/theme';
+import { NbDialogRef } from '@commudle/theme';
 import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 import { ICertificateMissingValuesRow } from '@commudle/shared-models';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 export type ECertificateMissingValuesChoice = 'skip' | 'wait';
 
@@ -13,12 +15,14 @@ export type ECertificateMissingValuesChoice = 'skip' | 'wait';
 @Component({
   selector: 'commudle-certificate-missing-values-dialog',
   standalone: true,
-  imports: [CommonModule, CommudleCardModule, CommudleButtonModule, NbIconModule],
+  imports: [CommonModule, CommudleCardModule, CommudleButtonModule, FontAwesomeModule],
   templateUrl: './certificate-missing-values-dialog.component.html',
   styleUrls: ['./certificate-missing-values-dialog.component.scss'],
 })
 export class CertificateMissingValuesDialogComponent {
   @Input() rows: ICertificateMissingValuesRow[] = [];
+
+  icons = { faXmark };
 
   constructor(private dialogRef: NbDialogRef<CertificateMissingValuesDialogComponent>) {}
 

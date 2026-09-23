@@ -4,7 +4,7 @@
   <ng-container *ngIf="!isLoading">
     <div class="design-grid">
       <div class="upload-tile" (click)="openUploadDialog()">
-        <nb-icon icon="plus-outline"></nb-icon>
+        <fa-icon [icon]="icons.faPlus"></fa-icon>
         <span>Upload a new design</span>
       </div>
 
@@ -18,11 +18,11 @@
           <div class="design-thumb">
             <img [src]="design.background_image_url" [alt]="design.name" />
             <div class="selected-badge" *ngIf="design.id === batch.design?.id">
-              <nb-icon icon="checkmark-outline"></nb-icon>
+              <fa-icon [icon]="icons.faCheck"></fa-icon>
             </div>
             <div *ngIf="design.design_type !== ECertificateDesignType.PRESET" class="design-actions">
               <button ghost comButton size="tiny" tabindex="-1" class="kebab-button">
-                <nb-icon icon="more-vertical"></nb-icon>
+                <fa-icon [icon]="icons.faEllipsisVertical"></fa-icon>
               </button>
               <select
                 class="design-actions-select"

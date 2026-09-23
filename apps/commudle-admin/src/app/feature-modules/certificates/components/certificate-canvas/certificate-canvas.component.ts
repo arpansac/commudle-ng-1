@@ -11,12 +11,12 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { NbCheckboxModule, NbDialogService, NbIconModule, NbInputModule } from '@commudle/theme';
+import { NbCheckboxModule, NbDialogService, NbInputModule } from '@commudle/theme';
 import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { ICertificateBatch, ICertificateVariable, ICertificateVariableTextStyle } from '@commudle/shared-models';
 import { CertificateVariableService } from '@commudle/shared-services';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
@@ -77,7 +77,6 @@ export const CERTIFICATE_FONT_OPTIONS = [
     ReactiveFormsModule,
     CommudleButtonModule,
     NbInputModule,
-    NbIconModule,
     NbCheckboxModule,
     FontAwesomeModule,
     SharedComponentsModule,
@@ -108,7 +107,7 @@ export class CertificateCanvasComponent implements AfterViewInit, OnChanges, OnD
 
   showAddForm = false;
   addForm: FormGroup;
-  icons = { faPlus };
+  icons = { faPlus, faEllipsisVertical };
 
   private Konva: typeof KonvaNamespace;
   private stage: KonvaNamespace.Stage;

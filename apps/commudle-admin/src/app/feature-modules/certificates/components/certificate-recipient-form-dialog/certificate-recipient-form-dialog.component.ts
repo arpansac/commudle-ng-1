@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NbDialogRef, NbIconModule, NbInputModule } from '@commudle/theme';
+import { NbDialogRef, NbInputModule } from '@commudle/theme';
 import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 import { ICertificateRecipient, ICertificateVariable } from '@commudle/shared-models';
 import { CertificateRecipientService, CertificateVariableService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { forkJoin, of } from 'rxjs';
 
 @Component({
@@ -18,7 +20,7 @@ import { forkJoin, of } from 'rxjs';
     CommudleCardModule,
     CommudleButtonModule,
     NbInputModule,
-    NbIconModule,
+    FontAwesomeModule,
     SharedComponentsModule,
   ],
   templateUrl: './certificate-recipient-form-dialog.component.html',
@@ -32,6 +34,7 @@ export class CertificateRecipientFormDialogComponent implements OnInit {
   recipientForm: FormGroup;
   newFields: FormArray;
   isSaving = false;
+  icons = { faXmark, faPlus };
 
   constructor(
     private fb: FormBuilder,

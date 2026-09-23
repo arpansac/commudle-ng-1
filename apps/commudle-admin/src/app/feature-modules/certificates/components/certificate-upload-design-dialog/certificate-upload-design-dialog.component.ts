@@ -1,12 +1,14 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, Inject, Input, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NbDialogRef, NbIconModule, NbInputModule } from '@commudle/theme';
+import { NbDialogRef, NbInputModule } from '@commudle/theme';
 import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 import { ICertificateDesign } from '@commudle/shared-models';
 import { CertificateDesignService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 
 const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
 
@@ -19,7 +21,7 @@ const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
     CommudleCardModule,
     CommudleButtonModule,
     NbInputModule,
-    NbIconModule,
+    FontAwesomeModule,
     SharedComponentsModule,
   ],
   templateUrl: './certificate-upload-design-dialog.component.html',
@@ -30,6 +32,7 @@ export class CertificateUploadDesignDialogComponent implements OnInit, OnDestroy
   @Input() defaultName = '';
 
   readonly maxFileSizeLabel = '5MB';
+  icons = { faCloudUploadAlt };
 
   // Untyped `FormGroup` here would widen uploadForm.controls['name'] to
   // AbstractControl - the template's [formControl] binding requires the

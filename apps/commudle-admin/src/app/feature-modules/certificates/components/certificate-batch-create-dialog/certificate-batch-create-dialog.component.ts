@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NbDialogRef, NbIconModule, NbInputModule } from '@commudle/theme';
+import { NbDialogRef, NbInputModule } from '@commudle/theme';
 import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 import { ICertificateBatch } from '@commudle/shared-models';
 import { CertificateBatchService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-certificate-batch-create-dialog',
@@ -17,7 +19,7 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
     CommudleCardModule,
     CommudleButtonModule,
     NbInputModule,
-    NbIconModule,
+    FontAwesomeModule,
     SharedComponentsModule,
   ],
   templateUrl: './certificate-batch-create-dialog.component.html',
@@ -28,6 +30,7 @@ export class CertificateBatchCreateDialogComponent implements OnInit {
 
   batchForm: FormGroup;
   isSaving = false;
+  icons = { faXmark };
 
   constructor(
     private fb: FormBuilder,

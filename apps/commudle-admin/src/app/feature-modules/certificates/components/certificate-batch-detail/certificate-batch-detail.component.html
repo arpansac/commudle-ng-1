@@ -3,7 +3,7 @@
 
   <ng-container *ngIf="!isLoading && batch">
     <a class="back-link" routerLink="../">
-      <nb-icon icon="arrow-back-outline"></nb-icon>
+      <fa-icon [icon]="icons.faArrowLeft"></fa-icon>
       All batches
     </a>
 
@@ -12,7 +12,7 @@
         <div class="name-row" *ngIf="!isEditingName">
           <h1 class="page-title">{{ batch.name }}</h1>
           <button ghost comButton size="small" shape="round" (click)="startEditName()">
-            <nb-icon icon="edit-outline"></nb-icon>
+            <fa-icon [icon]="icons.faPen"></fa-icon>
           </button>
         </div>
         <div class="name-row" *ngIf="isEditingName">

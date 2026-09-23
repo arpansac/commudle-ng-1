@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { NbIconModule, NbInputModule } from '@commudle/theme';
+import { NbInputModule } from '@commudle/theme';
 import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 import { ECertificateBatchStatus, ICertificateBatch } from '@commudle/shared-models';
 import { CertificateBatchService } from '@commudle/shared-services';
@@ -10,6 +10,8 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import * as moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faArrowLeft, faPen } from '@fortawesome/free-solid-svg-icons';
 import { CertificateDesignPickerComponent } from '../certificate-design-picker/certificate-design-picker.component';
 import { CertificateRecipientsTableComponent } from '../certificate-recipients-table/certificate-recipients-table.component';
 import { CertificateCanvasComponent } from '../certificate-canvas/certificate-canvas.component';
@@ -24,9 +26,9 @@ import { CertificateSendPanelComponent } from '../certificate-send-panel/certifi
     RouterModule,
     CommudleCardModule,
     CommudleButtonModule,
-    NbIconModule,
     NbInputModule,
     SharedComponentsModule,
+    FontAwesomeModule,
     CertificateDesignPickerComponent,
     CertificateRecipientsTableComponent,
     CertificateCanvasComponent,
@@ -43,6 +45,7 @@ export class CertificateBatchDetailComponent implements OnInit, OnDestroy {
   isLoading = true;
   moment = moment;
   ECertificateBatchStatus = ECertificateBatchStatus;
+  icons = { faArrowLeft, faPen };
 
   isEditingName = false;
   isSavingName = false;

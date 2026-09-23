@@ -2,7 +2,7 @@
   <com-card-header class="dialog-header">
     <span>{{ isEditMode ? 'Edit Recipient' : 'New Recipient' }}</span>
     <button ghost comButton size="small" (click)="close()" shape="round">
-      <nb-icon icon="close"></nb-icon>
+      <fa-icon [icon]="icons.faXmark"></fa-icon>
     </button>
   </com-card-header>
   <com-card-body class="dialog-body">
@@ -48,13 +48,13 @@
           <input class="new-field-label" formControlName="label" nbInput fieldSize="small" placeholder="Field name" />
           <input class="new-field-value" formControlName="value" nbInput fieldSize="small" placeholder="Value" />
           <button ghost comButton size="tiny" status="danger" type="button" (click)="removeField(i)">
-            <nb-icon icon="close"></nb-icon>
+            <fa-icon [icon]="icons.faXmark"></fa-icon>
           </button>
         </div>
       </div>
 
       <button comButton status="basic" size="small" type="button" class="add-field-button" (click)="addField()">
-        <nb-icon icon="plus-outline"></nb-icon> &nbsp; Add Field
+        <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add Field
       </button>
     </form>
   </com-card-body>

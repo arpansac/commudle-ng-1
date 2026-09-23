@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
-import { NbDialogService, NbIconModule } from '@commudle/theme';
+import { NbDialogService } from '@commudle/theme';
 import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { ECertificateDesignType, ICertificateBatch, ICertificateDesign } from '@commudle/shared-models';
 import { CertificateBatchService, CertificateDesignService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faCheck, faEllipsisVertical, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Subject, takeUntil } from 'rxjs';
 import { CertificateUploadDesignDialogComponent } from '../certificate-upload-design-dialog/certificate-upload-design-dialog.component';
 import { openCertificateConfirmDialog } from '../certificate-confirm-dialog/certificate-confirm-dialog.component';
@@ -15,7 +17,7 @@ type DesignAction = 'delete';
 @Component({
   selector: 'commudle-certificate-design-picker',
   standalone: true,
-  imports: [CommonModule, CommudleButtonModule, NbIconModule, SharedComponentsModule],
+  imports: [CommonModule, CommudleButtonModule, FontAwesomeModule, SharedComponentsModule],
   templateUrl: './certificate-design-picker.component.html',
   styleUrls: ['./certificate-design-picker.component.scss'],
 })
@@ -26,6 +28,7 @@ export class CertificateDesignPickerComponent implements OnChanges, OnDestroy {
   designs: ICertificateDesign[] = [];
   isLoading = true;
   ECertificateDesignType = ECertificateDesignType;
+  icons = { faPlus, faCheck, faEllipsisVertical };
 
   designPage = 1;
   designTotal = 0;

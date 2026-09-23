@@ -1,16 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { NbDialogRef, NbIconModule } from '@commudle/theme';
+import { NbDialogRef } from '@commudle/theme';
 import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 import { ICertificateCsvCommitResponse, ICertificateCsvPreviewResponse } from '@commudle/shared-models';
 import { CertificateBatchService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faCloudUploadAlt, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-certificate-csv-upload-dialog',
   standalone: true,
-  imports: [CommonModule, CommudleCardModule, CommudleButtonModule, NbIconModule, SharedComponentsModule],
+  imports: [CommonModule, CommudleCardModule, CommudleButtonModule, FontAwesomeModule, SharedComponentsModule],
   templateUrl: './certificate-csv-upload-dialog.component.html',
   styleUrls: ['./certificate-csv-upload-dialog.component.scss'],
 })
@@ -23,6 +25,7 @@ export class CertificateCsvUploadDialogComponent {
   isCommitting = false;
   isDragging = false;
   errorMessage: string | null = null;
+  icons = { faXmark, faCloudUploadAlt };
 
   constructor(
     private dialogRef: NbDialogRef<CertificateCsvUploadDialogComponent>,

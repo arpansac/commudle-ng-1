@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { NbDialogService, NbIconModule } from '@commudle/theme';
+import { NbDialogService } from '@commudle/theme';
 import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { ECertificateBatchStatus, ICertificateBatch, ICommunity } from '@commudle/shared-models';
 import { CertificateBatchService } from '@commudle/shared-services';
-import { faPlus, faAward } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faAward, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import * as moment from 'moment';
@@ -27,7 +27,6 @@ type BatchAction = 'delete';
     CommonModule,
     RouterModule,
     CommudleButtonModule,
-    NbIconModule,
     FontAwesomeModule,
     SharedComponentsModule,
     CertificateDeliveryFunnelComponent,
@@ -47,6 +46,7 @@ export class CertificateBatchesListComponent implements OnInit, OnDestroy {
   icons = {
     faPlus,
     faAward,
+    faEllipsisVertical,
   };
 
   private destroy$ = new Subject<void>();

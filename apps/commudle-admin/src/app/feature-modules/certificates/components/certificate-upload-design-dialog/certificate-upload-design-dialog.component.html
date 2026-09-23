@@ -30,7 +30,7 @@
         (drop)="onDrop($event)"
       >
         <ng-container *ngIf="!selectedFilePreviewUrl">
-          <nb-icon icon="cloud-upload-outline"></nb-icon>
+          <fa-icon [icon]="icons.faCloudUploadAlt"></fa-icon>
           <span>Drag and drop an image, or click to choose a file</span>
         </ng-container>
         <img *ngIf="selectedFilePreviewUrl" [src]="selectedFilePreviewUrl" class="preview-image" alt="Preview" />

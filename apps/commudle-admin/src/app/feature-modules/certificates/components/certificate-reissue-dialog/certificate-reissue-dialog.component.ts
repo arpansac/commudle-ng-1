@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { NbDialogRef, NbIconModule } from '@commudle/theme';
+import { NbDialogRef } from '@commudle/theme';
 import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 export type ECertificateReissueScope = 'all' | 'unissued';
 
@@ -18,13 +20,15 @@ export type ECertificateReissueScope = 'all' | 'unissued';
 @Component({
   selector: 'commudle-certificate-reissue-dialog',
   standalone: true,
-  imports: [CommonModule, CommudleCardModule, CommudleButtonModule, NbIconModule],
+  imports: [CommonModule, CommudleCardModule, CommudleButtonModule, FontAwesomeModule],
   templateUrl: './certificate-reissue-dialog.component.html',
   styleUrls: ['./certificate-reissue-dialog.component.scss'],
 })
 export class CertificateReissueDialogComponent {
   @Input() newCount = 0;
   @Input() alreadyIssuedCount = 0;
+
+  icons = { faXmark };
 
   constructor(private dialogRef: NbDialogRef<CertificateReissueDialogComponent>) {}
 

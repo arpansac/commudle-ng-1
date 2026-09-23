@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { NbDialogRef, NbIconModule } from '@commudle/theme';
+import { NbDialogRef } from '@commudle/theme';
 import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 import { ICertificateRecipient } from '@commudle/shared-models';
 import { CertificateRecipientService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { SkeletonPdfPreviewComponent } from '../../../skeleton-screens/components/skeleton-pdf-preview/skeleton-pdf-preview.component';
 
 @Component({
@@ -16,7 +18,7 @@ import { SkeletonPdfPreviewComponent } from '../../../skeleton-screens/component
     CommonModule,
     CommudleCardModule,
     CommudleButtonModule,
-    NbIconModule,
+    FontAwesomeModule,
     SharedComponentsModule,
     SharedPipesModule,
     SkeletonPdfPreviewComponent,
@@ -31,6 +33,7 @@ export class CertificateRecipientPreviewDialogComponent implements OnInit, OnDes
   isLoading = true;
   errorMessage: string | null = null;
   pdfObjectUrl: string | null = null;
+  icons = { faXmark };
 
   constructor(
     private dialogRef: NbDialogRef<CertificateRecipientPreviewDialogComponent>,

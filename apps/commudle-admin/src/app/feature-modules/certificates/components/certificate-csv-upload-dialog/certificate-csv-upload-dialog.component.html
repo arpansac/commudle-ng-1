@@ -2,7 +2,7 @@
   <com-card-header class="dialog-header">
     <span>Upload Recipients CSV</span>
     <button ghost comButton size="small" (click)="close()" shape="round">
-      <nb-icon icon="close"></nb-icon>
+      <fa-icon [icon]="icons.faXmark"></fa-icon>
     </button>
   </com-card-header>
   <com-card-body>
@@ -20,7 +20,7 @@
         (dragleave)="onDragLeave($event)"
         (drop)="onDrop($event)"
       >
-        <nb-icon icon="cloud-upload-outline"></nb-icon>
+        <fa-icon [icon]="icons.faCloudUploadAlt"></fa-icon>
         <span>Drag and drop a CSV file, or click to choose a file</span>
       </div>
       <input

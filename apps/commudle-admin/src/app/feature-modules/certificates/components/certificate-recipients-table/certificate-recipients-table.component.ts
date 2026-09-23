@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { NbCheckboxModule, NbDialogService, NbIconModule, NbInputModule, NbTooltipModule } from '@commudle/theme';
+import { NbCheckboxModule, NbDialogService, NbInputModule, NbTooltipModule } from '@commudle/theme';
 import { CommudleButtonModule } from '@commudle/commudle-theme';
 import {
   ECertificateBatchStatus,
@@ -70,7 +70,6 @@ const RECIPIENT_POLL_INTERVAL_MS = 10000;
     CommonModule,
     ReactiveFormsModule,
     CommudleButtonModule,
-    NbIconModule,
     NbInputModule,
     NbCheckboxModule,
     NbTooltipModule,
