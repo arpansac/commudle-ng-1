@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { NbInputModule } from '@commudle/theme';
 import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
-import { ECertificateBatchStatus, ICertificateBatch, IFaq } from '@commudle/shared-models';
-import { CertificateBatchService } from '@commudle/shared-services';
+import { ECertificateBatchStatus, ICertificateBatch, ICommunity, IFaq } from '@commudle/shared-models';
+import { CertificateBatchService, SeoService } from '@commudle/shared-services';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import * as moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
@@ -102,14 +102,21 @@ export class CertificateBatchDetailComponent implements OnInit, OnDestroy {
   ];
 
   private destroy$ = new Subject<void>();
+  private community: ICommunity;
 
   constructor(
     private route: ActivatedRoute,
     private certificateBatchService: CertificateBatchService,
     private toastLogService: LibToastLogService,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit() {
+    this.seoService.noIndex(true);
+    this.route.parent.parent.data.pipe(takeUntil(this.destroy$)).subscribe((data) => {
+      this.community = data.community;
+      this.setMeta();
+    });
     this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       const batchUuid = params.get('batch_uuid');
       this.fetchBatch(batchUuid);
@@ -117,6 +124,7 @@ export class CertificateBatchDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.seoService.noIndex(false);
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -129,7 +137,15 @@ export class CertificateBatchDetailComponent implements OnInit, OnDestroy {
       .subscribe((batch) => {
         this.batch = batch;
         this.isLoading = false;
+        this.setMeta();
       });
+  }
+
+  private setMeta() {
+    if (!this.batch || !this.community) {
+      return;
+    }
+    this.seoService.setTitle(`${this.batch.name} | Certificates | Dashboard | ${this.community.name}`);
   }
 
   statusLabel(status: ECertificateBatchStatus): string {

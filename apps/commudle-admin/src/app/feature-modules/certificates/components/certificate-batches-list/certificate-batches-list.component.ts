@@ -4,7 +4,7 @@ import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { NbDialogService } from '@commudle/theme';
 import { CommudleButtonModule } from '@commudle/commudle-theme';
 import { ECertificateBatchStatus, ICertificateBatch, ICommunity } from '@commudle/shared-models';
-import { CertificateBatchService } from '@commudle/shared-services';
+import { CertificateBatchService, SeoService } from '@commudle/shared-services';
 import { faPlus, faAward, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
@@ -57,16 +57,20 @@ export class CertificateBatchesListComponent implements OnInit, OnDestroy {
     private certificateBatchService: CertificateBatchService,
     private dialogService: NbDialogService,
     private toastLogService: LibToastLogService,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit() {
+    this.seoService.noIndex(true);
     this.route.parent.parent.data.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.community = data.community;
+      this.seoService.setTitle(`Certificates | Dashboard | ${this.community.name}`);
       this.fetchBatches();
     });
   }
 
   ngOnDestroy() {
+    this.seoService.noIndex(false);
     this.destroy$.next();
     this.destroy$.complete();
   }

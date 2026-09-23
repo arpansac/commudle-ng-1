@@ -4,7 +4,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommudleButtonModule, CommudleCardModule } from '@commudle/commudle-theme';
 import { ICertificatePublicRecipient } from '@commudle/shared-models';
-import { CertificateRecipientService, ShareService } from '@commudle/shared-services';
+import { CertificateRecipientService, SeoService, ShareService } from '@commudle/shared-services';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import {
   faCalendarDays,
@@ -69,6 +69,7 @@ export class CertificateVerifyPageComponent implements OnInit, OnDestroy {
     private clipboard: Clipboard,
     private shareService: ShareService,
     private toastLogService: LibToastLogService,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit() {
@@ -82,6 +83,7 @@ export class CertificateVerifyPageComponent implements OnInit, OnDestroy {
           this.verificationLink = `${environment.app_url}/certificates/verify/${recipient.uuid}`;
           this.verifiedOnLabel = this.formatVerifiedOn(new Date());
           this.isLoading = false;
+          this.setMeta(recipient);
           if (recipient.pdf_url) {
             this.loadPdfPreview(recipient.uuid);
           }
@@ -117,6 +119,38 @@ export class CertificateVerifyPageComponent implements OnInit, OnDestroy {
           this.toastLogService.errorDialog('Could not load the certificate preview');
         },
       });
+  }
+
+  private setMeta(recipient: ICertificatePublicRecipient) {
+    const namePart = recipient.recipient_name ? `${recipient.recipient_name} - ` : '';
+    const title = `${namePart}Certificate - ${recipient.title} | Commudle`;
+
+    let description = `Certificate of ${recipient.title}`;
+    if (recipient.recipient_name) {
+      description += ` issued to ${recipient.recipient_name}`;
+    }
+    if (recipient.issuer?.name) {
+      description += ` by ${recipient.issuer.name}`;
+    }
+    if (recipient.issued_on) {
+      description += ` on ${moment(recipient.issued_on).format('MMM D, YYYY')}`;
+    }
+    description += '. Verified on Commudle.';
+
+    this.seoService.setTags(title, description, recipient.thumbnail_url || undefined);
+    this.seoService.setSchema({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: recipient.recipient_name || undefined,
+      hasCredential: {
+        '@type': 'EducationalOccupationalCredential',
+        name: recipient.title,
+        url: this.verificationLink,
+        dateCreated: recipient.issued_on || undefined,
+        recognizedBy: recipient.issuer?.name ? { '@type': 'Organization', name: recipient.issuer.name } : undefined,
+        image: recipient.thumbnail_url || undefined,
+      },
+    });
   }
 
   private formatVerifiedOn(date: Date): string {
