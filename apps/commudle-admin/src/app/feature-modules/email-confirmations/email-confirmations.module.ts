@@ -22,7 +22,7 @@ import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-share
 import { UserprofileDetailsComponent } from 'apps/commudle-admin/src/app/feature-modules/homepage/components/homepage-dashboard/userprofile-details/userprofile-details.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HackathonRegisteredCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/hackathon-cards/hackathon-registered-card/hackathon-registered-card.component';
-import { CommudleCardModule } from '@commudle/commudle-theme';
+
 @NgModule({
   declarations: [
     RsvpComponent,
@@ -45,7 +45,6 @@ import { CommudleCardModule } from '@commudle/commudle-theme';
     // Nebular
     NbIconModule,
     NbCardModule,
-    CommudleCardModule,
     NbSpinnerModule,
     NbToggleModule,
     NbButtonModule,
