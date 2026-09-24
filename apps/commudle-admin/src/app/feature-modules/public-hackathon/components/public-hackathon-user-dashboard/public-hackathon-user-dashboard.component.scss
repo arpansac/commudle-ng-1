@@ -208,10 +208,14 @@ com-card {
 }
 
 .problem-statement-dialog {
-  @apply com-max-h-[90dvh] md:com-w-[30dvw];
+  @apply com-max-w-[90dvw] com-max-h-[90dvh] md:com-w-[30dvw] com-flex com-flex-col com-overflow-hidden;
 
   com-card-header {
-    @apply com-flex com-justify-between com-items-center;
+    @apply com-flex com-justify-between com-items-center com-shrink-0;
+  }
+
+  com-card-body {
+    @apply com-flex com-flex-col com-min-w-0 com-overflow-y-auto com-scrollbar-hide;
   }
 }
 
@@ -271,7 +275,7 @@ com-card {
     }
 
     .problem-statement-section {
-      @apply com-mt-3 com-p-3 com-bg-gray-50 com-rounded-lg com-border com-border-solid com-border-Bright-Gray;
+      @apply com-mt-3 com-p-3 com-bg-gray-50 com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-flex;
 
       .problem-label {
         @apply com-text-xs com-font-medium com-text-gray-500 com-mb-1;
