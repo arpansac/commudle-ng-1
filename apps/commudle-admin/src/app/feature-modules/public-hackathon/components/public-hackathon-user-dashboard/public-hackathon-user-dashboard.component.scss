@@ -208,7 +208,7 @@ com-card {
 }
 
 .problem-statement-dialog {
-  @apply com-max-w-[90dvw] com-max-h-[90dvh] md:com-w-[30dvw] com-flex com-flex-col com-overflow-hidden;
+  @apply com-max-w-[90dvw] com-max-h-[90dvh] md:com-w-[30dvw] com-flex com-flex-col;
 
   com-card-header {
     @apply com-flex com-justify-between com-items-center com-shrink-0;
