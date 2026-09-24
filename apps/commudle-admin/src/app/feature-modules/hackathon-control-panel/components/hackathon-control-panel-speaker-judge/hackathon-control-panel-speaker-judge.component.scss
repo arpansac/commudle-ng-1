@@ -15,7 +15,7 @@
 }
 
 .speaker-form {
-  @apply com-w-[100dvw] com-max-h-[90dvh] md:com-w-[70dvw] com-mx-0;
+  @apply com-w-[100dvw] com-max-h-[90dvh] md:com-w-[70dvw] com-mx-0 com-flex com-overflow-y-auto;
 
   .judge-form {
     @apply com-flex com-flex-col com-gap-3;
