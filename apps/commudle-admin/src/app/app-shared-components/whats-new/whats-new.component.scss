@@ -7,7 +7,7 @@
 }
 
 .card-info-popup {
-  @apply com-m-0 com-w-full com-bg-white com-rounded-[10px] com-border-none com-flex com-flex-col com-max-h-[90vh];
+  @apply com-m-0 com-w-full com-bg-white com-rounded-[10px] com-border-none com-flex com-flex-col com-max-h-[90vh] com-w-[100dvw] md:com-w-full;
 }
 
 com-card-header {
