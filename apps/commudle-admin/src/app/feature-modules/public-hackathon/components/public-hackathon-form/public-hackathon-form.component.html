@@ -175,43 +175,6 @@
   </div>
 </div>
 
-<ng-template #formConfirmationDialog let-data>
-  <com-card class="confirmation-dialog">
-    <com-card-body>
-      <div>
-        <p class="thank-you-icon">
-          <nb-icon icon="done-all" status="success"></nb-icon>
-        </p>
-        <p class="thank-you-text">Thank You {{ currentUser.name }} for filling the form!</p>
-        <div class="user">
-          <commudle-user-profile [currentUser]="currentUser"></commudle-user-profile>
-          <commudle-userprofile-details
-            [userProfileDetails]="userProfileDetails"
-            [username]="currentUser.username"
-            [completeProfileText]="'Complete your profile to boost your chances of getting shortlisted'"
-          ></commudle-userprofile-details>
-        </div>
-        <div *appBreakpoints="'<=lg'" class="user">
-          <commudle-user-profile [currentUser]="currentUser"></commudle-user-profile>
-          <commudle-userprofile-details
-            [userProfileDetails]="userProfileDetails"
-            [username]="currentUser.username"
-            [showLowerCardUserDetails]="false"
-            [completeProfileText]="'Complete your profile to boost your chances of getting shortlisted'"
-          ></commudle-userprofile-details>
-        </div>
-      </div>
-    </com-card-body>
-    <com-card-footer>
-      <p *ngIf="hackathon">
-        <a [routerLink]="['/communities', community.slug, 'hackathons', hackathon.slug]">
-          <p>Go to Hackathon Page &nbsp;<fa-icon [icon]="icons.faArrowRight"></fa-icon></p>
-        </a>
-      </p>
-    </com-card-footer>
-  </com-card>
-</ng-template>
-
 <ng-template #formClosedDialog>
   <com-card class="form-closed-dialog">
     <com-card-body>
